@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
+import LiveMintData from "@/components/LiveMintData";
 import { calculateIntegrityScore, findLaunch, getIntegrityNotes, launches } from "@/lib/launches";
 
 export function generateStaticParams() {
@@ -95,6 +96,8 @@ export default async function TokenPage({ params }: { params: Promise<{ mint: st
                 <Row label="Creator" value={shorten(coin.creator)} />
                 <Row label="Mint" value={shorten(coin.mint)} />
               </Panel>
+
+              <LiveMintData mint={coin.mint} />
             </div>
           </div>
 

@@ -11,6 +11,7 @@ import {
 } from "@solana/kit-plugin-wallet/react";
 import { useClient } from "@solana/react";
 import type { AppClient } from "@/app/providers";
+import { useWalletBalance } from "@/hooks/useWalletBalance";
 
 function truncate(address: string) {
   return `${address.slice(0, 4)}…${address.slice(-4)}`;
@@ -26,6 +27,7 @@ function WalletButtonInner({ client }: { client: AppClient }) {
   const rootRef = useRef<HTMLDivElement>(null);
 
   const address = connected ? String(connected.account.address) : null;
+  const { balance, loading: balanceLoading, error: balanceError } = useWalletBalance(address);
   const error = connect.error ?? disconnect.error;
 
   useEffect(() => {
@@ -91,8 +93,14 @@ function WalletButtonInner({ client }: { client: AppClient }) {
                 >
                   {address ? truncate(address) : ""}
                 </p>
-                <p className="mt-1 text-[10px] text-white/35">
-                  Your wallet keeps custody of its keys.
+                <div className="mt-2 flex items-center justify-between gap-3 rounded-lg bg-white/[0.03] px-2.5 py-2">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-white/30">Devnet balance</span>
+                  <span className="text-xs font-black text-[#9cff43]">
+                    {balanceLoading ? "Loading…" : balance !== null ? `${balance.toFixed(4)} SOL` : "—"}
+                  </span>
+                </div>
+                <p className="mt-2 text-[10px] text-white/35">
+                  Your wallet keeps custody of its keys. JeeT Launch only reads the public balance here.
                 </p>
               </div>
               <button
@@ -143,6 +151,12 @@ function WalletButtonInner({ client }: { client: AppClient }) {
           {error ? (
             <p className="mt-3 rounded-xl border border-red-400/20 bg-red-400/10 px-3 py-2 text-[11px] font-semibold text-red-300">
               {error instanceof Error ? error.message : String(error)}
+            </p>
+          ) : null}
+
+          {balanceError && connected ? (
+            <p className="mt-3 rounded-xl border border-yellow-400/20 bg-yellow-400/10 px-3 py-2 text-[11px] font-semibold text-yellow-200">
+              Balance unavailable: {balanceError}
             </p>
           ) : null}
         </div>
