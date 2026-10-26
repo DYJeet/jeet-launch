@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import DevnetTokenCreator from "@/components/DevnetTokenCreator";
+import { toTokenBaseUnits } from "@/lib/token-amount";
 import type { ChangeEvent, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 
@@ -218,6 +220,7 @@ export default function CreatePage() {
   const devNumber = Number(devAllocation);
   const walletCapNumber = Number(maxWalletPercent);
   const liquidityNumber = Number(initialLiquidity);
+  const baseUnitAmount = toTokenBaseUnits(totalSupply, decimalsNumber);
 
   const nameValid =
     tokenName.trim().length >= 2 &&
@@ -231,8 +234,10 @@ export default function CreatePage() {
 
   const supplyValid =
     Number.isFinite(supplyNumber) &&
+    Number.isInteger(supplyNumber) &&
     supplyNumber > 0 &&
-    supplyNumber <= 1_000_000_000_000_000;
+    supplyNumber <= 1_000_000_000_000_000 &&
+    baseUnitAmount.ok;
 
   const decimalsValid =
     Number.isInteger(decimalsNumber) &&
@@ -772,8 +777,12 @@ export default function CreatePage() {
                   />
                 </InputShell>
 
-                <p className="mt-2 text-[10px] text-white/25">
-                  Display: {formattedSupply}
+                <p className={`mt-2 text-[10px] ${supplyValid ? "text-white/25" : "text-red-300"}`}>
+                  {supplyValid
+                    ? `Display: ${formattedSupply}`
+                    : baseUnitAmount.ok
+                      ? "Supply must be a positive whole number."
+                      : baseUnitAmount.message}
                 </p>
               </label>
 
@@ -1326,9 +1335,8 @@ export default function CreatePage() {
             )}
 
             <p className="text-center text-[9px] leading-4 text-white/20">
-              No blockchain transaction is active yet. Real Solana
-              deployment comes after we lock the launch rules and
-              connect the backend.
+              Review opens a Devnet-only integration test. Production launch inventory,
+              curve custody, liquidity and anti-sniper rules are not active yet.
             </p>
           </div>
         </aside>
@@ -1350,7 +1358,7 @@ export default function CreatePage() {
                 </h2>
 
                 <p className="mt-1 text-xs text-white/30">
-                  Nothing is being sent on-chain yet.
+                  Devnet test minting is available below after wallet connection.
                 </p>
               </div>
 
@@ -1482,40 +1490,41 @@ export default function CreatePage() {
                 </p>
               </div>
 
-              {/* DEVELOPMENT NOTICE */}
-              <div className="rounded-xl border border-yellow-300/15 bg-yellow-300/[0.04] p-4">
-                <p className="text-xs font-black text-yellow-200">
-                  Development mode
-                </p>
+              {/* DEVNET TOKEN CREATION */}
+              <DevnetTokenCreator
+                tokenName={tokenName}
+                ticker={ticker}
+                description={description}
+                website={website}
+                twitter={twitter}
+                telegram={telegram}
+                logoFileName={logoFile?.name ?? null}
+                totalSupply={totalSupply}
+                decimals={decimalsNumber}
+                revokeMint={revokeMint}
+                revokeFreeze={revokeFreeze}
+              />
 
+              <div className="rounded-xl border border-white/[0.07] bg-white/[0.025] p-4">
+                <p className="text-xs font-black text-white/70">
+                  Production launch rules still come next
+                </p>
                 <p className="mt-2 text-xs leading-5 text-white/35">
-                  This interface currently prepares and validates
-                  launch settings only. The real Solana program,
-                  wallet signing, token creation, authority changes,
-                  liquidity handling, anti-sniper enforcement,
-                  ticker reservation, and live fee simulation still
-                  need to be connected before a token can launch.
+                  The Devnet mint test above proves the browser-wallet transaction path. It does not
+                  enforce opening wallet caps, bonding-curve pricing, liquidity migration, anti-sniper
+                  rules, ticker reservation, or creator-allocation custody. Those belong in the JeeT
+                  Launch on-chain program and must be implemented before mainnet launch.
                 </p>
               </div>
 
               {/* MODAL BUTTONS */}
-              <div className="grid gap-3 sm:grid-cols-2">
-                <button
-                  type="button"
-                  onClick={() => setReviewOpen(false)}
-                  className="rounded-xl border border-white/[0.08] bg-white/[0.04] py-3.5 font-black text-white/60 transition hover:bg-white/[0.07]"
-                >
-                  ← Keep Editing
-                </button>
-
-                <button
-                  type="button"
-                  disabled
-                  className="cursor-not-allowed rounded-xl bg-[#9cff43]/30 py-3.5 font-black text-black/50"
-                >
-                  Solana Backend Next
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => setReviewOpen(false)}
+                className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-3.5 font-black text-white/60 transition hover:bg-white/[0.07]"
+              >
+                ← Keep Editing
+              </button>
             </div>
           </div>
         </div>
