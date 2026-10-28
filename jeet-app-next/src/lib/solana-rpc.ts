@@ -1,3 +1,5 @@
+import { address as solanaAddress, getAddressEncoder } from "@solana/kit";
+
 export const SOLANA_CLUSTER = "devnet" as const;
 
 export const SOLANA_RPC_URL = "https://api.devnet.solana.com";
@@ -36,34 +38,47 @@ export type MintReadResult =
 
 let rpcId = 1;
 
-async function rpcRequest<T>(
-  method: string,
-  params: unknown[],
-  signal?: AbortSignal,
-): Promise<T> {
-  const response = await fetch(SOLANA_RPC_URL, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ jsonrpc: "2.0", id: rpcId++, method, params }),
-    signal,
-    cache: "no-store",
+class RetryableReadError extends Error {}
+
+function pause(ms: number, signal?: AbortSignal) {
+  return new Promise<void>((resolve, reject) => {
+    signal?.throwIfAborted();
+    const abort = () => { clearTimeout(timer); reject(signal?.reason); };
+    const timer = setTimeout(() => { signal?.removeEventListener("abort", abort); resolve(); }, ms);
+    signal?.addEventListener("abort", abort, { once: true });
   });
+}
 
-  if (!response.ok) {
-    throw new Error(`Solana RPC returned HTTP ${response.status}.`);
+// Read-only RPC helper. Never use automatic retries for signing or sending funds.
+async function rpcRequest<T>(method: string, params: unknown[], signal?: AbortSignal): Promise<T> {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    signal?.throwIfAborted();
+    try {
+      const response = await fetch(SOLANA_RPC_URL, {
+        method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ jsonrpc: "2.0", id: rpcId++, method, params }),
+        signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(8000)]) : AbortSignal.timeout(8000),
+        cache: "no-store",
+      });
+      if (!response.ok) {
+        const message = `Solana RPC returned HTTP ${response.status}.`;
+        if ([429, 500, 502, 503, 504].includes(response.status)) throw new RetryableReadError(message);
+        throw new Error(message);
+      }
+      const payload = await response.json() as RpcEnvelope<T>;
+      if (payload.error) {
+        if (payload.error.code === -32005) throw new RetryableReadError("Solana RPC node is behind. Try again shortly.");
+        throw new Error(payload.error.message ?? "Solana RPC request failed.");
+      }
+      if (payload.result === undefined) throw new Error("Solana RPC returned no result.");
+      return payload.result;
+    } catch (error) {
+      if (signal?.aborted) throw signal.reason;
+      if (attempt === 2 || !(error instanceof RetryableReadError || error instanceof TypeError)) throw error;
+      await pause(250 * 2 ** attempt, signal);
+    }
   }
-
-  const payload = (await response.json()) as RpcEnvelope<T>;
-
-  if (payload.error) {
-    throw new Error(payload.error.message ?? "Solana RPC request failed.");
-  }
-
-  if (payload.result === undefined) {
-    throw new Error("Solana RPC returned no result.");
-  }
-
-  return payload.result;
+  throw new Error("Solana RPC read retries exhausted.");
 }
 
 export async function getSolBalance(
@@ -80,6 +95,7 @@ export async function getSolBalance(
     signal,
   );
 
+  if (!Number.isSafeInteger(result.value) || result.value < 0) throw new Error("RPC balance is not a safe nonnegative lamport amount.");
   return result.value / LAMPORTS_PER_SOL;
 }
 
@@ -90,7 +106,7 @@ export async function getMintAccount(
   if (!looksLikeSolanaAddress(address)) {
     return {
       status: "invalid",
-      message: "This launch is still using a placeholder mint, so live chain data is not available yet.",
+      message: "Enter a correctly encoded 32-byte Solana mint public key.",
     };
   }
 
@@ -116,19 +132,13 @@ export async function getMintAccount(
     };
   }
 
-  const bytes = base64ToBytes(result.value.data[0]);
-
-  if (bytes.length < 82) {
-    return {
-      status: "invalid",
-      message: "The account exists, but it is not a standard SPL mint account.",
-    };
+  try {
+    const mint = parseMintBytes(base64ToBytes(result.value.data[0]), address, result.value.owner);
+    if (!mint.initialized) throw new Error("SPL mint is not initialized.");
+    return { status: "ok", mint };
+  } catch (error) {
+    return { status: "invalid", message: error instanceof Error ? error.message : "Invalid SPL mint account." };
   }
-
-  return {
-    status: "ok",
-    mint: parseMintBytes(bytes, address, result.value.owner),
-  };
 }
 
 export function parseMintBytes(
@@ -136,9 +146,11 @@ export function parseMintBytes(
   address: string,
   ownerProgram: string,
 ): ParsedMintAccount {
-  if (bytes.length < 82) {
-    throw new Error("SPL mint data must be at least 82 bytes.");
+  if (ownerProgram !== "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" || bytes.length !== 82) {
+    throw new Error("Account is not an exact standard SPL Token mint owned by the SPL Token program.");
   }
+  if (![0, 1].includes(readU32LE(bytes, 0)) || ![0, 1].includes(readU32LE(bytes, 46)) || bytes[45] > 1)
+    throw new Error("Invalid SPL mint option or initialization flag.");
 
   const mintAuthorityOption = readU32LE(bytes, 0);
   const supplyRaw = readU64LE(bytes, 36);
@@ -166,16 +178,12 @@ export function parseMintBytes(
 }
 
 export function looksLikeSolanaAddress(value: string) {
-  if (value.length < 32 || value.length > 44) return false;
-  return /^[1-9A-HJ-NP-Za-km-z]+$/.test(value);
+  try { getAddressEncoder().encode(solanaAddress(value)); return true; }
+  catch { return false; }
 }
 
 function base64ToBytes(base64: string) {
-  if (typeof window === "undefined") {
-    throw new Error("Mint decoding is only available in the browser.");
-  }
-
-  const binary = window.atob(base64);
+  const binary = atob(base64);
   return Uint8Array.from(binary, (char) => char.charCodeAt(0));
 }
 

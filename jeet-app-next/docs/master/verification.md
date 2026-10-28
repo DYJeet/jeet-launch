@@ -23,7 +23,7 @@ be staged. Independent runs have different signatures and can have different
 race winners; both outcomes must satisfy the same assertions.
 
 This is a **financial-phase verifier**, not a complete master-readiness gate.
-Full frontend lint, V4 browser flows, metadata, migration, Devnet, remaining
+V4 browser flows, metadata, migration, Devnet, remaining
 security findings and operational preparation still require their own evidence.
 No failed check may be waived by calling this harness a complete CI pipeline.
 

@@ -16,9 +16,8 @@ run_check() {
   "$@" 2>&1 | tee "$verification_dir/$check_name.log"
 }
 run_check format cargo fmt --manifest-path programs/launch-custody/Cargo.toml -- --check
-# Full frontend lint remains a separate master-completion gate; existing findings
-# are recorded in docs/master/remaining-work.md, never hidden by this focused gate.
-run_check sdk-lint npx --no-install eslint src/lib/launch-market.ts
+run_check lint npx --no-install eslint
+run_check rpc-reads npm run test:rpc:reads
 run_check build npm run build
 run_check native cargo test --locked --manifest-path programs/launch-custody/Cargo.toml
 run_check native-local cargo test --locked --manifest-path programs/launch-custody/Cargo.toml --features local-fee-test

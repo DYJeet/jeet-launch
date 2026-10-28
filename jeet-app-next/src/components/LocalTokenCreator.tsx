@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toTokenBaseUnits } from "@/lib/token-amount";
 
 type Props = {
@@ -70,29 +70,30 @@ export default function LocalTokenCreator({
   const [protectedDurationSlots,setProtectedDurationSlots]=useState("50");
   const [protectedLimitPercent,setProtectedLimitPercent]=useState("0.50");
 
-  const checkValidator = useCallback(async () => {
-    setValidatorState("checking");
-    setValidatorMessage("Checking local validator…");
-
-    try {
-      const response = await fetch("/api/local-test/health", { cache: "no-store" });
-      const payload = (await response.json()) as { ok?: boolean; message?: string };
-
-      if (response.ok && payload.ok) {
-        setValidatorState("ready");
-        setValidatorMessage("Local validator connected on localhost:8899");
-      } else {
-        setValidatorState("offline");
-        setValidatorMessage(payload.message ?? "Local validator is offline.");
-      }
-    } catch {
+  const healthRequest = useRef<AbortController | null>(null);
+  const checkValidator = useCallback(() => {
+    healthRequest.current?.abort();
+    const controller = new AbortController();
+    healthRequest.current = controller;
+    const read = async () => {
+      const response = await fetch("/api/local-test/health", { cache: "no-store", signal: AbortSignal.any([controller.signal, AbortSignal.timeout(5000)]) });
+      const payload = await response.json() as { ok?: boolean; message?: string };
+      return { ready: response.ok && payload.ok, message: payload.message };
+    };
+    void read().then((result) => {
+      if (controller.signal.aborted) return;
+      setValidatorState(result.ready ? "ready" : "offline");
+      setValidatorMessage(result.ready ? "Local validator connected on localhost:8899" : result.message ?? "Local validator is offline.");
+    }, () => {
+      if (controller.signal.aborted) return;
       setValidatorState("offline");
       setValidatorMessage("Local validator is offline. Start it with: npm run validator");
-    }
+    });
   }, []);
 
   useEffect(() => {
     void checkValidator();
+    return () => healthRequest.current?.abort();
   }, [checkValidator]);
 
   async function createLocalMint() {
@@ -179,7 +180,7 @@ export default function LocalTokenCreator({
           <span>{validatorMessage}</span>
           <button
             type="button"
-            onClick={() => void checkValidator()}
+            onClick={() => { setValidatorState("checking"); setValidatorMessage("Checking local validator…"); void checkValidator(); }}
             className="rounded-lg border border-current/20 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider"
           >
             Recheck

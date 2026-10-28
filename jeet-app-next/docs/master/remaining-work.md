@@ -71,7 +71,8 @@ reports zero vulnerability-class entries, with three informational warnings:
 These are not recorded as resolved. The JeeT program defines no custom logger
 or direct rand RNG calls; transitive reachability and a compatible remediation
 must still be reviewed. No breaking Solana/Rust dependency upgrades were applied.
-Full-project ESLint also identifies five existing frontend errors (effect-driven
-state resets and internal anchor navigation) and image warnings. Focused new
-financial source lint/type checks pass; the full frontend findings remain work.
+The subsequent frontend/RPC checkpoint resolves the five existing ESLint errors
+and image warnings without rule suppressions. Full-project lint and 11 focused
+RPC validation/retry/cancellation tests pass. Configurable providers, unified
+network handling and full wallet/Devnet verification remain unfinished.
 Internal testing is not an independent security audit.

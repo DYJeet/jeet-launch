@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import LocalTokenCreator from "@/components/LocalTokenCreator";
 import WalletConnectButton from "@/components/WalletConnectButton";
 import { toTokenBaseUnits } from "@/lib/token-amount";
@@ -171,18 +172,9 @@ export default function CreatePage() {
   const [reviewOpen, setReviewOpen] = useState(false);
 
   useEffect(() => {
-    if (!logoFile) {
-      setLogoPreview(null);
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(logoFile);
-    setLogoPreview(objectUrl);
-
-    return () => {
-      URL.revokeObjectURL(objectUrl);
-    };
-  }, [logoFile]);
+    if (!logoPreview) return;
+    return () => URL.revokeObjectURL(logoPreview);
+  }, [logoPreview]);
 
   function handleLogoUpload(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -191,6 +183,7 @@ export default function CreatePage() {
 
     if (!file) {
       setLogoFile(null);
+      setLogoPreview(null);
       return;
     }
 
@@ -213,6 +206,7 @@ export default function CreatePage() {
     }
 
     setLogoFile(file);
+    setLogoPreview(URL.createObjectURL(file));
   }
 
 
@@ -365,7 +359,7 @@ export default function CreatePage() {
       {/* HEADER */}
       <header className="sticky top-0 z-50 border-b border-white/[0.07] bg-[#050605]/95 backdrop-blur-xl">
         <div className="mx-auto flex max-w-[1600px] items-center justify-between px-5 py-4 lg:px-8">
-          <a href="/" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#9cff43]/20 bg-[#9cff43]/10 text-xl">
               🐱
             </div>
@@ -380,12 +374,12 @@ export default function CreatePage() {
                 Built for fair launches
               </p>
             </div>
-          </a>
+          </Link>
 
           <nav className="hidden items-center gap-7 text-sm font-semibold text-white/45 lg:flex">
-            <a href="/" className="transition hover:text-white">
+            <Link href="/" className="transition hover:text-white">
               Explore
-            </a>
+            </Link>
 
             <span className="border-b-2 border-[#9cff43] pb-2 text-white">
               Create
@@ -638,7 +632,10 @@ export default function CreatePage() {
                 <div className="flex flex-col gap-4 rounded-xl border border-dashed border-white/[0.12] bg-[#101411] p-4 sm:flex-row sm:items-center">
                   <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-[#090b09]">
                     {logoPreview ? (
-                      <img
+                      <Image
+                        width={80}
+                        height={80}
+                        unoptimized
                         src={logoPreview}
                         alt="Token logo preview"
                         className="h-full w-full object-cover"
@@ -1104,7 +1101,10 @@ export default function CreatePage() {
               <div className="mt-5 flex gap-4">
                 <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[#9cff43]/20 bg-[#9cff43]/10">
                   {logoPreview ? (
-                    <img
+                    <Image
+                        width={80}
+                        height={80}
+                        unoptimized
                       src={logoPreview}
                       alt="Token preview"
                       className="h-full w-full object-cover"
@@ -1372,7 +1372,10 @@ export default function CreatePage() {
               <div className="flex items-center gap-4 rounded-2xl border border-white/[0.07] bg-[#101411] p-4">
                 <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[#9cff43]/20 bg-[#9cff43]/10">
                   {logoPreview ? (
-                    <img
+                    <Image
+                        width={80}
+                        height={80}
+                        unoptimized
                       src={logoPreview}
                       alt="Token"
                       className="h-full w-full object-cover"
