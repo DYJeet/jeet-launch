@@ -14,7 +14,9 @@
     "fees:build:local": "cargo-build-sbf --manifest-path programs/launch-custody/Cargo.toml --sbf-out-dir programs/launch-custody/target/local-fee-test -- --locked --features local-fee-test",
     "test:fees:client": "node --test scripts/test-fee-client.mjs",
     "test:native": "cargo test --locked --manifest-path programs/launch-custody/Cargo.toml",
-    "test:fees:dashboard": "node scripts/test-fee-dashboard.mjs"
+    "test:fees:dashboard": "node scripts/test-fee-dashboard.mjs",
+    "test:market": "node scripts/run-market-tests.mjs",
+    "test:market:math": "node --test scripts/test-market-math.mjs"
   },
   "dependencies": {
     "@solana-program/token": "0.18.0",

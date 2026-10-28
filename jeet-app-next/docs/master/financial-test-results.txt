@@ -1,0 +1,560 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> jeet-app@0.1.0 test:local
+> node scripts/run-custody-tests.mjs
+
+PASS missing custody program fails before mint creation
+(node:27) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/45d300329722/jeet-launch/jeet-app-next/src/lib/launch-custody.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/45d300329722/jeet-launch/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS 2%: 20000000000000000 + 980000000000000000 = 1000000000000000000
+PASS 0%: 0 + 1000000000000000000 = 1000000000000000000
+PASS 5%: 50000000000000000 + 950000000000000000 = 1000000000000000000
+PASS 2.51%: 308 + 11992 = 12300
+PASS 0.01%: 0 + 1 = 1
+PASS 2%: 20 + 980 = 1000
+PASS custody program signs CPI from an independent caller
+PASS rejected unauthorized wallet withdrawal
+PASS rejected cross-mint vault substitution
+PASS rejected creator ATA substituted for vault
+PASS rejected fake custody state
+PASS rejected unknown instruction
+PASS rejected custody reinitialization
+PASS rejected invalid PDA seed account
+PASS balances and supply unchanged after all denied operations
+PASS rejected supply mismatch at initialization
+PASS rejected creator balance mismatch at initialization
+PASS rejected creator identity substitution
+PASS rejected unsigned initializer
+PASS rejected incorrect Token Program
+PASS prefunded PDA initializes safely after invalid attempts; 20 + 980 = 1000
+PASS invalid parameters rejected before chain writes
+PASS wallet cap: one unit above cap rejected (1005); balances/state unchanged
+PASS wallet cap: alternate accounts share one wallet allowance; exact cap accepted
+PASS wallet cap: repeat purchase above cumulative cap rejected (1005); balances/state unchanged
+PASS wallet cap: alternate account bypass rejected (1005); balances/state unchanged
+PASS wallet cap: different wallets have independent allowances
+PASS wallet cap: atomic repeated-buy batch rollback rejected (1005); balances/state unchanged
+PASS wallet cap: transfer-away allowance reset rejected (1005); balances/state unchanged
+PASS wallet cap: substituted wallet receipt rejected (1003); balances/state unchanged
+PASS wallet cap: another wallet destination rejected (1003); balances/state unchanged
+PASS wallet cap: direct inventory withdrawal rejected (4); balances/state unchanged
+PASS wallet cap: opening settings bypass rejected (1002); balances/state unchanged
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap: zero-percent protected cap rejected (1005); balances/state unchanged
+PASS wallet cap conservation: 20 + 980 + 0 = 1000
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap: disabled phase permits distributions above configured cap
+PASS wallet cap: substituted mint rejected (1003); balances/state unchanged
+PASS wallet cap: substituted custody PDA rejected (1003); balances/state unchanged
+PASS wallet cap: substituted inventory rejected (1003); balances/state unchanged
+PASS wallet cap: substituted opening state rejected (1003); balances/state unchanged
+PASS wallet cap: substituted Token Program rejected (1003); balances/state unchanged
+PASS wallet cap: missing buyer signature rejected (1002); balances/state unchanged
+PASS wallet cap: malformed distribution encoding rejected (1000); balances/state unchanged
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap: expired phase permits distributions above configured cap
+PASS wallet cap: zero-unit distribution rejected (1006); balances/state unchanged
+PASS wallet cap: insufficient launch inventory rejected (1007); balances/state unchanged
+PASS wallet cap: invalid cap basis points rejected (1004); balances/state unchanged
+PASS wallet cap: enabled phase without duration rejected (1004); balances/state unchanged
+PASS wallet cap: invalid enabled flag rejected (1004); balances/state unchanged
+PASS wallet cap: authorized initializer cannot reset cap phase rejected (1009); balances/state unchanged
+PASS wallet cap conservation: 20 + 980 + 0 = 1000
+PASS wallet cap: eight invalid API configurations rejected
+PASS opening wallet-cap suite
+PASS curve: maximum cost one lamport too low rejected (1105); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: quoted cost one lamport too high rejected (1105); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: buy 10 at sold 0 costs exactly 10045 lamports
+PASS curve: stale quote from previous sold state rejected (1104); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: buy 10 at sold 10 costs exactly 10145 lamports
+PASS curve: buy 1 at sold 20 costs exactly 1020 lamports
+PASS curve: sequential marginal prices progress across multiple wallets
+PASS curve: zero purchase rejected (1006); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: retired unpaid distribution bypass rejected (1000); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: malformed quote rejected (1100); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: zero quote rejected (1101); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: substituted curve PDA rejected (1102); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: substituted inventory account rejected (1003); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: post-payment transaction rollback rejected (1100); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 959 + 21 = 1000
+PASS curve: wallet cap enforced before payment/release rejected (1005); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: buy 10 at sold 0 costs exactly 10045 lamports
+PASS curve conservation: 20 + 970 + 10 = 1000
+PASS curve: buy 980 at sold 0 costs exactly 1459710 lamports
+PASS curve: one unit beyond sold-out inventory rejected (1110); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: inventory underflow purchase rejected (1007); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 0 + 980 = 1000
+PASS curve: buy 1 at sold 0 costs exactly 1 lamports
+PASS curve: buy 100 at sold 1 costs exactly 2 lamports
+PASS curve conservation: 2000 + 97899 + 101 = 100000
+PASS curve: buy 3 at sold 0 costs exactly 21 lamports
+PASS curve conservation: 20 + 977 + 3 = 1000
+PASS curve: insufficient buyer SOL rejected (1106); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve: u64 quote overflow rejected (1108); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: u64 execution overflow rejected (1108); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve: u128 intermediate overflow rejected (1108); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20000000000000000 + 980000000000000000 + 0 = 1000000000000000000
+PASS curve: cost exactly one lamport above u64 maximum rejected (1108); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve: zero base price on-chain initialization rejected (1103); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: unauthorized curve initialization rejected (1107); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: uninitialized curve quote rejected (1102); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: issuer cannot reset initialized curve rejected (1109); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve: buy 2 at sold 0 costs exactly 2001 lamports
+PASS curve: buy 1 at sold 2 costs exactly 1002 lamports
+PASS curve conservation: 20 + 978 + 2 = 1000
+PASS curve: unsolicited token/SOL deposits do not reset price or stop valid purchases
+PASS curve: five invalid API parameter configurations rejected
+PASS deterministic bonding-curve suite
+PASS protected positive: launch start derives solely from initialization Clock.slot plus configured delay
+BOUNDARY target=55 execution=55 error={"InstructionError":[1,{"Custom":1200}]}
+PASS protected rejection: exactly one slot before launch start (1200); buyer/vault SOL, tokens and all state unchanged
+BOUNDARY target=56 execution=56 error=null
+PASS protected: buy 5 at sold 0 costs exactly 5010 lamports
+PASS protected positive: exact launch-start slot succeeds at exact protected limit
+BOUNDARY target=59 execution=59 error=null
+PASS protected: buy 1 at sold 5 costs exactly 1005 lamports
+PASS protected positive: exact expiry slot uses normal capped pricing and permits the next unit
+BOUNDARY target=60 execution=60 error=null
+PASS protected: buy 1 at sold 6 costs exactly 1006 lamports
+PASS protected positive: one slot after expiry uses normal capped pricing
+PASS protected positive: expiry preserves cumulative receipts without reset or double-counting
+PASS protected: buy 13 at sold 7 costs exactly 13169 lamports
+PASS protected positive: post-opening purchases reach the unchanged ordinary wallet cap
+PASS protected rejection: post-opening ordinary cap remains enforced (1005); buyer/vault SOL, tokens and all state unchanged
+PASS protected conservation: 20 + 960 + 20 = 1000
+PASS protected positive: explicit immutable protected state initialized with a stricter limit
+PASS protected rejection: one base unit over protected limit (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected: buy 6 at sold 0 costs exactly 6015 lamports
+PASS protected positive: first partial protected buy uses exact on-chain quote
+PASS protected: buy 4 at sold 6 costs exactly 4030 lamports
+PASS protected positive: repeated buys across alternate accounts reach the exact cumulative limit
+PASS protected rejection: repeat buy exceeds cumulative limit (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: alternate token account cannot reset allowance (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected positive: different wallet reaches exact limit in one transaction with exact SOL/token updates
+PASS protected rejection: stale protected-phase curve quote (1104); buyer/vault SOL, tokens and all state unchanged
+PASS protected: buy 1 at sold 20 costs exactly 1020 lamports
+PASS protected positive: third wallet receives its independent allowance
+PASS protected rejection: multi-instruction cumulative overflow rolls back prior payment and release (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected positive: multiple instructions and token accounts reach exact boundary atomically without double-counting
+PASS protected rejection: sending tokens away does not restore protected allowance (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: ordinary wallet cap still rejects during protection (1005); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted destination owner (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted custody PDA (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted cap/opening PDA (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted protected curve state (1102); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted wallet receipt (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted mint (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted custody inventory (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted Token Program (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted unsigned buyer (1002); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: direct unauthorized inventory movement (4); buyer/vault SOL, tokens and all state unchanged
+PASS protected conservation: 20 + 950 + 30 = 1000
+PASS protected positive: protected payments, receipts, inventory and curve conserve 20 + 950 + 30 = 1000
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected rejection: zero protected allowance rejects positive buys (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected API rejection: {"protectedDurationSlots":0}
+PASS protected API rejection: {"protectedDurationSlots":-1}
+PASS protected API rejection: {"protectedDurationSlots":1.5}
+PASS protected API rejection: {"protectedDurationSlots":1000001}
+PASS protected API rejection: {"protectedDelaySlots":-1}
+PASS protected API rejection: {"protectedOpeningEnabled":"true"}
+PASS protected API rejection: {"protectedLimitPercent":"2"}
+PASS protected API rejection: {"protectedLimitPercent":"1.001"}
+PASS protected API rejection: {"protectedDurationSlots":1000000,"protectedDelaySlots":1}
+PASS protected rejection: zero protected duration on chain (1202); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: oversized protected duration on chain (1202); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: invalid u64 delay on chain (1202); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: protected limit must be stricter than ordinary cap (1202); buyer/vault SOL, tokens and all state unchanged
+PASS protected positive: valid issuer initialization fixes protected parameters on chain
+PASS protected rejection: issuer cannot downgrade a protected curve to legacy (1109); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: issuer cannot reset the protected start or allowance (1109); buyer/vault SOL, tokens and all state unchanged
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected rejection: inconsistent protected end slot (1203); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: inconsistent cap/curve distributed state (1102); buyer/vault SOL, tokens and all state unchanged
+PASS protected integrity: inconsistent state rejected without a program bypass
+PASS protected-opening suite: 14 positive checks, 28 on-chain rejections, 9 API rejections
+PASS fees rejected: fee initialization requires immutable custody creator signature (1304); all state and balances unchanged
+PASS fees rejected: invalid platform vault during initialization (1302); all state and balances unchanged
+PASS fees rejected: fee version preserves invalid protected-duration rejection (1202); all state and balances unchanged
+PASS fees rejected: caller cannot append treasury rotation or redirection configuration (1100); all state and balances unchanged
+PASS fees: immutable isolated fee entitlement Cop1n6euTo7pbu5uNyMrhbaZaikhfKAWWuLvtDjDGLST
+PASS fees rejected: fee initialization requires immutable custody creator signature (1304); all state and balances unchanged
+PASS fees rejected: invalid platform vault during initialization (1302); all state and balances unchanged
+PASS fees rejected: fee version preserves invalid protected-duration rejection (1202); all state and balances unchanged
+PASS fees rejected: caller cannot append treasury rotation or redirection configuration (1100); all state and balances unchanged
+PASS fees: immutable isolated fee entitlement 8XpYDQomruoxSuFuKTNHyBQ1h4DvDkjKunX7hLYFwkg
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic Cop1n6euTo7pbu5uNyMrhbaZaikhfKAWWuLvtDjDGLST 4
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic Cop1n6euTo7pbu5uNyMrhbaZaikhfKAWWuLvtDjDGLST 6
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic Cop1n6euTo7pbu5uNyMrhbaZaikhfKAWWuLvtDjDGLST 3
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 8XpYDQomruoxSuFuKTNHyBQ1h4DvDkjKunX7hLYFwkg 2
+PASS fees rejected: protected repeated buy over cumulative allowance (1201); all state and balances unchanged
+PASS fees rejected: alternate token account cannot bypass fee-launch cumulative opening allowance (1201); all state and balances unchanged
+PASS fees rejected: cumulative ordinary wallet cap (1005); all state and balances unchanged
+PASS fees rejected: fee inclusive slippage one lamport short (1305); all state and balances unchanged
+PASS fees rejected: cross launch platform vault (1302); all state and balances unchanged
+PASS fees rejected: cross launch creator vault (1302); all state and balances unchanged
+PASS fees rejected: fake platform vault (1302); all state and balances unchanged
+PASS fees rejected: fake creator vault (1302); all state and balances unchanged
+PASS fees rejected: wrong mint (1003); all state and balances unchanged
+PASS fees rejected: wrong custody inventory (1003); all state and balances unchanged
+PASS fees rejected: destination owned by another buyer (1003); all state and balances unchanged
+PASS fees rejected: substituted opening (1003); all state and balances unchanged
+PASS fees rejected: substituted wallet receipt (1003); all state and balances unchanged
+PASS fees rejected: substituted curve (1102); all state and balances unchanged
+PASS fees rejected: wrong token program (1003); all state and balances unchanged
+PASS fees rejected: wrong system program (1003); all state and balances unchanged
+PASS fees rejected: unsigned buyer (1002); all state and balances unchanged
+PASS fees rejected: fee bypass through legacy paid-buy entry point (1306); all state and balances unchanged
+PASS fees rejected: stale fee quote (1104); all state and balances unchanged
+PASS fees rejected: substituted raw quote (1105); all state and balances unchanged
+PASS fees rejected: second instruction inconsistent price rolls back first trade and both fee CPIs (1105); all state and balances unchanged
+PASS fees rejected: unauthorized treasury claim (1304); all state and balances unchanged
+PASS fees rejected: unauthorized creator claim (1304); all state and balances unchanged
+PASS fees rejected: cross launch creator beneficiary (1304); all state and balances unchanged
+PASS fees rejected: claim destination substitution (1304); all state and balances unchanged
+PASS fees rejected: creator withdrawal cannot draw platform funds (1302); all state and balances unchanged
+PASS fees rejected: claim exceeds liability (1307); all state and balances unchanged
+PASS fees rejected: zero withdrawal (1307); all state and balances unchanged
+PASS fees rejected: correct creator address without signature is unauthorized (1304); all state and balances unchanged
+PASS fees rejected: read-only fee vault cannot be withdrawn (1304); all state and balances unchanged
+PASS fees rejected: cross-mint custody and claim relationship substitution (1003); all state and balances unchanged
+PASS fees rejected: multiple claims exceeding cumulative liability roll back the first withdrawal (1307); all state and balances unchanged
+PASS fees rejected: disposable local treasury cannot withdraw production entitlement (1304); all state and balances unchanged
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 1 1
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 1 327
+PASS fees rejected: duplicate creator withdrawal (1307); all state and balances unchanged
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 1 51
+PASS fees rejected: unsupported closure/migration/reserve movement opcode 11 (null); all state and balances unchanged
+PASS fees rejected: unsupported closure/migration/reserve movement opcode 12 (null); all state and balances unchanged
+PASS fees rejected: unsupported closure/migration/reserve movement opcode 255 (null); all state and balances unchanged
+PASS fees rejected: multiple fee-buy instructions cannot exceed protected allowance cumulatively (1201); all state and balances unchanged
+PASS fees rejected: multiple fee-buy instructions cannot exceed ordinary cap cumulatively (1005); all state and balances unchanged
+PASS fees: two atomic fee purchases across alternate accounts reach exact cumulative protected limit and conserve every lamport
+PASS fees: immutable isolated fee entitlement 5XW9pTgYtZPw59fJXXVz8SnT5aXx7HozxGqbZC8dMPui
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 5XW9pTgYtZPw59fJXXVz8SnT5aXx7HozxGqbZC8dMPui 1
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 5XW9pTgYtZPw59fJXXVz8SnT5aXx7HozxGqbZC8dMPui 1
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 5XW9pTgYtZPw59fJXXVz8SnT5aXx7HozxGqbZC8dMPui 2
+PASS fees: immutable isolated fee entitlement AjxPtHnE6vthLEvgHiqmoJMJe7UYay9YDZHKpjiztxj3
+PASS fees rejected: fee-inclusive u64 overflow quote (1308); all state and balances unchanged
+PASS fees rejected: fee-inclusive u64 overflow buy (1308); all state and balances unchanged
+PASS fees rejected: raw curve price overflow (1108); all state and balances unchanged
+PASS fees rejected: zero purchase rejected before fee collection (1006); all state and balances unchanged
+PASS fees: immutable isolated fee entitlement 9FDB9TinARSWSK1Mcgj1KjMSNtuxBAcQBnM3QQ5Bmpqs
+PASS fees rejected: receipt-rent System CPI fails after both fees and raw payment; transaction rolls everything back (1); all state and balances unchanged
+PASS fees: exact SOL liability isolation and token conservation Cop1n6euTo7pbu5uNyMrhbaZaikhfKAWWuLvtDjDGLST
+PASS fees: exact SOL liability isolation and token conservation 8XpYDQomruoxSuFuKTNHyBQ1h4DvDkjKunX7hLYFwkg
+PASS fees: exact SOL liability isolation and token conservation 5XW9pTgYtZPw59fJXXVz8SnT5aXx7HozxGqbZC8dMPui
+PASS fees: exact SOL liability isolation and token conservation AjxPtHnE6vthLEvgHiqmoJMJe7UYay9YDZHKpjiztxj3
+PASS fees: exact SOL liability isolation and token conservation 9FDB9TinARSWSK1Mcgj1KjMSNtuxBAcQBnM3QQ5Bmpqs
+PASS fees: deterministic dust rounding fixtures; splitting never fee-free
+PASS fee totals {"positive":22,"rejection":52}
+PASS fees rejected: fee initialization requires immutable custody creator signature (1304); all state and balances unchanged
+PASS fees rejected: invalid platform vault during initialization (1302); all state and balances unchanged
+PASS fees rejected: fee version preserves invalid protected-duration rejection (1202); all state and balances unchanged
+PASS fees rejected: caller cannot append treasury rotation or redirection configuration (1100); all state and balances unchanged
+PASS fees: immutable isolated fee entitlement CBT4pTjGsgzMmfsNnSFpNTMehH2DKs64K1wWHPn2W3vN
+PASS fees rejected: fee initialization requires immutable custody creator signature (1304); all state and balances unchanged
+PASS fees rejected: invalid platform vault during initialization (1302); all state and balances unchanged
+PASS fees rejected: fee version preserves invalid protected-duration rejection (1202); all state and balances unchanged
+PASS fees rejected: caller cannot append treasury rotation or redirection configuration (1100); all state and balances unchanged
+PASS fees: immutable isolated fee entitlement 2BfgXx9F4GyUJhm2y9KR93jjUXg6PRrqKtQBNCvTDpPp
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic CBT4pTjGsgzMmfsNnSFpNTMehH2DKs64K1wWHPn2W3vN 4
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic CBT4pTjGsgzMmfsNnSFpNTMehH2DKs64K1wWHPn2W3vN 6
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic CBT4pTjGsgzMmfsNnSFpNTMehH2DKs64K1wWHPn2W3vN 3
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 2BfgXx9F4GyUJhm2y9KR93jjUXg6PRrqKtQBNCvTDpPp 2
+PASS fees rejected: protected repeated buy over cumulative allowance (1201); all state and balances unchanged
+PASS fees rejected: alternate token account cannot bypass fee-launch cumulative opening allowance (1201); all state and balances unchanged
+PASS fees rejected: cumulative ordinary wallet cap (1005); all state and balances unchanged
+PASS fees rejected: fee inclusive slippage one lamport short (1305); all state and balances unchanged
+PASS fees rejected: cross launch platform vault (1302); all state and balances unchanged
+PASS fees rejected: cross launch creator vault (1302); all state and balances unchanged
+PASS fees rejected: fake platform vault (1302); all state and balances unchanged
+PASS fees rejected: fake creator vault (1302); all state and balances unchanged
+PASS fees rejected: wrong mint (1003); all state and balances unchanged
+PASS fees rejected: wrong custody inventory (1003); all state and balances unchanged
+PASS fees rejected: destination owned by another buyer (1003); all state and balances unchanged
+PASS fees rejected: substituted opening (1003); all state and balances unchanged
+PASS fees rejected: substituted wallet receipt (1003); all state and balances unchanged
+PASS fees rejected: substituted curve (1102); all state and balances unchanged
+PASS fees rejected: wrong token program (1003); all state and balances unchanged
+PASS fees rejected: wrong system program (1003); all state and balances unchanged
+PASS fees rejected: unsigned buyer (1002); all state and balances unchanged
+PASS fees rejected: fee bypass through legacy paid-buy entry point (1306); all state and balances unchanged
+PASS fees rejected: stale fee quote (1104); all state and balances unchanged
+PASS fees rejected: substituted raw quote (1105); all state and balances unchanged
+PASS fees rejected: second instruction inconsistent price rolls back first trade and both fee CPIs (1105); all state and balances unchanged
+PASS fees rejected: unauthorized treasury claim (1304); all state and balances unchanged
+PASS fees rejected: unauthorized creator claim (1304); all state and balances unchanged
+PASS fees rejected: cross launch creator beneficiary (1304); all state and balances unchanged
+PASS fees rejected: claim destination substitution (1304); all state and balances unchanged
+PASS fees rejected: creator withdrawal cannot draw platform funds (1302); all state and balances unchanged
+PASS fees rejected: claim exceeds liability (1307); all state and balances unchanged
+PASS fees rejected: zero withdrawal (1307); all state and balances unchanged
+PASS fees rejected: correct creator address without signature is unauthorized (1304); all state and balances unchanged
+PASS fees rejected: read-only fee vault cannot be withdrawn (1304); all state and balances unchanged
+PASS fees rejected: cross-mint custody and claim relationship substitution (1003); all state and balances unchanged
+PASS fees rejected: multiple claims exceeding cumulative liability roll back the first withdrawal (1307); all state and balances unchanged
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 0 1
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 0 981
+PASS fees rejected: duplicate treasury withdrawal (1307); all state and balances unchanged
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 1 1
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 1 327
+PASS fees rejected: duplicate creator withdrawal (1307); all state and balances unchanged
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 1 51
+PASS fees rejected: unsupported closure/migration/reserve movement opcode 11 (null); all state and balances unchanged
+PASS fees rejected: unsupported closure/migration/reserve movement opcode 12 (null); all state and balances unchanged
+PASS fees rejected: unsupported closure/migration/reserve movement opcode 255 (null); all state and balances unchanged
+PASS fees rejected: multiple fee-buy instructions cannot exceed protected allowance cumulatively (1201); all state and balances unchanged
+PASS fees rejected: multiple fee-buy instructions cannot exceed ordinary cap cumulatively (1005); all state and balances unchanged
+PASS fees: two atomic fee purchases across alternate accounts reach exact cumulative protected limit and conserve every lamport
+PASS fees: immutable isolated fee entitlement 7P7YMWHy3mjSmDxP1dVZmMM7B9K5sAfBzQN3YymAxf3a
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 7P7YMWHy3mjSmDxP1dVZmMM7B9K5sAfBzQN3YymAxf3a 1
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 7P7YMWHy3mjSmDxP1dVZmMM7B9K5sAfBzQN3YymAxf3a 1
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 7P7YMWHy3mjSmDxP1dVZmMM7B9K5sAfBzQN3YymAxf3a 2
+PASS fees: immutable isolated fee entitlement H7N3ByFFNwbVcWhaqmDdZvpU5vfZvbkdaJaeGoovkFtA
+PASS fees rejected: fee-inclusive u64 overflow quote (1308); all state and balances unchanged
+PASS fees rejected: fee-inclusive u64 overflow buy (1308); all state and balances unchanged
+PASS fees rejected: raw curve price overflow (1108); all state and balances unchanged
+PASS fees rejected: zero purchase rejected before fee collection (1006); all state and balances unchanged
+PASS fees: immutable isolated fee entitlement CMvfJ6J2TGipHsWW8wSFENvgoKqNY6EkL2t7X65nW8QN
+PASS fees rejected: receipt-rent System CPI fails after both fees and raw payment; transaction rolls everything back (1); all state and balances unchanged
+PASS fees: exact SOL liability isolation and token conservation CBT4pTjGsgzMmfsNnSFpNTMehH2DKs64K1wWHPn2W3vN
+PASS fees: exact SOL liability isolation and token conservation 2BfgXx9F4GyUJhm2y9KR93jjUXg6PRrqKtQBNCvTDpPp
+PASS fees: exact SOL liability isolation and token conservation 7P7YMWHy3mjSmDxP1dVZmMM7B9K5sAfBzQN3YymAxf3a
+PASS fees: exact SOL liability isolation and token conservation H7N3ByFFNwbVcWhaqmDdZvpU5vfZvbkdaJaeGoovkFtA
+PASS fees: exact SOL liability isolation and token conservation CMvfJ6J2TGipHsWW8wSFENvgoKqNY6EkL2t7X65nW8QN
+PASS fees: deterministic dust rounding fixtures; splitting never fee-free
+PASS fee totals {"positive":24,"rejection":52}
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market: buy 4: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market rejection: V4 correctly sequenced multi-instruction alternate-account opening overflow rolls back the first buy (1201); all SOL/tokens/state unchanged
+PASS market rejection: V4 ordinary wallet cap applies before the protected opening limit (1005); all SOL/tokens/state unchanged
+PASS market: buy 6: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 3: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market rejection: selling never resets cumulative protected opening allowance (1201); all SOL/tokens/state unchanged
+PASS market: buy 3: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 2: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 7: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: full redemption restores inventory and drains only raw reserve above rent
+PASS market rejection: ABA net cursor cannot revive a stale quote because sequence changed (1404); all SOL/tokens/state unchanged
+PASS market rejection: redemption below zero net inventory (1403); all SOL/tokens/state unchanged
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market: buy 20: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market rejection: minimum sell output one lamport too high (1408); all SOL/tokens/state unchanged
+PASS market rejection: insufficient seller token balance (1413); all SOL/tokens/state unchanged
+PASS market rejection: mint substitution (1003); all SOL/tokens/state unchanged
+PASS market rejection: custody substitution (1003); all SOL/tokens/state unchanged
+PASS market rejection: custody token vault substitution (1401); all SOL/tokens/state unchanged
+PASS market rejection: seller token mint substitution (1401); all SOL/tokens/state unchanged
+PASS market rejection: seller token owner substitution (1401); all SOL/tokens/state unchanged
+PASS market rejection: opening state substitution (1401); all SOL/tokens/state unchanged
+PASS market rejection: wallet receipt substitution (1401); all SOL/tokens/state unchanged
+PASS market rejection: curve substitution (1401); all SOL/tokens/state unchanged
+PASS market rejection: platform fee vault substitution (1302); all SOL/tokens/state unchanged
+PASS market rejection: creator fee vault substitution (1302); all SOL/tokens/state unchanged
+PASS market rejection: wrong system program (1401); all SOL/tokens/state unchanged
+PASS market rejection: wrong executable token program (1401); all SOL/tokens/state unchanged
+PASS market rejection: unsigned seller (1402); all SOL/tokens/state unchanged
+PASS market rejection: zero redemption (1403); all SOL/tokens/state unchanged
+PASS market rejection: legacy-shaped sell payload rejected (1400); all SOL/tokens/state unchanged
+PASS market rejection: duplicate sell instructions roll back the first token return and payout (1404); all SOL/tokens/state unchanged
+PASS market rejection: mixed sell/buy stale ordering rolls back all accounts (1404); all SOL/tokens/state unchanged
+PASS market: sell 5: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 3: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 3: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 15: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 600: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 600: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 600: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: gross cap counter may exceed initial inventory after returns; net inventory remains bounded
+PASS market: sell 600: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 10: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: concurrent buy/sell race permits exactly one sequence update and one economic transfer
+PASS market: sell 9: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 10: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: concurrent buyers: exactly one economic update, losing transaction cannot alter protected state
+PASS market: concurrent sellers: exactly one economic update, losing transaction cannot alter protected state
+PASS market: sell 9: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market: buy 979: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: exact final base unit sets irreversible completion once
+PASS market rejection: one unit over sold-out inventory quote (1403); all SOL/tokens/state unchanged
+PASS market rejection: completed market rejects continued buys (1405); all SOL/tokens/state unchanged
+PASS market: sell 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market rejection: redemption cannot reopen a completed curve (1405); all SOL/tokens/state unchanged
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: four one-lamport buys charge exactly four fee lamports and allocate exactly 3:1
+PASS market rejection: dust redemption with zero net proceeds is rejected (1409); all SOL/tokens/state unchanged
+PASS market: sell 4: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: V4 creator claim preserves redeemable reserves and net price
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 2: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: fractional base-unit inverse retains exactly one explicit lamport of rounding reserve
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market rejection: V4 opening buy before on-chain launch start (1200); all SOL/tokens/state unchanged
+PASS market rejection: V4 creator has no pre-launch redemption exemption (1200); all SOL/tokens/state unchanged
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market rejection: failed receipt-rent CPI reverses all V4 payments and fee credits (1); all SOL/tokens/state unchanged
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market: buy 10: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 10: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market rejection: V4 post-opening alternate accounts share the exact ordinary wallet cap (1005); all SOL/tokens/state unchanged
+PASS market: sell 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market rejection: V4 post-opening redemption never resets the cumulative wallet cap (1005); all SOL/tokens/state unchanged
+PASS market rejection: V3 buy entry point cannot bypass V4 sequence and fee policy (1102); all SOL/tokens/state unchanged
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation BW53LM61X9P1Sn8kf3BhRQKQ5iQZd49BqoYusK3mKkWM
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation 4zQAaUrz6T6XUjUxx4NPGctTftHBeecgFMNkma6rcqm1
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation 7bHrLSjPTtwxWE7AngEnUL9urMYeepeGzhqrcX11GnxM
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation 9xnhrcAauFNy9doSzGS37i2FbFxTwX7p3UZ9tcwpjmmL
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation 7Jgt5YHv4tfxnwLugj82LpNKEtq8zrknRagL7W7cWiRb
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation Gi93j9UCKrs8qT967wqnbqWCx8bHEE93H8XA3SDSFWiq
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation uvJFjHp3uvcZNgnZdkNTvp8oGm45tbKq47YT8KxzemY
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation 2nLVNuj5x8odw1xMmWfRKqhnZAH2utepN6naTnJeTHCA
+PASS market totals {"positive":62,"rejection":37}
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market: buy 4: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market rejection: V4 correctly sequenced multi-instruction alternate-account opening overflow rolls back the first buy (1201); all SOL/tokens/state unchanged
+PASS market rejection: V4 ordinary wallet cap applies before the protected opening limit (1005); all SOL/tokens/state unchanged
+PASS market: buy 6: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 3: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market rejection: selling never resets cumulative protected opening allowance (1201); all SOL/tokens/state unchanged
+PASS market: buy 3: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 2: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 7: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: full redemption restores inventory and drains only raw reserve above rent
+PASS market rejection: ABA net cursor cannot revive a stale quote because sequence changed (1404); all SOL/tokens/state unchanged
+PASS market rejection: redemption below zero net inventory (1403); all SOL/tokens/state unchanged
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market: buy 20: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market rejection: minimum sell output one lamport too high (1408); all SOL/tokens/state unchanged
+PASS market rejection: insufficient seller token balance (1413); all SOL/tokens/state unchanged
+PASS market rejection: mint substitution (1003); all SOL/tokens/state unchanged
+PASS market rejection: custody substitution (1003); all SOL/tokens/state unchanged
+PASS market rejection: custody token vault substitution (1401); all SOL/tokens/state unchanged
+PASS market rejection: seller token mint substitution (1401); all SOL/tokens/state unchanged
+PASS market rejection: seller token owner substitution (1401); all SOL/tokens/state unchanged
+PASS market rejection: opening state substitution (1401); all SOL/tokens/state unchanged
+PASS market rejection: wallet receipt substitution (1401); all SOL/tokens/state unchanged
+PASS market rejection: curve substitution (1401); all SOL/tokens/state unchanged
+PASS market rejection: platform fee vault substitution (1302); all SOL/tokens/state unchanged
+PASS market rejection: creator fee vault substitution (1302); all SOL/tokens/state unchanged
+PASS market rejection: wrong system program (1401); all SOL/tokens/state unchanged
+PASS market rejection: wrong executable token program (1401); all SOL/tokens/state unchanged
+PASS market rejection: unsigned seller (1402); all SOL/tokens/state unchanged
+PASS market rejection: zero redemption (1403); all SOL/tokens/state unchanged
+PASS market rejection: legacy-shaped sell payload rejected (1400); all SOL/tokens/state unchanged
+PASS market rejection: duplicate sell instructions roll back the first token return and payout (1404); all SOL/tokens/state unchanged
+PASS market rejection: mixed sell/buy stale ordering rolls back all accounts (1404); all SOL/tokens/state unchanged
+PASS market: sell 5: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 3: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 3: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 15: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 600: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 600: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 600: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: gross cap counter may exceed initial inventory after returns; net inventory remains bounded
+PASS market: sell 600: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 10: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: concurrent buy/sell race permits exactly one sequence update and one economic transfer
+PASS market: sell 9: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 10: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: concurrent buyers: exactly one economic update, losing transaction cannot alter protected state
+PASS market: concurrent sellers: exactly one economic update, losing transaction cannot alter protected state
+PASS market: sell 10: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market: buy 979: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: exact final base unit sets irreversible completion once
+PASS market rejection: one unit over sold-out inventory quote (1403); all SOL/tokens/state unchanged
+PASS market rejection: completed market rejects continued buys (1405); all SOL/tokens/state unchanged
+PASS market: sell 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market rejection: redemption cannot reopen a completed curve (1405); all SOL/tokens/state unchanged
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: four one-lamport buys charge exactly four fee lamports and allocate exactly 3:1
+PASS market rejection: dust redemption with zero net proceeds is rejected (1409); all SOL/tokens/state unchanged
+PASS market: sell 4: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: V4 creator claim preserves redeemable reserves and net price
+PASS market: V4 authorized isolated treasury claim cannot deplete sell reserves
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 2: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: fractional base-unit inverse retains exactly one explicit lamport of rounding reserve
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market rejection: V4 opening buy before on-chain launch start (1200); all SOL/tokens/state unchanged
+PASS market rejection: V4 creator has no pre-launch redemption exemption (1200); all SOL/tokens/state unchanged
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market: buy 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: sell 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market rejection: failed receipt-rent CPI reverses all V4 payments and fee credits (1); all SOL/tokens/state unchanged
+PASS market: explicit V4 initializes isolated market, immutable creator and zero fee carry
+PASS market: buy 10: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market: buy 10: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market rejection: V4 post-opening alternate accounts share the exact ordinary wallet cap (1005); all SOL/tokens/state unchanged
+PASS market: sell 1: exact quote, fees, SOL, tokens, sequence and gross receipt accounting
+PASS market rejection: V4 post-opening redemption never resets the cumulative wallet cap (1005); all SOL/tokens/state unchanged
+PASS market rejection: V3 buy entry point cannot bypass V4 sequence and fee policy (1102); all SOL/tokens/state unchanged
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation JCXGQvAkXP6qWHupYUdZ1AmmUaMJB9Gnb9LbyKX9avKv
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation 6jpWnZxFacGXnQ42TedNsaZAxjusx6hwckRBqtAk9FT1
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation Er3XJSvwFMjzErWuWAJhEvU73Y5GnkJRRPZVj3Qu9NaJ
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation E1W2YAezeentbTYZRCF6LidMeCJPwdBjgMKJacTDYJaE
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation 2YbgKQakCA7fVyztBauiSzZZ4chJaNjko9XYUyAmjs78
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation AfK8sea2uDeeLjATakCrq4BAmPrD8EWT2BY9Zj7aM1HU
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation GpkFTB648b8Yr1YM74oSt3JPR62r85hasrhbsyknSeFL
+PASS market: exact net/gross token, raw reserve, fee liabilities and rent conservation 91xVWi3mgraWFyoBWQ7QrgFzcu387DwQWoEzek33HCaA
+PASS market totals {"positive":62,"rejection":37}
+PASS fee integrity: withdrawn exceeds accrued rejected (1308); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: redirected production treasury configuration rejected (1302); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: inconsistent creator liability rejected (1303); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: curve reserve depleted below recorded consideration rejected (1102); all SOL/tokens/state unchanged; token supply 1000
+PASS market integrity: V4 lifetime accounting overflow rolls back payment and token CPI rejected (1407); balances/state unchanged; supply 1000
+PASS market integrity: V4 gross distribution invariant corruption rejected (1410); balances/state unchanged; supply 1000
+PASS market integrity: V4 exhausted trade sequence rejects before transfer rejected (1407); balances/state unchanged; supply 1000
+PASS market integrity: V4 reserve insolvency cannot fund redemption rejected (1406); balances/state unchanged; supply 1000
+PASS market integrity: V4 inconsistent fee allocation carry rejected (1412); balances/state unchanged; supply 1000
+PASS full local suite (allocation, custody, opening caps, bonding curve, protected opening, fees). Logs and disposable ledgers: /tmp/jeet-custody-CyWEwE
+
+BROWSER REGRESSION
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> jeet-app@0.1.0 test:fees:dashboard
+> node scripts/test-fee-dashboard.mjs
+
+(node:18) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/45d300329722/jeet-launch/jeet-app-next/src/lib/launch-custody.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/45d300329722/jeet-launch/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS dashboard: fee disclosures and intended treasury render; unauthenticated operations disabled
+PASS dashboard: real on-chain empty state and loading/error recovery
+PASS dashboard: Wallet Standard signer creates real fee-enabled mint and immutable creator entitlement
+PASS dashboard: displayed 10000 + 75 + 25 = 10100 quote comes from actual SBF simulation
+PASS dashboard: browser signs actual atomic buy; confirmed event and both real fee dashboards agree
+PASS dashboard: browser creator claim, zero claimable and verified transaction history; treasury remains isolated
+PASS dashboard: browser launch conserves 20 initial creator + 1 buyer + 979 custody = 1000
+PASS dashboard totals {"positive":7,"rejected":4}
+Browser test logs: /tmp/jeet-fee-browser-eThKQN

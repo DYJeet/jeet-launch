@@ -2,6 +2,7 @@
 mod caps;
 mod curve;
 mod fees;
+mod market;
 mod protected;
 
 use solana_program::{
@@ -66,6 +67,9 @@ pub fn process_instruction(
 ) -> ProgramResult {
     if program_id != &id() {
         return Err(ProgramError::IncorrectProgramId);
+    }
+    if matches!(input.first(), Some(11..=15)) {
+        return market::process(program_id, accounts, input);
     }
     if matches!(input.first(), Some(4 | 5 | 6 | 7)) {
         return curve::process(program_id, accounts, input);

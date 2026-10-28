@@ -154,6 +154,9 @@ try {
   const feeTests = await import("./test-fees.mjs");
   const feeProduction = await feeTests.runFeeTests();
   await feeTests.runFeeTests({ local: true });
+  const marketTests = await import("./test-market.mjs");
+  const marketProduction = await marketTests.runMarketTests();
+  await marketTests.runMarketTests({ local: true });
   await stop(validator);
   const feeIntegrityArgs = [
     "--log",
@@ -166,7 +169,8 @@ try {
     "programs/launch-custody/target/deploy/jeet_launch_custody.so",
   ];
   const feeFixtures = feeProduction.integrityFixtures;
-  for (const [i, fixture] of feeFixtures.entries())
+  const allFixtures = [...feeFixtures, ...marketProduction.fixtures];
+  for (const [i, fixture] of allFixtures.entries())
     for (const [j, a] of fixture.accounts.entries()) {
       const file = path.join(directory, `fee-integrity-${i}-${j}.json`);
       await writeFile(file, JSON.stringify(a.account));
@@ -180,6 +184,8 @@ try {
   await ready("http://127.0.0.1:3000/api/local-test/health", validator);
   const { verifyFeeIntegrity } = await import("./test-fee-integrity.mjs");
   await verifyFeeIntegrity(feeFixtures);
+  const { verifyMarketIntegrity } = await import("./test-market-integrity.mjs");
+  await verifyMarketIntegrity(marketProduction.fixtures);
   console.log(
     `PASS full local suite (allocation, custody, opening caps, bonding curve, protected opening, fees). Logs and disposable ledgers: ${directory}`,
   );

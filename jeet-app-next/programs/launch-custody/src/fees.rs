@@ -233,13 +233,14 @@ pub fn process(program: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> Prog
             super::caps::custody(custody, mint, program)?;
             let (curve_key, _) =
                 Pubkey::find_program_address(&[b"curve", mint.key.as_ref()], program);
-            if curve.key != &curve_key
-                || curve.owner != program
-                || curve.try_borrow_data()?.len() != super::protected::LEN
-                || &curve.try_borrow_data()?[..8] != super::curve::FEE_MAGIC
-            {
+            let data = curve.try_borrow_data()?;
+            let supported = (data.len() == super::protected::LEN
+                && &data[..8] == super::curve::FEE_MAGIC)
+                || (data.len() == super::market::LEN && &data[..8] == super::market::MAGIC);
+            if curve.key != &curve_key || curve.owner != program || !supported {
                 return Err(err(1302));
             }
+            drop(data);
             let beneficiary = if input[1] == 0 {
                 TREASURY
             } else {
