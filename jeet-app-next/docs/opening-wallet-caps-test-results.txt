@@ -1,0 +1,58 @@
+PASS missing custody program fails before mint creation
+PASS 2%: 20000000000000000 + 980000000000000000 = 1000000000000000000
+PASS 0%: 0 + 1000000000000000000 = 1000000000000000000
+PASS 5%: 50000000000000000 + 950000000000000000 = 1000000000000000000
+PASS 2.51%: 308 + 11992 = 12300
+PASS 0.01%: 0 + 1 = 1
+PASS 2%: 20 + 980 = 1000
+PASS custody program signs CPI from an independent caller
+PASS rejected unauthorized wallet withdrawal
+PASS rejected cross-mint vault substitution
+PASS rejected creator ATA substituted for vault
+PASS rejected fake custody state
+PASS rejected unknown instruction
+PASS rejected custody reinitialization
+PASS rejected invalid PDA seed account
+PASS balances and supply unchanged after all denied operations
+PASS rejected supply mismatch at initialization
+PASS rejected creator balance mismatch at initialization
+PASS rejected creator identity substitution
+PASS rejected unsigned initializer
+PASS rejected incorrect Token Program
+PASS prefunded PDA initializes safely after invalid attempts; 20 + 980 = 1000
+PASS invalid parameters rejected before chain writes
+PASS wallet cap: one unit above cap rejected (1005); balances/state unchanged
+PASS wallet cap: alternate accounts share one wallet allowance; exact cap accepted
+PASS wallet cap: repeat purchase above cumulative cap rejected (1005); balances/state unchanged
+PASS wallet cap: alternate account bypass rejected (1005); balances/state unchanged
+PASS wallet cap: different wallets have independent allowances
+PASS wallet cap: atomic repeated-buy batch rollback rejected (1005); balances/state unchanged
+PASS wallet cap: transfer-away allowance reset rejected (1005); balances/state unchanged
+PASS wallet cap: substituted wallet receipt rejected (1003); balances/state unchanged
+PASS wallet cap: another wallet destination rejected (1003); balances/state unchanged
+PASS wallet cap: direct inventory withdrawal rejected (4); balances/state unchanged
+PASS wallet cap: opening settings bypass rejected (1002); balances/state unchanged
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap: zero-percent protected cap rejected (1005); balances/state unchanged
+PASS wallet cap conservation: 20 + 980 + 0 = 1000
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap: disabled phase permits distributions above configured cap
+PASS wallet cap: substituted mint rejected (1003); balances/state unchanged
+PASS wallet cap: substituted custody PDA rejected (1003); balances/state unchanged
+PASS wallet cap: substituted inventory rejected (1003); balances/state unchanged
+PASS wallet cap: substituted opening state rejected (1003); balances/state unchanged
+PASS wallet cap: substituted Token Program rejected (1003); balances/state unchanged
+PASS wallet cap: missing buyer signature rejected (1002); balances/state unchanged
+PASS wallet cap: malformed distribution encoding rejected (1000); balances/state unchanged
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap: expired phase permits distributions above configured cap
+PASS wallet cap: zero-unit distribution rejected (1006); balances/state unchanged
+PASS wallet cap: insufficient launch inventory rejected (1007); balances/state unchanged
+PASS wallet cap: invalid cap basis points rejected (1004); balances/state unchanged
+PASS wallet cap: enabled phase without duration rejected (1004); balances/state unchanged
+PASS wallet cap: invalid enabled flag rejected (1004); balances/state unchanged
+PASS wallet cap: authorized initializer cannot reset cap phase rejected (1009); balances/state unchanged
+PASS wallet cap conservation: 20 + 980 + 0 = 1000
+PASS wallet cap: eight invalid API configurations rejected
+PASS opening wallet-cap suite
+PASS full local suite (allocation, custody, opening caps). Logs and disposable ledgers: /tmp/jeet-custody-f0pfFe

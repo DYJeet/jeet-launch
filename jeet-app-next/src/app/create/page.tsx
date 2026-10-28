@@ -1493,6 +1493,7 @@ export default function CreatePage() {
                 totalSupply={totalSupply}
                 decimals={decimalsNumber}
                 devAllocation={devAllocation}
+                maxWalletPercent={maxWalletPercent}
                 revokeMint={revokeMint}
                 revokeFreeze={revokeFreeze}
               />

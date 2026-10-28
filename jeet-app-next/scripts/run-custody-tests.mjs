@@ -57,7 +57,8 @@ try {
       '--bpf-program', program, 'programs/launch-custody/target/deploy/jeet_launch_custody.so'], 'validator');
   await ready('http://127.0.0.1:3000/api/local-test/health', validator);
   await import('./test-creator-allocation.mjs');
-  console.log(`PASS custody checkpoint. Logs and disposable ledgers: ${directory}`);
+  await import('./test-wallet-caps.mjs');
+  console.log(`PASS full local suite (allocation, custody, opening caps). Logs and disposable ledgers: ${directory}`);
 } finally {
   for (const child of processes.reverse()) await stop(child);
 }

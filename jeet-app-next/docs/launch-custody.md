@@ -1,5 +1,8 @@
 # Local launch inventory custody
 
+Historical custody checkpoint. The subsequent [opening wallet-cap checkpoint](opening-wallet-caps.md)
+extends this program with capped local distributions while preserving its custody state and seeds.
+
 Parent checkpoint: `c9b2d9b962c6c79428f652adf733a892a8a3f766`.
 All source changes are inside `jeet-app-next`.
 

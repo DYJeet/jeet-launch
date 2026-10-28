@@ -11,7 +11,7 @@ import {
 import { NextResponse } from "next/server";
 import {
   CUSTODY_PROGRAM_ADDRESS, CUSTODY_STATE_SIZE, findLaunchCustodyPda,
-  initializeCustodyInstruction, proveCustodyInstruction,
+  initializeCustodyInstruction, proveCustodyInstruction, findOpeningPda, initializeOpeningInstruction,
 } from "@/lib/launch-custody";
 
 export const runtime = "nodejs";
@@ -27,6 +27,9 @@ type CreateRequest = {
   totalSupply?: string;
   decimals?: number;
   devAllocation?: string;
+  maxWalletPercent?: string;
+  openingEnabled?: boolean;
+  openingDurationSlots?: number;
   revokeMint?: boolean;
   revokeFreeze?: boolean;
 };
@@ -123,6 +126,16 @@ export async function POST(request: Request) {
           (body.revokeMint !== undefined && typeof body.revokeMint !== "boolean") ||
           (body.revokeFreeze !== undefined && typeof body.revokeFreeze !== "boolean")) {
         throw new Error("Invalid launch parameter types.");
+      }
+      if (body.maxWalletPercent !== undefined && (typeof body.maxWalletPercent !== "string" ||
+          !/^\d+(?:\.\d{1,2})?$/.test(body.maxWalletPercent.trim()) || Number(body.maxWalletPercent) > 100)) {
+        throw new Error("Opening wallet cap must be a percentage from 0 to 100 with at most two decimals.");
+      }
+      if ((body.openingEnabled !== undefined && typeof body.openingEnabled !== "boolean") ||
+          (body.openingDurationSlots !== undefined && (!Number.isSafeInteger(body.openingDurationSlots) ||
+           body.openingDurationSlots < 0 || body.openingDurationSlots > 1000000)) ||
+          ((body.openingEnabled ?? true) && body.openingDurationSlots === 0)) {
+        throw new Error("Invalid opening phase settings.");
       }
       parseBaseUnits(body.totalSupply.trim(), body.decimals ?? 9);
       parsePercentToBasisPoints(body.devAllocation?.trim() ?? "0");
@@ -224,6 +237,9 @@ export async function POST(request: Request) {
       tokenProgram: TOKEN_PROGRAM_ADDRESS,
     });
 
+    const [openingAddress, openingBump] = await findOpeningPda(mint.address);
+    const [capWhole, capFraction = ""] = (body.maxWalletPercent ?? "1").trim().split(".");
+    const openingCapBps = Number(BigInt(capWhole) * 100n + BigInt(capFraction.padEnd(2, "0")));
     phase = "custody-initialization";
     const custodyResult = await client.sendTransaction([
       initializeCustodyInstruction({
@@ -233,6 +249,9 @@ export async function POST(request: Request) {
         creatorAmount, inventoryAmount: launchInventoryAmount,
       }),
       proveCustodyInstruction(custodyAddress, mint.address, launchVaultTokenAccount),
+      initializeOpeningInstruction({ payer: client.payer, mint: mint.address, custody: custodyAddress,
+        opening: openingAddress, capBps: openingCapBps, enabled: body.openingEnabled ?? true,
+        durationSlots: BigInt(body.openingDurationSlots ?? 150) }),
     ]);
 
     phase = "authority-configuration";
@@ -287,6 +306,22 @@ export async function POST(request: Request) {
       throw new Error("Launch inventory custody verification failed.");
     }
 
+    const openingState = await fetchEncodedAccount(client.rpc, openingAddress);
+    assertAccountExists(openingState);
+    if (openingState.programAddress !== CUSTODY_PROGRAM_ADDRESS || openingState.executable || openingState.data.length !== 108 ||
+        new TextDecoder().decode(openingState.data.slice(0, 8)) !== "JEETOPN1") {
+      throw new Error("Opening state verification failed.");
+    }
+    const openingView = new DataView(openingState.data.buffer, openingState.data.byteOffset, openingState.data.byteLength);
+    if (!openingState.data.slice(8, 40).every((v, i) => v === encoder.encode(mint.address)[i]) ||
+        !openingState.data.slice(40, 72).every((v, i) => v === encoder.encode(custodyAddress)[i]) ||
+        openingState.data[105] !== openingBump || openingView.getBigUint64(72, true) !== totalAmount * BigInt(openingCapBps) / 10000n ||
+        openingView.getUint16(106, true) !== openingCapBps ||
+        openingState.data[96] !== ((body.openingEnabled ?? true) ? 1 : 0) ||
+        openingView.getBigUint64(88, true) - openingView.getBigUint64(80, true) !== BigInt(body.openingDurationSlots ?? 150) ||
+        openingView.getBigUint64(97, true) !== 0n) {
+      throw new Error("Opening cap configuration verification failed.");
+    }
     const mintAccount = await client.token.accounts.mint.fetch(mint.address);
     const mintAuthorityRevoked = isNone(mintAccount.data.mintAuthority);
     const freezeAuthorityRevoked = isNone(mintAccount.data.freezeAuthority);
@@ -344,6 +379,12 @@ export async function POST(request: Request) {
       freezeAuthorityRevoked,
       allocationVerified: true,
       custodyVerified: true,
+      openingAddress,
+      openingCapBps,
+      openingEnabled: openingState.data[96] === 1,
+      openingStartSlot: openingView.getBigUint64(80, true).toString(),
+      openingEndSlot: openingView.getBigUint64(88, true).toString(),
+      openingCapBaseUnits: (totalAmount * BigInt(openingCapBps) / 10000n).toString(),
       custodyProgramAddress: CUSTODY_PROGRAM_ADDRESS,
       custodyBump,
       custodySignature: String(custodyResult.context.signature),

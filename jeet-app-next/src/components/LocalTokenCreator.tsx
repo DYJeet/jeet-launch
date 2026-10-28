@@ -9,6 +9,7 @@ type Props = {
   totalSupply: string;
   decimals: number;
   devAllocation: string;
+  maxWalletPercent: string;
   revokeMint: boolean;
   revokeFreeze: boolean;
 };
@@ -36,6 +37,9 @@ type LocalResult = {
   freezeAuthorityRevoked: boolean;
   allocationVerified: boolean;
   custodyVerified: boolean;
+  openingAddress: string;
+  openingCapBps: number;
+  openingCapBaseUnits: string;
   custodyProgramAddress: string;
   custodySignature: string;
 };
@@ -46,6 +50,7 @@ export default function LocalTokenCreator({
   totalSupply,
   decimals,
   devAllocation,
+  maxWalletPercent,
   revokeMint,
   revokeFreeze,
 }: Props) {
@@ -104,6 +109,7 @@ export default function LocalTokenCreator({
           totalSupply,
           decimals,
           devAllocation,
+          maxWalletPercent,
           revokeMint,
           revokeFreeze,
         }),
@@ -186,9 +192,9 @@ export default function LocalTokenCreator({
       <div className="rounded-xl border border-yellow-300/15 bg-yellow-300/[0.04] p-3.5 text-[11px] leading-5 text-white/45">
         <p className="font-black text-yellow-200">Creator allocation is verified in this local test</p>
         <p className="mt-1.5">
-          The creator remains a temporary test owner. Launch inventory is held by the custody program’s mint-specific PDA, with no wallet withdrawal path. Creator amounts round down to whole base units, with the remainder kept in launch inventory. The disclosed creator percentage is minted to its own token account. Every remaining token is
+          The creator remains a temporary test owner. Launch inventory is held by the custody program’s mint-specific PDA, with cumulative opening caps enforced on launch distributions. Creator amounts round down to whole base units, with the remainder kept in launch inventory. The disclosed creator percentage is minted to its own token account. Every remaining token is
           minted to a separate launch-inventory vault. The test fails unless both balances and the total
-          mint supply match exactly. Wallet caps, curve pricing, migration, and anti-sniper logic still
+          mint supply match exactly. Opening caps are enforced on-chain. Curve pricing, migration, and anti-sniper logic
           come in later passes.
         </p>
       </div>
@@ -228,6 +234,7 @@ export default function LocalTokenCreator({
             <ResultLine label="Temporary payer" value={result.payerAddress} />
             <ResultLine label="Creator owner" value={result.creatorAddress} />
             <ResultLine label="Creator token account" value={result.creatorTokenAccount ?? "No creator ATA (0% allocation)"} />
+            <ResultLine label="Opening cap state" value={result.openingAddress} />
             <ResultLine label="Custody program" value={result.custodyProgramAddress} />
             <ResultLine label="Custody proof signature" value={result.custodySignature} />
             <ResultLine label="Launch custody PDA" value={result.launchVaultAddress} />
@@ -242,7 +249,8 @@ export default function LocalTokenCreator({
             ) : null}
           </div>
 
-          <div className="grid gap-2 sm:grid-cols-3">
+          <div className="grid gap-2 sm:grid-cols-2">
+            <Metric label="Opening wallet cap" value={`${(result.openingCapBps / 100).toFixed(2)}% · ${result.openingCapBaseUnits} base units`} />
             <Metric label="Creator allocation" value={`${(result.creatorAllocationBps / 100).toFixed(2)}%`} />
             <Metric label="Creator base units" value={result.creatorAllocationBaseUnits} />
             <Metric label="Launch inventory base units" value={result.launchInventoryBaseUnits} />
