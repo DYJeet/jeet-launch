@@ -58,7 +58,8 @@ try {
   await ready('http://127.0.0.1:3000/api/local-test/health', validator);
   await import('./test-creator-allocation.mjs');
   await import('./test-wallet-caps.mjs');
-  console.log(`PASS full local suite (allocation, custody, opening caps). Logs and disposable ledgers: ${directory}`);
+  await import('./test-bonding-curve.mjs');
+  console.log(`PASS full local suite (allocation, custody, opening caps, bonding curve). Logs and disposable ledgers: ${directory}`);
 } finally {
   for (const child of processes.reverse()) await stop(child);
 }

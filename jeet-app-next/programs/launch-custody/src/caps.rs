@@ -26,7 +26,7 @@ fn fail(e: Error) -> ProgramError {
 fn u64_at(bytes: &[u8], offset: usize) -> u64 {
     u64::from_le_bytes(bytes[offset..offset + 8].try_into().unwrap())
 }
-fn custody(
+pub(super) fn custody(
     state: &AccountInfo,
     mint: &AccountInfo,
     program: &Pubkey,
@@ -45,7 +45,7 @@ fn custody(
     }
     Ok((u64_at(&data, 72), u64_at(&data, 80)))
 }
-fn allocate<'a>(
+pub(super) fn allocate<'a>(
     payer: &AccountInfo<'a>,
     account: &AccountInfo<'a>,
     system: &AccountInfo<'a>,
@@ -146,10 +146,10 @@ pub fn process(program: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> Prog
             Ok(())
         }
         Some(3) => {
-            if input.len() != 9 {
+            if input.len() != 33 {
                 return Err(fail(Error::Encoding));
             }
-            if accounts.len() != 9 {
+            if accounts.len() != 10 {
                 return Err(fail(Error::Accounts));
             }
             let buyer = &accounts[0];
@@ -252,6 +252,17 @@ pub fn process(program: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> Prog
                 return Err(fail(Error::Inventory));
             }
             drop(open);
+            super::curve::pay(
+                program,
+                buyer,
+                mint,
+                state,
+                opening,
+                &accounts[9],
+                vault,
+                system,
+                input,
+            )?;
             if receipt.owner != program {
                 allocate(
                     buyer,

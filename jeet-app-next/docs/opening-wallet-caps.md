@@ -1,5 +1,8 @@
 # Opening wallet-cap checkpoint
 
+Historical checkpoint. The subsequent [bonding-curve checkpoint](bonding-curve.md) adds
+mandatory payment to the same capped custody distribution path and retires the unpaid format.
+
 Parent: `d90567c03f6b8bcadad638d2517e387aa1579a6f`. Development is confined to
 `jeet-app-next`; the frozen baseline is unchanged.
 

@@ -1,5 +1,6 @@
 //! Local launch custody and cumulative opening wallet caps.
 mod caps;
+mod curve;
 
 use solana_program::{
     account_info::AccountInfo, entrypoint, entrypoint::ProgramResult, program::invoke_signed,
@@ -60,6 +61,9 @@ pub fn process_instruction(
 ) -> ProgramResult {
     if program_id != &id() {
         return Err(ProgramError::IncorrectProgramId);
+    }
+    if matches!(input.first(), Some(4 | 5)) {
+        return curve::process(program_id, accounts, input);
     }
     if matches!(input.first(), Some(2 | 3)) {
         return caps::process(program_id, accounts, input);

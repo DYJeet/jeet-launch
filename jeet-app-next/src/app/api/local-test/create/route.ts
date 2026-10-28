@@ -11,7 +11,7 @@ import {
 import { NextResponse } from "next/server";
 import {
   CUSTODY_PROGRAM_ADDRESS, CUSTODY_STATE_SIZE, findLaunchCustodyPda,
-  initializeCustodyInstruction, proveCustodyInstruction, findOpeningPda, initializeOpeningInstruction,
+  initializeCustodyInstruction, proveCustodyInstruction, findOpeningPda, initializeOpeningInstruction, findCurvePda, initializeCurveInstruction, decodeCurveState,
 } from "@/lib/launch-custody";
 
 export const runtime = "nodejs";
@@ -28,6 +28,8 @@ type CreateRequest = {
   decimals?: number;
   devAllocation?: string;
   maxWalletPercent?: string;
+  curveBasePriceLamports?: string;
+  curveSlopeLamports?: string;
   openingEnabled?: boolean;
   openingDurationSlots?: number;
   revokeMint?: boolean;
@@ -137,6 +139,11 @@ export async function POST(request: Request) {
           ((body.openingEnabled ?? true) && body.openingDurationSlots === 0)) {
         throw new Error("Invalid opening phase settings.");
       }
+      for (const [name,value,positive] of [["base price",body.curveBasePriceLamports,true],["slope",body.curveSlopeLamports,false]] as const) {
+        if (value !== undefined && (typeof value !== "string" || !/^\d+$/.test(value) || BigInt(value)>MAX_U64 || (positive && BigInt(value)===0n))) {
+          throw new Error(`Curve ${name} must be a ${positive ? "positive" : "nonnegative"} u64 lamport string.`);
+        }
+      }
       parseBaseUnits(body.totalSupply.trim(), body.decimals ?? 9);
       parsePercentToBasisPoints(body.devAllocation?.trim() ?? "0");
     } catch (error) {
@@ -237,6 +244,9 @@ export async function POST(request: Request) {
       tokenProgram: TOKEN_PROGRAM_ADDRESS,
     });
 
+    const [curveAddress, curveBump] = await findCurvePda(mint.address);
+    const basePrice = BigInt(body.curveBasePriceLamports ?? "1000");
+    const curveSlope = BigInt(body.curveSlopeLamports ?? "1");
     const [openingAddress, openingBump] = await findOpeningPda(mint.address);
     const [capWhole, capFraction = ""] = (body.maxWalletPercent ?? "1").trim().split(".");
     const openingCapBps = Number(BigInt(capWhole) * 100n + BigInt(capFraction.padEnd(2, "0")));
@@ -252,6 +262,8 @@ export async function POST(request: Request) {
       initializeOpeningInstruction({ payer: client.payer, mint: mint.address, custody: custodyAddress,
         opening: openingAddress, capBps: openingCapBps, enabled: body.openingEnabled ?? true,
         durationSlots: BigInt(body.openingDurationSlots ?? 150) }),
+      initializeCurveInstruction({payer:client.payer,mint:mint.address,custody:custodyAddress,opening:openingAddress,
+        curve:curveAddress,vault:launchVaultTokenAccount,basePrice,slope:curveSlope}),
     ]);
 
     phase = "authority-configuration";
@@ -322,6 +334,17 @@ export async function POST(request: Request) {
         openingView.getBigUint64(97, true) !== 0n) {
       throw new Error("Opening cap configuration verification failed.");
     }
+    const curveAccount = await fetchEncodedAccount(client.rpc,curveAddress);
+    assertAccountExists(curveAccount);
+    const curve = decodeCurveState(curveAccount.data);
+    if (curveAccount.programAddress!==CUSTODY_PROGRAM_ADDRESS || curveAccount.executable || curveAccount.data[152]!==curveBump ||
+        !curveAccount.data.slice(8,40).every((v,i)=>v===encoder.encode(mint.address)[i]) ||
+        !curveAccount.data.slice(40,72).every((v,i)=>v===encoder.encode(custodyAddress)[i]) ||
+        !curveAccount.data.slice(72,104).every((v,i)=>v===encoder.encode(openingAddress)[i]) ||
+        curve.base!==basePrice || curve.slope!==curveSlope || curve.scale!==10n**BigInt(decimals) ||
+        curve.sold!==0n || curve.collected!==0n || curve.inventory!==launchInventoryAmount) {
+      throw new Error("Curve initialization verification failed.");
+    }
     const mintAccount = await client.token.accounts.mint.fetch(mint.address);
     const mintAuthorityRevoked = isNone(mintAccount.data.mintAuthority);
     const freezeAuthorityRevoked = isNone(mintAccount.data.freezeAuthority);
@@ -379,6 +402,9 @@ export async function POST(request: Request) {
       freezeAuthorityRevoked,
       allocationVerified: true,
       custodyVerified: true,
+      curveAddress,
+      curveBasePriceLamports:basePrice.toString(),
+      curveSlopeLamports:curveSlope.toString(),
       openingAddress,
       openingCapBps,
       openingEnabled: openingState.data[96] === 1,

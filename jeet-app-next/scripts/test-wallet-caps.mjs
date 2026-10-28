@@ -23,6 +23,8 @@ import {
   findBuyerReceiptPda,
   initializeOpeningInstruction,
   receiveInventoryInstruction,
+  decodeCurveState,
+  quoteCurveCost,
 } from "../src/lib/launch-custody.ts";
 const rpcUrl = "http://127.0.0.1:8899";
 const evidence = [];
@@ -152,7 +154,15 @@ async function instruction(l, c, d, amount) {
     c.payer.address,
   );
   if (!l.receipts.includes(receipt)) l.receipts.push(receipt);
+  const curve = decodeCurveState(
+    Buffer.from((await raw(l.curveAddress)).data[0], "base64"),
+  );
+  const cost = quoteCurveCost(curve, amount);
   return receiveInventoryInstruction({
+    curve: address(l.curveAddress),
+    expectedSold: curve.sold,
+    quotedCost: cost,
+    maxCost: cost,
     buyer: c.payer,
     mint: address(l.mintAddress),
     custody: address(l.launchVaultAddress),
