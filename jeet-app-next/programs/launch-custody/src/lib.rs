@@ -1,6 +1,7 @@
 //! Local launch custody and cumulative opening wallet caps.
 mod caps;
 mod curve;
+mod fees;
 mod protected;
 
 use solana_program::{
@@ -12,7 +13,10 @@ use solana_sdk_ids::system_program;
 use solana_system_interface::instruction as system_instruction;
 use spl_token::state::{Account as TokenAccount, AccountState, Mint};
 
+#[cfg(not(feature = "local-fee-test"))]
 solana_program::declare_id!("7QhXSnj7igy9HX6n1i3bnuc2SUbMTRWZEouGZKcy9d31");
+#[cfg(feature = "local-fee-test")]
+solana_program::declare_id!("8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo");
 entrypoint!(process_instruction);
 
 const SEED: &[u8] = b"launch";
@@ -63,11 +67,14 @@ pub fn process_instruction(
     if program_id != &id() {
         return Err(ProgramError::IncorrectProgramId);
     }
-    if matches!(input.first(), Some(4 | 5 | 6)) {
+    if matches!(input.first(), Some(4 | 5 | 6 | 7)) {
         return curve::process(program_id, accounts, input);
     }
-    if matches!(input.first(), Some(2 | 3)) {
+    if matches!(input.first(), Some(2 | 3 | 8)) {
         return caps::process(program_id, accounts, input);
+    }
+    if matches!(input.first(), Some(9 | 10)) {
+        return fees::process(program_id, accounts, input);
     }
     match input.first() {
         // Initialize after funding: payer, mint, creator ATA (or token program for zero allocation),

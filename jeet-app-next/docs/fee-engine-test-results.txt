@@ -1,0 +1,474 @@
+production-build.log
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> jeet-app@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.4.3 (webpack)
+✓ Running next.config.ts took 32ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 4.1s
+  Running TypeScript ...
+  Finished TypeScript in 3.6s ...
+  Collecting page data using 8 workers ...
+  Generating static pages using 8 workers (0/23) ...
+  Generating static pages using 8 workers (5/23)
+  Generating static pages using 8 workers (11/23)
+  Generating static pages using 8 workers (17/23)
+✓ Generating static pages using 8 workers (23/23) in 626ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/local-test/create
+├ ƒ /api/local-test/health
+├ ○ /create
+├ ○ /explore
+├ ƒ /revenue
+└   /token/[mint]
+  ├ ● /token/PLACEHOLDER_MINT_1
+  ├ ● /token/PLACEHOLDER_MINT_2
+  ├ ● /token/PLACEHOLDER_MINT_3
+  └ ● [+13 more paths]
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+
+
+sbf-build.log
+    Finished `release` profile [optimized] target(s) in 0.37s
+[2026-10-28T21:17:19.184367679Z WARN  cargo_build_sbf::post_processing] The following functions are undefined and not known syscalls ["abort", "sol_log_", "sol_memcmp_", "sol_log_data", "sol_get_clock_sysvar", "sol_get_rent_sysvar", "sol_invoke_signed_rust", "sol_set_return_data", "sol_memset_", "sol_try_find_program_address", "sol_memcpy_"].
+[2026-10-28T21:17:19.184411185Z WARN  cargo_build_sbf::post_processing]          Calling them will trigger a run-time error.
+
+
+sbf-local-build.log
+   Compiling jeet-launch-custody v0.1.0 (/workspace/scratch/45d300329722/jeet-launch/jeet-app-next/programs/launch-custody)
+    Finished `release` profile [optimized] target(s) in 1.39s
+[2026-10-28T21:17:20.800795362Z WARN  cargo_build_sbf::post_processing] The following functions are undefined and not known syscalls ["abort", "sol_log_", "sol_memcmp_", "sol_log_data", "sol_get_clock_sysvar", "sol_get_rent_sysvar", "sol_invoke_signed_rust", "sol_set_return_data", "sol_memset_", "sol_try_find_program_address", "sol_memcpy_"].
+[2026-10-28T21:17:20.800816123Z WARN  cargo_build_sbf::post_processing]          Calling them will trigger a run-time error.
+
+
+native.log
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> jeet-app@0.1.0 test:native
+> cargo test --locked --manifest-path programs/launch-custody/Cargo.toml
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running unittests src/lib.rs (programs/launch-custody/target/debug/deps/jeet_launch_custody-d5e9eb687028166b)
+
+running 6 tests
+test protected::tests::exact_boundaries ... ok
+test protected::tests::invalid_durations ... ok
+test protected::tests::checked_slot_overflow ... ok
+test fees::tests::fixtures ... ok
+test test_id ... ok
+test fees::tests::splitting_cannot_reduce_fees ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+
+native-local.log
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.07s
+     Running unittests src/lib.rs (programs/launch-custody/target/debug/deps/jeet_launch_custody-7c5b56a36f9b8f6b)
+
+running 6 tests
+test protected::tests::exact_boundaries ... ok
+test test_id ... ok
+test protected::tests::invalid_durations ... ok
+test protected::tests::checked_slot_overflow ... ok
+test fees::tests::fixtures ... ok
+test fees::tests::splitting_cannot_reduce_fees ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+
+client.log
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> jeet-app@0.1.0 test:fees:client
+> node --test scripts/test-fee-client.mjs
+
+(node:460) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/45d300329722/jeet-launch/jeet-app-next/src/lib/launch-fees.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/45d300329722/jeet-launch/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ approved rates, exact integer/dust/wide fee fixtures (1.394441ms)
+✔ zero, negative-equivalent and full-spend overflow fail closed (0.251811ms)
+✔ fee quote decode rejects substituted components and malformed return data (0.365783ms)
+✔ fee state decoder preserves immutable identity and validates claim accounting (1.060866ms)
+✔ future sell net interface rejects dust deficit and exposes no executable sell (0.182026ms)
+✔ approved treasury is exactly 32 bytes and remains pinned (0.210679ms)
+✔ verified binary events exclude spoofed nested-program logs (1.25473ms)
+✔ wallet rejection survives SDK error wrapping without showing encoded decoder commands (0.305292ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 173.790496
+
+
+eslint.log
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+
+full-local.log
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> jeet-app@0.1.0 test:local
+> node scripts/run-custody-tests.mjs
+
+PASS missing custody program fails before mint creation
+(node:18) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/45d300329722/jeet-launch/jeet-app-next/src/lib/launch-custody.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/45d300329722/jeet-launch/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS 2%: 20000000000000000 + 980000000000000000 = 1000000000000000000
+PASS 0%: 0 + 1000000000000000000 = 1000000000000000000
+PASS 5%: 50000000000000000 + 950000000000000000 = 1000000000000000000
+PASS 2.51%: 308 + 11992 = 12300
+PASS 0.01%: 0 + 1 = 1
+PASS 2%: 20 + 980 = 1000
+PASS custody program signs CPI from an independent caller
+PASS rejected unauthorized wallet withdrawal
+PASS rejected cross-mint vault substitution
+PASS rejected creator ATA substituted for vault
+PASS rejected fake custody state
+PASS rejected unknown instruction
+PASS rejected custody reinitialization
+PASS rejected invalid PDA seed account
+PASS balances and supply unchanged after all denied operations
+PASS rejected supply mismatch at initialization
+PASS rejected creator balance mismatch at initialization
+PASS rejected creator identity substitution
+PASS rejected unsigned initializer
+PASS rejected incorrect Token Program
+PASS prefunded PDA initializes safely after invalid attempts; 20 + 980 = 1000
+PASS invalid parameters rejected before chain writes
+PASS wallet cap: one unit above cap rejected (1005); balances/state unchanged
+PASS wallet cap: alternate accounts share one wallet allowance; exact cap accepted
+PASS wallet cap: repeat purchase above cumulative cap rejected (1005); balances/state unchanged
+PASS wallet cap: alternate account bypass rejected (1005); balances/state unchanged
+PASS wallet cap: different wallets have independent allowances
+PASS wallet cap: atomic repeated-buy batch rollback rejected (1005); balances/state unchanged
+PASS wallet cap: transfer-away allowance reset rejected (1005); balances/state unchanged
+PASS wallet cap: substituted wallet receipt rejected (1003); balances/state unchanged
+PASS wallet cap: another wallet destination rejected (1003); balances/state unchanged
+PASS wallet cap: direct inventory withdrawal rejected (4); balances/state unchanged
+PASS wallet cap: opening settings bypass rejected (1002); balances/state unchanged
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap: zero-percent protected cap rejected (1005); balances/state unchanged
+PASS wallet cap conservation: 20 + 980 + 0 = 1000
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap: disabled phase permits distributions above configured cap
+PASS wallet cap: substituted mint rejected (1003); balances/state unchanged
+PASS wallet cap: substituted custody PDA rejected (1003); balances/state unchanged
+PASS wallet cap: substituted inventory rejected (1003); balances/state unchanged
+PASS wallet cap: substituted opening state rejected (1003); balances/state unchanged
+PASS wallet cap: substituted Token Program rejected (1003); balances/state unchanged
+PASS wallet cap: missing buyer signature rejected (1002); balances/state unchanged
+PASS wallet cap: malformed distribution encoding rejected (1000); balances/state unchanged
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap: expired phase permits distributions above configured cap
+PASS wallet cap: zero-unit distribution rejected (1006); balances/state unchanged
+PASS wallet cap: insufficient launch inventory rejected (1007); balances/state unchanged
+PASS wallet cap: invalid cap basis points rejected (1004); balances/state unchanged
+PASS wallet cap: enabled phase without duration rejected (1004); balances/state unchanged
+PASS wallet cap: invalid enabled flag rejected (1004); balances/state unchanged
+PASS wallet cap: authorized initializer cannot reset cap phase rejected (1009); balances/state unchanged
+PASS wallet cap conservation: 20 + 980 + 0 = 1000
+PASS wallet cap: eight invalid API configurations rejected
+PASS opening wallet-cap suite
+PASS curve: maximum cost one lamport too low rejected (1105); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: quoted cost one lamport too high rejected (1105); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: buy 10 at sold 0 costs exactly 10045 lamports
+PASS curve: stale quote from previous sold state rejected (1104); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: buy 10 at sold 10 costs exactly 10145 lamports
+PASS curve: buy 1 at sold 20 costs exactly 1020 lamports
+PASS curve: sequential marginal prices progress across multiple wallets
+PASS curve: zero purchase rejected (1006); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: retired unpaid distribution bypass rejected (1000); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: malformed quote rejected (1100); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: zero quote rejected (1101); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: substituted curve PDA rejected (1102); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: substituted inventory account rejected (1003); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: post-payment transaction rollback rejected (1100); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 959 + 21 = 1000
+PASS curve: wallet cap enforced before payment/release rejected (1005); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: buy 10 at sold 0 costs exactly 10045 lamports
+PASS curve conservation: 20 + 970 + 10 = 1000
+PASS curve: buy 980 at sold 0 costs exactly 1459710 lamports
+PASS curve: one unit beyond sold-out inventory rejected (1110); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: inventory underflow purchase rejected (1007); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 0 + 980 = 1000
+PASS curve: buy 1 at sold 0 costs exactly 1 lamports
+PASS curve: buy 100 at sold 1 costs exactly 2 lamports
+PASS curve conservation: 2000 + 97899 + 101 = 100000
+PASS curve: buy 3 at sold 0 costs exactly 21 lamports
+PASS curve conservation: 20 + 977 + 3 = 1000
+PASS curve: insufficient buyer SOL rejected (1106); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve: u64 quote overflow rejected (1108); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: u64 execution overflow rejected (1108); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve: u128 intermediate overflow rejected (1108); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20000000000000000 + 980000000000000000 + 0 = 1000000000000000000
+PASS curve: cost exactly one lamport above u64 maximum rejected (1108); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve: zero base price on-chain initialization rejected (1103); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: unauthorized curve initialization rejected (1107); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: uninitialized curve quote rejected (1102); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: issuer cannot reset initialized curve rejected (1109); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve: buy 2 at sold 0 costs exactly 2001 lamports
+PASS curve: buy 1 at sold 2 costs exactly 1002 lamports
+PASS curve conservation: 20 + 978 + 2 = 1000
+PASS curve: unsolicited token/SOL deposits do not reset price or stop valid purchases
+PASS curve: five invalid API parameter configurations rejected
+PASS deterministic bonding-curve suite
+PASS protected positive: launch start derives solely from initialization Clock.slot plus configured delay
+BOUNDARY target=55 execution=55 error={"InstructionError":[1,{"Custom":1200}]}
+PASS protected rejection: exactly one slot before launch start (1200); buyer/vault SOL, tokens and all state unchanged
+BOUNDARY target=56 execution=56 error=null
+PASS protected: buy 5 at sold 0 costs exactly 5010 lamports
+PASS protected positive: exact launch-start slot succeeds at exact protected limit
+BOUNDARY target=59 execution=59 error=null
+PASS protected: buy 1 at sold 5 costs exactly 1005 lamports
+PASS protected positive: exact expiry slot uses normal capped pricing and permits the next unit
+BOUNDARY target=60 execution=60 error=null
+PASS protected: buy 1 at sold 6 costs exactly 1006 lamports
+PASS protected positive: one slot after expiry uses normal capped pricing
+PASS protected positive: expiry preserves cumulative receipts without reset or double-counting
+PASS protected: buy 13 at sold 7 costs exactly 13169 lamports
+PASS protected positive: post-opening purchases reach the unchanged ordinary wallet cap
+PASS protected rejection: post-opening ordinary cap remains enforced (1005); buyer/vault SOL, tokens and all state unchanged
+PASS protected conservation: 20 + 960 + 20 = 1000
+PASS protected positive: explicit immutable protected state initialized with a stricter limit
+PASS protected rejection: one base unit over protected limit (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected: buy 6 at sold 0 costs exactly 6015 lamports
+PASS protected positive: first partial protected buy uses exact on-chain quote
+PASS protected: buy 4 at sold 6 costs exactly 4030 lamports
+PASS protected positive: repeated buys across alternate accounts reach the exact cumulative limit
+PASS protected rejection: repeat buy exceeds cumulative limit (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: alternate token account cannot reset allowance (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected positive: different wallet reaches exact limit in one transaction with exact SOL/token updates
+PASS protected rejection: stale protected-phase curve quote (1104); buyer/vault SOL, tokens and all state unchanged
+PASS protected: buy 1 at sold 20 costs exactly 1020 lamports
+PASS protected positive: third wallet receives its independent allowance
+PASS protected rejection: multi-instruction cumulative overflow rolls back prior payment and release (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected positive: multiple instructions and token accounts reach exact boundary atomically without double-counting
+PASS protected rejection: sending tokens away does not restore protected allowance (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: ordinary wallet cap still rejects during protection (1005); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted destination owner (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted custody PDA (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted cap/opening PDA (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted protected curve state (1102); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted wallet receipt (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted mint (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted custody inventory (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted Token Program (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted unsigned buyer (1002); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: direct unauthorized inventory movement (4); buyer/vault SOL, tokens and all state unchanged
+PASS protected conservation: 20 + 950 + 30 = 1000
+PASS protected positive: protected payments, receipts, inventory and curve conserve 20 + 950 + 30 = 1000
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected rejection: zero protected allowance rejects positive buys (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected API rejection: {"protectedDurationSlots":0}
+PASS protected API rejection: {"protectedDurationSlots":-1}
+PASS protected API rejection: {"protectedDurationSlots":1.5}
+PASS protected API rejection: {"protectedDurationSlots":1000001}
+PASS protected API rejection: {"protectedDelaySlots":-1}
+PASS protected API rejection: {"protectedOpeningEnabled":"true"}
+PASS protected API rejection: {"protectedLimitPercent":"2"}
+PASS protected API rejection: {"protectedLimitPercent":"1.001"}
+PASS protected API rejection: {"protectedDurationSlots":1000000,"protectedDelaySlots":1}
+PASS protected rejection: zero protected duration on chain (1202); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: oversized protected duration on chain (1202); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: invalid u64 delay on chain (1202); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: protected limit must be stricter than ordinary cap (1202); buyer/vault SOL, tokens and all state unchanged
+PASS protected positive: valid issuer initialization fixes protected parameters on chain
+PASS protected rejection: issuer cannot downgrade a protected curve to legacy (1109); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: issuer cannot reset the protected start or allowance (1109); buyer/vault SOL, tokens and all state unchanged
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected rejection: inconsistent protected end slot (1203); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: inconsistent cap/curve distributed state (1102); buyer/vault SOL, tokens and all state unchanged
+PASS protected integrity: inconsistent state rejected without a program bypass
+PASS protected-opening suite: 14 positive checks, 28 on-chain rejections, 9 API rejections
+PASS fees rejected: fee initialization requires immutable custody creator signature (1304); all state and balances unchanged
+PASS fees rejected: invalid platform vault during initialization (1302); all state and balances unchanged
+PASS fees rejected: fee version preserves invalid protected-duration rejection (1202); all state and balances unchanged
+PASS fees rejected: caller cannot append treasury rotation or redirection configuration (1100); all state and balances unchanged
+PASS fees: immutable isolated fee entitlement 9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX
+PASS fees rejected: fee initialization requires immutable custody creator signature (1304); all state and balances unchanged
+PASS fees rejected: invalid platform vault during initialization (1302); all state and balances unchanged
+PASS fees rejected: fee version preserves invalid protected-duration rejection (1202); all state and balances unchanged
+PASS fees rejected: caller cannot append treasury rotation or redirection configuration (1100); all state and balances unchanged
+PASS fees: immutable isolated fee entitlement JBHCqXGB3NZvgwap6qbAuXghce5mxnjq17UBVkmwrwET
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX 4
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX 6
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX 3
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic JBHCqXGB3NZvgwap6qbAuXghce5mxnjq17UBVkmwrwET 2
+PASS fees rejected: protected repeated buy over cumulative allowance (1201); all state and balances unchanged
+PASS fees rejected: alternate token account cannot bypass fee-launch cumulative opening allowance (1201); all state and balances unchanged
+PASS fees rejected: cumulative ordinary wallet cap (1005); all state and balances unchanged
+PASS fees rejected: fee inclusive slippage one lamport short (1305); all state and balances unchanged
+PASS fees rejected: cross launch platform vault (1302); all state and balances unchanged
+PASS fees rejected: cross launch creator vault (1302); all state and balances unchanged
+PASS fees rejected: fake platform vault (1302); all state and balances unchanged
+PASS fees rejected: fake creator vault (1302); all state and balances unchanged
+PASS fees rejected: wrong mint (1003); all state and balances unchanged
+PASS fees rejected: wrong custody inventory (1003); all state and balances unchanged
+PASS fees rejected: destination owned by another buyer (1003); all state and balances unchanged
+PASS fees rejected: substituted opening (1003); all state and balances unchanged
+PASS fees rejected: substituted wallet receipt (1003); all state and balances unchanged
+PASS fees rejected: substituted curve (1102); all state and balances unchanged
+PASS fees rejected: wrong token program (1003); all state and balances unchanged
+PASS fees rejected: wrong system program (1003); all state and balances unchanged
+PASS fees rejected: unsigned buyer (1002); all state and balances unchanged
+PASS fees rejected: fee bypass through legacy paid-buy entry point (1306); all state and balances unchanged
+PASS fees rejected: stale fee quote (1104); all state and balances unchanged
+PASS fees rejected: substituted raw quote (1105); all state and balances unchanged
+PASS fees rejected: second instruction inconsistent price rolls back first trade and both fee CPIs (1105); all state and balances unchanged
+PASS fees rejected: unauthorized treasury claim (1304); all state and balances unchanged
+PASS fees rejected: unauthorized creator claim (1304); all state and balances unchanged
+PASS fees rejected: cross launch creator beneficiary (1304); all state and balances unchanged
+PASS fees rejected: claim destination substitution (1304); all state and balances unchanged
+PASS fees rejected: creator withdrawal cannot draw platform funds (1302); all state and balances unchanged
+PASS fees rejected: claim exceeds liability (1307); all state and balances unchanged
+PASS fees rejected: zero withdrawal (1307); all state and balances unchanged
+PASS fees rejected: correct creator address without signature is unauthorized (1304); all state and balances unchanged
+PASS fees rejected: read-only fee vault cannot be withdrawn (1304); all state and balances unchanged
+PASS fees rejected: cross-mint custody and claim relationship substitution (1003); all state and balances unchanged
+PASS fees rejected: multiple claims exceeding cumulative liability roll back the first withdrawal (1307); all state and balances unchanged
+PASS fees rejected: disposable local treasury cannot withdraw production entitlement (1304); all state and balances unchanged
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 1 1
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 1 327
+PASS fees rejected: duplicate creator withdrawal (1307); all state and balances unchanged
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 1 51
+PASS fees rejected: unsupported closure/migration/reserve movement opcode 11 (null); all state and balances unchanged
+PASS fees rejected: unsupported closure/migration/reserve movement opcode 12 (null); all state and balances unchanged
+PASS fees rejected: unsupported closure/migration/reserve movement opcode 255 (null); all state and balances unchanged
+PASS fees rejected: multiple fee-buy instructions cannot exceed protected allowance cumulatively (1201); all state and balances unchanged
+PASS fees rejected: multiple fee-buy instructions cannot exceed ordinary cap cumulatively (1005); all state and balances unchanged
+PASS fees: two atomic fee purchases across alternate accounts reach exact cumulative protected limit and conserve every lamport
+PASS fees: immutable isolated fee entitlement Bt7McEB1jjMsTuzDov78P7Gn3N9nfJ13JZQNHqNyVBTw
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic Bt7McEB1jjMsTuzDov78P7Gn3N9nfJ13JZQNHqNyVBTw 1
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic Bt7McEB1jjMsTuzDov78P7Gn3N9nfJ13JZQNHqNyVBTw 1
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic Bt7McEB1jjMsTuzDov78P7Gn3N9nfJ13JZQNHqNyVBTw 2
+PASS fees: immutable isolated fee entitlement FZCsVbAuX4Zq92CFuPiiC6jAa7hCGVSnv3GYsMnLobMT
+PASS fees rejected: fee-inclusive u64 overflow quote (1308); all state and balances unchanged
+PASS fees rejected: fee-inclusive u64 overflow buy (1308); all state and balances unchanged
+PASS fees rejected: raw curve price overflow (1108); all state and balances unchanged
+PASS fees rejected: zero purchase rejected before fee collection (1006); all state and balances unchanged
+PASS fees: immutable isolated fee entitlement FBJ9FkFY92HEdaGtMXBjQdP9yNMjxvKSZLSumN7a6DSw
+PASS fees rejected: receipt-rent System CPI fails after both fees and raw payment; transaction rolls everything back (1); all state and balances unchanged
+PASS fees: exact SOL liability isolation and token conservation 9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX
+PASS fees: exact SOL liability isolation and token conservation JBHCqXGB3NZvgwap6qbAuXghce5mxnjq17UBVkmwrwET
+PASS fees: exact SOL liability isolation and token conservation Bt7McEB1jjMsTuzDov78P7Gn3N9nfJ13JZQNHqNyVBTw
+PASS fees: exact SOL liability isolation and token conservation FZCsVbAuX4Zq92CFuPiiC6jAa7hCGVSnv3GYsMnLobMT
+PASS fees: exact SOL liability isolation and token conservation FBJ9FkFY92HEdaGtMXBjQdP9yNMjxvKSZLSumN7a6DSw
+PASS fees: deterministic dust rounding fixtures; splitting never fee-free
+PASS fee totals {"positive":22,"rejection":52}
+PASS fees rejected: fee initialization requires immutable custody creator signature (1304); all state and balances unchanged
+PASS fees rejected: invalid platform vault during initialization (1302); all state and balances unchanged
+PASS fees rejected: fee version preserves invalid protected-duration rejection (1202); all state and balances unchanged
+PASS fees rejected: caller cannot append treasury rotation or redirection configuration (1100); all state and balances unchanged
+PASS fees: immutable isolated fee entitlement 7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM
+PASS fees rejected: fee initialization requires immutable custody creator signature (1304); all state and balances unchanged
+PASS fees rejected: invalid platform vault during initialization (1302); all state and balances unchanged
+PASS fees rejected: fee version preserves invalid protected-duration rejection (1202); all state and balances unchanged
+PASS fees rejected: caller cannot append treasury rotation or redirection configuration (1100); all state and balances unchanged
+PASS fees: immutable isolated fee entitlement FH6Mra585qFR4YntFhyzat2UZPjiJRtELcWVGLZ1rBfd
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM 4
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM 6
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM 3
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic FH6Mra585qFR4YntFhyzat2UZPjiJRtELcWVGLZ1rBfd 2
+PASS fees rejected: protected repeated buy over cumulative allowance (1201); all state and balances unchanged
+PASS fees rejected: alternate token account cannot bypass fee-launch cumulative opening allowance (1201); all state and balances unchanged
+PASS fees rejected: cumulative ordinary wallet cap (1005); all state and balances unchanged
+PASS fees rejected: fee inclusive slippage one lamport short (1305); all state and balances unchanged
+PASS fees rejected: cross launch platform vault (1302); all state and balances unchanged
+PASS fees rejected: cross launch creator vault (1302); all state and balances unchanged
+PASS fees rejected: fake platform vault (1302); all state and balances unchanged
+PASS fees rejected: fake creator vault (1302); all state and balances unchanged
+PASS fees rejected: wrong mint (1003); all state and balances unchanged
+PASS fees rejected: wrong custody inventory (1003); all state and balances unchanged
+PASS fees rejected: destination owned by another buyer (1003); all state and balances unchanged
+PASS fees rejected: substituted opening (1003); all state and balances unchanged
+PASS fees rejected: substituted wallet receipt (1003); all state and balances unchanged
+PASS fees rejected: substituted curve (1102); all state and balances unchanged
+PASS fees rejected: wrong token program (1003); all state and balances unchanged
+PASS fees rejected: wrong system program (1003); all state and balances unchanged
+PASS fees rejected: unsigned buyer (1002); all state and balances unchanged
+PASS fees rejected: fee bypass through legacy paid-buy entry point (1306); all state and balances unchanged
+PASS fees rejected: stale fee quote (1104); all state and balances unchanged
+PASS fees rejected: substituted raw quote (1105); all state and balances unchanged
+PASS fees rejected: second instruction inconsistent price rolls back first trade and both fee CPIs (1105); all state and balances unchanged
+PASS fees rejected: unauthorized treasury claim (1304); all state and balances unchanged
+PASS fees rejected: unauthorized creator claim (1304); all state and balances unchanged
+PASS fees rejected: cross launch creator beneficiary (1304); all state and balances unchanged
+PASS fees rejected: claim destination substitution (1304); all state and balances unchanged
+PASS fees rejected: creator withdrawal cannot draw platform funds (1302); all state and balances unchanged
+PASS fees rejected: claim exceeds liability (1307); all state and balances unchanged
+PASS fees rejected: zero withdrawal (1307); all state and balances unchanged
+PASS fees rejected: correct creator address without signature is unauthorized (1304); all state and balances unchanged
+PASS fees rejected: read-only fee vault cannot be withdrawn (1304); all state and balances unchanged
+PASS fees rejected: cross-mint custody and claim relationship substitution (1003); all state and balances unchanged
+PASS fees rejected: multiple claims exceeding cumulative liability roll back the first withdrawal (1307); all state and balances unchanged
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 0 1
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 0 981
+PASS fees rejected: duplicate treasury withdrawal (1307); all state and balances unchanged
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 1 1
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 1 327
+PASS fees rejected: duplicate creator withdrawal (1307); all state and balances unchanged
+PASS fees: authorized partial/full claim preserves reserves and other entitlement 1 51
+PASS fees rejected: unsupported closure/migration/reserve movement opcode 11 (null); all state and balances unchanged
+PASS fees rejected: unsupported closure/migration/reserve movement opcode 12 (null); all state and balances unchanged
+PASS fees rejected: unsupported closure/migration/reserve movement opcode 255 (null); all state and balances unchanged
+PASS fees rejected: multiple fee-buy instructions cannot exceed protected allowance cumulatively (1201); all state and balances unchanged
+PASS fees rejected: multiple fee-buy instructions cannot exceed ordinary cap cumulatively (1005); all state and balances unchanged
+PASS fees: two atomic fee purchases across alternate accounts reach exact cumulative protected limit and conserve every lamport
+PASS fees: immutable isolated fee entitlement 9tbJfdsCWtBkF7X59PEKgHpMMmgTkarKZetsDqcS1KQs
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 9tbJfdsCWtBkF7X59PEKgHpMMmgTkarKZetsDqcS1KQs 1
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 9tbJfdsCWtBkF7X59PEKgHpMMmgTkarKZetsDqcS1KQs 1
+PASS fees: exact quote/payment/reserves/fees/receipts/tokens atomic 9tbJfdsCWtBkF7X59PEKgHpMMmgTkarKZetsDqcS1KQs 2
+PASS fees: immutable isolated fee entitlement GCykmDpHo59xutUbaNfm6hkRg63fP8Ry4KTHGbeXoTNi
+PASS fees rejected: fee-inclusive u64 overflow quote (1308); all state and balances unchanged
+PASS fees rejected: fee-inclusive u64 overflow buy (1308); all state and balances unchanged
+PASS fees rejected: raw curve price overflow (1108); all state and balances unchanged
+PASS fees rejected: zero purchase rejected before fee collection (1006); all state and balances unchanged
+PASS fees: immutable isolated fee entitlement EqyRLk3Adjq85AEjSXveKvGeHhs3eN6RYB1oy2hzyWAm
+PASS fees rejected: receipt-rent System CPI fails after both fees and raw payment; transaction rolls everything back (1); all state and balances unchanged
+PASS fees: exact SOL liability isolation and token conservation 7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM
+PASS fees: exact SOL liability isolation and token conservation FH6Mra585qFR4YntFhyzat2UZPjiJRtELcWVGLZ1rBfd
+PASS fees: exact SOL liability isolation and token conservation 9tbJfdsCWtBkF7X59PEKgHpMMmgTkarKZetsDqcS1KQs
+PASS fees: exact SOL liability isolation and token conservation GCykmDpHo59xutUbaNfm6hkRg63fP8Ry4KTHGbeXoTNi
+PASS fees: exact SOL liability isolation and token conservation EqyRLk3Adjq85AEjSXveKvGeHhs3eN6RYB1oy2hzyWAm
+PASS fees: deterministic dust rounding fixtures; splitting never fee-free
+PASS fee totals {"positive":24,"rejection":52}
+PASS fee integrity: withdrawn exceeds accrued rejected (1308); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: redirected production treasury configuration rejected (1302); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: inconsistent creator liability rejected (1303); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: curve reserve depleted below recorded consideration rejected (1102); all SOL/tokens/state unchanged; token supply 1000
+PASS full local suite (allocation, custody, opening caps, bonding curve, protected opening, fees). Logs and disposable ledgers: /tmp/jeet-custody-X540lo
+
+
+dashboard.log
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> jeet-app@0.1.0 test:fees:dashboard
+> node scripts/test-fee-dashboard.mjs

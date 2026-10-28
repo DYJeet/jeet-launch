@@ -95,7 +95,10 @@ pub fn decode(
     inventory: u64,
     open: &[u8],
 ) -> Result<Protection, ProgramError> {
-    if data.len() != LEN || &data[..8] != MAGIC || data[153] != 1 {
+    if data.len() != LEN
+        || (&data[..8] != MAGIC && &data[..8] != super::curve::FEE_MAGIC)
+        || data[153] != 1
+    {
         return Err(error(1203));
     }
     let p = create(

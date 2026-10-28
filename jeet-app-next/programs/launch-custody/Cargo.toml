@@ -7,6 +7,10 @@ publish = false
 [lib]
 crate-type = ["cdylib"]
 
+[features]
+# Only for disposable local-validator fixtures. Never deploy this artifact.
+local-fee-test = []
+
 [dependencies]
 solana-program = "=2.3.0"
 solana-sdk-ids = "=2.2.1"

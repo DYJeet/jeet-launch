@@ -305,7 +305,7 @@ export type CurveState = {
 export function decodeCurveState(data: Uint8Array): CurveState {
   const magic = new TextDecoder().decode(data.slice(0, 8));
   const legacy = data.length === 153 && magic === "JEETCRV1";
-  const protectedVersion = data.length === 204 && magic === "JEETCRV2";
+  const protectedVersion = data.length === 204 && (magic === "JEETCRV2" || magic === "JEETCRV3");
   if (!legacy && !protectedVersion) throw new Error("Invalid curve state.");
   const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
   const protection = protectedVersion

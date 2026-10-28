@@ -2,6 +2,7 @@
 use super::*;
 use solana_program::program::set_return_data;
 const LEN: usize = 153;
+pub const FEE_MAGIC: &[u8] = b"JEETCRV3";
 const MAGIC_CURVE: &[u8] = b"JEETCRV1";
 fn error(code: u32) -> ProgramError {
     ProgramError::Custom(code)
@@ -11,6 +12,7 @@ fn read(data: &[u8], at: usize) -> u64 {
 }
 #[derive(Clone, Copy)]
 pub struct Curve {
+    pub fees: bool,
     pub base: u64,
     pub slope: u64,
     pub scale: u64,
@@ -67,7 +69,9 @@ pub fn load(
     }
     let data = curve.try_borrow_data()?;
     let legacy = data.len() == LEN && &data[..8] == MAGIC_CURVE;
-    let protected = data.len() == super::protected::LEN && &data[..8] == super::protected::MAGIC;
+    let fee_enabled = data.len() == super::protected::LEN && &data[..8] == FEE_MAGIC;
+    let protected = data.len() == super::protected::LEN
+        && (&data[..8] == super::protected::MAGIC || fee_enabled);
     if (!legacy && !protected)
         || &data[8..40] != mint.key.as_ref()
         || &data[40..72] != custody.key.as_ref()
@@ -92,6 +96,7 @@ pub fn load(
         return Err(error(1102));
     }
     let c = Curve {
+        fees: fee_enabled,
         base: read(&data, 104),
         slope: read(&data, 112),
         scale: read(&data, 120),
@@ -141,6 +146,7 @@ pub fn pay<'a>(
     system: &AccountInfo<'a>,
     input: &[u8],
     cumulative_received: u64,
+    all_accounts: &[AccountInfo<'a>],
 ) -> ProgramResult {
     if !curve.is_writable || buyer.owner != &system_program::id() || !buyer.data_is_empty() {
         return Err(error(1102));
@@ -152,12 +158,15 @@ pub fn pay<'a>(
             cumulative_received,
         )?;
     }
+    if c.fees != (input[0] == 8) {
+        return Err(error(1306));
+    }
     if read(input, 9) != c.sold {
         return Err(error(1104));
     }
     let n = read(input, 1);
     let required = cost(&c, n)?;
-    if required != read(input, 17) || required > read(input, 25) {
+    if required != read(input, 17) || (!c.fees && required > read(input, 25)) {
         return Err(error(1105));
     }
     let sold = c
@@ -167,8 +176,11 @@ pub fn pay<'a>(
         .ok_or(error(1108))?;
     let collected = c.collected.checked_add(required).ok_or(error(1108))?;
     curve.lamports().checked_add(required).ok_or(error(1108))?;
-    if buyer.lamports() < required {
+    if !c.fees && buyer.lamports() < required {
         return Err(error(1106));
+    }
+    if c.fees {
+        super::fees::collect(program, all_accounts, required, read(input, 25))?;
     }
     solana_program::program::invoke(
         &system_instruction::transfer(buyer.key, curve.key, required),
@@ -181,9 +193,12 @@ pub fn pay<'a>(
 }
 pub fn process(program: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> ProgramResult {
     match input.first() {
-        Some(4 | 6) => {
-            let protected = input[0] == 6;
-            if input.len() != if protected { 35 } else { 17 } || accounts.len() != 7 {
+        Some(4 | 6 | 7) => {
+            let fees = input[0] == 7;
+            let protected = input[0] != 4;
+            if input.len() != if protected { 35 } else { 17 }
+                || accounts.len() != if fees { 10 } else { 7 }
+            {
                 return Err(error(1100));
             }
             let payer = &accounts[0];
@@ -261,8 +276,13 @@ pub fn process(program: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> Prog
                 length,
                 &[b"curve", mint.key.as_ref(), &[bump]],
             )?;
+            if fees {
+                super::fees::initialize(program, accounts, input)?;
+            }
             let mut data = curve.try_borrow_mut_data()?;
-            data[..8].copy_from_slice(if protected {
+            data[..8].copy_from_slice(if fees {
+                FEE_MAGIC
+            } else if protected {
                 super::protected::MAGIC
             } else {
                 MAGIC_CURVE

@@ -145,11 +145,11 @@ pub fn process(program: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> Prog
             data[106..108].copy_from_slice(&bps.to_le_bytes());
             Ok(())
         }
-        Some(3) => {
+        Some(3 | 8) => {
             if input.len() != 33 {
                 return Err(fail(Error::Encoding));
             }
-            if accounts.len() != 10 {
+            if accounts.len() != if input[0] == 8 { 12 } else { 10 } {
                 return Err(fail(Error::Accounts));
             }
             let buyer = &accounts[0];
@@ -263,6 +263,7 @@ pub fn process(program: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> Prog
                 system,
                 input,
                 next,
+                accounts,
             )?;
             if receipt.owner != program {
                 allocate(

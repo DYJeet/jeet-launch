@@ -105,6 +105,7 @@ export default async function TokenPage({ params }: { params: Promise<{ mint: st
             <div className="sticky top-24 rounded-[28px] border border-white/[0.08] bg-[#090c09] p-5">
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-black">Trade ${coin.ticker}</h2>
+                <Link href={`/revenue?mint=${encodeURIComponent(mint)}`} className="mt-2 block text-xs font-bold text-[#9cff43]">On-chain fee quotes and creator rewards · Devnet</Link>
                 <span className="text-xs font-black text-[#9cff43]">{coin.bondingProgress}%</span>
               </div>
 

@@ -1,0 +1,2233 @@
+{
+  "startingCommit": "ce4b3857603ae2c2eb2fde0b44d336d47f254f19",
+  "approvedTreasury": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+  "platformBps": 75,
+  "creatorBps": 25,
+  "rounding": "Each component independently ceil(raw*bps/10000); total fee is the sum; fee-inclusive max protects raw+both fees.",
+  "programs": {
+    "default": {
+      "address": "7QhXSnj7igy9HX6n1i3bnuc2SUbMTRWZEouGZKcy9d31",
+      "sha256": "af670657843b63a9dda91a57eab78a6e1bfd854bb6bdbc7f9d384818c73799c9"
+    },
+    "localOnly": {
+      "address": "8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo",
+      "sha256": "1e9b8dd290bce4d1418dea116369417450a4453ef4a6640de95565cfd534424b"
+    }
+  },
+  "versions": {
+    "node": "v24.22.1",
+    "agave": "2.3.13",
+    "sbfPlatformTools": "v1.48",
+    "kit": "8.5.0"
+  },
+  "counts": {
+    "feePositiveChecks": 46,
+    "feeOnchainRejections": 108,
+    "defaultPositive": 22,
+    "defaultRejections": 52,
+    "localPositive": 24,
+    "localRejections": 52,
+    "integrityRejections": 4,
+    "browserPositive": 7,
+    "browserRejections": 4,
+    "sdkTests": 8,
+    "nativeCases": 6,
+    "nativeBuildVariants": 2
+  },
+  "conservation": {
+    "default": {
+      "rawCurveConsideration": 221914,
+      "buyerTradeConsideration": 224146,
+      "platform": {
+        "accrued": 1671,
+        "withdrawn": 0,
+        "claimable": 1671
+      },
+      "creatorFees": {
+        "accrued": 561,
+        "withdrawn": 379,
+        "claimable": 182
+      }
+    },
+    "localOnly": {
+      "rawCurveConsideration": 221914,
+      "buyerTradeConsideration": 224146,
+      "platform": {
+        "accrued": 1671,
+        "withdrawn": 982,
+        "claimable": 689
+      },
+      "creatorFees": {
+        "accrued": 561,
+        "withdrawn": 379,
+        "claimable": 182
+      }
+    }
+  },
+  "productionProgramLocalExecution": {
+    "positives": [
+      "immutable isolated fee entitlement 9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX",
+      "immutable isolated fee entitlement JBHCqXGB3NZvgwap6qbAuXghce5mxnjq17UBVkmwrwET",
+      "exact quote/payment/reserves/fees/receipts/tokens atomic 9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX 4",
+      "exact quote/payment/reserves/fees/receipts/tokens atomic 9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX 6",
+      "exact quote/payment/reserves/fees/receipts/tokens atomic 9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX 3",
+      "exact quote/payment/reserves/fees/receipts/tokens atomic JBHCqXGB3NZvgwap6qbAuXghce5mxnjq17UBVkmwrwET 2",
+      "authorized partial/full claim preserves reserves and other entitlement 1 1",
+      "authorized partial/full claim preserves reserves and other entitlement 1 327",
+      "authorized partial/full claim preserves reserves and other entitlement 1 51",
+      "two atomic fee purchases across alternate accounts reach exact cumulative protected limit and conserve every lamport",
+      "immutable isolated fee entitlement Bt7McEB1jjMsTuzDov78P7Gn3N9nfJ13JZQNHqNyVBTw",
+      "exact quote/payment/reserves/fees/receipts/tokens atomic Bt7McEB1jjMsTuzDov78P7Gn3N9nfJ13JZQNHqNyVBTw 1",
+      "exact quote/payment/reserves/fees/receipts/tokens atomic Bt7McEB1jjMsTuzDov78P7Gn3N9nfJ13JZQNHqNyVBTw 1",
+      "exact quote/payment/reserves/fees/receipts/tokens atomic Bt7McEB1jjMsTuzDov78P7Gn3N9nfJ13JZQNHqNyVBTw 2",
+      "immutable isolated fee entitlement FZCsVbAuX4Zq92CFuPiiC6jAa7hCGVSnv3GYsMnLobMT",
+      "immutable isolated fee entitlement FBJ9FkFY92HEdaGtMXBjQdP9yNMjxvKSZLSumN7a6DSw",
+      "exact SOL liability isolation and token conservation 9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX",
+      "exact SOL liability isolation and token conservation JBHCqXGB3NZvgwap6qbAuXghce5mxnjq17UBVkmwrwET",
+      "exact SOL liability isolation and token conservation Bt7McEB1jjMsTuzDov78P7Gn3N9nfJ13JZQNHqNyVBTw",
+      "exact SOL liability isolation and token conservation FZCsVbAuX4Zq92CFuPiiC6jAa7hCGVSnv3GYsMnLobMT",
+      "exact SOL liability isolation and token conservation FBJ9FkFY92HEdaGtMXBjQdP9yNMjxvKSZLSumN7a6DSw",
+      "deterministic dust rounding fixtures; splitting never fee-free"
+    ],
+    "rejections": [
+      {
+        "label": "fee initialization requires immutable custody creator signature",
+        "code": 1304,
+        "signature": "3d5aMLdQj7ZBWi5XbTHCLN7wxfyZhGKmMwpLFpkpVgrb6KhtaPxpkKHQV23smTTVQrPABfEhkr98Ur2PaJhKBkee",
+        "slot": 38,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "invalid platform vault during initialization",
+        "code": 1302,
+        "signature": "3JT5URyGsTQng8Pty53HvE4PsdhWYwSndEUDykxFy6MDVZgow5A3RAFxDrAZiFHxEbKpaTgWFHEuDzQ9uozHjemo",
+        "slot": 39,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1302
+            }
+          ]
+        }
+      },
+      {
+        "label": "fee version preserves invalid protected-duration rejection",
+        "code": 1202,
+        "signature": "xLeY2LefrQp4SgG3siAiy7RgdgR7UYYGdbsQombTaVSb8AeJJ7JD4KNk4UaN1uiQoiVhURfyKfwE6bMPMJm7Mbt",
+        "slot": 40,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1202
+            }
+          ]
+        }
+      },
+      {
+        "label": "caller cannot append treasury rotation or redirection configuration",
+        "code": 1100,
+        "signature": "44G4E32s8gxbZdJb5iCqjuJoME7jDcETrqSqYFZu8emeUhMELcn4eQkGGGM4uh9EUZANXsERMMKSEMsennMnsxid",
+        "slot": 41,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1100
+            }
+          ]
+        }
+      },
+      {
+        "label": "fee initialization requires immutable custody creator signature",
+        "code": 1304,
+        "signature": "4HecWg9iCWGAihJUtsZgSjUhkydyG52cRNG4GVMue5NivuyenZKQrZEHb31AdwqHSntrLZesGMN9uaWERMEyyHnw",
+        "slot": 47,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "invalid platform vault during initialization",
+        "code": 1302,
+        "signature": "2GqgJCKRQNqMzCm1e8WMTNLPe6j3E28DCqriwExat6MKFXzWWKEb3pKXepvvD1K8ggNAt5M1MCo5z97uxmMLtL6G",
+        "slot": 48,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1302
+            }
+          ]
+        }
+      },
+      {
+        "label": "fee version preserves invalid protected-duration rejection",
+        "code": 1202,
+        "signature": "tYrG8bZ21F634hC37NXbngzZuagU1HSc1WMVVkCGJtwJtSMHC6FAh7L5DpLe2SKtntQNM2YLy9WyH36xGa3N2MR",
+        "slot": 49,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1202
+            }
+          ]
+        }
+      },
+      {
+        "label": "caller cannot append treasury rotation or redirection configuration",
+        "code": 1100,
+        "signature": "4Y3RGujxVCGb8YEM5BEX9ZyCbcpg3iDHaScy1CUGvj1GyTNkdL9pFeFCTYdQrwKJkqFQyfPanib4xaTa9zRxoegS",
+        "slot": 50,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1100
+            }
+          ]
+        }
+      },
+      {
+        "label": "protected repeated buy over cumulative allowance",
+        "code": 1201,
+        "signature": "snAAy3BLj6eG21YWqPYpousAkKijSLX3rNPZ8eifaHuj8tji6ndVYrMFzjBmHQQBLNKEp6TN6NjdpSa5JEuJhPk",
+        "slot": 66,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1201
+            }
+          ]
+        }
+      },
+      {
+        "label": "alternate token account cannot bypass fee-launch cumulative opening allowance",
+        "code": 1201,
+        "signature": "2Q8v5EJffAMu9wsZPAK9F3Bfs41XHku6y7fz3QxUkA2esZrEqeQzB33DkgmgGknqobkx8QPkZdp2xc1K3oeZFywN",
+        "slot": 67,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1201
+            }
+          ]
+        }
+      },
+      {
+        "label": "cumulative ordinary wallet cap",
+        "code": 1005,
+        "signature": "3RAt7BJ8QWvViZ7QLaU4PaaroxKGwdDAwNgHzzwmdhps2xZxD7voZvMcTSdnw4mydvzxanXjvKVqh4gekk8TbYPe",
+        "slot": 69,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1005
+            }
+          ]
+        }
+      },
+      {
+        "label": "fee inclusive slippage one lamport short",
+        "code": 1305,
+        "signature": "2kRVGcGb7L942VTCBtWPVdpB5wVJp7bVFWFPti3gQR7R8CQ9wmj3aFS3rWxtn2zRrVQsC1eDsfuUDkr8vcC6hf5T",
+        "slot": 71,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1305
+            }
+          ]
+        }
+      },
+      {
+        "label": "cross launch platform vault",
+        "code": 1302,
+        "signature": "3dtQauvVG16xVuEjvVxYgdRZF1tQukwuugBqu8GCSDh64wJU12wPXGiJjE4ziD7vPNA71X7i6ov7chRoThAsqTYa",
+        "slot": 72,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1302
+            }
+          ]
+        }
+      },
+      {
+        "label": "cross launch creator vault",
+        "code": 1302,
+        "signature": "2PS2oEK8QW8Cfho8AEhY56cP9ZPpX2tMyKpz6oeKG2h19bJwBRXYiVB2FwPztEUcjigCuuo8HLoTAWG4VM3PqCs7",
+        "slot": 73,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1302
+            }
+          ]
+        }
+      },
+      {
+        "label": "fake platform vault",
+        "code": 1302,
+        "signature": "2N9TvebzqkpRkQYmzgj4rxtoSXR7xLkE4YagXhbNq6Ag6Cx28BMWvYJLxsMAohpDchosUTQEGQMRCLq2RJbYZnwE",
+        "slot": 74,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1302
+            }
+          ]
+        }
+      },
+      {
+        "label": "fake creator vault",
+        "code": 1302,
+        "signature": "4HP8FYRgcs4ezSwoKtd6Ebhit38FN8GFB4CYTvohwj4QfbTJd6iNEUazfDoVZ8op9JrgWfFCpmLqaJkLyrDLZR4C",
+        "slot": 75,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1302
+            }
+          ]
+        }
+      },
+      {
+        "label": "wrong mint",
+        "code": 1003,
+        "signature": "37ia8KcL4HjmRJ4txQCoMxVKCgXydY32BVvjA7ZmhnePC5HYFmrV7jgbwJLBQQTXvDE8PNYibxmvUDD9HQMjADh6",
+        "slot": 76,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "wrong custody inventory",
+        "code": 1003,
+        "signature": "5zNBF5H8pXEBx8wQDCbNAZvGNzMnfa8uwqyhkp4PM7NtRYBMzJHcAPUHVNhgvpa5ZvXM6Pm7U34N554fXXDtdzYh",
+        "slot": 77,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "destination owned by another buyer",
+        "code": 1003,
+        "signature": "VHbNfZLDT9mUPH3KWw4w4P6LUBRMVUQCCMWb28DnTSZJHU96CS77agjdqCPRFi69s1UFCEtPXGvHMijYWid8aS9",
+        "slot": 78,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "substituted opening",
+        "code": 1003,
+        "signature": "5YpZ6CYvggxZdCzHG5r9dM8xkzDLoBvWGsQEgZXpJXBxH757wfomyNw5nWRSP8kXS5eCuWmNe3V9Vj54jj8zW6nr",
+        "slot": 79,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "substituted wallet receipt",
+        "code": 1003,
+        "signature": "2D8TbVbf2pfnr7U7BCyw4Vb4awcatWyASbfpPrggHfCLtBCvhWvXmEuxcDg3egGRDXciyM3r2tQKzvqdKVjbp5D5",
+        "slot": 80,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "substituted curve",
+        "code": 1102,
+        "signature": "2U2oGtBzbTsuFYu5a6bTyHG3QKojnYJy5XJj2Us3xT7fJFBQkTJ1qbkGFH3Z37v6o1ZmYyPwQu5Yj21mryPqy9TA",
+        "slot": 81,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1102
+            }
+          ]
+        }
+      },
+      {
+        "label": "wrong token program",
+        "code": 1003,
+        "signature": "4hcA1kMdMA4xykYYtsEgtoVxoEj3nH37Aapkj75XXhqLvJndgRKRBBJUsidKbSWrRggYXkkEDaprJAMfi8aSEi4Y",
+        "slot": 82,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "wrong system program",
+        "code": 1003,
+        "signature": "4AGt2AgQMYqNV1tqoBChqs97mCyW72uh2WrYij75revpBSh7Fsiu3rJTNNdoKsBJqEkHY8w6XqMAnRZdfPGP6EPk",
+        "slot": 83,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "unsigned buyer",
+        "code": 1002,
+        "signature": "5dEmeoanJ6ikfQbcrzfQduYy6prC2PsV7oBM6aK7XR6vAtuic3Uhk8sx3ZaBEvCoLG7LqPRQLeKPgWGeS8WT9ygH",
+        "slot": 84,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1002
+            }
+          ]
+        }
+      },
+      {
+        "label": "fee bypass through legacy paid-buy entry point",
+        "code": 1306,
+        "signature": "4VE4qRV2SPHRestQRB159xNsYc8ydLUWHMt9twnFK9Lk8G3WhvKeMCYR48HuRad4L13anRTt13WVY44fRrwzRGom",
+        "slot": 85,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1306
+            }
+          ]
+        }
+      },
+      {
+        "label": "stale fee quote",
+        "code": 1104,
+        "signature": "3MdV8iNPn7Utms9Jb7rNfZt3MUQRoxzgbUTx2sGE63QEAcxrV1EC5bkGBacHwBtLjYGrKrPsGbS3TGgPHG4BGfA7",
+        "slot": 86,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1104
+            }
+          ]
+        }
+      },
+      {
+        "label": "substituted raw quote",
+        "code": 1105,
+        "signature": "4287CiP6W66ujZ9h4zLdvaW1117SHtKpEbNgaoSF41Up39Poi1sdWV2Nr3pbMDm5ahbs8WmxmvJogPEeBW8Xyoi4",
+        "slot": 87,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1105
+            }
+          ]
+        }
+      },
+      {
+        "label": "second instruction inconsistent price rolls back first trade and both fee CPIs",
+        "code": 1105,
+        "signature": "4vjLaE6DCaKuMZixy4VgoVwed4xZvtqrz3UW1keUDEa5LQxowYLU3Eb3pLathngnBKLbiCCTZ4krDr7LKQ6askvx",
+        "slot": 88,
+        "error": {
+          "InstructionError": [
+            1,
+            {
+              "Custom": 1105
+            }
+          ]
+        }
+      },
+      {
+        "label": "unauthorized treasury claim",
+        "code": 1304,
+        "signature": "YCARXGhDFxBvU7f7mpRKxLy5gk59sL11FyPgxnq7n9Nx76Eec2gaRHuTg7QnphXpFGaWTsPMepRYcgtAi9HD5DU",
+        "slot": 89,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "unauthorized creator claim",
+        "code": 1304,
+        "signature": "4YPqXUWnio4bBQwzNwWRTstKW7GCscckpoSX3fwyMM9zWbnv8y758xUyjAK9DMkqV8sLUyPobXL4kwQ1za3nTkKD",
+        "slot": 90,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "cross launch creator beneficiary",
+        "code": 1304,
+        "signature": "4cCTzyxksLjpkyknuYQBmXjQryFDkVMKXdeEW3d2E2bAgdXwGvX3sf2r31PY2AjdbRL7GWCmeuNAgLaTVxhqxf6x",
+        "slot": 91,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "claim destination substitution",
+        "code": 1304,
+        "signature": "4fikGrUAQKSs7mDrVhKtvNRRnPpo4Eahae9wQLnzEX496dvjkUxJZpXJfKc2BjezPK69aQuRgAVyyw6tsDckaEBt",
+        "slot": 92,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "creator withdrawal cannot draw platform funds",
+        "code": 1302,
+        "signature": "3QMpDzAvBunmxCM6JCyExZtmBvjzEGDa5awx1eY9pMX27Qm1hVi4DqA8JKiJ4hwJExoxL8WFzVAHGDZCn37HpwwP",
+        "slot": 93,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1302
+            }
+          ]
+        }
+      },
+      {
+        "label": "claim exceeds liability",
+        "code": 1307,
+        "signature": "3yqiiwYm6fgewqZKb48Zc4DFMqCTSxPo85mgwgaQSzzziMqbomKDHAdKuaPGxUYadZhBqGv6Xa3FShKP3W9yg9gw",
+        "slot": 94,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1307
+            }
+          ]
+        }
+      },
+      {
+        "label": "zero withdrawal",
+        "code": 1307,
+        "signature": "5sKEqoAmnmU3Z5nQdZYeB4yfUPtZ1RuC9LKXmpoQrSzEPi52pT9PPuXDQSWMu7fFvu8KomT54KC4Ro4KVvdPmwLW",
+        "slot": 95,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1307
+            }
+          ]
+        }
+      },
+      {
+        "label": "correct creator address without signature is unauthorized",
+        "code": 1304,
+        "signature": "rZveLoKnuK2nPWVCXvhE736tTwGyNmXoXNxH3nvb6PVK2W9FfpG1ApLbRxBbtnbNicpTdtYvgmvZvhKVjjaGahe",
+        "slot": 96,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "read-only fee vault cannot be withdrawn",
+        "code": 1304,
+        "signature": "USdDcZkmvHFSpLja5ZQ6Y1UGxbPf7c7n8VHkLoXhcWMuwVTuWCQHEmege3qsda2PicKDB7YhEjeu87jHQ9GpeWy",
+        "slot": 97,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "cross-mint custody and claim relationship substitution",
+        "code": 1003,
+        "signature": "HdmFxnDxDJEiQtpBDBNhz3ekkiiywfRJ6GBm3s7x43sdWZk23dKxPT4hEwy9oJDEosXuRn4nvsTjcydJV7NtCud",
+        "slot": 98,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "multiple claims exceeding cumulative liability roll back the first withdrawal",
+        "code": 1307,
+        "signature": "45bMNeGzAQifvvRrBytsPTfZwBRaDmvULzY6w3H6V26DzHiArGaTTuDBSxCRfKpg5Xj3bwKumKUtqSZjQHayyxbz",
+        "slot": 99,
+        "error": {
+          "InstructionError": [
+            1,
+            {
+              "Custom": 1307
+            }
+          ]
+        }
+      },
+      {
+        "label": "disposable local treasury cannot withdraw production entitlement",
+        "code": 1304,
+        "signature": "66wYpRtEbBC3BG187YWFUeAGk4cP8rro1dQeTRNSwMoG9eJ1uDTVFZ9FaGNCWuwhn9mgqmEmug4JZBYtXo47AXCm",
+        "slot": 100,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "duplicate creator withdrawal",
+        "code": 1307,
+        "signature": "Krj7G9oS94feWLzvrYLJ1n6Ldbb8JU2x6DP8Nd2pc7AMXcsYktNB2GaHEPMbNoD1MWoxu1T1YeKne8iPV3y479a",
+        "slot": 103,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1307
+            }
+          ]
+        }
+      },
+      {
+        "label": "unsupported closure/migration/reserve movement opcode 11",
+        "code": null,
+        "signature": "4cuqv1386bKXAoFpXQLejmGRmKjzFBcBpmBQ8Gsi67hU59jV3g4wuzTQjNFsy4nL4xb7nNSeYnp221Ji82Eet6vh",
+        "slot": 105,
+        "error": {
+          "InstructionError": [
+            0,
+            "InvalidInstructionData"
+          ]
+        }
+      },
+      {
+        "label": "unsupported closure/migration/reserve movement opcode 12",
+        "code": null,
+        "signature": "5PUCuygxiheCyiUnqGtSJ43UsYZJA4vCRB9vfqEDsHAGy15PMzRJsDxDfxG2qnr1pon1TDZ96gydTugHeWt3YsQs",
+        "slot": 106,
+        "error": {
+          "InstructionError": [
+            0,
+            "InvalidInstructionData"
+          ]
+        }
+      },
+      {
+        "label": "unsupported closure/migration/reserve movement opcode 255",
+        "code": null,
+        "signature": "1AyqBHRYr1ENf4jDY3N6CuoeQmPLdSCu8tdwv6UMgxtPnzSECTJSZNtYhp12QyL3qicCZNd8WcniwkydTxaNMXz",
+        "slot": 107,
+        "error": {
+          "InstructionError": [
+            0,
+            "InvalidInstructionData"
+          ]
+        }
+      },
+      {
+        "label": "multiple fee-buy instructions cannot exceed protected allowance cumulatively",
+        "code": 1201,
+        "signature": "3ePAqR16AWdz5b6Hk7uD783bS7RRxYV9NN8HhF2SrawWfmvszfxaXkEqegdFccUqiJdDRqyfsucXqB7tYPHCB8fn",
+        "slot": 111,
+        "error": {
+          "InstructionError": [
+            1,
+            {
+              "Custom": 1201
+            }
+          ]
+        }
+      },
+      {
+        "label": "multiple fee-buy instructions cannot exceed ordinary cap cumulatively",
+        "code": 1005,
+        "signature": "4pRxFEazCFY9TU7HgLauWGkEmWpyon4tGW5Xf8KfV9nSJbxBDm2gM2Ea6x1myPUexYDDsunjQERa6mXZk8Bf17rs",
+        "slot": 113,
+        "error": {
+          "InstructionError": [
+            1,
+            {
+              "Custom": 1005
+            }
+          ]
+        }
+      },
+      {
+        "label": "fee-inclusive u64 overflow quote",
+        "code": 1308,
+        "signature": "2DZDs76ze9S7VBuwrzVpZyEvTVYKhbbygunraoBExyYaR7VYiyyMdxzthSqnBZffUGCkjgCL37Ex4gpfpW5y2fN3",
+        "slot": 136,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1308
+            }
+          ]
+        }
+      },
+      {
+        "label": "fee-inclusive u64 overflow buy",
+        "code": 1308,
+        "signature": "3TTyXnVJXX8dXwBDUKhZUJp6rh41MaRdjp1P9f4rti6bwKMSKvaCAhLkA7yhyXgM7NRvWB5yaPvW7TuxPqRRXjE6",
+        "slot": 137,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1308
+            }
+          ]
+        }
+      },
+      {
+        "label": "raw curve price overflow",
+        "code": 1108,
+        "signature": "R7hfrAosBEpC17Y3HYCvhy2K8twqFg9MURP8oF4axsizGTX6xvGKs1hTJ8cwwzVPnwHC2m27fEVJpmD9BRqs9jU",
+        "slot": 138,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1108
+            }
+          ]
+        }
+      },
+      {
+        "label": "zero purchase rejected before fee collection",
+        "code": 1006,
+        "signature": "tEnCMwAf38pXjFGY8UJjn5iwMrzbWLFpz4vBSdKNFCzsBzjt4VPAEAkqS7fzAd6a2MBZAN7SaMj4xEGuDwCwAJF",
+        "slot": 141,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1006
+            }
+          ]
+        }
+      },
+      {
+        "label": "receipt-rent System CPI fails after both fees and raw payment; transaction rolls everything back",
+        "code": 1,
+        "signature": "2uHmGV3tAhy3kjcr5ocNqe3Psc66yw1zX5HnLjCyPekWECU5kTZhcbLiUM4XLGZP3QqPGYFT7scNj9sgcrcucg6N",
+        "slot": 150,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1
+            }
+          ]
+        }
+      }
+    ],
+    "launches": [
+      {
+        "mint": "9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX",
+        "creator": "20",
+        "inventory": "960",
+        "distributed": "20",
+        "supply": "1000",
+        "rawReserve": "201900",
+        "platform": {
+          "mint": "9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX",
+          "curve": "3zUf3tVr8c5QkXcsmEUgNvhinPtkdBdCdPU2qk1FoNYZ",
+          "beneficiary": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+          "kind": 0,
+          "accrued": "1517",
+          "withdrawn": "0",
+          "claimable": "1517",
+          "bump": 254
+        },
+        "creatorFees": {
+          "mint": "9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX",
+          "curve": "3zUf3tVr8c5QkXcsmEUgNvhinPtkdBdCdPU2qk1FoNYZ",
+          "beneficiary": "B8NzUK5TN5cH2wNmdrn65jNN57r7iNhphRAPyvLCvc5P",
+          "kind": 1,
+          "accrued": "507",
+          "withdrawn": "328",
+          "claimable": "179",
+          "bump": 255
+        },
+        "buys": [
+          {
+            "raw": "40060",
+            "platform": "301",
+            "creator": "101",
+            "total": "40462",
+            "sold": "0",
+            "collected": "0",
+            "amount": "4",
+            "signature": "3nHWHj3EHhuWwjrCdu7wzbYjDt25rX6ZfaJhJjremxf1CmAHwqAB8y2chm7ezUSpEM5wZRK5ojDqUZGw3RHyVH9Y"
+          },
+          {
+            "raw": "60390",
+            "platform": "453",
+            "creator": "151",
+            "total": "60994",
+            "sold": "4",
+            "collected": "40060",
+            "amount": "6",
+            "signature": "5iDbmAmWzw3Yz1vN9qtE5n99pcQrKR8hjJiFwJWSJd53eRFpx7714i1SGdQsCy1F8NWcc3BorkDUsXTqoDGxrVfC"
+          },
+          {
+            "raw": "30330",
+            "platform": "228",
+            "creator": "76",
+            "total": "30634",
+            "sold": "10",
+            "collected": "100450",
+            "amount": "3",
+            "signature": "57LaiRZAXSDHKL8FV2duGvBGwymMXYefDDomp15iRdfrEutT8JrRZjSrLxSSvK2jFaRK1wNVk2tP49VApKhVKDk7"
+          },
+          {
+            "raw": "20270",
+            "platform": "153",
+            "creator": "51",
+            "total": "20474",
+            "sold": "13",
+            "collected": "130780",
+            "amount": "2",
+            "signature": "4Jtapns5Up2CJhNT4ZoT4P4CJzdetS9JYzGk3eyhMDt6B79JDnxoxESStmxsbshbHNC4qVQGjrhVkDmjUW8yy9RQ"
+          },
+          {
+            "raw": "50850",
+            "platform": "382",
+            "creator": "128",
+            "fees": "510",
+            "total": "51360",
+            "amount": "5",
+            "sold": "15",
+            "collected": "151050",
+            "signature": "4Jtapns5Up2CJhNT4ZoT4P4CJzdetS9JYzGk3eyhMDt6B79JDnxoxESStmxsbshbHNC4qVQGjrhVkDmjUW8yy9RQ"
+          }
+        ]
+      },
+      {
+        "mint": "JBHCqXGB3NZvgwap6qbAuXghce5mxnjq17UBVkmwrwET",
+        "creator": "20",
+        "inventory": "978",
+        "distributed": "2",
+        "supply": "1000",
+        "rawReserve": "20010",
+        "platform": {
+          "mint": "JBHCqXGB3NZvgwap6qbAuXghce5mxnjq17UBVkmwrwET",
+          "curve": "Hirb4xb5Lx8voTxKnVNKZBaJpkmUA5pBmcReGTuNPZvJ",
+          "beneficiary": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+          "kind": 0,
+          "accrued": "151",
+          "withdrawn": "0",
+          "claimable": "151",
+          "bump": 254
+        },
+        "creatorFees": {
+          "mint": "JBHCqXGB3NZvgwap6qbAuXghce5mxnjq17UBVkmwrwET",
+          "curve": "Hirb4xb5Lx8voTxKnVNKZBaJpkmUA5pBmcReGTuNPZvJ",
+          "beneficiary": "A7xp4bNt7fhcDyumjAyX6w2LuV3QGQJcvHbWd31SAsSU",
+          "kind": 1,
+          "accrued": "51",
+          "withdrawn": "51",
+          "claimable": "0",
+          "bump": 254
+        },
+        "buys": [
+          {
+            "raw": "20010",
+            "platform": "151",
+            "creator": "51",
+            "total": "20212",
+            "sold": "0",
+            "collected": "0",
+            "amount": "2",
+            "signature": "arM1yeL1kUjyoJ2UhJrPHciM83rcUA3R2ckGrMYmp9o4xJ5YCDLwJXURbyprn2d3XQmL83wJKcNgeo5aWzPgc28"
+          }
+        ]
+      },
+      {
+        "mint": "Bt7McEB1jjMsTuzDov78P7Gn3N9nfJ13JZQNHqNyVBTw",
+        "creator": "20",
+        "inventory": "976",
+        "distributed": "4",
+        "supply": "1000",
+        "rawReserve": "4",
+        "platform": {
+          "mint": "Bt7McEB1jjMsTuzDov78P7Gn3N9nfJ13JZQNHqNyVBTw",
+          "curve": "GKu4kPenbgY4BrEhfXAYpHym8SuVdACE5Bh8rpLyurEG",
+          "beneficiary": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+          "kind": 0,
+          "accrued": "3",
+          "withdrawn": "0",
+          "claimable": "3",
+          "bump": 255
+        },
+        "creatorFees": {
+          "mint": "Bt7McEB1jjMsTuzDov78P7Gn3N9nfJ13JZQNHqNyVBTw",
+          "curve": "GKu4kPenbgY4BrEhfXAYpHym8SuVdACE5Bh8rpLyurEG",
+          "beneficiary": "B8NzUK5TN5cH2wNmdrn65jNN57r7iNhphRAPyvLCvc5P",
+          "kind": 1,
+          "accrued": "3",
+          "withdrawn": "0",
+          "claimable": "3",
+          "bump": 252
+        },
+        "buys": [
+          {
+            "raw": "1",
+            "platform": "1",
+            "creator": "1",
+            "total": "3",
+            "sold": "0",
+            "collected": "0",
+            "amount": "1",
+            "signature": "4mnifEeKZwPgSaeM9caLiT6ubWrghQf8oF2vrcuh4xphfvozVLDvEH1i7mRzA8uBjJVQpd4363UjghEZtURqWu9Z"
+          },
+          {
+            "raw": "1",
+            "platform": "1",
+            "creator": "1",
+            "total": "3",
+            "sold": "1",
+            "collected": "1",
+            "amount": "1",
+            "signature": "K4bNk7rv6kQ2FkmdSUU8HqP73gTVfHuJ2vDeVdnbpMDCV4iiHWWauZReYTpmEEwcer8ecWJJ82GYmN37wbWjBLy"
+          },
+          {
+            "raw": "2",
+            "platform": "1",
+            "creator": "1",
+            "total": "4",
+            "sold": "2",
+            "collected": "2",
+            "amount": "2",
+            "signature": "xLQ9CmbDJ5SYRoi9vbeUePu1aVrCKRbwUgysDXHYB67pTPcNRJABYhKBCx9FcTbK8wduQxZWMMJQ8V3d1bMLnYy"
+          }
+        ]
+      },
+      {
+        "mint": "FZCsVbAuX4Zq92CFuPiiC6jAa7hCGVSnv3GYsMnLobMT",
+        "creator": "20",
+        "inventory": "980",
+        "distributed": "0",
+        "supply": "1000",
+        "rawReserve": "0",
+        "platform": {
+          "mint": "FZCsVbAuX4Zq92CFuPiiC6jAa7hCGVSnv3GYsMnLobMT",
+          "curve": "7nqnQBGyNWmmrDCYE9BP6DcBzsu7AAp5BDF9VvZ4uqWz",
+          "beneficiary": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+          "kind": 0,
+          "accrued": "0",
+          "withdrawn": "0",
+          "claimable": "0",
+          "bump": 254
+        },
+        "creatorFees": {
+          "mint": "FZCsVbAuX4Zq92CFuPiiC6jAa7hCGVSnv3GYsMnLobMT",
+          "curve": "7nqnQBGyNWmmrDCYE9BP6DcBzsu7AAp5BDF9VvZ4uqWz",
+          "beneficiary": "A7xp4bNt7fhcDyumjAyX6w2LuV3QGQJcvHbWd31SAsSU",
+          "kind": 1,
+          "accrued": "0",
+          "withdrawn": "0",
+          "claimable": "0",
+          "bump": 255
+        },
+        "buys": []
+      },
+      {
+        "mint": "FBJ9FkFY92HEdaGtMXBjQdP9yNMjxvKSZLSumN7a6DSw",
+        "creator": "20",
+        "inventory": "980",
+        "distributed": "0",
+        "supply": "1000",
+        "rawReserve": "0",
+        "platform": {
+          "mint": "FBJ9FkFY92HEdaGtMXBjQdP9yNMjxvKSZLSumN7a6DSw",
+          "curve": "DJUVLRHP6EGevY4n2x9NXQwdpbVQfFwZS78Dur2YaGpD",
+          "beneficiary": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+          "kind": 0,
+          "accrued": "0",
+          "withdrawn": "0",
+          "claimable": "0",
+          "bump": 255
+        },
+        "creatorFees": {
+          "mint": "FBJ9FkFY92HEdaGtMXBjQdP9yNMjxvKSZLSumN7a6DSw",
+          "curve": "DJUVLRHP6EGevY4n2x9NXQwdpbVQfFwZS78Dur2YaGpD",
+          "beneficiary": "A7xp4bNt7fhcDyumjAyX6w2LuV3QGQJcvHbWd31SAsSU",
+          "kind": 1,
+          "accrued": "0",
+          "withdrawn": "0",
+          "claimable": "0",
+          "bump": 253
+        },
+        "buys": []
+      }
+    ],
+    "claims": [
+      {
+        "mint": "9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX",
+        "kind": 1,
+        "amount": "1",
+        "signature": "VnarKELCi8MofGZn8JozjctTuPtpkiNehrDpNiB9UqGN4y7e4uP6MTzbeLt9y2dbeL8GYSwn9Hmt7S2CmN7db3m"
+      },
+      {
+        "mint": "9BobAsCQ4uS6hCd3STxsb3z1UEQ33xpNvC6q3LziXrX",
+        "kind": 1,
+        "amount": "327",
+        "signature": "469tFdUc9staEdJ8E81qEm9gkUjVaqRnEavgCf85h7M9PZ9nNw2psZQX1zFjmyhhzsYmwrzz7kDSV9hBR8wtoZtX"
+      },
+      {
+        "mint": "JBHCqXGB3NZvgwap6qbAuXghce5mxnjq17UBVkmwrwET",
+        "kind": 1,
+        "amount": "51",
+        "signature": "4mLHcbmV2RYk9uZaAVBjz6wQyL18JgDnn8f7fHrzFXcE3Vumbkgv2Z5AfNNpmbcjZS5Wts9MAdMUQ27aFcoDvbWY"
+      }
+    ]
+  },
+  "isolatedTreasuryLocalExecution": {
+    "positives": [
+      "immutable isolated fee entitlement 7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM",
+      "immutable isolated fee entitlement FH6Mra585qFR4YntFhyzat2UZPjiJRtELcWVGLZ1rBfd",
+      "exact quote/payment/reserves/fees/receipts/tokens atomic 7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM 4",
+      "exact quote/payment/reserves/fees/receipts/tokens atomic 7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM 6",
+      "exact quote/payment/reserves/fees/receipts/tokens atomic 7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM 3",
+      "exact quote/payment/reserves/fees/receipts/tokens atomic FH6Mra585qFR4YntFhyzat2UZPjiJRtELcWVGLZ1rBfd 2",
+      "authorized partial/full claim preserves reserves and other entitlement 0 1",
+      "authorized partial/full claim preserves reserves and other entitlement 0 981",
+      "authorized partial/full claim preserves reserves and other entitlement 1 1",
+      "authorized partial/full claim preserves reserves and other entitlement 1 327",
+      "authorized partial/full claim preserves reserves and other entitlement 1 51",
+      "two atomic fee purchases across alternate accounts reach exact cumulative protected limit and conserve every lamport",
+      "immutable isolated fee entitlement 9tbJfdsCWtBkF7X59PEKgHpMMmgTkarKZetsDqcS1KQs",
+      "exact quote/payment/reserves/fees/receipts/tokens atomic 9tbJfdsCWtBkF7X59PEKgHpMMmgTkarKZetsDqcS1KQs 1",
+      "exact quote/payment/reserves/fees/receipts/tokens atomic 9tbJfdsCWtBkF7X59PEKgHpMMmgTkarKZetsDqcS1KQs 1",
+      "exact quote/payment/reserves/fees/receipts/tokens atomic 9tbJfdsCWtBkF7X59PEKgHpMMmgTkarKZetsDqcS1KQs 2",
+      "immutable isolated fee entitlement GCykmDpHo59xutUbaNfm6hkRg63fP8Ry4KTHGbeXoTNi",
+      "immutable isolated fee entitlement EqyRLk3Adjq85AEjSXveKvGeHhs3eN6RYB1oy2hzyWAm",
+      "exact SOL liability isolation and token conservation 7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM",
+      "exact SOL liability isolation and token conservation FH6Mra585qFR4YntFhyzat2UZPjiJRtELcWVGLZ1rBfd",
+      "exact SOL liability isolation and token conservation 9tbJfdsCWtBkF7X59PEKgHpMMmgTkarKZetsDqcS1KQs",
+      "exact SOL liability isolation and token conservation GCykmDpHo59xutUbaNfm6hkRg63fP8Ry4KTHGbeXoTNi",
+      "exact SOL liability isolation and token conservation EqyRLk3Adjq85AEjSXveKvGeHhs3eN6RYB1oy2hzyWAm",
+      "deterministic dust rounding fixtures; splitting never fee-free"
+    ],
+    "rejections": [
+      {
+        "label": "fee initialization requires immutable custody creator signature",
+        "code": 1304,
+        "signature": "ryK2uXEESMkZorD3gGN9szBU5rYKwPFeNMWc95VKKDBZ2RfERuioSFghx2mVxAVcCws9CfK7CdQw6Y6RPiyo6Lp",
+        "slot": 160,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "invalid platform vault during initialization",
+        "code": 1302,
+        "signature": "rHpXrF7vAdZNdGcuk79KbBzbb92u85rK8QDK7hqag4ayDuEweiEYbyfhAYQ4vHnnsKp52N8wkTNhBgziow9fpKp",
+        "slot": 161,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1302
+            }
+          ]
+        }
+      },
+      {
+        "label": "fee version preserves invalid protected-duration rejection",
+        "code": 1202,
+        "signature": "3vCXfAPNSishSSLDgFkRcdU1LKoiroSZ2B5x6jhWm5tXfEUVx65U9aM1zn3wNQuEtHzUm466sB5qvinGpoaJTxVw",
+        "slot": 162,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1202
+            }
+          ]
+        }
+      },
+      {
+        "label": "caller cannot append treasury rotation or redirection configuration",
+        "code": 1100,
+        "signature": "3y1zo9U7UJ97Z86PEztFA4YifHXpYeQecUdbBRhy6vTVP7aHZVwjrfJDfvPomGfKwQo5f1Di5LRHitCbFB7DRGKU",
+        "slot": 163,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1100
+            }
+          ]
+        }
+      },
+      {
+        "label": "fee initialization requires immutable custody creator signature",
+        "code": 1304,
+        "signature": "2KchVAwnwHDhVw4beoMap2bXNhoxxeShXpvxNVDohuok2Upge7WhjpyFpooANjzFDWhrd1DuZjdBs2xoMqNEErKM",
+        "slot": 169,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "invalid platform vault during initialization",
+        "code": 1302,
+        "signature": "zjtERButkDRPnRk2mFwqLPCNk6mxXXM8MALK35k6qmx6C3c23sdK7n9rmrQYWaQHGdcMoLQ35mpVTe7c9KvUpK9",
+        "slot": 170,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1302
+            }
+          ]
+        }
+      },
+      {
+        "label": "fee version preserves invalid protected-duration rejection",
+        "code": 1202,
+        "signature": "MemqXz83tBkXe4NCRGWFZfkpHwzz1jqqfVgQyNLggBAt8YJT7veoJMqnvVUR6Ru85pGrES1LWe6AXU7ekkeLryG",
+        "slot": 171,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1202
+            }
+          ]
+        }
+      },
+      {
+        "label": "caller cannot append treasury rotation or redirection configuration",
+        "code": 1100,
+        "signature": "2GyqzjARhPUHU3gbMZ2DgUozNwkSUhmAGPKZXoMjSejEmuJTqGiCrccVv9HtapQkkyxYZMAKAhBjyZuZpdg8C117",
+        "slot": 172,
+        "error": {
+          "InstructionError": [
+            2,
+            {
+              "Custom": 1100
+            }
+          ]
+        }
+      },
+      {
+        "label": "protected repeated buy over cumulative allowance",
+        "code": 1201,
+        "signature": "V3gGcacM77kV4dXuqbD2M25PmgxwuXen7UarK3squXoUVnHokHiDfxPkhN5hYsurLqpdko53PEU2YCrAJ14DQTY",
+        "slot": 188,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1201
+            }
+          ]
+        }
+      },
+      {
+        "label": "alternate token account cannot bypass fee-launch cumulative opening allowance",
+        "code": 1201,
+        "signature": "43VcCb9aW2aG5vH37xPqtGnezSb7SSC1b1hFBzCY4GQJtFzGrKxBZMMuvv95Sx3YiJe5F1d7c5p2aCgDixqcsiv5",
+        "slot": 189,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1201
+            }
+          ]
+        }
+      },
+      {
+        "label": "cumulative ordinary wallet cap",
+        "code": 1005,
+        "signature": "2iBXgciNAaAqjZZ1a3mZLUkDFFhWMLirWYc3iyY8bfcXE6Y6HwKSYBxLvMYKTuEHugS36VDzTgj5YVM7qLRLHbXB",
+        "slot": 191,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1005
+            }
+          ]
+        }
+      },
+      {
+        "label": "fee inclusive slippage one lamport short",
+        "code": 1305,
+        "signature": "2LezQJBkdkWfCz53fM6euFr1HCSeWPRA6UbNgPZPdV2x58Lwjh1axndb95RixewbyUFVYsLGK5ezBkkJmYmpVauF",
+        "slot": 193,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1305
+            }
+          ]
+        }
+      },
+      {
+        "label": "cross launch platform vault",
+        "code": 1302,
+        "signature": "2pcBrz7zgM3GUfntKZ83rHSrjRP4bqC4MyLpzR7jbMuW9jnaEk6mbNyFtjq7wLC32AELJG7TvySS3LRwFonui1Wi",
+        "slot": 194,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1302
+            }
+          ]
+        }
+      },
+      {
+        "label": "cross launch creator vault",
+        "code": 1302,
+        "signature": "7Dx7ju9MigR38Bc7VABX1QgDsZxYnez8Ld5Gp3T9Fo7NxaymDX5jVfN6ULPVqnedLDsq6SetFtVBYpy4VzeFGZA",
+        "slot": 195,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1302
+            }
+          ]
+        }
+      },
+      {
+        "label": "fake platform vault",
+        "code": 1302,
+        "signature": "4vCxDxY98ZvrrsBdoQbayMYF9A99g2sGcGY3fy5yxzLKRKmmZB1NBUTxwiAmfpUZwmJp8EafdueDzFQz4FqmcFg1",
+        "slot": 196,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1302
+            }
+          ]
+        }
+      },
+      {
+        "label": "fake creator vault",
+        "code": 1302,
+        "signature": "GtnY3HZJYGnu9KK2yhcZ466w74M4K9dm1xkp5FzD5bujgqryQF9RWVWMcAZx9FNatogU9HZNX4DAsNgwNkBX3Fb",
+        "slot": 197,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1302
+            }
+          ]
+        }
+      },
+      {
+        "label": "wrong mint",
+        "code": 1003,
+        "signature": "2kkLdJzHP7sU6G5KnihxpLNZvL3UAGWqitTU8npyk1AjH2KjMsjVNbKdWGz6iMxAdes2Bsar2dQcQP7bQ1nVicL7",
+        "slot": 198,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "wrong custody inventory",
+        "code": 1003,
+        "signature": "4mFyFQgAjwEed9P1ikUr7DPpK8t2QFnBofgzC17Qa77X9trZx6CBYAXKJJZaQpzDT6h9sZ7opRmTVkDjFQSJW7Ys",
+        "slot": 199,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "destination owned by another buyer",
+        "code": 1003,
+        "signature": "5BNsRsznqWtDm1yoBJNyRYqHVH8EWBzy5URRWt7ib6fSNmZsf5JPh4VwrYay2e5NBs9ZAut1p1iX1pi1qBCzfhRS",
+        "slot": 200,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "substituted opening",
+        "code": 1003,
+        "signature": "vCqcjTinFPZVi1ecFC5kNoci1jPRoABrMgqqz3XfDSnk1h1mYPqAJCUm8HwWhoLxDXxgQxyCsWAfgirNZtGjJbM",
+        "slot": 201,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "substituted wallet receipt",
+        "code": 1003,
+        "signature": "ZVJdCTC2hxYEWfD1N74nGtccJdmCuLxVyNpiFsmSEp7gsTbDv4HUapkcJ4SCALnqmmhVp9gqppPNdvbZ5PsMnyA",
+        "slot": 202,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "substituted curve",
+        "code": 1102,
+        "signature": "qnYVmPqRPCqXwkn3U5fhjUKFjrUtEM5CAPQSkdCoc49RcWXPLJ7HbRyS8KwsLke7ptmsxM3TdWaazSpe7ESiUYQ",
+        "slot": 203,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1102
+            }
+          ]
+        }
+      },
+      {
+        "label": "wrong token program",
+        "code": 1003,
+        "signature": "yB1XfZv1x3GMzUDpYFX3kmUcakKD7G9ajYqt74hxB1hSEqfReL1K6TtqKHrguvy2QXaS9hYgDQXbxSdLiaSXjLu",
+        "slot": 204,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "wrong system program",
+        "code": 1003,
+        "signature": "64Y2etuAcYhhieyFcML8SWQCH91AjEUs3s29sNbjgP6xfUty2Yz1hPaSZa64KDNzNSkW1MHeahYy8xaqyEeQtnXe",
+        "slot": 205,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "unsigned buyer",
+        "code": 1002,
+        "signature": "674UzX5rtgXhvSBCa1it7wE6jETxsvTcfkQK2gyvkPYjofQvKSD5Vf2aNq7PXL2tBishPtFDCdNPWYoHk9Zkyjt",
+        "slot": 206,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1002
+            }
+          ]
+        }
+      },
+      {
+        "label": "fee bypass through legacy paid-buy entry point",
+        "code": 1306,
+        "signature": "4gpr8kquABeXUWdumLCVkHmHADDzLzbHs6seqBRnE6QBJwvyYGSgJspgKuGvy4HyD9fo88pmkCg73dh9WcN7A5dk",
+        "slot": 207,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1306
+            }
+          ]
+        }
+      },
+      {
+        "label": "stale fee quote",
+        "code": 1104,
+        "signature": "5fsz15yTLnf8nuLHPLAo5WBNmdsijgprb3DsEnvkQMNY5TvYG25UMA4HvQaQc1uWVCAyaFnRC7ob2kndqWCBPrNo",
+        "slot": 208,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1104
+            }
+          ]
+        }
+      },
+      {
+        "label": "substituted raw quote",
+        "code": 1105,
+        "signature": "4CAHmV6Po1Q7BZbr7Cegxi2CvnxFyTTZtbsr82wABwqzrzey7MRr2CjdAqaJRPeih538m6tWGSc3Yr1SXf8Vj2WX",
+        "slot": 209,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1105
+            }
+          ]
+        }
+      },
+      {
+        "label": "second instruction inconsistent price rolls back first trade and both fee CPIs",
+        "code": 1105,
+        "signature": "4LmiHrxX328sE3M6QSKi9keVwNBGzGDoaBQGgDgxuHr2DXKjjJKMv8LehG79g6vijJFQkZedHs7h4v6iLEtTqPFA",
+        "slot": 210,
+        "error": {
+          "InstructionError": [
+            1,
+            {
+              "Custom": 1105
+            }
+          ]
+        }
+      },
+      {
+        "label": "unauthorized treasury claim",
+        "code": 1304,
+        "signature": "5zPQaGzX65KdTWHJXSWPN35mZmqrAKoQiYSmxk6oNgMJee8igF3Qs6RRGqSt3jcCdhatC98njeQ3RcLy1MM6KnYH",
+        "slot": 211,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "unauthorized creator claim",
+        "code": 1304,
+        "signature": "M9m1JciBLkUyXGcNQZTbr3MLuvDbdqar6Pr8jxPp2qppCeNwFdoCvcEznX7WiaHiNWXAw1DFuqVSUVTx25x1AJs",
+        "slot": 212,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "cross launch creator beneficiary",
+        "code": 1304,
+        "signature": "5xcSUpyHXUdQp7sDb2wF8HLH6Pg3kzhFoSjfqUZHPcFakYFD71fBEE9pqT81p7PLNkHtr5A1icTAbNVbhsrejmyb",
+        "slot": 213,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "claim destination substitution",
+        "code": 1304,
+        "signature": "3ivyNKWtfdcbSSmtxq4Pq7JCFTLzPHXqcrb7ctc4JYsDuE2hUZbX7TkKFUJLdUDAyeTy3nhv8nFXPPWnVeY7HQde",
+        "slot": 214,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "creator withdrawal cannot draw platform funds",
+        "code": 1302,
+        "signature": "3k4ayJd7JNfKKdf4Pzb9Tg1CRHQuCa2e2KzYRZyMNf6ATN6pqSoeFBMJw1Qdqps53fzbFRNg1wVsMsshpnoKXsjd",
+        "slot": 215,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1302
+            }
+          ]
+        }
+      },
+      {
+        "label": "claim exceeds liability",
+        "code": 1307,
+        "signature": "3fCBiP71Rz7Ztt1VnhqoR8zGrADP8YfhweQCVXS7Zj7ZDM8YzZGBVuZL7dmZNpNd3vMwbVSHf5rw8ouXp5ftSG3c",
+        "slot": 216,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1307
+            }
+          ]
+        }
+      },
+      {
+        "label": "zero withdrawal",
+        "code": 1307,
+        "signature": "qbbwtZY8JyGgkTBQyeBLb1jTvHZLzRr92mVrJgFmmEqXaxVjpAQq95Vodio4ia19Tyo625dTNcfpQG5DW572oQL",
+        "slot": 217,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1307
+            }
+          ]
+        }
+      },
+      {
+        "label": "correct creator address without signature is unauthorized",
+        "code": 1304,
+        "signature": "2qr8XRGvCoWAhUF6SnfownZxvVCAqxMjTkDb9d26BkE5HLptprUdP26k3LkYcAnoghHaXScjouTkZCxkJMJEo1kh",
+        "slot": 218,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "read-only fee vault cannot be withdrawn",
+        "code": 1304,
+        "signature": "PfdfdPW4kVMdRXSmWTVdrST3CF1swo2DfXisZyp5scwoz7Fqx9jx7xrXrGZbKdgVdXfeuPAyZDhVRuYCftc4hXH",
+        "slot": 219,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1304
+            }
+          ]
+        }
+      },
+      {
+        "label": "cross-mint custody and claim relationship substitution",
+        "code": 1003,
+        "signature": "5J4FgGY3xiHyL1Pugsz2yvMVVZfRkMATZjB8krWBtcNXVdN1F6vYAzNQy3naqEc7SMz9LkYHgJY1p2B3rT9ibdEc",
+        "slot": 220,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1003
+            }
+          ]
+        }
+      },
+      {
+        "label": "multiple claims exceeding cumulative liability roll back the first withdrawal",
+        "code": 1307,
+        "signature": "4WNEhiiTykD1kX2hQxQqSCCdCKJM31dHPr3p8TACicThdAxJQ9sg52Rnp7DjK3s8svGfqNBuQXgpbnnsg77Mukps",
+        "slot": 221,
+        "error": {
+          "InstructionError": [
+            1,
+            {
+              "Custom": 1307
+            }
+          ]
+        }
+      },
+      {
+        "label": "duplicate treasury withdrawal",
+        "code": 1307,
+        "signature": "p5GYAer86WuVd3BLK2ZZLm1UAKw2SiEhgXsZn1DwwkG8R8hBuAmugVMidFms65VFNJEo29Nm5DDdsEUo2jNqgFC",
+        "slot": 224,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1307
+            }
+          ]
+        }
+      },
+      {
+        "label": "duplicate creator withdrawal",
+        "code": 1307,
+        "signature": "2RBTz7vqR1fL64Ny6qtNjS2vB7DZeCeojC2sr4wm8USBcLG8Ws4AwqriePmNH6zPjaVEgR1WjtF1PLif4FqXfSHJ",
+        "slot": 227,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1307
+            }
+          ]
+        }
+      },
+      {
+        "label": "unsupported closure/migration/reserve movement opcode 11",
+        "code": null,
+        "signature": "3zUYmYNN3qB1VxRFeZ8MKbgL2d1nMa2oc9UwJgQBfrkuBdEU1ZVzHaUAnjfiAGYgmL3tu3tmeCkPWCrw8LL3ap9z",
+        "slot": 229,
+        "error": {
+          "InstructionError": [
+            0,
+            "InvalidInstructionData"
+          ]
+        }
+      },
+      {
+        "label": "unsupported closure/migration/reserve movement opcode 12",
+        "code": null,
+        "signature": "3GsYjjFkNq3Kz8Ffc9CVmA2SouDM4F5C6ZXxQtco6niB86oJKVEUvN6JUBSiPHcu6VV87aWN9GWZGunyUk6Bk3cZ",
+        "slot": 230,
+        "error": {
+          "InstructionError": [
+            0,
+            "InvalidInstructionData"
+          ]
+        }
+      },
+      {
+        "label": "unsupported closure/migration/reserve movement opcode 255",
+        "code": null,
+        "signature": "4PN4XEa7j7vz9JRW5zhqY2qEuN7ZUumgHfx6N9iPE6ZwirRZ29pmiwz8rxLGJjW5Ma7Mtx7PMRpUN3ZpnuNahrPs",
+        "slot": 231,
+        "error": {
+          "InstructionError": [
+            0,
+            "InvalidInstructionData"
+          ]
+        }
+      },
+      {
+        "label": "multiple fee-buy instructions cannot exceed protected allowance cumulatively",
+        "code": 1201,
+        "signature": "3EXLzfWeQiVRLJDSoB5NJWTKfqJQZDMsWYSRkH8kCGJPt1PSejLQpb8noH6NGNieb4RXFygobspfftVLURcJHGcF",
+        "slot": 235,
+        "error": {
+          "InstructionError": [
+            1,
+            {
+              "Custom": 1201
+            }
+          ]
+        }
+      },
+      {
+        "label": "multiple fee-buy instructions cannot exceed ordinary cap cumulatively",
+        "code": 1005,
+        "signature": "9graS9uRrxxiKCvB8Kx2jUKAaXCXPLbB8ip9VGvaNY9icrXpsiHdGTJZks9zfKw3RhfmcVAg6pCJ2DqLNP6qoZ2",
+        "slot": 237,
+        "error": {
+          "InstructionError": [
+            1,
+            {
+              "Custom": 1005
+            }
+          ]
+        }
+      },
+      {
+        "label": "fee-inclusive u64 overflow quote",
+        "code": 1308,
+        "signature": "4cHodhfAs6StKRES9YtQD8hoD1oUTzra8Ndc5NHrop5STys62pxJbVPYxZvBKAnpDb7yY7HD1W9CTSbowtHbab6P",
+        "slot": 260,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1308
+            }
+          ]
+        }
+      },
+      {
+        "label": "fee-inclusive u64 overflow buy",
+        "code": 1308,
+        "signature": "tthTYMKKgxjF4orgCaxSgf5uFN1SsCiKPEsLsr75wazfL9vodjT5a8YXvH6UTfgTtPt3SF2vMJTyWKfT94mN9ut",
+        "slot": 261,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1308
+            }
+          ]
+        }
+      },
+      {
+        "label": "raw curve price overflow",
+        "code": 1108,
+        "signature": "oZqPHR3noMYQ2fWhGoaPPJfMMaLdQ7JSxycqngThFiQ7XJsVR7L9YyTAx3rdDThEa1jwHPgY3eaiYJ6EFHQxXyX",
+        "slot": 262,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1108
+            }
+          ]
+        }
+      },
+      {
+        "label": "zero purchase rejected before fee collection",
+        "code": 1006,
+        "signature": "k71BM5q8zaL5GTNQGtqMmGkPt8ao9U3ShszxV3BczSXHcXHzCG3PJiCgpSHTpynHBhTpU8LwcNnxSukEMMsg7TG",
+        "slot": 265,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1006
+            }
+          ]
+        }
+      },
+      {
+        "label": "receipt-rent System CPI fails after both fees and raw payment; transaction rolls everything back",
+        "code": 1,
+        "signature": "2k6JKSNx3nSdmdwbZgr1UcGUmarHHx5PdtA5SMq1oGLqdG561Tq9v7nGDCrDbchEMZ3bi4K3PruXv5cCddPMaX8N",
+        "slot": 274,
+        "error": {
+          "InstructionError": [
+            0,
+            {
+              "Custom": 1
+            }
+          ]
+        }
+      }
+    ],
+    "launches": [
+      {
+        "mint": "7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM",
+        "creator": "20",
+        "inventory": "960",
+        "distributed": "20",
+        "supply": "1000",
+        "rawReserve": "201900",
+        "platform": {
+          "mint": "7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM",
+          "curve": "2QR5eUjemA6rqSaRxHYTTKXBYNSQdoPh1d7x1SMCYSV8",
+          "beneficiary": "2iXtA8oeZqUU5pofxK971TCEvFGfems2AcDRaZHKD2pQ",
+          "kind": 0,
+          "accrued": "1517",
+          "withdrawn": "982",
+          "claimable": "535",
+          "bump": 255
+        },
+        "creatorFees": {
+          "mint": "7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM",
+          "curve": "2QR5eUjemA6rqSaRxHYTTKXBYNSQdoPh1d7x1SMCYSV8",
+          "beneficiary": "4Qzqa2nEi4HDXy8CUAiCKQCMu4phDRfzZEZApvJbcwtd",
+          "kind": 1,
+          "accrued": "507",
+          "withdrawn": "328",
+          "claimable": "179",
+          "bump": 255
+        },
+        "buys": [
+          {
+            "raw": "40060",
+            "platform": "301",
+            "creator": "101",
+            "total": "40462",
+            "sold": "0",
+            "collected": "0",
+            "amount": "4",
+            "signature": "5bVQ1HWbvebAyAoQTgUKJ9mtMtCbYSJLXk8Lm6roiCvc4qj9Vz6GSj8Vorab9XCVkrtbWWqm5TWMRh8HDwKDHJtL"
+          },
+          {
+            "raw": "60390",
+            "platform": "453",
+            "creator": "151",
+            "total": "60994",
+            "sold": "4",
+            "collected": "40060",
+            "amount": "6",
+            "signature": "2AoSD73dSr4TU9RZWJi1cBweEDkor1zcHcub4CozatxNveu6YLZEUZVQFXHJz5xxTfPZGu1snoi6Go8L5eS9yrP3"
+          },
+          {
+            "raw": "30330",
+            "platform": "228",
+            "creator": "76",
+            "total": "30634",
+            "sold": "10",
+            "collected": "100450",
+            "amount": "3",
+            "signature": "14rXDN8c5th7n9bXsctmpy98T4xhyMtBuMWt343Q2pU7pMvGHXNEpw6w9uXPPHp4NfzPQ1XncJnpf8NxH4psCwT"
+          },
+          {
+            "raw": "20270",
+            "platform": "153",
+            "creator": "51",
+            "total": "20474",
+            "sold": "13",
+            "collected": "130780",
+            "amount": "2",
+            "signature": "2v1FewLPs6hEYQex7LPfzucUuncTWoas6QGQd9FTQ84VmFhMwwHf5dA4vsjDfGZU52nnmQ6QhkyHafYyvMu3xwHM"
+          },
+          {
+            "raw": "50850",
+            "platform": "382",
+            "creator": "128",
+            "fees": "510",
+            "total": "51360",
+            "amount": "5",
+            "sold": "15",
+            "collected": "151050",
+            "signature": "2v1FewLPs6hEYQex7LPfzucUuncTWoas6QGQd9FTQ84VmFhMwwHf5dA4vsjDfGZU52nnmQ6QhkyHafYyvMu3xwHM"
+          }
+        ]
+      },
+      {
+        "mint": "FH6Mra585qFR4YntFhyzat2UZPjiJRtELcWVGLZ1rBfd",
+        "creator": "20",
+        "inventory": "978",
+        "distributed": "2",
+        "supply": "1000",
+        "rawReserve": "20010",
+        "platform": {
+          "mint": "FH6Mra585qFR4YntFhyzat2UZPjiJRtELcWVGLZ1rBfd",
+          "curve": "pQL4Urjhw3EcyNn3TGkCD9wy6aLckp86HRA4Juezdnc",
+          "beneficiary": "2iXtA8oeZqUU5pofxK971TCEvFGfems2AcDRaZHKD2pQ",
+          "kind": 0,
+          "accrued": "151",
+          "withdrawn": "0",
+          "claimable": "151",
+          "bump": 255
+        },
+        "creatorFees": {
+          "mint": "FH6Mra585qFR4YntFhyzat2UZPjiJRtELcWVGLZ1rBfd",
+          "curve": "pQL4Urjhw3EcyNn3TGkCD9wy6aLckp86HRA4Juezdnc",
+          "beneficiary": "8LzdqFWegKtxKxmf5RcV3nKBvJ85TXjc9whbpzViBBCX",
+          "kind": 1,
+          "accrued": "51",
+          "withdrawn": "51",
+          "claimable": "0",
+          "bump": 252
+        },
+        "buys": [
+          {
+            "raw": "20010",
+            "platform": "151",
+            "creator": "51",
+            "total": "20212",
+            "sold": "0",
+            "collected": "0",
+            "amount": "2",
+            "signature": "42ZWdKhA9f1pCdaKL1e1BxBNPskrvfDJsMByu3mUFKJHMsa1p2MNbF61oHc2n9nctBe4SqtwRSx335cMHyG4U39d"
+          }
+        ]
+      },
+      {
+        "mint": "9tbJfdsCWtBkF7X59PEKgHpMMmgTkarKZetsDqcS1KQs",
+        "creator": "20",
+        "inventory": "976",
+        "distributed": "4",
+        "supply": "1000",
+        "rawReserve": "4",
+        "platform": {
+          "mint": "9tbJfdsCWtBkF7X59PEKgHpMMmgTkarKZetsDqcS1KQs",
+          "curve": "AGvAoWrgmVGYds2AcgHDmZeEdEgYAsqdNsdvHkeApoXJ",
+          "beneficiary": "2iXtA8oeZqUU5pofxK971TCEvFGfems2AcDRaZHKD2pQ",
+          "kind": 0,
+          "accrued": "3",
+          "withdrawn": "0",
+          "claimable": "3",
+          "bump": 252
+        },
+        "creatorFees": {
+          "mint": "9tbJfdsCWtBkF7X59PEKgHpMMmgTkarKZetsDqcS1KQs",
+          "curve": "AGvAoWrgmVGYds2AcgHDmZeEdEgYAsqdNsdvHkeApoXJ",
+          "beneficiary": "4Qzqa2nEi4HDXy8CUAiCKQCMu4phDRfzZEZApvJbcwtd",
+          "kind": 1,
+          "accrued": "3",
+          "withdrawn": "0",
+          "claimable": "3",
+          "bump": 255
+        },
+        "buys": [
+          {
+            "raw": "1",
+            "platform": "1",
+            "creator": "1",
+            "total": "3",
+            "sold": "0",
+            "collected": "0",
+            "amount": "1",
+            "signature": "3YNosdzUZDU7oLeVsv7m24YW6C7HRmPNJ4mNGyYyqHWMFcjbVnhCKEPmjmnV3QhXXQukJYLeNfUFy28zC6UPjr7z"
+          },
+          {
+            "raw": "1",
+            "platform": "1",
+            "creator": "1",
+            "total": "3",
+            "sold": "1",
+            "collected": "1",
+            "amount": "1",
+            "signature": "4Gp3HgE6xpTUmbwHFXKv2yWvZK1tn3httv5thgnyXV2BAj7599LSxHT7J9w8WoTCRQML5VsukBGbuui13xmwNL7W"
+          },
+          {
+            "raw": "2",
+            "platform": "1",
+            "creator": "1",
+            "total": "4",
+            "sold": "2",
+            "collected": "2",
+            "amount": "2",
+            "signature": "4GJqXbParWDPDVej8QT14nL1UxDUQtqGTuVQQ8cX5JpXZQW9gb3Phbb2eFbY585uvaMG7b9jXm36yp7L8ueMb1Hu"
+          }
+        ]
+      },
+      {
+        "mint": "GCykmDpHo59xutUbaNfm6hkRg63fP8Ry4KTHGbeXoTNi",
+        "creator": "20",
+        "inventory": "980",
+        "distributed": "0",
+        "supply": "1000",
+        "rawReserve": "0",
+        "platform": {
+          "mint": "GCykmDpHo59xutUbaNfm6hkRg63fP8Ry4KTHGbeXoTNi",
+          "curve": "2eZUFrxktmDPYLjxHYo842Mb6F3RikLNPwi3oke4vKVY",
+          "beneficiary": "2iXtA8oeZqUU5pofxK971TCEvFGfems2AcDRaZHKD2pQ",
+          "kind": 0,
+          "accrued": "0",
+          "withdrawn": "0",
+          "claimable": "0",
+          "bump": 254
+        },
+        "creatorFees": {
+          "mint": "GCykmDpHo59xutUbaNfm6hkRg63fP8Ry4KTHGbeXoTNi",
+          "curve": "2eZUFrxktmDPYLjxHYo842Mb6F3RikLNPwi3oke4vKVY",
+          "beneficiary": "8LzdqFWegKtxKxmf5RcV3nKBvJ85TXjc9whbpzViBBCX",
+          "kind": 1,
+          "accrued": "0",
+          "withdrawn": "0",
+          "claimable": "0",
+          "bump": 251
+        },
+        "buys": []
+      },
+      {
+        "mint": "EqyRLk3Adjq85AEjSXveKvGeHhs3eN6RYB1oy2hzyWAm",
+        "creator": "20",
+        "inventory": "980",
+        "distributed": "0",
+        "supply": "1000",
+        "rawReserve": "0",
+        "platform": {
+          "mint": "EqyRLk3Adjq85AEjSXveKvGeHhs3eN6RYB1oy2hzyWAm",
+          "curve": "Gwh8CsZnfJVEyx3wN9TjTiYKyvkPrzWqY1Zq6kVPUWGu",
+          "beneficiary": "2iXtA8oeZqUU5pofxK971TCEvFGfems2AcDRaZHKD2pQ",
+          "kind": 0,
+          "accrued": "0",
+          "withdrawn": "0",
+          "claimable": "0",
+          "bump": 255
+        },
+        "creatorFees": {
+          "mint": "EqyRLk3Adjq85AEjSXveKvGeHhs3eN6RYB1oy2hzyWAm",
+          "curve": "Gwh8CsZnfJVEyx3wN9TjTiYKyvkPrzWqY1Zq6kVPUWGu",
+          "beneficiary": "8LzdqFWegKtxKxmf5RcV3nKBvJ85TXjc9whbpzViBBCX",
+          "kind": 1,
+          "accrued": "0",
+          "withdrawn": "0",
+          "claimable": "0",
+          "bump": 249
+        },
+        "buys": []
+      }
+    ],
+    "claims": [
+      {
+        "mint": "7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM",
+        "kind": 0,
+        "amount": "1",
+        "signature": "af6Xvqjz4g3ZYHuJ44cnxo4ynUiY1237eeqnu6UgVZWDRddwSS83D4SJi5s7wPCoC8jd5vbdKafNSdMTES2Ph9q"
+      },
+      {
+        "mint": "7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM",
+        "kind": 0,
+        "amount": "981",
+        "signature": "2Wvio4bsZZa2U7naMEc5vdcfaLaznP1r9Gmrz2qkAohMu9mhttLGfA4MZmQCQXsQmsaTj6f2HurktmpPzVUkfSx7"
+      },
+      {
+        "mint": "7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM",
+        "kind": 1,
+        "amount": "1",
+        "signature": "4urgvyPcxGG1iGYa78KXQ7Qfp9HRuixwkSo5EpnYsN7exUkGHQv5A93gZRqK8CdE52WwxsaeHv9149ek9NDHyvAJ"
+      },
+      {
+        "mint": "7eWu4A7xjS6ksYaMjC4dcgHNw49bXTKUwxvaFGEMhqM",
+        "kind": 1,
+        "amount": "327",
+        "signature": "ZTuUXQWwhogqAaFezEy91yM4SpifaMV1hj1wpSqJsGemboF182rRvVLjvm3XxNLtUXWR8f5A2HzFwQbHGDQwL6Y"
+      },
+      {
+        "mint": "FH6Mra585qFR4YntFhyzat2UZPjiJRtELcWVGLZ1rBfd",
+        "kind": 1,
+        "amount": "51",
+        "signature": "4gP3oW2FoznWjmKdYURqVUQiERmQreqNtvwu99LXSYPJeeQzSj2miZJigP7h6hLPg7RzZSUjTsAAagPm66FFKcW"
+      }
+    ]
+  },
+  "inconsistentStateRejections": [
+    {
+      "label": "withdrawn exceeds accrued",
+      "code": 1308,
+      "signature": "3FwoA6ekC1nFQ9kMwQgEXMaKjDXtRfZgQhfPCfovXCtHDNzhU2WkbA92p91qMW8cvoKm9cXK8ReXF9DuEDgzuEow",
+      "slot": 43,
+      "program": "7QhXSnj7igy9HX6n1i3bnuc2SUbMTRWZEouGZKcy9d31",
+      "tokenSupply": "1000",
+      "stateAndBalancesUnchanged": true
+    },
+    {
+      "label": "redirected production treasury configuration",
+      "code": 1302,
+      "signature": "38cLzUGrF6f3Qzk58HC4aP5TviBMPT6Jqc3g8HDcKNVzwHgWFiTASd9p89n8DkbyoBgpr3j2vcEYtTqs7AgbnmES",
+      "slot": 45,
+      "program": "7QhXSnj7igy9HX6n1i3bnuc2SUbMTRWZEouGZKcy9d31",
+      "tokenSupply": "1000",
+      "stateAndBalancesUnchanged": true
+    },
+    {
+      "label": "inconsistent creator liability",
+      "code": 1303,
+      "signature": "vWoWzAqpV3ccsDdiZhC2TcCk5tRnKSCPZSf92C6KTNyrisg8RGVKSkPYWRRqn8ngFx3Fiu8MsVrApGsMpNiHebk",
+      "slot": 47,
+      "program": "7QhXSnj7igy9HX6n1i3bnuc2SUbMTRWZEouGZKcy9d31",
+      "tokenSupply": "1000",
+      "stateAndBalancesUnchanged": true
+    },
+    {
+      "label": "curve reserve depleted below recorded consideration",
+      "code": 1102,
+      "signature": "5J8FabwwmU2oAuf3SGZ8ivGys642SdTa1sjNEVyXeeQGhbD6DxWMW7TRtwTDT1UrkqCrhep9X6uTMcCfeiWT7Gir",
+      "slot": 49,
+      "program": "7QhXSnj7igy9HX6n1i3bnuc2SUbMTRWZEouGZKcy9d31",
+      "tokenSupply": "1000",
+      "stateAndBalancesUnchanged": true
+    }
+  ],
+  "browserLocalExecution": {
+    "positive": [
+      "fee disclosures and intended treasury render; unauthenticated operations disabled",
+      "real on-chain empty state and loading/error recovery",
+      "Wallet Standard signer creates real fee-enabled mint and immutable creator entitlement",
+      "displayed 10000 + 75 + 25 = 10100 quote comes from actual SBF simulation",
+      "browser signs actual atomic buy; confirmed event and both real fee dashboards agree",
+      "browser creator claim, zero claimable and verified transaction history; treasury remains isolated",
+      "browser launch conserves 20 initial creator + 1 buyer + 979 custody = 1000"
+    ],
+    "rejected": [
+      "wrong network refused before signing",
+      "undeployed program refused before signing",
+      "underquoted full expenditure refused without state change",
+      "wallet rejection leaves all chain accounts unchanged"
+    ],
+    "transactions": [
+      "49Sd64D61zJfSe2FYTtpg3jLiM2YmiK2EoMdcdxr64hJBEFhRo3u27rNR3n7zBAx7Td5FooMMMDWtQU3MeFum84x",
+      "35U2X94hYcaUmXZmESYESkXvug55EhQpg9a2msEnMSguTfZ59t8gyVC2gQzwsBtZdDS71dg3BNy2RugeDkhzh6tx",
+      "3gWY55MwFbkgMnQ8N28tYRCuryX7SPi998BMKYmn1rPvfFRT1NLGwv16GeRitm7sfNUFCibnKvAD3WHs9eebUXhA",
+      "2HaqWtBx5PpvV9DkrpcivpL1Fi6Vus3zXJCrGJQxCW9Zus9GUqmfyA4NoXm71MBmhqEEqyBy5WjDaAWnvnLWxsz8",
+      "3v2jmSxGKSQMvsSAxTvt66ESk2QS51Vn19zrpef9JXwcmhMV78qbgkKSGaZiVYtNv845JiW43CdZRoRhagD7N3nX",
+      "5RZjf5xAua1P2G1caYJn23SWqwLcRx1F1S9HhM57fDX2g23CjQeNaLFzKvScBGQ2xhgKXhqhrWCyAmoqSj1grd4w"
+    ],
+    "verifiedHistoryLinks": [
+      "https://explorer.solana.com/tx/5RZjf5xAua1P2G1caYJn23SWqwLcRx1F1S9HhM57fDX2g23CjQeNaLFzKvScBGQ2xhgKXhqhrWCyAmoqSj1grd4w?cluster=devnet",
+      "https://explorer.solana.com/tx/5RZjf5xAua1P2G1caYJn23SWqwLcRx1F1S9HhM57fDX2g23CjQeNaLFzKvScBGQ2xhgKXhqhrWCyAmoqSj1grd4w?cluster=devnet"
+    ],
+    "mint": "28HPEre6FT4Hhs3NwiM9pQS9kUfdhNSPD3TgqwFsSadE",
+    "tokenConservation": {
+      "creatorInitial": "20",
+      "buyerDistributed": "1",
+      "actualCreatorAta": "21",
+      "custody": "979",
+      "supply": "1000"
+    },
+    "platform": {
+      "mint": "28HPEre6FT4Hhs3NwiM9pQS9kUfdhNSPD3TgqwFsSadE",
+      "curve": "BveeMYc5QYLwEcisMqnemViarRS24Sez8AYQuve7EdUe",
+      "beneficiary": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+      "kind": 0,
+      "accrued": "75",
+      "withdrawn": "0",
+      "claimable": "75",
+      "bump": 253
+    },
+    "creator": {
+      "mint": "28HPEre6FT4Hhs3NwiM9pQS9kUfdhNSPD3TgqwFsSadE",
+      "curve": "BveeMYc5QYLwEcisMqnemViarRS24Sez8AYQuve7EdUe",
+      "beneficiary": "CUYTEH3fabBTT4GAp7ubictLMmFFRL2QXt3QMeeLr9vp",
+      "kind": 1,
+      "accrued": "25",
+      "withdrawn": "25",
+      "claimable": "0",
+      "bump": 255
+    }
+  },
+  "allPreviousRegressionsPassed": true,
+  "frozenBaselineUnchanged": true,
+  "allChangedFiles": [
+    "jeet-app-next/docs/fee-engine-test-results.txt",
+    "jeet-app-next/docs/fee-engine-verification.json",
+    "jeet-app-next/docs/fee-engine.md",
+    "jeet-app-next/package-lock.json",
+    "jeet-app-next/package.json",
+    "jeet-app-next/programs/launch-custody/Cargo.toml",
+    "jeet-app-next/programs/launch-custody/src/caps.rs",
+    "jeet-app-next/programs/launch-custody/src/curve.rs",
+    "jeet-app-next/programs/launch-custody/src/fees.rs",
+    "jeet-app-next/programs/launch-custody/src/lib.rs",
+    "jeet-app-next/programs/launch-custody/src/protected.rs",
+    "jeet-app-next/scripts/run-custody-tests.mjs",
+    "jeet-app-next/scripts/test-fee-client.mjs",
+    "jeet-app-next/scripts/test-fee-dashboard.mjs",
+    "jeet-app-next/scripts/test-fee-integrity.mjs",
+    "jeet-app-next/scripts/test-fees.mjs",
+    "jeet-app-next/src/app/revenue/page.tsx",
+    "jeet-app-next/src/app/token/[mint]/page.tsx",
+    "jeet-app-next/src/components/FeeConsole.tsx",
+    "jeet-app-next/src/components/SiteHeader.tsx",
+    "jeet-app-next/src/lib/launch-custody.ts",
+    "jeet-app-next/src/lib/launch-fees.ts",
+    "jeet-app-next/tsconfig.json"
+  ],
+  "limits": [
+    "No Devnet or mainnet deployment performed; no real SOL sent or live authorities changed.",
+    "Approved wallet control is not assumed or established. Valid treasury claims use the isolated test program and disposable signer; default program refuses that signer.",
+    "Live Devnet UI fails closed until separately approved program deployment.",
+    "Recent history shows up to 50 transactions per vault; lifetime counters remain complete on-chain.",
+    "No sell, liquidity migration, or post-migration fee execution exists.",
+    "Independent production security review remains necessary before handling real funds."
+  ]
+}

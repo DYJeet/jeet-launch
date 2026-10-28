@@ -17,7 +17,7 @@ export default function SiteHeader() {
           <Link className="transition hover:text-white" href="/">Launchpad</Link>
           <Link className="transition hover:text-white" href="/explore">Explore</Link>
           <Link className="transition hover:text-white" href="/create">Create</Link>
-          <span className="cursor-not-allowed text-white/20">Leaderboard</span>
+          <Link className="transition hover:text-white" href="/revenue">Revenue</Link>
           <span className="cursor-not-allowed text-white/20">Docs</span>
         </nav>
 
