@@ -1,0 +1,24 @@
+PASS missing custody program fails before mint creation
+PASS 2%: 20000000000000000 + 980000000000000000 = 1000000000000000000
+PASS 0%: 0 + 1000000000000000000 = 1000000000000000000
+PASS 5%: 50000000000000000 + 950000000000000000 = 1000000000000000000
+PASS 2.51%: 308 + 11992 = 12300
+PASS 0.01%: 0 + 1 = 1
+PASS 2%: 20 + 980 = 1000
+PASS custody program signs CPI from an independent caller
+PASS rejected unauthorized wallet withdrawal
+PASS rejected cross-mint vault substitution
+PASS rejected creator ATA substituted for vault
+PASS rejected fake custody state
+PASS rejected unknown instruction
+PASS rejected custody reinitialization
+PASS rejected invalid PDA seed account
+PASS balances and supply unchanged after all denied operations
+PASS rejected supply mismatch at initialization
+PASS rejected creator balance mismatch at initialization
+PASS rejected creator identity substitution
+PASS rejected unsigned initializer
+PASS rejected incorrect Token Program
+PASS prefunded PDA initializes safely after invalid attempts; 20 + 980 = 1000
+PASS invalid parameters rejected before chain writes
+PASS custody checkpoint. Logs and disposable ledgers: /tmp/jeet-custody-LuKo1y

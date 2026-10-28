@@ -1,4 +1,4 @@
-import { createClient, generateKeyPairSigner, isNone, lamports } from "@solana/kit";
+import { createClient, generateKeyPairSigner, isNone, lamports, address, assertAccountExists, createSolanaRpc, fetchEncodedAccount, getAddressEncoder } from "@solana/kit";
 import { rpcAirdrop, solanaRpc } from "@solana/kit-plugin-rpc";
 import { airdropPayer, generatedPayer } from "@solana/kit-plugin-signer";
 import {
@@ -9,6 +9,10 @@ import {
   tokenProgram,
 } from "@solana-program/token";
 import { NextResponse } from "next/server";
+import {
+  CUSTODY_PROGRAM_ADDRESS, CUSTODY_STATE_SIZE, findLaunchCustodyPda,
+  initializeCustodyInstruction, proveCustodyInstruction,
+} from "@/lib/launch-custody";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -103,6 +107,8 @@ function describeError(error: unknown) {
 }
 
 export async function POST(request: Request) {
+  let phase = "validation";
+  let createdMint: string | null = null;
   try {
     let body: CreateRequest;
     try {
@@ -138,6 +144,15 @@ export async function POST(request: Request) {
       throw new Error("Launch inventory must remain greater than zero.");
     }
 
+    // Fail before creating or funding a launch if the custody program is unavailable.
+    phase = "custody-program-check";
+    const program = await fetchEncodedAccount(createSolanaRpc(LOCAL_RPC_URL), CUSTODY_PROGRAM_ADDRESS);
+    assertAccountExists(program);
+    if (!program.executable) {
+      throw new Error("Local custody program is not executable. Start npm run validator after npm run custody:build.");
+    }
+
+    phase = "local-funding";
     const client = await createClient()
       .use(generatedPayer())
       .use(
@@ -155,8 +170,10 @@ export async function POST(request: Request) {
 
     const mint = await generateKeyPairSigner();
     const creator = await generateKeyPairSigner();
-    const launchVault = await generateKeyPairSigner();
+    const [custodyAddress, custodyBump] = await findLaunchCustodyPda(mint.address);
 
+    phase = "mint-creation";
+    createdMint = String(mint.address);
     const createResult = await client.token.instructions
       .createMint({
         newMint: mint,
@@ -166,6 +183,7 @@ export async function POST(request: Request) {
       })
       .sendTransaction();
 
+    phase = "allocation-minting";
     let creatorMintSignature: string | null = null;
     let creatorTokenAccount: string | null = null;
 
@@ -193,7 +211,7 @@ export async function POST(request: Request) {
     const launchMintResult = await client.token.instructions
       .mintToATA({
         mint: mint.address,
-        owner: launchVault.address,
+        owner: custodyAddress,
         mintAuthority: client.payer,
         amount: launchInventoryAmount,
         decimals,
@@ -202,10 +220,22 @@ export async function POST(request: Request) {
 
     const [launchVaultTokenAccount] = await findAssociatedTokenPda({
       mint: mint.address,
-      owner: launchVault.address,
+      owner: custodyAddress,
       tokenProgram: TOKEN_PROGRAM_ADDRESS,
     });
 
+    phase = "custody-initialization";
+    const custodyResult = await client.sendTransaction([
+      initializeCustodyInstruction({
+        payer: client.payer, mint: mint.address, creator: creator.address,
+        creatorTokenAccount: creatorTokenAccount ? address(creatorTokenAccount) : null,
+        custody: custodyAddress, vault: launchVaultTokenAccount,
+        creatorAmount, inventoryAmount: launchInventoryAmount,
+      }),
+      proveCustodyInstruction(custodyAddress, mint.address, launchVaultTokenAccount),
+    ]);
+
+    phase = "authority-configuration";
     const authorityInstructions = [];
     if (revokeMint) {
       authorityInstructions.push(
@@ -233,6 +263,28 @@ export async function POST(request: Request) {
     if (authorityInstructions.length > 0) {
       const authorityResult = await client.sendTransaction(authorityInstructions);
       authoritySignature = String(authorityResult.context.signature);
+    }
+
+    phase = "on-chain-verification";
+    const state = await fetchEncodedAccount(client.rpc, custodyAddress);
+    assertAccountExists(state);
+    const stateView = new DataView(state.data.buffer, state.data.byteOffset, state.data.byteLength);
+    const encoder = getAddressEncoder();
+    if (state.programAddress !== CUSTODY_PROGRAM_ADDRESS || state.executable ||
+        state.data.length !== CUSTODY_STATE_SIZE ||
+        new TextDecoder().decode(state.data.slice(0, 8)) !== "JEETCST1" ||
+        !state.data.slice(8, 40).every((v, i) => v === encoder.encode(mint.address)[i]) ||
+        !state.data.slice(40, 72).every((v, i) => v === encoder.encode(creator.address)[i]) ||
+        stateView.getBigUint64(72, true) !== creatorAmount ||
+        stateView.getBigUint64(80, true) !== launchInventoryAmount || state.data[88] !== custodyBump) {
+      throw new Error("Custody state verification failed.");
+    }
+    const vaultAccount = await client.token.accounts.token.fetch(launchVaultTokenAccount);
+    if (vaultAccount.programAddress !== TOKEN_PROGRAM_ADDRESS ||
+        vaultAccount.data.owner !== custodyAddress || vaultAccount.data.mint !== mint.address ||
+        !isNone(vaultAccount.data.delegate) || vaultAccount.data.delegatedAmount !== 0n ||
+        !isNone(vaultAccount.data.closeAuthority) || vaultAccount.data.amount !== launchInventoryAmount) {
+      throw new Error("Launch inventory custody verification failed.");
     }
 
     const mintAccount = await client.token.accounts.mint.fetch(mint.address);
@@ -277,7 +329,7 @@ export async function POST(request: Request) {
       payerAddress: String(client.payer.address),
       creatorAddress: String(creator.address),
       creatorTokenAccount,
-      launchVaultAddress: String(launchVault.address),
+      launchVaultAddress: String(custodyAddress),
       launchVaultTokenAccount: String(launchVaultTokenAccount),
       createSignature: String(createResult.context.signature),
       creatorMintSignature,
@@ -291,12 +343,18 @@ export async function POST(request: Request) {
       mintAuthorityRevoked,
       freezeAuthorityRevoked,
       allocationVerified: true,
+      custodyVerified: true,
+      custodyProgramAddress: CUSTODY_PROGRAM_ADDRESS,
+      custodyBump,
+      custodySignature: String(custodyResult.context.signature),
     });
   } catch (error) {
     return NextResponse.json(
       {
         ok: false,
-        message: describeError(error),
+        message: `Local launch stopped during ${phase}: ${describeError(error)}${createdMint ? ` Mint ${createdMint} may exist with partial state; inspect it before retrying.` : ""}`,
+        phase,
+        mintAddress: createdMint,
       },
       { status: 500 },
     );

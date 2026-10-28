@@ -7,7 +7,9 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "validator": "bash scripts/local-validator.sh"
+    "validator": "bash scripts/local-validator.sh",
+    "custody:build": "cargo-build-sbf --manifest-path programs/launch-custody/Cargo.toml -- --locked",
+    "test:custody": "node scripts/run-custody-tests.mjs"
   },
   "dependencies": {
     "@solana-program/token": "0.18.0",

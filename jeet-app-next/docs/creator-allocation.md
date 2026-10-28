@@ -19,6 +19,8 @@ To reproduce, build the app, start a compatible local validator on 8899/8900, st
 
 ## Limits and next feature
 
-This is a local allocation proof. Creator and launch-inventory owners are temporary generated test keypairs; their keys are not returned or persisted. The launch inventory is not a program-controlled escrow. The Devnet wallet path remains a separate full-supply test and does not implement this split.
+The original allocation checkpoint below used temporary owners. The subsequent [custody checkpoint](launch-custody.md) replaces only the inventory owner with program-controlled custody.
+
+At the original allocation checkpoint, creator and launch-inventory owners were temporary generated test keypairs; their keys are not returned or persisted. The launch inventory is not a program-controlled escrow. The Devnet wallet path remains a separate full-supply test and does not implement this split.
 
 Wallet caps require an on-chain purchase instruction and program-controlled inventory. A browser-only or API-only cap cannot enforce purchases on-chain. That program is the next architectural prerequisite; pricing, opening rules and migration must use the same enforceable custody model.

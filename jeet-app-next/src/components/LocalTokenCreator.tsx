@@ -35,6 +35,9 @@ type LocalResult = {
   mintAuthorityRevoked: boolean;
   freezeAuthorityRevoked: boolean;
   allocationVerified: boolean;
+  custodyVerified: boolean;
+  custodyProgramAddress: string;
+  custodySignature: string;
 };
 
 export default function LocalTokenCreator({
@@ -183,7 +186,7 @@ export default function LocalTokenCreator({
       <div className="rounded-xl border border-yellow-300/15 bg-yellow-300/[0.04] p-3.5 text-[11px] leading-5 text-white/45">
         <p className="font-black text-yellow-200">Creator allocation is verified in this local test</p>
         <p className="mt-1.5">
-          Temporary test owners are generated for this local proof; this is not a program-controlled vault. Creator amounts round down to whole base units, with the remainder kept in launch inventory. The disclosed creator percentage is minted to its own token account. Every remaining token is
+          The creator remains a temporary test owner. Launch inventory is held by the custody program’s mint-specific PDA, with no wallet withdrawal path. Creator amounts round down to whole base units, with the remainder kept in launch inventory. The disclosed creator percentage is minted to its own token account. Every remaining token is
           minted to a separate launch-inventory vault. The test fails unless both balances and the total
           mint supply match exactly. Wallet caps, curve pricing, migration, and anti-sniper logic still
           come in later passes.
@@ -218,14 +221,16 @@ export default function LocalTokenCreator({
 
       {result ? (
         <div className="space-y-3 rounded-xl border border-[#9cff43]/20 bg-black/20 p-4 text-[11px]">
-          <p className="text-sm font-black text-[#9cff43]">✓ Local mint + creator allocation verified</p>
+          <p className="text-sm font-black text-[#9cff43]">✓ Local mint + allocation + custody verified</p>
 
           <div className="grid gap-2 sm:grid-cols-2">
             <ResultLine label="Mint" value={result.mintAddress} />
             <ResultLine label="Temporary payer" value={result.payerAddress} />
             <ResultLine label="Creator owner" value={result.creatorAddress} />
             <ResultLine label="Creator token account" value={result.creatorTokenAccount ?? "No creator ATA (0% allocation)"} />
-            <ResultLine label="Launch vault owner" value={result.launchVaultAddress} />
+            <ResultLine label="Custody program" value={result.custodyProgramAddress} />
+            <ResultLine label="Custody proof signature" value={result.custodySignature} />
+            <ResultLine label="Launch custody PDA" value={result.launchVaultAddress} />
             <ResultLine label="Launch vault token account" value={result.launchVaultTokenAccount} />
             <ResultLine label="Create signature" value={result.createSignature} />
             {result.creatorMintSignature ? (
