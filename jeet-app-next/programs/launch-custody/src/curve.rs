@@ -17,6 +17,7 @@ pub struct Curve {
     pub sold: u64,
     pub collected: u64,
     pub inventory: u64,
+    pub protection: Option<super::protected::Protection>,
 }
 // ceil((base*n*scale + slope*(sold*n+n*(n-1)/2)) / scale^2)
 pub fn cost(c: &Curve, n: u64) -> Result<u64, ProgramError> {
@@ -65,8 +66,9 @@ pub fn load(
         return Err(error(1102));
     }
     let data = curve.try_borrow_data()?;
-    if data.len() != LEN
-        || &data[..8] != MAGIC_CURVE
+    let legacy = data.len() == LEN && &data[..8] == MAGIC_CURVE;
+    let protected = data.len() == super::protected::LEN && &data[..8] == super::protected::MAGIC;
+    if (!legacy && !protected)
         || &data[8..40] != mint.key.as_ref()
         || &data[40..72] != custody.key.as_ref()
         || &data[72..104] != opening.key.as_ref()
@@ -96,6 +98,16 @@ pub fn load(
         sold: read(&data, 128),
         collected: read(&data, 136),
         inventory: read(&data, 144),
+        protection: if protected {
+            Some(super::protected::decode(
+                &data,
+                minted.supply,
+                inventory,
+                &open,
+            )?)
+        } else {
+            None
+        },
     };
     if c.base == 0
         || c.scale != 10u64.pow(u32::from(minted.decimals))
@@ -109,7 +121,7 @@ pub fn load(
         return Err(error(1102));
     }
     let reserve = Rent::get()?
-        .minimum_balance(LEN)
+        .minimum_balance(data.len())
         .checked_add(c.collected)
         .ok_or(error(1108))?;
     if curve.lamports() < reserve {
@@ -128,11 +140,18 @@ pub fn pay<'a>(
     vault: &AccountInfo<'a>,
     system: &AccountInfo<'a>,
     input: &[u8],
+    cumulative_received: u64,
 ) -> ProgramResult {
     if !curve.is_writable || buyer.owner != &system_program::id() || !buyer.data_is_empty() {
         return Err(error(1102));
     }
     let c = load(program, mint, custody, opening, curve, vault)?;
+    if let Some(protection) = c.protection {
+        protection.enforce(
+            solana_program::clock::Clock::get()?.slot,
+            cumulative_received,
+        )?;
+    }
     if read(input, 9) != c.sold {
         return Err(error(1104));
     }
@@ -162,8 +181,9 @@ pub fn pay<'a>(
 }
 pub fn process(program: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> ProgramResult {
     match input.first() {
-        Some(4) => {
-            if input.len() != 17 || accounts.len() != 7 {
+        Some(4 | 6) => {
+            let protected = input[0] == 6;
+            if input.len() != if protected { 35 } else { 17 } || accounts.len() != 7 {
                 return Err(error(1100));
             }
             let payer = &accounts[0];
@@ -215,16 +235,38 @@ pub fn process(program: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> Prog
             if curve.owner != &system_program::id() || !curve.data_is_empty() {
                 return Err(error(1109));
             }
+            let protection = if protected {
+                Some(super::protected::create(
+                    solana_program::clock::Clock::get()?.slot,
+                    read(input, 17),
+                    read(input, 25),
+                    u16::from_le_bytes(input[33..35].try_into().unwrap()),
+                    minted.supply,
+                    inventory,
+                    &open,
+                )?)
+            } else {
+                None
+            };
+            let length = if protected {
+                super::protected::LEN
+            } else {
+                LEN
+            };
             super::caps::allocate(
                 payer,
                 curve,
                 system,
                 program,
-                LEN,
+                length,
                 &[b"curve", mint.key.as_ref(), &[bump]],
             )?;
             let mut data = curve.try_borrow_mut_data()?;
-            data[..8].copy_from_slice(MAGIC_CURVE);
+            data[..8].copy_from_slice(if protected {
+                super::protected::MAGIC
+            } else {
+                MAGIC_CURVE
+            });
             data[8..40].copy_from_slice(mint.key.as_ref());
             data[40..72].copy_from_slice(custody.key.as_ref());
             data[72..104].copy_from_slice(opening.key.as_ref());
@@ -234,6 +276,9 @@ pub fn process(program: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> Prog
             data[128..144].fill(0);
             data[144..152].copy_from_slice(&inventory.to_le_bytes());
             data[152] = bump;
+            if let Some(protection) = protection {
+                protection.write(&mut data);
+            }
             Ok(())
         }
         Some(5) => {

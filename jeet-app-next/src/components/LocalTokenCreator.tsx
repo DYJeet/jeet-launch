@@ -10,6 +10,7 @@ type Props = {
   decimals: number;
   devAllocation: string;
   maxWalletPercent: string;
+  protectedOpeningEnabled: boolean;
   revokeMint: boolean;
   revokeFreeze: boolean;
 };
@@ -45,6 +46,7 @@ type LocalResult = {
   openingCapBaseUnits: string;
   custodyProgramAddress: string;
   custodySignature: string;
+  protectedOpening: {createdSlot:string;startSlot:string;durationSlots:string;endSlot:string;limitBaseUnits:string;delaySlots:string;limitBps:string}|null;
 };
 
 export default function LocalTokenCreator({
@@ -54,6 +56,7 @@ export default function LocalTokenCreator({
   decimals,
   devAllocation,
   maxWalletPercent,
+  protectedOpeningEnabled,
   revokeMint,
   revokeFreeze,
 }: Props) {
@@ -63,6 +66,9 @@ export default function LocalTokenCreator({
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<LocalResult | null>(null);
   const amount = toTokenBaseUnits(totalSupply, decimals);
+  const [protectedDelaySlots,setProtectedDelaySlots]=useState("0");
+  const [protectedDurationSlots,setProtectedDurationSlots]=useState("50");
+  const [protectedLimitPercent,setProtectedLimitPercent]=useState("0.50");
 
   const checkValidator = useCallback(async () => {
     setValidatorState("checking");
@@ -113,6 +119,10 @@ export default function LocalTokenCreator({
           decimals,
           devAllocation,
           maxWalletPercent,
+          protectedOpeningEnabled,
+          protectedDelaySlots:Number(protectedDelaySlots),
+          protectedDurationSlots:Number(protectedDurationSlots),
+          protectedLimitPercent,
           revokeMint,
           revokeFreeze,
         }),
@@ -197,11 +207,25 @@ export default function LocalTokenCreator({
         <p className="mt-1.5">
           The creator remains a temporary test owner. Launch inventory is held by the custody program’s mint-specific PDA, with cumulative opening caps enforced on launch distributions. Creator amounts round down to whole base units, with the remainder kept in launch inventory. The disclosed creator percentage is minted to its own token account. Every remaining token is
           minted to a separate launch-inventory vault. The test fails unless both balances and the total
-          mint supply match exactly. Opening caps and deterministic buy pricing are enforced on-chain. Migration and anti-sniper logic
-          come in later passes.
+          mint supply match exactly. Opening caps, deterministic buy pricing and selected protected-opening rules are enforced on-chain. Liquidity migration comes in a later pass.
         </p>
       </div>
 
+      {protectedOpeningEnabled ? (
+        <fieldset className="grid gap-3 rounded-xl border border-[#9cff43]/20 bg-black/15 p-3 text-[11px] sm:grid-cols-3">
+          <legend className="px-1 font-black text-[#9cff43]">Protected opening · immutable on-chain settings</legend>
+          <label className="space-y-1 text-white/50">Start delay (slots)
+            <input type="number" min="0" max="1000000" step="1" value={protectedDelaySlots} onChange={event=>setProtectedDelaySlots(event.target.value)} className="w-full rounded-lg border border-white/10 bg-black/30 p-2 text-white" />
+          </label>
+          <label className="space-y-1 text-white/50">Protected duration (slots)
+            <input type="number" min="1" max="1000000" step="1" value={protectedDurationSlots} onChange={event=>setProtectedDurationSlots(event.target.value)} className="w-full rounded-lg border border-white/10 bg-black/30 p-2 text-white" />
+          </label>
+          <label className="space-y-1 text-white/50">Cumulative opening limit (%)
+            <input type="number" min="0" max="100" step="0.01" value={protectedLimitPercent} onChange={event=>setProtectedLimitPercent(event.target.value)} className="w-full rounded-lg border border-white/10 bg-black/30 p-2 text-white" />
+          </label>
+          <p className="text-white/35 sm:col-span-3">Slot clock only. The protected limit must be below the ordinary wallet cap. The protected window must fit inside its 150-slot cap phase. Network fees and receipt rent remain separate from purchase price.</p>
+        </fieldset>
+      ) : null}
       {!amount.ok ? (
         <p className="rounded-xl border border-red-400/20 bg-red-400/10 px-3 py-2.5 text-xs font-semibold text-red-200">
           {amount.message}
@@ -262,6 +286,7 @@ export default function LocalTokenCreator({
             <Metric label="Launch inventory base units" value={result.launchInventoryBaseUnits} />
           </div>
 
+          {result.protectedOpening ? <p className="text-[#9cff43]/75">Protected opening: start slot {result.protectedOpening.startSlot} inclusive, end slot {result.protectedOpening.endSlot} exclusive · {result.protectedOpening.limitBaseUnits} cumulative base units per wallet.</p> : null}
           <p className="text-white/35">
             Total supply: {result.supplyBaseUnits} base units · Decimals: {result.decimals} · Allocation: {result.allocationVerified ? "verified" : "unverified"} · Mint authority: {result.mintAuthorityRevoked ? "revoked" : "retained"} · Freeze authority: {result.freezeAuthorityRevoked ? "revoked" : "retained"}
           </p>

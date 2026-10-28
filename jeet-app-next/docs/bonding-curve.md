@@ -1,5 +1,9 @@
 # Deterministic buy-pricing checkpoint
 
+Historical pricing checkpoint. The subsequent [protected-opening checkpoint](protected-opening.md)
+adds an opt-in versioned phase extension while preserving this pricing formula, paid buy ABI
+and v1 launch behavior.
+
 Parent: `ec7921711c5be39e8a28d60911cdab5fead00a3c`. All changes are under
 `jeet-app-next`. Creator allocation, custody program identity/seeds, the 89-byte custody
 state, 108-byte opening state, 81-byte wallet receipts and cumulative cap rules are preserved.

@@ -262,6 +262,7 @@ pub fn process(program: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> Prog
                 vault,
                 system,
                 input,
+                next,
             )?;
             if receipt.owner != program {
                 allocate(

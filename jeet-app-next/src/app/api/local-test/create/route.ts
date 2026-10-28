@@ -30,6 +30,10 @@ type CreateRequest = {
   maxWalletPercent?: string;
   curveBasePriceLamports?: string;
   curveSlopeLamports?: string;
+  protectedOpeningEnabled?: boolean;
+  protectedDelaySlots?: number;
+  protectedDurationSlots?: number;
+  protectedLimitPercent?: string;
   openingEnabled?: boolean;
   openingDurationSlots?: number;
   revokeMint?: boolean;
@@ -144,6 +148,24 @@ export async function POST(request: Request) {
           throw new Error(`Curve ${name} must be a ${positive ? "positive" : "nonnegative"} u64 lamport string.`);
         }
       }
+      if(body.protectedOpeningEnabled!==undefined && typeof body.protectedOpeningEnabled!=="boolean") throw new Error("Invalid protected opening enabled flag.");
+      for(const value of [body.protectedDelaySlots,body.protectedDurationSlots]) {
+        if(value!==undefined && (!Number.isSafeInteger(value) || value<0 || value>1000000)) throw new Error("Protected slot settings must be integers from 0 through 1000000.");
+      }
+      if(body.protectedLimitPercent!==undefined && (typeof body.protectedLimitPercent!=="string" ||
+        !/^\d+(?:\.\d{1,2})?$/.test(body.protectedLimitPercent.trim()) || Number(body.protectedLimitPercent)>100)) throw new Error("Invalid protected opening limit percentage.");
+      if(body.protectedOpeningEnabled) {
+        const duration=body.protectedDurationSlots??50,delay=body.protectedDelaySlots??0;
+        const percentBps=(s:string)=>{const [w,f=""]=s.trim().split(".");return BigInt(w)*100n+BigInt(f.padEnd(2,"0"));};
+        const supply=parseBaseUnits(body.totalSupply.trim(),body.decimals??9);
+        const cap=supply*percentBps(body.maxWalletPercent??"1")/10000n;
+        const limit=supply*percentBps(body.protectedLimitPercent??"0.50")/10000n;
+        const inventory=supply-supply*parsePercentToBasisPoints(body.devAllocation?.trim()??"0")/10000n;
+        if(duration===0 || limit>=inventory || ((body.openingEnabled??true) &&
+          ((cap>0n && limit>=cap) || (cap===0n && limit!==0n) || delay+duration>(body.openingDurationSlots??150)))) {
+          throw new Error("Protected opening requires a positive duration, a stricter wallet limit and a window within the enabled ordinary cap phase.");
+        }
+      }
       parseBaseUnits(body.totalSupply.trim(), body.decimals ?? 9);
       parsePercentToBasisPoints(body.devAllocation?.trim() ?? "0");
     } catch (error) {
@@ -247,6 +269,11 @@ export async function POST(request: Request) {
     const [curveAddress, curveBump] = await findCurvePda(mint.address);
     const basePrice = BigInt(body.curveBasePriceLamports ?? "1000");
     const curveSlope = BigInt(body.curveSlopeLamports ?? "1");
+    const [protectedWhole,protectedFraction=""]=(body.protectedLimitPercent??"0.50").trim().split(".");
+    const protection=body.protectedOpeningEnabled ? {
+      delaySlots:BigInt(body.protectedDelaySlots??0),durationSlots:BigInt(body.protectedDurationSlots??50),
+      limitBps:Number(BigInt(protectedWhole)*100n+BigInt(protectedFraction.padEnd(2,"0"))),
+    } : undefined;
     const [openingAddress, openingBump] = await findOpeningPda(mint.address);
     const [capWhole, capFraction = ""] = (body.maxWalletPercent ?? "1").trim().split(".");
     const openingCapBps = Number(BigInt(capWhole) * 100n + BigInt(capFraction.padEnd(2, "0")));
@@ -263,7 +290,7 @@ export async function POST(request: Request) {
         opening: openingAddress, capBps: openingCapBps, enabled: body.openingEnabled ?? true,
         durationSlots: BigInt(body.openingDurationSlots ?? 150) }),
       initializeCurveInstruction({payer:client.payer,mint:mint.address,custody:custodyAddress,opening:openingAddress,
-        curve:curveAddress,vault:launchVaultTokenAccount,basePrice,slope:curveSlope}),
+        curve:curveAddress,vault:launchVaultTokenAccount,basePrice,slope:curveSlope,protection}),
     ]);
 
     phase = "authority-configuration";
@@ -345,6 +372,11 @@ export async function POST(request: Request) {
         curve.sold!==0n || curve.collected!==0n || curve.inventory!==launchInventoryAmount) {
       throw new Error("Curve initialization verification failed.");
     }
+    if(protection && (!curve.protection || curve.protection.delaySlots!==protection.delaySlots ||
+        curve.protection.durationSlots!==protection.durationSlots || curve.protection.limitBps!==protection.limitBps ||
+        curve.protection.limitBaseUnits!==totalAmount*BigInt(protection.limitBps)/10000n)) {
+      throw new Error("Protected opening initialization verification failed.");
+    }
     const mintAccount = await client.token.accounts.mint.fetch(mint.address);
     const mintAuthorityRevoked = isNone(mintAccount.data.mintAuthority);
     const freezeAuthorityRevoked = isNone(mintAccount.data.freezeAuthority);
@@ -402,6 +434,7 @@ export async function POST(request: Request) {
       freezeAuthorityRevoked,
       allocationVerified: true,
       custodyVerified: true,
+      protectedOpening: curve.protection ? Object.fromEntries(Object.entries(curve.protection).map(([k,v])=>[k,v.toString()])) : null,
       curveAddress,
       curveBasePriceLamports:basePrice.toString(),
       curveSlopeLamports:curveSlope.toString(),

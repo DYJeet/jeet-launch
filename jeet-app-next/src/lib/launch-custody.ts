@@ -210,6 +210,7 @@ export function initializeCurveInstruction(input: {
   vault: Address;
   basePrice: bigint;
   slope: bigint;
+  protection?: { delaySlots: bigint; durationSlots: bigint; limitBps: number };
 }) {
   if (
     input.basePrice <= 0n ||
@@ -218,11 +219,29 @@ export function initializeCurveInstruction(input: {
     input.slope > (1n << 64n) - 1n
   )
     throw new Error("Invalid curve parameters.");
-  const data = new Uint8Array(17);
-  data[0] = 4;
+  const protection = input.protection;
+  if (
+    protection &&
+    (protection.delaySlots < 0n ||
+      protection.delaySlots > 1000000n ||
+      protection.durationSlots <= 0n ||
+      protection.durationSlots > 1000000n ||
+      !Number.isInteger(protection.limitBps) ||
+      protection.limitBps < 0 ||
+      protection.limitBps > 10000)
+  ) {
+    throw new Error("Invalid protected opening configuration.");
+  }
+  const data = new Uint8Array(protection ? 35 : 17);
+  data[0] = protection ? 6 : 4;
   const view = new DataView(data.buffer);
   view.setBigUint64(1, input.basePrice, true);
   view.setBigUint64(9, input.slope, true);
+  if (protection) {
+    view.setBigUint64(17, protection.delaySlots, true);
+    view.setBigUint64(25, protection.durationSlots, true);
+    view.setUint16(33, protection.limitBps, true);
+  }
   return {
     programAddress: CUSTODY_PROGRAM_ADDRESS,
     data,
@@ -273,14 +292,44 @@ export type CurveState = {
   sold: bigint;
   collected: bigint;
   inventory: bigint;
+  protection?: {
+    createdSlot: bigint;
+    startSlot: bigint;
+    durationSlots: bigint;
+    endSlot: bigint;
+    limitBaseUnits: bigint;
+    delaySlots: bigint;
+    limitBps: number;
+  };
 };
 export function decodeCurveState(data: Uint8Array): CurveState {
-  if (
-    data.length !== 153 ||
-    new TextDecoder().decode(data.slice(0, 8)) !== "JEETCRV1"
-  )
-    throw new Error("Invalid curve state.");
+  const magic = new TextDecoder().decode(data.slice(0, 8));
+  const legacy = data.length === 153 && magic === "JEETCRV1";
+  const protectedVersion = data.length === 204 && magic === "JEETCRV2";
+  if (!legacy && !protectedVersion) throw new Error("Invalid curve state.");
   const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
+  const protection = protectedVersion
+    ? {
+        createdSlot: view.getBigUint64(154, true),
+        startSlot: view.getBigUint64(162, true),
+        durationSlots: view.getBigUint64(170, true),
+        endSlot: view.getBigUint64(178, true),
+        limitBaseUnits: view.getBigUint64(186, true),
+        delaySlots: view.getBigUint64(194, true),
+        limitBps: view.getUint16(202, true),
+      }
+    : undefined;
+  if (
+    protection &&
+    (data[153] !== 1 ||
+      protection.durationSlots === 0n ||
+      protection.durationSlots > 1000000n ||
+      protection.delaySlots > 1000000n ||
+      protection.limitBps > 10000 ||
+      protection.createdSlot + protection.delaySlots !== protection.startSlot ||
+      protection.startSlot + protection.durationSlots !== protection.endSlot)
+  )
+    throw new Error("Invalid protected opening state.");
   return {
     base: view.getBigUint64(104, true),
     slope: view.getBigUint64(112, true),
@@ -288,6 +337,7 @@ export function decodeCurveState(data: Uint8Array): CurveState {
     sold: view.getBigUint64(128, true),
     collected: view.getBigUint64(136, true),
     inventory: view.getBigUint64(144, true),
+    ...(protection ? { protection } : {}),
   };
 }
 export function quoteCurveCost(c: CurveState, amount: bigint): bigint {

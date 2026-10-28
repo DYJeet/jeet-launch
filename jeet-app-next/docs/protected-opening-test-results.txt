@@ -1,0 +1,178 @@
+PASS missing custody program fails before mint creation
+PASS 2%: 20000000000000000 + 980000000000000000 = 1000000000000000000
+PASS 0%: 0 + 1000000000000000000 = 1000000000000000000
+PASS 5%: 50000000000000000 + 950000000000000000 = 1000000000000000000
+PASS 2.51%: 308 + 11992 = 12300
+PASS 0.01%: 0 + 1 = 1
+PASS 2%: 20 + 980 = 1000
+PASS custody program signs CPI from an independent caller
+PASS rejected unauthorized wallet withdrawal
+PASS rejected cross-mint vault substitution
+PASS rejected creator ATA substituted for vault
+PASS rejected fake custody state
+PASS rejected unknown instruction
+PASS rejected custody reinitialization
+PASS rejected invalid PDA seed account
+PASS balances and supply unchanged after all denied operations
+PASS rejected supply mismatch at initialization
+PASS rejected creator balance mismatch at initialization
+PASS rejected creator identity substitution
+PASS rejected unsigned initializer
+PASS rejected incorrect Token Program
+PASS prefunded PDA initializes safely after invalid attempts; 20 + 980 = 1000
+PASS invalid parameters rejected before chain writes
+PASS wallet cap: one unit above cap rejected (1005); balances/state unchanged
+PASS wallet cap: alternate accounts share one wallet allowance; exact cap accepted
+PASS wallet cap: repeat purchase above cumulative cap rejected (1005); balances/state unchanged
+PASS wallet cap: alternate account bypass rejected (1005); balances/state unchanged
+PASS wallet cap: different wallets have independent allowances
+PASS wallet cap: atomic repeated-buy batch rollback rejected (1005); balances/state unchanged
+PASS wallet cap: transfer-away allowance reset rejected (1005); balances/state unchanged
+PASS wallet cap: substituted wallet receipt rejected (1003); balances/state unchanged
+PASS wallet cap: another wallet destination rejected (1003); balances/state unchanged
+PASS wallet cap: direct inventory withdrawal rejected (4); balances/state unchanged
+PASS wallet cap: opening settings bypass rejected (1002); balances/state unchanged
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap: zero-percent protected cap rejected (1005); balances/state unchanged
+PASS wallet cap conservation: 20 + 980 + 0 = 1000
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap: disabled phase permits distributions above configured cap
+PASS wallet cap: substituted mint rejected (1003); balances/state unchanged
+PASS wallet cap: substituted custody PDA rejected (1003); balances/state unchanged
+PASS wallet cap: substituted inventory rejected (1003); balances/state unchanged
+PASS wallet cap: substituted opening state rejected (1003); balances/state unchanged
+PASS wallet cap: substituted Token Program rejected (1003); balances/state unchanged
+PASS wallet cap: missing buyer signature rejected (1002); balances/state unchanged
+PASS wallet cap: malformed distribution encoding rejected (1000); balances/state unchanged
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap: expired phase permits distributions above configured cap
+PASS wallet cap: zero-unit distribution rejected (1006); balances/state unchanged
+PASS wallet cap: insufficient launch inventory rejected (1007); balances/state unchanged
+PASS wallet cap: invalid cap basis points rejected (1004); balances/state unchanged
+PASS wallet cap: enabled phase without duration rejected (1004); balances/state unchanged
+PASS wallet cap: invalid enabled flag rejected (1004); balances/state unchanged
+PASS wallet cap: authorized initializer cannot reset cap phase rejected (1009); balances/state unchanged
+PASS wallet cap conservation: 20 + 980 + 0 = 1000
+PASS wallet cap: eight invalid API configurations rejected
+PASS opening wallet-cap suite
+PASS curve: maximum cost one lamport too low rejected (1105); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: quoted cost one lamport too high rejected (1105); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: buy 10 at sold 0 costs exactly 10045 lamports
+PASS curve: stale quote from previous sold state rejected (1104); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: buy 10 at sold 10 costs exactly 10145 lamports
+PASS curve: buy 1 at sold 20 costs exactly 1020 lamports
+PASS curve: sequential marginal prices progress across multiple wallets
+PASS curve: zero purchase rejected (1006); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: retired unpaid distribution bypass rejected (1000); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: malformed quote rejected (1100); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: zero quote rejected (1101); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: substituted curve PDA rejected (1102); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: substituted inventory account rejected (1003); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: post-payment transaction rollback rejected (1100); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 959 + 21 = 1000
+PASS curve: wallet cap enforced before payment/release rejected (1005); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: buy 10 at sold 0 costs exactly 10045 lamports
+PASS curve conservation: 20 + 970 + 10 = 1000
+PASS curve: buy 980 at sold 0 costs exactly 1459710 lamports
+PASS curve: one unit beyond sold-out inventory rejected (1110); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: inventory underflow purchase rejected (1007); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 0 + 980 = 1000
+PASS curve: buy 1 at sold 0 costs exactly 1 lamports
+PASS curve: buy 100 at sold 1 costs exactly 2 lamports
+PASS curve conservation: 2000 + 97899 + 101 = 100000
+PASS curve: buy 3 at sold 0 costs exactly 21 lamports
+PASS curve conservation: 20 + 977 + 3 = 1000
+PASS curve: insufficient buyer SOL rejected (1106); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve: u64 quote overflow rejected (1108); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: u64 execution overflow rejected (1108); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve: u128 intermediate overflow rejected (1108); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20000000000000000 + 980000000000000000 + 0 = 1000000000000000000
+PASS curve: cost exactly one lamport above u64 maximum rejected (1108); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve: zero base price on-chain initialization rejected (1103); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: unauthorized curve initialization rejected (1107); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: uninitialized curve quote rejected (1102); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve: issuer cannot reset initialized curve rejected (1109); buyer/vault SOL, tokens, cap and curve unchanged
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve: buy 2 at sold 0 costs exactly 2001 lamports
+PASS curve: buy 1 at sold 2 costs exactly 1002 lamports
+PASS curve conservation: 20 + 978 + 2 = 1000
+PASS curve: unsolicited token/SOL deposits do not reset price or stop valid purchases
+PASS curve: five invalid API parameter configurations rejected
+PASS deterministic bonding-curve suite
+PASS protected positive: launch start derives solely from initialization Clock.slot plus configured delay
+BOUNDARY target=55 execution=55 error={"InstructionError":[1,{"Custom":1200}]}
+PASS protected rejection: exactly one slot before launch start (1200); buyer/vault SOL, tokens and all state unchanged
+BOUNDARY target=56 execution=56 error=null
+PASS protected: buy 5 at sold 0 costs exactly 5010 lamports
+PASS protected positive: exact launch-start slot succeeds at exact protected limit
+BOUNDARY target=59 execution=59 error=null
+PASS protected: buy 1 at sold 5 costs exactly 1005 lamports
+PASS protected positive: exact expiry slot uses normal capped pricing and permits the next unit
+BOUNDARY target=60 execution=60 error=null
+PASS protected: buy 1 at sold 6 costs exactly 1006 lamports
+PASS protected positive: one slot after expiry uses normal capped pricing
+PASS protected positive: expiry preserves cumulative receipts without reset or double-counting
+PASS protected: buy 13 at sold 7 costs exactly 13169 lamports
+PASS protected positive: post-opening purchases reach the unchanged ordinary wallet cap
+PASS protected rejection: post-opening ordinary cap remains enforced (1005); buyer/vault SOL, tokens and all state unchanged
+PASS protected conservation: 20 + 960 + 20 = 1000
+PASS protected positive: explicit immutable protected state initialized with a stricter limit
+PASS protected rejection: one base unit over protected limit (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected: buy 6 at sold 0 costs exactly 6015 lamports
+PASS protected positive: first partial protected buy uses exact on-chain quote
+PASS protected: buy 4 at sold 6 costs exactly 4030 lamports
+PASS protected positive: repeated buys across alternate accounts reach the exact cumulative limit
+PASS protected rejection: repeat buy exceeds cumulative limit (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: alternate token account cannot reset allowance (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected positive: different wallet reaches exact limit in one transaction with exact SOL/token updates
+PASS protected rejection: stale protected-phase curve quote (1104); buyer/vault SOL, tokens and all state unchanged
+PASS protected: buy 1 at sold 20 costs exactly 1020 lamports
+PASS protected positive: third wallet receives its independent allowance
+PASS protected rejection: multi-instruction cumulative overflow rolls back prior payment and release (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected positive: multiple instructions and token accounts reach exact boundary atomically without double-counting
+PASS protected rejection: sending tokens away does not restore protected allowance (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: ordinary wallet cap still rejects during protection (1005); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted destination owner (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted custody PDA (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted cap/opening PDA (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted protected curve state (1102); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted wallet receipt (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted mint (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted custody inventory (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted Token Program (1003); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: substituted unsigned buyer (1002); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: direct unauthorized inventory movement (4); buyer/vault SOL, tokens and all state unchanged
+PASS protected conservation: 20 + 950 + 30 = 1000
+PASS protected positive: protected payments, receipts, inventory and curve conserve 20 + 950 + 30 = 1000
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected rejection: zero protected allowance rejects positive buys (1201); buyer/vault SOL, tokens and all state unchanged
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected API rejection: {"protectedDurationSlots":0}
+PASS protected API rejection: {"protectedDurationSlots":-1}
+PASS protected API rejection: {"protectedDurationSlots":1.5}
+PASS protected API rejection: {"protectedDurationSlots":1000001}
+PASS protected API rejection: {"protectedDelaySlots":-1}
+PASS protected API rejection: {"protectedOpeningEnabled":"true"}
+PASS protected API rejection: {"protectedLimitPercent":"2"}
+PASS protected API rejection: {"protectedLimitPercent":"1.001"}
+PASS protected API rejection: {"protectedDurationSlots":1000000,"protectedDelaySlots":1}
+PASS protected rejection: zero protected duration on chain (1202); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: oversized protected duration on chain (1202); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: invalid u64 delay on chain (1202); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: protected limit must be stricter than ordinary cap (1202); buyer/vault SOL, tokens and all state unchanged
+PASS protected positive: valid issuer initialization fixes protected parameters on chain
+PASS protected rejection: issuer cannot downgrade a protected curve to legacy (1109); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: issuer cannot reset the protected start or allowance (1109); buyer/vault SOL, tokens and all state unchanged
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected rejection: inconsistent protected end slot (1203); buyer/vault SOL, tokens and all state unchanged
+PASS protected rejection: inconsistent cap/curve distributed state (1102); buyer/vault SOL, tokens and all state unchanged
+PASS protected integrity: inconsistent state rejected without a program bypass
+PASS protected-opening suite: 14 positive checks, 28 on-chain rejections, 9 API rejections
+PASS full local suite (allocation, custody, opening caps, bonding curve, protected opening). Logs and disposable ledgers: /tmp/jeet-custody-t1KGmq
+
+Native Rust tests: 4 passed (three protected arithmetic/boundary tests plus program ID).
