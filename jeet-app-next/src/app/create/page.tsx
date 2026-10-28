@@ -1492,6 +1492,7 @@ export default function CreatePage() {
                 ticker={ticker}
                 totalSupply={totalSupply}
                 decimals={decimalsNumber}
+                devAllocation={devAllocation}
                 revokeMint={revokeMint}
                 revokeFreeze={revokeFreeze}
               />
@@ -1503,9 +1504,9 @@ export default function CreatePage() {
                 <p className="mt-2 text-xs leading-5 text-white/35">
                   The local mint test above proves the SPL token lifecycle without depending on a
                   browser-wallet faucet. It does not enforce opening wallet caps, bonding-curve pricing,
-                  liquidity migration, anti-sniper rules, ticker reservation, or creator-allocation
-                  custody. Those belong in the JeeT Launch on-chain program and must be implemented
-                  before mainnet launch.
+                  liquidity migration, anti-sniper rules, or ticker reservation. Creator allocation is
+                  now enforced and verified in the local launch test; the remaining protections belong
+                  in the JeeT Launch on-chain program and must be implemented before mainnet launch.
                 </p>
               </div>
 

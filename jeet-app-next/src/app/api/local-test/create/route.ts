@@ -1,4 +1,4 @@
-import { createClient, generateKeyPairSigner, lamports } from "@solana/kit";
+import { createClient, generateKeyPairSigner, isNone, lamports } from "@solana/kit";
 import { rpcAirdrop, solanaRpc } from "@solana/kit-plugin-rpc";
 import { airdropPayer, generatedPayer } from "@solana/kit-plugin-signer";
 import {
@@ -16,10 +16,13 @@ export const dynamic = "force-dynamic";
 const LOCAL_RPC_URL = "http://127.0.0.1:8899";
 const LOCAL_WS_URL = "ws://127.0.0.1:8900";
 const MAX_U64 = (1n << 64n) - 1n;
+const BASIS_POINTS_DENOMINATOR = 10_000n;
+const MAX_CREATOR_BPS = 500n; // 5.00%
 
 type CreateRequest = {
   totalSupply?: string;
   decimals?: number;
+  devAllocation?: string;
   revokeMint?: boolean;
   revokeFreeze?: boolean;
 };
@@ -41,6 +44,48 @@ function parseBaseUnits(totalSupply: string, decimals: number) {
   return baseUnits;
 }
 
+function parsePercentToBasisPoints(value: string) {
+  const trimmed = value.trim();
+  if (!/^\d+(?:\.\d{1,2})?$/.test(trimmed)) {
+    throw new Error("Creator allocation must be a percentage with at most two decimal places.");
+  }
+
+  const [whole, fraction = ""] = trimmed.split(".");
+  const basisPoints = BigInt(whole) * 100n + BigInt(fraction.padEnd(2, "0"));
+
+  if (basisPoints < 0n || basisPoints > MAX_CREATOR_BPS) {
+    throw new Error("Creator allocation must be between 0% and 5%.");
+  }
+
+  return basisPoints;
+}
+
+async function getTokenAccountAmount(address: string) {
+  const response = await fetch(LOCAL_RPC_URL, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: 1,
+      method: "getTokenAccountBalance",
+      params: [address, { commitment: "confirmed" }],
+    }),
+    cache: "no-store",
+  });
+
+  const payload = (await response.json()) as {
+    result?: { value?: { amount?: string } };
+    error?: { message?: string };
+  };
+
+  const amount = payload.result?.value?.amount;
+  if (!response.ok || !amount) {
+    throw new Error(payload.error?.message ?? `Could not verify token account ${address}.`);
+  }
+
+  return BigInt(amount);
+}
+
 function describeError(error: unknown) {
   if (error instanceof Error) {
     const cause = (error as Error & { cause?: unknown }).cause;
@@ -59,12 +104,39 @@ function describeError(error: unknown) {
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as CreateRequest;
+    let body: CreateRequest;
+    try {
+      const input: unknown = await request.json();
+      if (!input || typeof input !== "object" || Array.isArray(input)) {
+        throw new Error("Request must be a JSON object.");
+      }
+      body = input as CreateRequest;
+      if (typeof body.totalSupply !== "string" ||
+          (body.devAllocation !== undefined && typeof body.devAllocation !== "string") ||
+          (body.decimals !== undefined && typeof body.decimals !== "number") ||
+          (body.revokeMint !== undefined && typeof body.revokeMint !== "boolean") ||
+          (body.revokeFreeze !== undefined && typeof body.revokeFreeze !== "boolean")) {
+        throw new Error("Invalid launch parameter types.");
+      }
+      parseBaseUnits(body.totalSupply.trim(), body.decimals ?? 9);
+      parsePercentToBasisPoints(body.devAllocation?.trim() ?? "0");
+    } catch (error) {
+      return NextResponse.json({ ok: false, message: describeError(error) }, { status: 400 });
+    }
     const totalSupply = body.totalSupply?.trim() ?? "";
     const decimals = body.decimals ?? 9;
+    const devAllocation = body.devAllocation?.trim() ?? "0";
     const revokeMint = body.revokeMint ?? true;
     const revokeFreeze = body.revokeFreeze ?? true;
-    const amount = parseBaseUnits(totalSupply, decimals);
+
+    const totalAmount = parseBaseUnits(totalSupply, decimals);
+    const creatorAllocationBps = parsePercentToBasisPoints(devAllocation);
+    const creatorAmount = (totalAmount * creatorAllocationBps) / BASIS_POINTS_DENOMINATOR;
+    const launchInventoryAmount = totalAmount - creatorAmount;
+
+    if (launchInventoryAmount <= 0n) {
+      throw new Error("Launch inventory must remain greater than zero.");
+    }
 
     const client = await createClient()
       .use(generatedPayer())
@@ -72,6 +144,8 @@ export async function POST(request: Request) {
         solanaRpc({
           rpcUrl: LOCAL_RPC_URL,
           rpcSubscriptionsUrl: LOCAL_WS_URL,
+          // Version 0 supports local validators without the newer v1 feature gate.
+          transactionConfig: { version: 0 },
         }),
       )
       .use(rpcAirdrop())
@@ -80,6 +154,8 @@ export async function POST(request: Request) {
       .use(associatedTokenProgram());
 
     const mint = await generateKeyPairSigner();
+    const creator = await generateKeyPairSigner();
+    const launchVault = await generateKeyPairSigner();
 
     const createResult = await client.token.instructions
       .createMint({
@@ -90,19 +166,43 @@ export async function POST(request: Request) {
       })
       .sendTransaction();
 
-    const mintResult = await client.token.instructions
+    let creatorMintSignature: string | null = null;
+    let creatorTokenAccount: string | null = null;
+
+    if (creatorAmount > 0n) {
+      const creatorMintResult = await client.token.instructions
+        .mintToATA({
+          mint: mint.address,
+          owner: creator.address,
+          mintAuthority: client.payer,
+          amount: creatorAmount,
+          decimals,
+        })
+        .sendTransaction();
+
+      const [creatorAta] = await findAssociatedTokenPda({
+        mint: mint.address,
+        owner: creator.address,
+        tokenProgram: TOKEN_PROGRAM_ADDRESS,
+      });
+
+      creatorMintSignature = String(creatorMintResult.context.signature);
+      creatorTokenAccount = String(creatorAta);
+    }
+
+    const launchMintResult = await client.token.instructions
       .mintToATA({
         mint: mint.address,
-        owner: client.payer.address,
+        owner: launchVault.address,
         mintAuthority: client.payer,
-        amount,
+        amount: launchInventoryAmount,
         decimals,
       })
       .sendTransaction();
 
-    const [tokenAccount] = await findAssociatedTokenPda({
+    const [launchVaultTokenAccount] = await findAssociatedTokenPda({
       mint: mint.address,
-      owner: client.payer.address,
+      owner: launchVault.address,
       tokenProgram: TOKEN_PROGRAM_ADDRESS,
     });
 
@@ -135,22 +235,62 @@ export async function POST(request: Request) {
       authoritySignature = String(authorityResult.context.signature);
     }
 
-    // A successful fetch proves the mint exists on the local validator after confirmation.
-    await client.token.accounts.mint.fetch(mint.address);
+    const mintAccount = await client.token.accounts.mint.fetch(mint.address);
+    const mintAuthorityRevoked = isNone(mintAccount.data.mintAuthority);
+    const freezeAuthorityRevoked = isNone(mintAccount.data.freezeAuthority);
+    if (mintAuthorityRevoked !== revokeMint || freezeAuthorityRevoked !== revokeFreeze ||
+        mintAccount.data.decimals !== decimals || !mintAccount.data.isInitialized) {
+      throw new Error("Mint configuration or authority verification failed.");
+    }
+    const verifiedMintSupply = BigInt(String(mintAccount.data.supply));
+    if (verifiedMintSupply !== totalAmount) {
+      throw new Error(
+        `Mint supply verification failed. Expected ${totalAmount}, received ${verifiedMintSupply}.`,
+      );
+    }
+
+    const verifiedCreatorAmount = creatorTokenAccount
+      ? await getTokenAccountAmount(creatorTokenAccount)
+      : 0n;
+    const verifiedLaunchAmount = await getTokenAccountAmount(String(launchVaultTokenAccount));
+
+    if (verifiedCreatorAmount !== creatorAmount) {
+      throw new Error(
+        `Creator allocation verification failed. Expected ${creatorAmount}, received ${verifiedCreatorAmount}.`,
+      );
+    }
+
+    if (verifiedLaunchAmount !== launchInventoryAmount) {
+      throw new Error(
+        `Launch inventory verification failed. Expected ${launchInventoryAmount}, received ${verifiedLaunchAmount}.`,
+      );
+    }
+
+    if (verifiedCreatorAmount + verifiedLaunchAmount !== totalAmount) {
+      throw new Error("Allocation conservation check failed: creator + launch inventory != total supply.");
+    }
 
     return NextResponse.json({
       ok: true,
       cluster: "local-validator",
       mintAddress: String(mint.address),
-      tokenAccount: String(tokenAccount),
       payerAddress: String(client.payer.address),
+      creatorAddress: String(creator.address),
+      creatorTokenAccount,
+      launchVaultAddress: String(launchVault.address),
+      launchVaultTokenAccount: String(launchVaultTokenAccount),
       createSignature: String(createResult.context.signature),
-      mintSignature: String(mintResult.context.signature),
+      creatorMintSignature,
+      launchMintSignature: String(launchMintResult.context.signature),
       authoritySignature,
-      supplyBaseUnits: amount.toString(),
+      supplyBaseUnits: totalAmount.toString(),
+      creatorAllocationBps: Number(creatorAllocationBps),
+      creatorAllocationBaseUnits: verifiedCreatorAmount.toString(),
+      launchInventoryBaseUnits: verifiedLaunchAmount.toString(),
       decimals,
-      mintAuthorityRevoked: revokeMint,
-      freezeAuthorityRevoked: revokeFreeze,
+      mintAuthorityRevoked,
+      freezeAuthorityRevoked,
+      allocationVerified: true,
     });
   } catch (error) {
     return NextResponse.json(

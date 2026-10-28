@@ -8,6 +8,7 @@ type Props = {
   ticker: string;
   totalSupply: string;
   decimals: number;
+  devAllocation: string;
   revokeMint: boolean;
   revokeFreeze: boolean;
 };
@@ -17,15 +18,23 @@ type CreateState = "idle" | "creating" | "success" | "error";
 
 type LocalResult = {
   mintAddress: string;
-  tokenAccount: string;
   payerAddress: string;
+  creatorAddress: string;
+  creatorTokenAccount: string | null;
+  launchVaultAddress: string;
+  launchVaultTokenAccount: string;
   createSignature: string;
-  mintSignature: string;
+  creatorMintSignature: string | null;
+  launchMintSignature: string;
   authoritySignature: string | null;
   supplyBaseUnits: string;
+  creatorAllocationBps: number;
+  creatorAllocationBaseUnits: string;
+  launchInventoryBaseUnits: string;
   decimals: number;
   mintAuthorityRevoked: boolean;
   freezeAuthorityRevoked: boolean;
+  allocationVerified: boolean;
 };
 
 export default function LocalTokenCreator({
@@ -33,6 +42,7 @@ export default function LocalTokenCreator({
   ticker,
   totalSupply,
   decimals,
+  devAllocation,
   revokeMint,
   revokeFreeze,
 }: Props) {
@@ -90,6 +100,7 @@ export default function LocalTokenCreator({
         body: JSON.stringify({
           totalSupply,
           decimals,
+          devAllocation,
           revokeMint,
           revokeFreeze,
         }),
@@ -119,6 +130,8 @@ export default function LocalTokenCreator({
         ? "border-yellow-300/20 bg-yellow-300/10 text-yellow-200"
         : "border-red-400/20 bg-red-400/10 text-red-200";
 
+  const disclosedAllocation = Number(devAllocation || "0");
+
   return (
     <div className="space-y-4 rounded-2xl border border-[#9cff43]/20 bg-[#9cff43]/[0.04] p-4 sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -126,11 +139,11 @@ export default function LocalTokenCreator({
           <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#9cff43]">
             Local test launch
           </p>
-          <h3 className="mt-1 text-base font-black text-white">Create a real SPL mint locally</h3>
+          <h3 className="mt-1 text-base font-black text-white">Create + verify the launch allocation</h3>
           <p className="mt-1 max-w-xl text-xs leading-5 text-white/40">
-            The server creates a temporary test payer, airdrops local SOL automatically, creates the
-            mint, mints the test supply, applies authority choices, and verifies the mint. Phantom and
-            Devnet SOL are not required for this test path.
+            The server creates a temporary test payer, funds it locally, creates the mint, splits the
+            supply between a disclosed creator account and a separate launch-inventory vault, applies
+            authority choices, then verifies every balance on-chain.
           </p>
         </div>
 
@@ -152,10 +165,14 @@ export default function LocalTokenCreator({
         </div>
       </div>
 
-      <div className="grid gap-2 text-[11px] text-white/45 sm:grid-cols-2">
+      <div className="grid gap-2 text-[11px] text-white/45 sm:grid-cols-3">
         <div className="rounded-xl border border-white/[0.06] bg-black/15 p-3">
           <span className="text-white/25">Test token</span>
           <p className="mt-1 font-black text-white">{tokenName} (${ticker})</p>
+        </div>
+        <div className="rounded-xl border border-white/[0.06] bg-black/15 p-3">
+          <span className="text-white/25">Creator allocation</span>
+          <p className="mt-1 font-black text-white">{Number.isFinite(disclosedAllocation) ? disclosedAllocation : 0}% disclosed</p>
         </div>
         <div className="rounded-xl border border-white/[0.06] bg-black/15 p-3">
           <span className="text-white/25">Test funding</span>
@@ -164,11 +181,12 @@ export default function LocalTokenCreator({
       </div>
 
       <div className="rounded-xl border border-yellow-300/15 bg-yellow-300/[0.04] p-3.5 text-[11px] leading-5 text-white/45">
-        <p className="font-black text-yellow-200">Development proof only</p>
+        <p className="font-black text-yellow-200">Creator allocation is verified in this local test</p>
         <p className="mt-1.5">
-          This proves JeeT Launch can execute the SPL token lifecycle end-to-end. It is not a public
-          launch and does not yet implement the bonding-curve vault, wallet caps, migration, or
-          anti-sniper program logic.
+          Temporary test owners are generated for this local proof; this is not a program-controlled vault. Creator amounts round down to whole base units, with the remainder kept in launch inventory. The disclosed creator percentage is minted to its own token account. Every remaining token is
+          minted to a separate launch-inventory vault. The test fails unless both balances and the total
+          mint supply match exactly. Wallet caps, curve pricing, migration, and anti-sniper logic still
+          come in later passes.
         </p>
       </div>
 
@@ -185,10 +203,10 @@ export default function LocalTokenCreator({
         className="w-full rounded-xl bg-[#9cff43] px-5 py-3 text-sm font-black text-black transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-35"
       >
         {createState === "creating"
-          ? "Creating Local Test Mint…"
+          ? "Creating + Verifying Allocation…"
           : result
-            ? "Create Another Local Test Mint"
-            : "Create Local Test Mint"}
+            ? "Run Allocation Test Again"
+            : "Create Local Test Mint + Allocation"}
       </button>
 
       {error ? (
@@ -200,21 +218,33 @@ export default function LocalTokenCreator({
 
       {result ? (
         <div className="space-y-3 rounded-xl border border-[#9cff43]/20 bg-black/20 p-4 text-[11px]">
-          <p className="text-sm font-black text-[#9cff43]">✓ Local SPL mint verified</p>
+          <p className="text-sm font-black text-[#9cff43]">✓ Local mint + creator allocation verified</p>
+
           <div className="grid gap-2 sm:grid-cols-2">
             <ResultLine label="Mint" value={result.mintAddress} />
-            <ResultLine label="Token account" value={result.tokenAccount} />
             <ResultLine label="Temporary payer" value={result.payerAddress} />
+            <ResultLine label="Creator owner" value={result.creatorAddress} />
+            <ResultLine label="Creator token account" value={result.creatorTokenAccount ?? "No creator ATA (0% allocation)"} />
+            <ResultLine label="Launch vault owner" value={result.launchVaultAddress} />
+            <ResultLine label="Launch vault token account" value={result.launchVaultTokenAccount} />
             <ResultLine label="Create signature" value={result.createSignature} />
-            <ResultLine label="Mint signature" value={result.mintSignature} />
+            {result.creatorMintSignature ? (
+              <ResultLine label="Creator mint signature" value={result.creatorMintSignature} />
+            ) : null}
+            <ResultLine label="Launch inventory signature" value={result.launchMintSignature} />
             {result.authoritySignature ? (
               <ResultLine label="Authority signature" value={result.authoritySignature} />
             ) : null}
           </div>
+
+          <div className="grid gap-2 sm:grid-cols-3">
+            <Metric label="Creator allocation" value={`${(result.creatorAllocationBps / 100).toFixed(2)}%`} />
+            <Metric label="Creator base units" value={result.creatorAllocationBaseUnits} />
+            <Metric label="Launch inventory base units" value={result.launchInventoryBaseUnits} />
+          </div>
+
           <p className="text-white/35">
-            Supply: {result.supplyBaseUnits} base units · Decimals: {result.decimals} · Mint authority:{" "}
-            {result.mintAuthorityRevoked ? "revoked" : "retained"} · Freeze authority:{" "}
-            {result.freezeAuthorityRevoked ? "revoked" : "retained"}
+            Total supply: {result.supplyBaseUnits} base units · Decimals: {result.decimals} · Allocation: {result.allocationVerified ? "verified" : "unverified"} · Mint authority: {result.mintAuthorityRevoked ? "revoked" : "retained"} · Freeze authority: {result.freezeAuthorityRevoked ? "revoked" : "retained"}
           </p>
         </div>
       ) : null}
@@ -227,6 +257,15 @@ function ResultLine({ label, value }: { label: string; value: string }) {
     <div className="rounded-lg border border-white/[0.05] bg-white/[0.025] p-2.5">
       <p className="text-[9px] font-black uppercase tracking-wider text-white/20">{label}</p>
       <p className="mt-1 break-all font-mono text-white/70">{value}</p>
+    </div>
+  );
+}
+
+function Metric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-lg border border-[#9cff43]/10 bg-[#9cff43]/[0.035] p-2.5">
+      <p className="text-[9px] font-black uppercase tracking-wider text-white/25">{label}</p>
+      <p className="mt-1 break-all font-mono font-black text-[#9cff43]">{value}</p>
     </div>
   );
 }
