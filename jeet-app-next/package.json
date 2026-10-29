@@ -17,7 +17,9 @@
     "test:fees:dashboard": "node scripts/test-fee-dashboard.mjs",
     "test:market": "node scripts/run-market-tests.mjs",
     "test:market:math": "node --test scripts/test-market-math.mjs",
-    "test:rpc:reads": "node --test scripts/test-rpc-reads.mjs"
+    "test:rpc:reads": "node --test scripts/test-rpc-reads.mjs",
+    "test:v5:rising": "node --test scripts/test-v5-rising.mjs",
+    "test:public:gating": "node --test scripts/test-public-gating.mjs"
   },
   "dependencies": {
     "@solana-program/token": "0.18.0",

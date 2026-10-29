@@ -40,6 +40,7 @@ export default function ExplorePage() {
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
+              aria-label="Search verified launches"
               placeholder="Search name, ticker, or mint..."
               className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/25"
             />
@@ -50,6 +51,7 @@ export default function ExplorePage() {
           {launchTabs.map((tab) => (
             <button
               key={tab}
+              aria-pressed={activeTab === tab}
               onClick={() => setActiveTab(tab)}
               className={`rounded-xl px-4 py-2 text-sm font-black transition ${
                 activeTab === tab
@@ -64,7 +66,7 @@ export default function ExplorePage() {
 
         <div className="mt-6 flex items-center justify-between border-y border-white/[0.06] py-3 text-xs text-white/35">
           <span>{filtered.length} launches</span>
-          <span>Mock data · Solana integration next</span>
+          <span>Verified index not connected</span>
         </div>
 
         {filtered.length > 0 ? (
@@ -73,7 +75,7 @@ export default function ExplorePage() {
           </div>
         ) : (
           <div className="mt-8 rounded-3xl border border-dashed border-white/[0.08] bg-white/[0.02] px-6 py-16 text-center text-sm text-white/35">
-            No launches match that search yet.
+            No verified listings are available from this application yet. This is not a claim that no tokens exist on-chain. Demo records are excluded.
           </div>
         )}
       </section>

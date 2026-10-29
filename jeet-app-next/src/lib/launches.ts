@@ -37,7 +37,7 @@ function launch(
   };
 }
 
-export const launches: Launch[] = [
+export const demoLaunches: Launch[] = [
   launch({ name: "DOGGO", ticker: "DOGGO", mint: "PLACEHOLDER_MINT_1", image: "", creator: "PLACEHOLDER_CREATOR_1", subtitle: "Doggo Coin", price: "$0.0024", marketCap: "$184K", volume24h: "$1.2M", holders: "4.8K", age: "6h", bondingProgress: 72, status: "Trending", devAllocation: 1, topHolderPercent: 12, mintAuthorityRevoked: true, freezeAuthorityRevoked: true, liquidityStatus: "Locked", transactions24h: "3.8K", change24h: "+34.8%" }),
   launch({ name: "KITTY", ticker: "KITTY", mint: "PLACEHOLDER_MINT_2", image: "", creator: "PLACEHOLDER_CREATOR_2", subtitle: "Kitty On Sol", price: "$0.0009", marketCap: "$96K", volume24h: "$420K", holders: "2.1K", age: "3h", bondingProgress: 61, status: "Trending", devAllocation: 1, topHolderPercent: 14, mintAuthorityRevoked: true, freezeAuthorityRevoked: true, liquidityStatus: "Locked", change24h: "+21.2%" }),
   launch({ name: "PEPE2.0", ticker: "PEPE2.0", mint: "PLACEHOLDER_MINT_3", image: "", creator: "PLACEHOLDER_CREATOR_3", subtitle: "Pepe 2.0", price: "$0.0011", marketCap: "$121K", volume24h: "$310K", holders: "1.7K", age: "5h", bondingProgress: 66, status: "Trending", devAllocation: 1, topHolderPercent: 13, mintAuthorityRevoked: true, freezeAuthorityRevoked: true, liquidityStatus: "Locked", change24h: "+16.7%" }),
@@ -55,6 +55,9 @@ export const launches: Launch[] = [
   launch({ name: "APEIT", ticker: "APEIT", mint: "PLACEHOLDER_MINT_15", image: "", creator: "PLACEHOLDER_CREATOR_15", subtitle: "Ape It", price: "$0.0062", marketCap: "$1.4M", volume24h: "$2.3M", holders: "7.1K", age: "14h", bondingProgress: 100, status: "Migrated", devAllocation: 1, topHolderPercent: 8, mintAuthorityRevoked: true, freezeAuthorityRevoked: true, liquidityStatus: "Locked", transactions24h: "7.2K", change24h: "+71.5%" }),
   launch({ name: "MOONER", ticker: "MOONER", mint: "PLACEHOLDER_MINT_16", image: "", creator: "PLACEHOLDER_CREATOR_16", subtitle: "Mooner", price: "$0.0054", marketCap: "$1.2M", volume24h: "$1.9M", holders: "6.3K", age: "16h", bondingProgress: 100, status: "Migrated", devAllocation: 1, topHolderPercent: 9, mintAuthorityRevoked: true, freezeAuthorityRevoked: true, liquidityStatus: "Locked", transactions24h: "5.8K", change24h: "+54.3%" }),
 ];
+
+// No verified launch index is connected. Demo fixtures are never live listings.
+export const launches: Launch[] = [];
 
 export const launchTabs: LaunchStatus[] = ["New", "Trending", "Final Stretch", "Migrated"];
 

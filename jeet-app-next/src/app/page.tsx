@@ -61,18 +61,18 @@ export default function Home() {
           </div>
 
           <div className="rounded-[24px] border border-white/[0.08] bg-[#0a0d0a] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.25)]">
-            <h3 className="text-2xl font-black leading-tight">EXPOSE YOUR<br />PAPER HANDS</h3>
-            <p className="mt-3 leading-6 text-white/45">Paste any Solana wallet.<br />Get roasted by JeeT.</p>
-            <div className="mt-5 rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white/25">◉ &nbsp; Paste your Solana wallet address...</div>
-            <button className="mt-4 w-full rounded-xl bg-[#9cff43] py-3.5 font-black text-black">EXPOSE MY PAPER HANDS →</button>
-            <p className="mt-4 text-xs text-white/30">🛡 Read-only. No signing required.</p>
+            <h3 className="text-2xl font-black leading-tight">KNOW YOUR<br />LAUNCH FEES</h3>
+            <p className="mt-3 leading-6 text-white/45">Transparent curve fees.<br />Review platform and creator entitlements.</p>
+            <div className="mt-5 rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white/25">0.75% platform + 0.25% creator</div>
+            <Link href="/revenue" className="mt-4 block w-full rounded-xl bg-[#9cff43] py-3.5 text-center font-black text-black">VIEW REVENUE & FEES →</Link>
+            <p className="mt-4 text-xs text-white/30">Viewing requires no signature. Claims require the entitled signer.</p>
           </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-[1500px] px-5 lg:px-8">
         <div className="grid grid-cols-2 overflow-hidden rounded-[24px] border border-white/[0.07] bg-[#090b09] md:grid-cols-4">
-          {[["2,483+", "Tokens Launched"], ["$12.4M+", "Volume on JeeT"], ["186K+", "Traders & Degens"], ["100%", "Fair Launches"]].map(([value, label], index) => (
+          {[["0.75%", "Platform curve fee"], ["0.25%", "Creator curve reward"], ["0 SOL", "Creation platform fee"], ["Devnet", "Current wallet network"]].map(([value, label], index) => (
             <div key={label} className={`px-6 py-5 ${index !== 3 ? "md:border-r md:border-white/[0.06]" : ""}`}>
               <p className="text-3xl font-black text-[#9cff43]">{value}</p><p className="mt-1 text-sm text-white/40">{label}</p>
             </div>
@@ -88,10 +88,11 @@ export default function Home() {
 
         <div className="mb-6 flex flex-wrap gap-2">
           {launchTabs.map((tab) => (
-            <button key={tab} onClick={() => setActiveLaunchTab(tab)} className={`rounded-xl px-4 py-2 text-sm font-black transition ${activeLaunchTab === tab ? "bg-[#9cff43] text-black" : "border border-white/[0.08] bg-white/[0.03] text-white/60 hover:bg-white/[0.06] hover:text-white"}`}>{tab}</button>
+            <button key={tab} aria-pressed={activeLaunchTab === tab} onClick={() => setActiveLaunchTab(tab)} className={`rounded-xl px-4 py-2 text-sm font-black transition ${activeLaunchTab === tab ? "bg-[#9cff43] text-black" : "border border-white/[0.08] bg-white/[0.03] text-white/60 hover:bg-white/[0.06] hover:text-white"}`}>{tab}</button>
           ))}
         </div>
 
+        {!activeLaunches.length && <p role="status" className="mb-5 rounded-2xl border border-white/10 p-5 text-sm text-white/60">Verified launch listings are not connected yet. No demo market activity is shown. V5 trading and graduation are awaiting approval and implementation.</p>}
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           {activeLaunches.slice(0, 4).map((coin) => <LaunchCard key={coin.mint} coin={coin} />)}
         </div>

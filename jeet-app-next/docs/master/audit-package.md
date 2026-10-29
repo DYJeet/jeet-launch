@@ -4,6 +4,14 @@ Status: **INCOMPLETE** master assignment. This package is a review aid for the
 verified financial phase, not a claim that the full platform is audit-ready.
 No independent security audit has occurred.
 
+## Latest economic proposal (not activated)
+
+The rising V5 proposal and UX specification are in
+[v5-rising/OWNER-DECISION.md](v5-rising/OWNER-DECISION.md) and
+[v5-rising/UX-SPEC.md](v5-rising/UX-SPEC.md). The earlier flat-price economic
+proposal remains a comparison baseline and is not approved for activation.
+V5 on-chain execution, AMM migration and permanent LP disposition remain absent.
+
 ## Review map
 
 - [V4 architecture, schema, instruction ABI, fee and redemption proofs](financial-v4.md)
