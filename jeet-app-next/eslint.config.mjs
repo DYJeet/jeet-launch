@@ -11,6 +11,8 @@ const eslintConfig = defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    // Generated Rust artifacts, recovered tools and disposable external research.
+    "programs/**/target/**",
     "next-env.d.ts",
   ]),
 ]);

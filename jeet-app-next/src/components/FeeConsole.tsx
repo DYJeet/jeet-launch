@@ -1,9 +1,9 @@
 "use client";
+import WalletReadyGate from "./WalletHydrationGate";
 import { useMemo, useRef, useState } from "react";
 import { useClient } from "@solana/react";
 import {
   useConnectedWallet,
-  WalletReadyGate,
 } from "@solana/kit-plugin-wallet/react";
 import {
   address,

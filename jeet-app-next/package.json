@@ -19,7 +19,9 @@
     "test:market:math": "node --test scripts/test-market-math.mjs",
     "test:rpc:reads": "node --test scripts/test-rpc-reads.mjs",
     "test:v5:rising": "node --test scripts/test-v5-rising.mjs",
-    "test:public:gating": "node --test scripts/test-public-gating.mjs"
+    "test:public:gating": "node --test scripts/test-public-gating.mjs",
+    "test:v5:flexible": "node --test scripts/test-v5-flexible.mjs",
+    "test:v5:local": "node scripts/run-v5-tests.mjs"
   },
   "dependencies": {
     "@solana-program/token": "0.18.0",

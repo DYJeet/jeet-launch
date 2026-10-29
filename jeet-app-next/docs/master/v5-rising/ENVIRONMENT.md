@@ -1,4 +1,6 @@
-# Current verification environment and recovery limits
+Current recovery and fresh compilation results are documented in [EXECUTION.md](EXECUTION.md) and [RECOVERY.md](RECOVERY.md). The following describes the previous checkpoint, not the current tool availability.
+
+# Historical environment at 3427966
 
 Node 24.22.1/npm 11.9.0 available. Rust/Cargo 1.99.1 executables were recovered
 under the ignored programs/launch-custody/target/toolchain directory. Native

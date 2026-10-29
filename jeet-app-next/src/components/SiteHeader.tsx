@@ -22,13 +22,18 @@ export default function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <div className="hidden min-w-[280px] items-center rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 lg:flex">
+          <Link href="/explore" aria-label="Search verified launches" className="hidden min-w-[280px] items-center rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 lg:flex">
             <span className="mr-2 text-white/25">⌕</span>
-            <span className="text-xs text-white/30">Search tokens, wallets, or CA...</span>
-          </div>
+            <span className="text-xs text-white/30">Search verified launches...</span>
+          </Link>
           <WalletConnectButton />
         </div>
       </div>
+      <nav aria-label="Mobile navigation" className="grid grid-cols-3 border-t border-white/[0.07] text-center text-xs font-bold text-white/65 lg:hidden">
+        <Link href="/explore" className="px-3 py-3 hover:text-[#9cff43]">Explore</Link>
+        <Link href="/create" className="px-3 py-3 hover:text-[#9cff43]">Create Coin</Link>
+        <Link href="/revenue" className="px-3 py-3 hover:text-[#9cff43]">Revenue</Link>
+      </nav>
     </header>
   );
 }

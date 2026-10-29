@@ -61,3 +61,12 @@ Assess upgrade/deployment governance and dependency advisory reachability.
 The later metadata, indexer, wallet UX and migration implementation need their own
 review; this package must be updated before a complete independent audit handoff.
 A local test signature is not a Devnet or mainnet transaction reference.
+
+## V5 local execution preview
+
+[Execution/state/math](v5-rising/EXECUTION.md), [tool recovery](v5-rising/RECOVERY.md),
+[AMM readiness and read-only Devnet evidence](v5-rising/AMM-READINESS.md), and
+[execution verification](v5-rising/execution-verification.json) supersede earlier
+statements that no V5 on-chain code exists **for disposable local builds only**.
+Production V5 remains disabled; economics, terminal migration and external LP
+permanence remain unapproved/unverified. Legacy financial handlers are preserved.

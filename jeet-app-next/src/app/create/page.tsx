@@ -10,6 +10,18 @@ import { useEffect, useMemo, useState } from "react";
 
 const LIME = "#9cff43";
 
+function FeeDisclosure() {
+  return (
+<section aria-label="Platform fee disclosure" className="rounded-[22px] border border-[#9cff43]/20 bg-[#9cff43]/[0.04] p-5">
+              <h2 className="text-sm font-black">Know the cost before signing</h2>
+              <p className="mt-3 text-xs leading-5 text-white/60">Token creation platform fee: 0 SOL. Solana network costs and account rent are separate.</p>
+              <p className="mt-2 text-xs leading-5 text-white/60">Supported curve trades charge 0.75% to JeeT Launch and 0.25% to the creator (1% nominal total). Integer rounding can increase the effective rate on small trades. Review the executable quote before signing.</p>
+              <p className="mt-2 text-xs leading-5 text-white/45">V5 trading is available only in disposable local tests. Public V5 launches and graduation are disabled. Liquidity settings below are planning inputs; no migration charge or funding policy has been activated.</p>
+              <Link href="/revenue" className="mt-3 inline-block text-xs font-bold text-[#9cff43] underline underline-offset-4">View on-chain fee accounts and claims</Link>
+            </section>
+  );
+}
+
 type ToggleProps = {
   checked: boolean;
   onChange: () => void;
@@ -157,7 +169,7 @@ export default function CreatePage() {
 
   const [totalSupply, setTotalSupply] = useState("1000000000");
   const [decimals, setDecimals] = useState("9");
-  const [devAllocation, setDevAllocation] = useState("2");
+  const [devAllocation, setDevAllocation] = useState("1");
 
   const [maxWalletPercent, setMaxWalletPercent] = useState("1");
   const [initialLiquidity, setInitialLiquidity] = useState("10");
@@ -336,7 +348,7 @@ export default function CreatePage() {
           ? "text-yellow-300"
           : "text-orange-400";
 
-  const launchFee = 0.5;
+  const launchFee = 0;
   const estimatedNetworkFee = 0.01;
 
   const estimatedWalletRequirement =
@@ -1045,8 +1057,9 @@ export default function CreatePage() {
            {/* MOBILE REVIEW */}
           <section
             id="review"
-            className="scroll-mt-28 xl:hidden"
+            className="scroll-mt-28 space-y-4 xl:hidden"
           >
+            <FeeDisclosure />
             <div className="rounded-[22px] border border-white/[0.07] bg-[#090b09] p-5">
               <p className="text-lg font-black">
                 Ready to review?
@@ -1248,6 +1261,8 @@ export default function CreatePage() {
               </div>
             </section>
 
+            <FeeDisclosure />
+
             {/* FEE SUMMARY */}
             <section className="rounded-[22px] border border-white/[0.07] bg-[#090b09] p-5">
               <p className="text-lg font-black">
@@ -1331,8 +1346,8 @@ export default function CreatePage() {
             )}
 
             <p className="text-center text-[9px] leading-4 text-white/20">
-              Review opens a Devnet-only integration test. Production launch inventory,
-              curve custody, liquidity and anti-sniper rules are not active yet.
+              Review offers separate local-validator and Devnet tests. Public V5 trading and
+              liquidity migration remain disabled; each test explains what it verifies.
             </p>
           </div>
         </aside>

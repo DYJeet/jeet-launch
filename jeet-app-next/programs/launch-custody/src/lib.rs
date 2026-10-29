@@ -4,6 +4,10 @@ mod curve;
 mod fees;
 mod market;
 mod protected;
+#[cfg(feature = "local-fee-test")]
+mod v5;
+#[cfg(any(test, feature = "local-fee-test"))]
+mod v5_math;
 
 use solana_program::{
     account_info::AccountInfo, entrypoint, entrypoint::ProgramResult, program::invoke_signed,
@@ -67,6 +71,16 @@ pub fn process_instruction(
 ) -> ProgramResult {
     if program_id != &id() {
         return Err(ProgramError::IncorrectProgramId);
+    }
+    if matches!(input.first(), Some(16..=20)) {
+        #[cfg(feature = "local-fee-test")]
+        {
+            return v5::process(program_id, accounts, input);
+        }
+        #[cfg(not(feature = "local-fee-test"))]
+        {
+            return Err(ProgramError::Custom(1514));
+        }
     }
     if matches!(input.first(), Some(11..=15)) {
         return market::process(program_id, accounts, input);

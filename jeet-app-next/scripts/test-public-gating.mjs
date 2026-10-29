@@ -29,3 +29,8 @@ test('demo token cannot appear as a live launch page',async()=>{
 test('existing creation and revenue routes remain reachable',async()=>{
  for(const path of ['/create','/revenue'])assert.equal((await fetch(origin+path)).status,200);
 });
+
+test('creation discloses zero platform creation fee and disabled public V5',async()=>{
+ const body=await(await fetch(origin+'/create')).text();
+ for(const text of ['Platform fee disclosure','Token creation platform fee: 0 SOL','0.75% to JeeT Launch','0.25% to the creator','Public V5 launches and graduation are disabled'])assert.ok(body.includes(text),text);
+});

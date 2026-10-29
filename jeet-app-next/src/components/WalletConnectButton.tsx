@@ -1,4 +1,5 @@
 "use client";
+import WalletReadyGate from "./WalletHydrationGate";
 
 import { useEffect, useRef, useState } from "react";
 import {
@@ -7,7 +8,6 @@ import {
   useDisconnect,
   useWallets,
   useWalletStatus,
-  WalletReadyGate,
 } from "@solana/kit-plugin-wallet/react";
 import { useClient } from "@solana/react";
 import type { AppClient } from "@/app/providers";
