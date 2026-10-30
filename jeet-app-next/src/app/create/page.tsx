@@ -5,8 +5,9 @@ import Link from "next/link";
 import LocalTokenCreator from "@/components/LocalTokenCreator";
 import WalletConnectButton from "@/components/WalletConnectButton";
 import { toTokenBaseUnits } from "@/lib/token-amount";
+import {validateImageUpload} from "@/lib/launch-image";
 import type { ChangeEvent, ReactNode } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const LIME = "#9cff43";
 
@@ -164,6 +165,10 @@ export default function CreatePage() {
   const [telegram, setTelegram] = useState("https://t.me/jeetcat");
 
   const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [imageBusy,setImageBusy]=useState(false);
+  const imageRequest=useRef(0),imageInput=useRef<HTMLInputElement>(null);
+  useEffect(()=>()=>{imageRequest.current+=1;},[]);
+
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [logoError, setLogoError] = useState("");
 
@@ -188,39 +193,18 @@ export default function CreatePage() {
     return () => URL.revokeObjectURL(logoPreview);
   }, [logoPreview]);
 
-  function handleLogoUpload(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-
-    setLogoError("");
-
-    if (!file) {
-      setLogoFile(null);
-      setLogoPreview(null);
-      return;
-    }
-
-    const allowedTypes = [
-      "image/png",
-      "image/jpeg",
-      "image/webp",
-    ];
-
-    if (!allowedTypes.includes(file.type)) {
-      setLogoError("Use a PNG, JPG, or WEBP image.");
-      event.target.value = "";
-      return;
-    }
-
-    if (file.size > 2 * 1024 * 1024) {
-      setLogoError("Image must be 2 MB or smaller.");
-      event.target.value = "";
-      return;
-    }
-
-    setLogoFile(file);
-    setLogoPreview(URL.createObjectURL(file));
+  function removeLogo(){
+    imageRequest.current+=1;setImageBusy(false);setLogoFile(null);setLogoPreview(null);setLogoError('');
+    if(imageInput.current)imageInput.current.value='';
   }
-
+  async function handleLogoUpload(event:ChangeEvent<HTMLInputElement>){
+    const input=event.currentTarget,file=input.files?.[0],request=++imageRequest.current;
+    setLogoError('');if(!file){removeLogo();return;}
+    setImageBusy(true);
+    try{await validateImageUpload(file);if(request!==imageRequest.current)return;setLogoFile(file);setLogoPreview(URL.createObjectURL(file));}
+    catch(error){if(request===imageRequest.current){setLogoError(error instanceof Error?error.message:String(error));input.value='';}}
+    finally{if(request===imageRequest.current)setImageBusy(false);}
+  }
 
    const supplyNumber = Number(totalSupply);
   const decimalsNumber = Number(decimals);
@@ -231,7 +215,8 @@ export default function CreatePage() {
 
   const nameValid =
     tokenName.trim().length >= 2 &&
-    tokenName.trim().length <= 32;
+    new TextEncoder().encode(tokenName.trim()).length <= 32 &&
+    !/\p{Cc}/u.test(tokenName);
 
   const tickerValid = /^[A-Z0-9]{2,10}$/.test(ticker);
 
@@ -289,7 +274,7 @@ export default function CreatePage() {
   const formValid =
     tokenInfoValid &&
     tokenomicsValid &&
-    launchSettingsValid;
+    launchSettingsValid && !imageBusy && !logoError;
 
   const integrityScore = useMemo(() => {
     let score = 20;
@@ -663,6 +648,8 @@ export default function CreatePage() {
 
                       <input
                         type="file"
+                        ref={imageInput}
+                        aria-label="Token logo image"
                         accept="image/png,image/jpeg,image/webp"
                         onChange={handleLogoUpload}
                         className="hidden"
@@ -670,9 +657,11 @@ export default function CreatePage() {
                     </label>
 
                     <p className="mt-2 text-[10px] text-white/25">
-                      PNG, JPG, or WEBP. Maximum 2 MB. Square image recommended.
+                      PNG, JPG, or WEBP. Maximum 2 MB and 4096 pixels per side. Square image recommended.
                     </p>
 
+                    {imageBusy && <p role="status" className="mt-2 text-[10px] text-white/50">Checking image…</p>}
+                    {(logoFile||logoError) && <button type="button" aria-label="Remove token logo" onClick={removeLogo} className="mt-2 text-[10px] text-white/50 hover:text-[#9cff43]">Remove image</button>}
                     {logoError && (
                       <p className="mt-2 text-[10px] text-red-300">
                         {logoError}
