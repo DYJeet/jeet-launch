@@ -1,0 +1,92 @@
+{
+  "positive": [
+    "390px genuine five-stage wallet creation, resume and supply conservation",
+    "390px token page reload and mobile layout",
+    "1440px genuine five-stage wallet creation, resume and supply conservation",
+    "1440px token page reload and mobile layout"
+  ],
+  "rejection": [
+    "390px rejected setup leaves minted supply at zero",
+    "1440px rejected setup leaves minted supply at zero"
+  ],
+  "transactions": [
+    {
+      "width": 390,
+      "sol": {
+        "before": "1000000000",
+        "after": "964844400",
+        "accountFunding": "35125600",
+        "networkFees": "30000"
+      }
+    },
+    {
+      "width": 390,
+      "mint": "5x5iQe59i11D8YqSu5AYJbTyiZ1XHWagyQd9t49Tpk1v",
+      "wires": [
+        {
+          "signature": "34UBP6GwC5VwTToTRzuXuNDJ3bfW7nGEBe4wjCLdmLd1v8d7eLgg7WDVfZ4FmuYwMhJQnKSGXetMTEHWZ4es9MTT",
+          "bytes": 464
+        },
+        {
+          "signature": "48Ci8caiLbUPQyaiJP54XenNziRnLg4jadWZPP6oZUQww2x62TDS7knm3njckzzi1f5JU6m7rP95WWHuthu4T4we",
+          "bytes": 526
+        },
+        {
+          "signature": "1DkKhsy5UAT5aad6TQSB7xeZCfCT7An9RmPiF1pf6QYvTMi5kkHZzhpm6Re2bxS6dLGaAAQ8TfSt82XA9v6DToi",
+          "bytes": 713
+        },
+        {
+          "signature": "43XyL8gbELzuYbKCZLmBgf4SqSrQjeBxv29JxH6UgfGbfi6gYjq86yKP95QZ9Dnw2mUsRvQyo6Yhwqr2y2eZMceu",
+          "bytes": 513
+        },
+        {
+          "signature": "BxqFSVShm1vPJMu3o8ZB4RkB74psazjpHA745xyzLZYHm5qgeNN4FXg7qGU6PTu2UFKaLvaw2JgdPnxZx1WAa2k",
+          "bytes": 527
+        }
+      ],
+      "tokenConservation": "10 + 594 + 396 = 1000"
+    },
+    {
+      "width": 1440,
+      "sol": {
+        "before": "1000000000",
+        "after": "964844400",
+        "accountFunding": "35125600",
+        "networkFees": "30000"
+      }
+    },
+    {
+      "width": 1440,
+      "mint": "E3LGShexTNa7wh5FFj3V8XqexpRQi3JFgkY2nzZDW5xj",
+      "wires": [
+        {
+          "signature": "3pa44DPr6e9KnUTSDrNhY68L9tzSknNV5yN5oP7fwuFwCH4GgGPWxbKxnRBXWYfHsepKn7UVvWFyAR5272EBMivi",
+          "bytes": 464
+        },
+        {
+          "signature": "4nWbUaa9pvRcon5mYrX27DAZXdQUrbCb76K2DG2VAngm7GLoCwEJVx9NtfhZcuGySkrLb9L9WtXTvgrsJh79omuZ",
+          "bytes": 526
+        },
+        {
+          "signature": "5KBmQ8J5aY2Ba1tLKsxdFHeSfG9Yx5ZLiZjCf62MpE11s2SQTQGVbQETC9DcT8HpNi5eCAkai9fDsmfbGz5Mgjsm",
+          "bytes": 713
+        },
+        {
+          "signature": "4NUF2sfkzdKaCD57BE28Tz94CVwn3DBvZnkBQ2jNzPjwu1q7LpGqdrPBAdFLRMGhsiWfS25tytMJu7RLWZkZFKgL",
+          "bytes": 515
+        },
+        {
+          "signature": "4QC8b9Zno4zvF6wwEWucUM6jgcEirSwYkeQU7wr2h6csxmNQ8SSJDEupf91THjq4kXBr6CFw7WXpXkde21Hbnkdn",
+          "bytes": 527
+        }
+      ],
+      "tokenConservation": "10 + 594 + 396 = 1000"
+    }
+  ],
+  "limitations": [
+    "Disposable Wallet Standard adapter, not installed Phantom/Solflare or native mobile application acceptance.",
+    "No installed extension or public metadata persistence is claimed."
+  ],
+  "completed": true,
+  "genesis": "5mtZKCtjEHB7MyZkh21K3a92pPyNNnoWQXLNKa8PgSJh"
+}

@@ -182,8 +182,8 @@ function Creation({ environment }: { environment: WalletEnvironment }) {
             if (!response.ok) throw Error(uploaded.error ?? "Upload failed");
             const uri = new URL(uploaded.uri);
             if (
-              uri.origin !== window.location.origin ||
-              !/^\/api\/local-assets\/[a-f0-9]{64}\.json$/.test(uri.pathname)
+              !(uploaded.storage === "local-workspace" && uri.origin === window.location.origin && /^\/api\/local-assets\/[a-f0-9]{64}\.json$/.test(uri.pathname)) &&
+              !(uploaded.storage === "pinata" && uri.origin === "https://gateway.pinata.cloud" && /^\/ipfs\/[a-zA-Z0-9]{46,100}$/.test(uri.pathname) && !uri.search && !uri.hash)
             )
               throw Error("Upload returned an unexpected URI.");
             const documentResponse = await fetch(uri, {
@@ -201,7 +201,7 @@ function Creation({ environment }: { environment: WalletEnvironment }) {
             const hash = Array.from(digest, (b) =>
               b.toString(16).padStart(2, "0"),
             ).join("");
-            if (uri.pathname !== `/api/local-assets/${hash}.json`)
+            if (hash !== uploaded.sha256 || (uploaded.storage === "local-workspace" && uri.pathname !== `/api/local-assets/${hash}.json`))
               throw Error("Uploaded metadata hash mismatch.");
             const document = JSON.parse(
               new TextDecoder().decode(documentBytes),

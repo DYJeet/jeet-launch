@@ -2,9 +2,7 @@
 // Fault injection tests are labelled; successful execution and balances are never fabricated.
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { once } from "node:events";
-import { mkdtemp, open, writeFile, readFile } from "node:fs/promises";
-import { createHash } from "node:crypto";
+import { mkdtemp, mkdir, open, writeFile } from "node:fs/promises";
 import { chromium, expect } from "@playwright/test";
 import {
   generateKeyPairSigner,
@@ -13,7 +11,6 @@ import {
   partiallySignTransaction,
   getTransactionEncoder,
   getSignatureFromTransaction,
-  getBase64EncodedWireTransaction,
 } from "@solana/kit";
 import { address } from "@solana/kit";
 import { walletLaunchAddresses } from "../src/lib/wallet-launch.ts";
@@ -151,17 +148,14 @@ try {
     });
     let rejectAt = 0, reject = false,
       signCount = 0,
-      hold = false,
-      release;
+      hold = false;
     const wires = [];
-    let lastWire;
     await page.exposeFunction("jeetSignLocal", async (bytes) => {
       signCount++;
       if (reject || signCount === rejectAt) throw Error("User rejected request");
-      if (hold) await new Promise((r) => (release = r));
+      if (hold) throw Error("Unexpected held signing request");
       const tx = getTransactionDecoder().decode(Uint8Array.from(bytes)),
         signed = await partiallySignTransaction([wallet.keyPair], tx);
-      lastWire = getBase64EncodedWireTransaction(signed);
       wires.push({
         signature: getSignatureFromTransaction(signed),
         bytes: getTransactionEncoder().encode(signed).length,
@@ -279,6 +273,21 @@ try {
     const accounts = (await rpc("getMultipleAccounts", [[mint,l.creatorAta,l.vault,l.migrationVault],{encoding:"base64",commitment:"confirmed"}])).value;
     const parsed = parseMintBytes(Buffer.from(accounts[0].data[0],"base64"), address(mint), accounts[0].owner);
     assert.equal(parsed.supplyRaw,1000n); assert.equal(parsed.mintAuthority,null); assert.equal(parsed.freezeAuthority,null);
+    const allAddresses = [mint,l.creatorAta,l.vault,l.migrationVault,l.custody,l.opening,l.curve,l.platformVault,l.creatorVault,l.terms];
+    const metadataAddress = (await import("../src/lib/launch-metadata.ts")).findMetadataPda;
+    allAddresses.push((await metadataAddress(address(mint)))[0]);
+    const allAccounts = (await rpc("getMultipleAccounts",[allAddresses,{encoding:"base64",commitment:"confirmed"}])).value;
+    let networkFees = 0n;
+    for(const wire of wires) {
+      const tx = await rpc("getTransaction",[wire.signature,{encoding:"json",commitment:"confirmed",maxSupportedTransactionVersion:0}]);
+      assert.equal(tx.meta.err,null); networkFees += BigInt(tx.meta.fee);
+      assert.ok(wire.bytes<=1232);
+    }
+    const funding = allAccounts.reduce((sum,a)=>sum+BigInt(a.lamports),0n);
+    const after = BigInt((await rpc("getBalance",[wallet.address,{commitment:"confirmed"}])).value);
+    assert.equal(1000000000n-after,funding+networkFees);
+    assert.equal(networkFees,30000n);
+    evidence.transactions.push({width,sol:{before:"1000000000",after:after.toString(),accountFunding:funding.toString(),networkFees:networkFees.toString()}});
     const balances = accounts.slice(1).map(a => Buffer.from(a.data[0],"base64").readBigUInt64LE(64));
     assert.deepEqual(balances,[10n,594n,396n]);
     assert.equal(balances.reduce((a,b)=>a+b,0n),parsed.supplyRaw);
@@ -296,6 +305,7 @@ try {
   }
   evidence.completed = true;
   evidence.genesis = genesis;
+  await mkdir("programs/launch-custody/target/v6-wallet",{recursive:true});
   await writeFile("programs/launch-custody/target/v6-wallet/creation-browser-evidence.json",JSON.stringify(evidence,null,2));
   console.log("PASS creation browser suite",JSON.stringify(evidence));
 } finally {

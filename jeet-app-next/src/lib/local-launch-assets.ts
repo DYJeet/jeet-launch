@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
+import { pinMetadataFile } from "./pinata-metadata-storage.ts";
 import {
   validateImageBytes,
   validateImageDimensions,
@@ -114,8 +115,14 @@ export async function createLocalLaunchAssets(value: unknown, origin: string) {
   const website = link(v.website),
     twitter = link(v.twitter),
     telegram = link(v.telegram);
-  const imageName = await put(image, ext),
-    imageUri = `${origin}/api/local-assets/${imageName}`;
+  const provider = process.env.JEET_METADATA_STORAGE ?? "local-workspace";
+  if (provider !== "local-workspace" && provider !== "pinata") throw Error("Unknown metadata storage provider.");
+  const jwt = process.env.PINATA_JWT ?? "";
+  if (provider === "pinata" && !jwt) throw Error("Pinata storage requires server PINATA_JWT; no mint was created.");
+  const imageName = await put(image, ext);
+  const imageUri = provider === "pinata"
+    ? (await pinMetadataFile(image, imageName, v.mime, jwt)).uri
+    : `${origin}/api/local-assets/${imageName}`;
   const document = {
     name: v.name,
     symbol: v.symbol,
@@ -127,10 +134,13 @@ export async function createLocalLaunchAssets(value: unknown, origin: string) {
   };
   const bytes = Buffer.from(JSON.stringify(document)),
     metadataName = await put(bytes, "json");
-  const uri = `${origin}/api/local-assets/${metadataName}`;
+  const uri = provider === "pinata"
+    ? (await pinMetadataFile(bytes, metadataName, "application/json", jwt)).uri
+    : `${origin}/api/local-assets/${metadataName}`;
   validateMetadataFields(v.name, v.symbol, uri, true);
   return {
-    storage: "local-workspace",
+    storage: provider,
+    sha256: hash(bytes),
     uri,
     imageUri,
     metadataName,

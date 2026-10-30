@@ -1,4 +1,5 @@
 "use client";
+import LocalLaunchMetadata from "./LocalLaunchMetadata";
 import { useEffect, useState } from "react";
 import { address, getAddressDecoder, getBase64Encoder } from "@solana/kit";
 import { WalletTransactionExecutor } from "@/lib/wallet-transactions";
@@ -50,6 +51,7 @@ export default function WalletLaunchReader({ mint }: { mint: string }) {
     <button className="rounded-xl border border-[#9cff43]/30 px-5 py-3 text-[#9cff43]" onClick={() => setRefresh(n => n + 1)}>Refresh on-chain state</button>
     {!result && <p role="status">Loading launch accounts…</p>}
     {result?.error && <p role="alert">{result.error}</p>}
+    {s?.metadata && <LocalLaunchMetadata key={s.metadata.uri} uri={s.metadata.uri} />}
     {s?.mint && s.state && <dl>
       {row("Ticker", s.metadata?.symbol ?? "Metadata unavailable")}
       {row("Mint", mint)}
