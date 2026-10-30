@@ -2,6 +2,8 @@
 mod caps;
 mod curve;
 mod fees;
+#[cfg(feature = "local-fee-test")]
+mod graduation;
 mod market;
 mod protected;
 #[cfg(feature = "local-fee-test")]
@@ -72,10 +74,14 @@ pub fn process_instruction(
     if program_id != &id() {
         return Err(ProgramError::IncorrectProgramId);
     }
-    if matches!(input.first(), Some(16..=20)) {
+    if matches!(input.first(), Some(16..=22)) {
         #[cfg(feature = "local-fee-test")]
         {
-            return v5::process(program_id, accounts, input);
+            return if matches!(input.first(), Some(21 | 22)) {
+                graduation::process(program_id, accounts, input)
+            } else {
+                v5::process(program_id, accounts, input)
+            };
         }
         #[cfg(not(feature = "local-fee-test"))]
         {

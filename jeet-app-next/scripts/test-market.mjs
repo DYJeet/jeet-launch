@@ -154,9 +154,11 @@ export async function runMarketTests({ local = false } = {}) {
       ])
     )[0]?.signature;
     let caught;
+    const deadline = AbortSignal.timeout(15000);
     try {
       await sponsor.sendTransaction(
         Array.isArray(instructions) ? instructions : [instructions],
+        { abortSignal: deadline },
       );
     } catch (e) {
       caught = e;
@@ -165,7 +167,7 @@ export async function runMarketTests({ local = false } = {}) {
     const detail = JSON.stringify(caught, (_k, v) =>
       typeof v === "bigint" ? v.toString() : v,
     );
-    assert.ok(detail.includes('"code":' + code), label + ": " + detail);
+
     assert.deepEqual(
       await snapshot(),
       before,
@@ -178,6 +180,15 @@ export async function runMarketTests({ local = false } = {}) {
       ])
     )[0];
     assert.ok(ref.err && ref.signature !== old);
+    assert.deepEqual(
+      ref.err.InstructionError[1],
+      { Custom: code },
+      label + " confirmed on-chain failure code",
+    );
+    // Transport timeouts are failures, not evidence of a rejected transaction.
+    // Keep the original client-code assertion as well as the stronger ledger check.
+    assert.ok(detail.includes('"code":' + code), label + ": " + detail);
+
     evidence.rejections.push({
       label,
       code,

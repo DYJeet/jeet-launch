@@ -33,6 +33,7 @@ async function rpc(method, params) {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }),
+    signal: AbortSignal.timeout(15000),
   });
   const b = await r.json();
   assert.ok(r.ok && !b.error, JSON.stringify(b));
@@ -190,7 +191,9 @@ async function denied(l, c, ix, code, label) {
   const before = await snapshot(l);
   let caught;
   try {
-    await c.sendTransaction(Array.isArray(ix) ? ix : [ix]);
+    await c.sendTransaction(Array.isArray(ix) ? ix : [ix], {
+      abortSignal: AbortSignal.timeout(30000),
+    });
   } catch (e) {
     caught = e;
   }

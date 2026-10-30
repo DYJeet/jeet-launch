@@ -1,6 +1,6 @@
 //! Local-validator V5 execution preview. NEVER enabled in the production artifact.
-//! Completion is eligibility only; sells stay backed, and no migration/withdrawal exists.
-//! Kept version-isolated from V4 until economic and integration approval.
+//! Completion is eligibility only; sells stay backed until a prospective atomic graduation.
+//! Version-isolated from V4; public deployment remains disabled.
 use super::*;
 use solana_program::{
     clock::Clock,
@@ -26,7 +26,7 @@ pub struct Market {
     pub quantum: u64,
 }
 use super::market::fee_parts;
-fn price(m: &Market) -> super::v5_math::Pricing {
+pub(super) fn price(m: &Market) -> super::v5_math::Pricing {
     super::v5_math::Pricing {
         inventory: m.curve.inventory,
         quantum: m.quantum,
@@ -45,7 +45,7 @@ fn protection(
     legacy[..8].copy_from_slice(super::market::MAGIC);
     super::protected::decode(&legacy, supply, inventory, open)
 }
-fn load(
+pub(super) fn load(
     program: &Pubkey,
     mint: &AccountInfo,
     custody: &AccountInfo,
@@ -85,6 +85,9 @@ fn load(
         || creator.checked_add(inventory) != Some(minted.supply)
     {
         return Err(err(1501));
+    }
+    if d[261] == 2 {
+        return Err(ProgramError::Custom(1609));
     }
     let c = super::curve::Curve {
         fees: true,

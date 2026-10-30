@@ -23,7 +23,9 @@
     "test:v5:flexible": "node --test scripts/test-v5-flexible.mjs",
     "test:v5:local": "node scripts/run-v5-tests.mjs",
     "amm:build:local": "bash scripts/amm/build-cpmm.sh",
-    "test:amm:cpmm": "node scripts/amm/run-cpmm.mjs"
+    "test:amm:cpmm": "node scripts/amm/run-cpmm.mjs",
+    "test:graduation:local": "node scripts/amm/run-graduation.mjs",
+    "test:graduation:client": "node --test scripts/test-graduation-client.mjs"
   },
   "dependencies": {
     "@solana-program/token": "0.18.0",

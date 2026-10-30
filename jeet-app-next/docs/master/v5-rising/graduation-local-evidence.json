@@ -1,0 +1,592 @@
+{
+  "positive": [
+    "init: exact 1/59.4/39.6 partition and curve-PDA migration custody",
+    "prospective graduation terms recorded before first trade",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "sell: exact quote/payment/fees, gross receipts, reserve and supply",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "sell: exact quote/payment/fees, gross receipts, reserve and supply",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "concurrent permissionless graduation permits exactly one pool deposit and burn",
+    "real atomic custody migration, exact pool reserves, entire initial LP burn and source cleanup",
+    "post migration fee beneficiary claim 0",
+    "post migration fee beneficiary claim 1",
+    "exact SOL and token conservation across buys, sells, migration and fee withdrawals",
+    "actual post graduation AMM buy/sell preserve supply and burned LP",
+    "init: exact 1/59.4/39.6 partition and curve-PDA migration custody",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "sell: exact quote/payment/fees, gross receipts, reserve and supply",
+    "opening-phase rejection leaves redemption funded and executable",
+    "one transaction revokes both authorities and records prospective terms before trading",
+    "init: exact 1/59.4/39.6 partition and curve-PDA migration custody",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "sell: exact quote/payment/fees, gross receipts, reserve and supply",
+    "enabled ordinary cap window cannot be bypassed through graduation",
+    "init: exact 1/59.4/39.6 partition and curve-PDA migration custody",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "sell: exact quote/payment/fees, gross receipts, reserve and supply",
+    "unopted older V5 redemption rights remain unchanged"
+  ],
+  "rejections": [
+    {
+      "label": "initialization zero quantum",
+      "code": 1503,
+      "signature": "5GgsmKW5FmCAtpC8Z79SvsKQXvjnx1HBufyheRwCas9LEY5KjzySNFAuZtqjHReKRA4RP4g2Jvzogw6jMij3ZqtL",
+      "slot": 39
+    },
+    {
+      "label": "initialization zero starting price",
+      "code": 1503,
+      "signature": "416eMJgGgJssjkqA4eL7E83mvNj8S7EBvSL4QkK1EWG3mHenXRUcbn2WqykfVgumjA6UdUy4XcLbxJRm96GfTqKe",
+      "slot": 40
+    },
+    {
+      "label": "initialization falling curve",
+      "code": 1503,
+      "signature": "yjgNY1dZ2dK13fGaYqwgMxYCQw8km5bLBfhHEALmh57SScMkn8Q9q2QQDGRoeBQTJL1UjSJXVyPbLmDuHg8pT22",
+      "slot": 41
+    },
+    {
+      "label": "initialization inventory partition mismatch",
+      "code": 1503,
+      "signature": "3b13MeqDZCSKSE8e2V5ZhznhQ6isbocd1GmnddfDH2uMQuMKgWRTv2sisS37cUzeY4RRAmCPgnu6JXEKn3YnCmJQ",
+      "slot": 42
+    },
+    {
+      "label": "initialization zero migration inventory",
+      "code": 1503,
+      "signature": "4vn1SmrmHTzXdczRbJNZ7VxKnybvx6r3Vk9RGNxNe5WpsP6n9zs2aTBjQaZKAUyyW2emS132D6FKd8qJqCV5TsQw",
+      "slot": 43
+    },
+    {
+      "label": "initialization zero protected duration",
+      "code": 1202,
+      "signature": "2oN4797Sf9d7PkeCfsFF6GrqQA5Uiirf8WwBEYu8taosYUJUUQdgapFHyeGhC8rHtytsVejLVcYiaBGfnu2S32bq",
+      "slot": 44
+    },
+    {
+      "label": "initialization reserve overflow",
+      "code": 1507,
+      "signature": "5g3n5FQUEXcsrjbgXFF48HpVxqNqsDUEm32LmuFqZVYtyNSXd2bFkYKwC3miBHRdM8sWRLpr6Rwer7eApeEMnZ6x",
+      "slot": 45
+    },
+    {
+      "label": "trading requires revoked mint/freeze authorities",
+      "code": 1501,
+      "signature": "27wmF1pS1bmgKw84JDSzci2bFcYmbvxpDwycMZvH1LdmufFdyt9TcARVN4P1ojKvj1RHehYRUaYex6vtXoi8Lag4",
+      "slot": 47
+    },
+    {
+      "label": "default artifact rejects graduation activation",
+      "code": 1514,
+      "signature": "5LEgzKhW9xFonqsyPyLE5t7E5pFQPJakNQ6MijFQhJ1Kn9PrUguWhsRutjfzcL8kGsSqvJgworHixWQpL37M9yz3",
+      "slot": 52
+    },
+    {
+      "label": "default artifact rejects live migration",
+      "code": 1514,
+      "signature": "5CK6khafS5nZoM8o3kYAq4PsLdZRYEyEkqMXjwM8aX35Z8whqThnARLHFPmzStztgmuU3rWrW3zhvN1xNN8Fn2Sx",
+      "slot": 53
+    },
+    {
+      "label": "only immutable creator can accept prospective terms",
+      "code": 1602,
+      "signature": "4NosXdYpuWviii4kyNg3re9q4d4HvgRgyxUcAQCuKXHZYxao2BdU6sd6WnvMAqexpMEQxG8gBtdWs8iJntRKkyAC",
+      "slot": 54
+    },
+    {
+      "label": "price continuity outside disclosed tolerance",
+      "code": 1605,
+      "signature": "2HAb2kAoKcD5q67hGq6xSEPpeyY39e63oSvqjAMiF5BRybFtcKCdDi85Cp9oaDaxZork7doxZDJSt17Nx9JGjxRv",
+      "slot": 55
+    },
+    {
+      "label": "not completed",
+      "code": 1603,
+      "signature": "4VFS7PwPw7QeD1AXXNkVm6H2JFaeEtuuzyJejZjAWNTKhaiJdL9jMheNGEdCPzbLWpJQB1D5tGJguVL5QjjjdSqW",
+      "slot": 57
+    },
+    {
+      "label": "malformed graduation encoding",
+      "code": 1600,
+      "signature": "4cg5UDChyNdwNaxc3fPmarb5SZi43gfyxvnMbei8CDxussY5mCoGqNmdbUVZ9rmEztGDUinhYktWGwL3rpxFCgwM",
+      "slot": 58
+    },
+    {
+      "label": "missing graduation caller signer",
+      "code": 1602,
+      "signature": "5XZGwVW8oenXCC5TefzjfmPUP9QLBSQLriX5qWYy8HmGvtVQ19ahKwcheaLiggrKkkpbtyzt2eqnsLrZfTNAQHTV",
+      "slot": 59
+    },
+    {
+      "label": "terms cannot be replaced after trading",
+      "code": 1604,
+      "signature": "59nAKu96h2jt2Fj46bWxFPBeepJCXW5MtKFwH7bK6CNK6gebRpVcCf7r3iu7ETUYJQTUZXBwT9cZXUX9kfnTNbvo",
+      "slot": 64
+    },
+    {
+      "label": "stale completion state",
+      "code": 1604,
+      "signature": "2bdK2knNQSRCLsxX1PYXmkQQ63Wss38mSMoRKFgKyD2gTxgP6uGDEJUxnAwv38iUL9ac5WRq15bK7FeZyqdonRUe",
+      "slot": 67
+    },
+    {
+      "label": "insufficient setup budget rolls back account creation",
+      "code": 1606,
+      "signature": "24z451LVvRNbnQsZ9FLu981j7xiyLq5U1556JhcMfzAXFwrBkNWmgxDESQfubLdjp8S2JnrZtKNxduWVVkR3H7bV",
+      "slot": 68
+    },
+    {
+      "label": "failed AMM setup CPI preserves backing and custody",
+      "code": 1,
+      "signature": "RypNxQJdbMREzx2R3TzwBVYe3WqPtz3sBCbzBXfKbZQJRqDy651eZjWwTYnpHfKyhc846341jhS44eicXYPyv1D",
+      "slot": 69
+    },
+    {
+      "label": "substituted graduation account 7",
+      "code": 1601,
+      "signature": "3T37TaX8rEZfzAvPBc8yYKUSq5TvxtYkueK4kShoygFeQypYFZR91V2wmfKr1kmtdv9nZv9SiC2eYEEPidJ25CWX",
+      "slot": 74
+    },
+    {
+      "label": "substituted graduation account 8",
+      "code": 1601,
+      "signature": "3M6GuUzoB8cQc81wYJAxW99jhtZRLxCFwgfcPokzYDNgh8nSSLH19cZG53BWPvZAonyL6KkG4EGK4WiTucUBPpWb",
+      "slot": 75
+    },
+    {
+      "label": "substituted graduation account 9",
+      "code": 1601,
+      "signature": "2EJf6ATiQCpj6vPx7gZrzKVRTW22zR9uGW7w48iFWZHkBHeB8UgjAE8jKhDvRCgGBi95bYfQmWQFkJa7YogK5Trk",
+      "slot": 76
+    },
+    {
+      "label": "substituted graduation account 10",
+      "code": 1601,
+      "signature": "2aGKTk7BZAY4U7onnX4ot5GwPkihVSux3qF7rnafHn4D9vUfR7J3sucriN9kbxdCw6JVd5ixe91f3vjNSB4c3LzL",
+      "slot": 77
+    },
+    {
+      "label": "substituted graduation account 11",
+      "code": 1601,
+      "signature": "5J1R7xnU8XK5DWoMHhw2FJjh8z5ddQ7YsepYpzY81DeRtVXDDtdTQkamTPf7kagiJ1TZEbUcAXT8kDSqbcwCZ8bi",
+      "slot": 78
+    },
+    {
+      "label": "substituted graduation account 13",
+      "code": 1601,
+      "signature": "32g9HayDZNMMCKL4QvMw9nyHYhMcvYniMgwDK1VbwNHftkrb7ht5k1T4MEk3mDPkwGJMdt2aUD9w5xTk16KsK13i",
+      "slot": 79
+    },
+    {
+      "label": "substituted graduation account 14",
+      "code": 1601,
+      "signature": "5wYQ51RX9CH5GcoxMv2jBacnaLaTJ2Fu21vdVJHYqkVsXyNNaVUXJrKghV6KHDEiLqhi3YSARyeCSD7r1i7YrQd9",
+      "slot": 80
+    },
+    {
+      "label": "substituted graduation account 15",
+      "code": 1601,
+      "signature": "3WWAqpHQ3bnQ3963QL3FXPhdiUeeKvNdsyGa8UzDdP2bvvodQ4BAf15tFfjUoi5mfhKVvP6G4x6BPZUE2H6Pjyet",
+      "slot": 81
+    },
+    {
+      "label": "substituted graduation account 16",
+      "code": 1601,
+      "signature": "FiCBDwTGy1oE5xtfvXyKHJGkJVPh3ukPZEaWcgjdfTn2uzyWrjYWrqdM3CNgGFcYqL9Ra95WvFvYn7jJb72ZPrD",
+      "slot": 82
+    },
+    {
+      "label": "substituted graduation account 17",
+      "code": 1601,
+      "signature": "rXrSFVX3U8ChJ3oL6gVphtbQ9NAseHd6dp6rfAoSi5kVDriJgHt1K1BVoBBcmooDGFnygXFGJ74eWHwZy3VmBHS",
+      "slot": 83
+    },
+    {
+      "label": "substituted graduation account 18",
+      "code": 1601,
+      "signature": "4XhymJBeKKCn3Snywv4ccrHxQGQzNRHd7mLJ8R3BTswT2oa9z7n3fsSnSPhyV9uRumx99Y6JgEbH42wQRg2RN37x",
+      "slot": 84
+    },
+    {
+      "label": "substituted graduation account 19",
+      "code": 1601,
+      "signature": "UoGRbkG9Y9Sfgm6XReJtay4XHPCf5LqCYQp1B7DtBNTtw5ciiS3YSe7hjsb82DYneQn9W5xdLB7Midhkj8tTtYs",
+      "slot": 85
+    },
+    {
+      "label": "substituted graduation account 20",
+      "code": 1601,
+      "signature": "447VPaqSvsDZPibTNVhwzj8nNhBvnk4vcMm2FXn7As17z1EipuJ8tohkEnfnTHsRogFFxDv85QwhT6N8irHZesBu",
+      "slot": 86
+    },
+    {
+      "label": "substituted graduation account 25",
+      "code": 1601,
+      "signature": "ova6ps44FQK5oS7hMbaVuiTiDtibGL7pzk9TzTHBUZMC9MTMkZfXgGLjtxPZBYFcmZfePBw82NxnxE6SQyZoxbf",
+      "slot": 87
+    },
+    {
+      "label": "second migration in same transaction rolls back first migration",
+      "code": 1609,
+      "signature": "3yiJmCa8S2a7NJVhn7Ex8KnbZZcPZ2uxzKcatgpr99VqDF4irTzkAbUmpbvdk2P24H5Ehwysk9cUw6Y2JGeK6Ec5",
+      "slot": 88
+    },
+    {
+      "label": "concurrent migration loser cannot repeat the economic transition",
+      "code": 1609,
+      "signature": "3zt4MYLs8XibkFZYGGReYDpFWhhAKSP5MTFYNGD8FXJxemJa15oumFHPW8TWg9uJpLz8oCFM9hhasBjNbSLfzTTS",
+      "slot": 90
+    },
+    {
+      "label": "duplicate migration",
+      "code": 1609,
+      "signature": "366M6HGoQS7VKhURUM9hDrfR5MatK1ccB4HtGPZNPfYKd5d3HweptERYPvLXb9nzM1pAXsK6QyN1bR2gTxoDCH92",
+      "slot": 91
+    },
+    {
+      "label": "post migration buy quote",
+      "code": 1609,
+      "signature": "3dmEyQ2vEwaoCjJf9WTxzMoqHaQQ12wd2JyF7scdRxA8vsK46vzVQTJRekZLfL5oHRx36fcPfkCQr1Bsuybu9BHy",
+      "slot": 92
+    },
+    {
+      "label": "post migration redemption quote",
+      "code": 1609,
+      "signature": "3Hhr2HFqwM8cz5vGM6C4BYo5X9SSrAwsSjQLr4s8ooYwSoSNqjkcWcFi2neULHS8d9XFy1HNj2Fitdr3RuEd31Qd",
+      "slot": 93
+    },
+    {
+      "label": "post migration buy",
+      "code": 1609,
+      "signature": "2Q5wKgKirccum1Xwau7EiJ1HQ9gyp4RkFTX5TYX2fnVVmsQQJVvwQ4FUH43ggbkqv98uh2BzxkBPDsv3DqUUWBj6",
+      "slot": 94
+    },
+    {
+      "label": "post migration sell",
+      "code": 1609,
+      "signature": "5KqnuJHaUk5YjbW6wrSzh6ftVGEnE3zh58WtiAm8q8vKTvTdno9jKgcataaqiSjyVmnr8bfVZzWbMKsQutipB4SC",
+      "slot": 95
+    },
+    {
+      "label": "unauthorized post migration fee claim 0",
+      "code": 1304,
+      "signature": "CwDzuK2qsSr7rGQpbpyBaafQDx5zHT7TaB5oLQrcLR3zgpaNXNtx43w4xvjSuTsMGVu6a7ZXy1Bex63PkQxK9CE",
+      "slot": 97
+    },
+    {
+      "label": "duplicate post migration fee claim 0",
+      "code": 1307,
+      "signature": "8gocSw8gbUrj4oTvhNkujT5AMXtPrzYrERyrTeYA8QkM5L7HgeL5Qu1Ur7UzqtjMc8mUiynujoqxeLsyn36o6Fm",
+      "slot": 99
+    },
+    {
+      "label": "unauthorized post migration fee claim 1",
+      "code": 1304,
+      "signature": "477F9r2siPjdW1L8xzfE6UPEt14Hhvy4btWrqQNTiVHtNzNhmf6it1giaY3Y1AiiseJDyMrAtKdJS6j9oa2uGK5V",
+      "slot": 100
+    },
+    {
+      "label": "duplicate post migration fee claim 1",
+      "code": 1307,
+      "signature": "TXFouNp3n7qTz8BD2135HAB472JEixGzeBbgv2ySjJ9e9GMQpvtz4PhBmfyb2kncjczK9caToYRqjaTD8mFzdNs",
+      "slot": 102
+    },
+    {
+      "label": "trading requires revoked mint/freeze authorities",
+      "code": 1501,
+      "signature": "TGUMm1LvxtP17oUhzFThnAtE6aRKeeLvQNAFivLLucVHXmcmyWdGaCJTRcRsoYCL1yPDtYPmNrbHrL1iaa7NyU4",
+      "slot": 112
+    },
+    {
+      "label": "graduation cannot bypass active protected opening",
+      "code": 1610,
+      "signature": "4ujLumR6s6eqoPJfWpp1THHKYmzcKdkP8aUTDZQghwdKVxJaZS4pQ9tWGFunEKoyPCD59Cyvr9t3DpxDzMZeS9rV",
+      "slot": 118
+    },
+    {
+      "label": "trading requires revoked mint/freeze authorities",
+      "code": 1501,
+      "signature": "56wBkbKQ7fqPbsc5Djw7Uesr8Uv7U2ZXPvmcnsQtgpVodZu74JVwEzrpj86vZu9P7AjYatFWw72bGa9pmwaP4kP7",
+      "slot": 127
+    },
+    {
+      "label": "failed activation rolls back mint/freeze revocation",
+      "code": 1605,
+      "signature": "iXnYpGqzKCvgtoZv7rZfcnS6h66ZhLyNef6DN2qgRMkGMA1uiTEMCqZTtifqwGS1ZJknb7ULVpJFt5F2x3fXx4F",
+      "slot": 128
+    },
+    {
+      "label": "graduation cannot bypass active cumulative wallet-cap phase",
+      "code": 1610,
+      "signature": "3itznx2ZPzL1ovHQpyDn2ojP3s5T7jeMns8JB9WE7vhGTZoVMuVWQ88VTixV9Lstnt8cj1jLJFtafrbiEMQYbQfF",
+      "slot": 139
+    },
+    {
+      "label": "trading requires revoked mint/freeze authorities",
+      "code": 1501,
+      "signature": "5aJ5AX1UkSN9Sdfoj662NcL9M1gyEMU9a3xab3MZLsV8vG7xSoU7bzyQZpNVLbu6VtpsMBPWwVb8ntD2PggXLN5t",
+      "slot": 147
+    },
+    {
+      "label": "no retroactive redemption cutoff after a complete round trip",
+      "code": 1604,
+      "signature": "2G4B2wLwtnhao41PhTyBt7ethLmAGBfZVRijGho5jvTpzvtPYnnDZzi9DbKXSurFgbnzpRPcYAa2oK5iGxjEmG4N",
+      "slot": 154
+    }
+  ],
+  "trades": [
+    {
+      "mint": "8DutCQYRNDa5PZSFtnet7FvpDeCVa131A1nQL9Huz1p3",
+      "raw": "11317",
+      "platform": "86",
+      "creator": "28",
+      "user": "11431",
+      "sold": "0",
+      "reserve": "0",
+      "amount": "200",
+      "sequence": "0",
+      "rawIn": "0",
+      "rawOut": "0",
+      "sell": false,
+      "signature": "28CdnMNKooC1iFAx2TRkbMPBsrSh1BGUP3zUJ2mW8wSdewtXKaCwK7iJEPJtiBQnGvm5VsM24PiwLof5Dz4BhWqQ"
+    },
+    {
+      "mint": "8DutCQYRNDa5PZSFtnet7FvpDeCVa131A1nQL9Huz1p3",
+      "raw": "2717",
+      "platform": "21",
+      "creator": "7",
+      "user": "2689",
+      "sold": "200",
+      "reserve": "11317",
+      "amount": "40",
+      "sequence": "1",
+      "rawIn": "11317",
+      "rawOut": "0",
+      "sell": true,
+      "signature": "62hf1MUgbEGnPZgPDwSM5AD1PJpZuHcthJDC7WJGNUEhYGYePhd9aFFK1V4kgiNnTKGumhyxLAZQDSasT4zscKGT"
+    },
+    {
+      "mint": "8DutCQYRNDa5PZSFtnet7FvpDeCVa131A1nQL9Huz1p3",
+      "raw": "41592",
+      "platform": "312",
+      "creator": "104",
+      "user": "42008",
+      "sold": "160",
+      "reserve": "8600",
+      "amount": "434",
+      "sequence": "2",
+      "rawIn": "11317",
+      "rawOut": "2717",
+      "sell": false,
+      "signature": "2unhh3eVg1YBXdSEQLtvH7vdBy2fv15pfnUhF4bdMP8Ms7LtFquMX6XP7Xj48ScRDGxLjfqJs7TjVqEhGPzfF7m9"
+    },
+    {
+      "mint": "8DutCQYRNDa5PZSFtnet7FvpDeCVa131A1nQL9Huz1p3",
+      "raw": "126",
+      "platform": "1",
+      "creator": "1",
+      "user": "124",
+      "sold": "594",
+      "reserve": "50192",
+      "amount": "1",
+      "sequence": "3",
+      "rawIn": "52909",
+      "rawOut": "2717",
+      "sell": true,
+      "signature": "4xjhMvArPh1ij9ZCH4H8wEqBcXVt4mXmjFW6Qj4MiBRseo2jbS9jdq9bCDoUG4mZDDT8gGfeVWh5AiPLnKsqDPbT"
+    },
+    {
+      "mint": "8DutCQYRNDa5PZSFtnet7FvpDeCVa131A1nQL9Huz1p3",
+      "raw": "126",
+      "platform": "2",
+      "creator": "0",
+      "user": "128",
+      "sold": "593",
+      "reserve": "50066",
+      "amount": "1",
+      "sequence": "4",
+      "rawIn": "52909",
+      "rawOut": "2843",
+      "sell": false,
+      "signature": "59NrUVqsHwztkVrtNnwsfFwhE3x4sCAicBs4MGYqDMaiseqPZRZ7mBMu2xgJkTHt1gVhnD7iCMXyV7W55hZtnTAT"
+    },
+    {
+      "mint": "BPxNtzaSwojwPhkKTVhC9K6cvqSqVBYS2Ge69rFf6B2D",
+      "raw": "50192",
+      "platform": "377",
+      "creator": "125",
+      "user": "50694",
+      "sold": "0",
+      "reserve": "0",
+      "amount": "594",
+      "sequence": "0",
+      "rawIn": "0",
+      "rawOut": "0",
+      "sell": false,
+      "signature": "63wHWFh5H9ygHW3FH4sMubo88garhSWMAUB6GnTCavSF7A4n78SJ27H1XPpdg85UFiBH4ya1YpmvB7h5j8T1XVZj"
+    },
+    {
+      "mint": "BPxNtzaSwojwPhkKTVhC9K6cvqSqVBYS2Ge69rFf6B2D",
+      "raw": "126",
+      "platform": "1",
+      "creator": "1",
+      "user": "124",
+      "sold": "594",
+      "reserve": "50192",
+      "amount": "1",
+      "sequence": "1",
+      "rawIn": "50192",
+      "rawOut": "0",
+      "sell": true,
+      "signature": "4QMdb3XgQ8DUBduzGZfLNnsGRLXoSn8a8heAU1QFjZFTaN7Zpud297mvMDfVzNrbKhnwUyaFhc7vNYmTxUGfxEtH"
+    },
+    {
+      "mint": "5BAEoHC1ySsLztS98taCAdv6jqUqDu5iK4M7uJ4T4kBR",
+      "raw": "11175",
+      "platform": "84",
+      "creator": "28",
+      "user": "11287",
+      "sold": "0",
+      "reserve": "0",
+      "amount": "198",
+      "sequence": "0",
+      "rawIn": "0",
+      "rawOut": "0",
+      "sell": false,
+      "signature": "f8tPhy22Rrm3kLwoCe7ijLzxcf2wbjJcpLj81CAnuvzv11ycEkVrBCs6gMi3mwf4bVXgPNPkbtrXJWTYgYLrkee"
+    },
+    {
+      "mint": "5BAEoHC1ySsLztS98taCAdv6jqUqDu5iK4M7uJ4T4kBR",
+      "raw": "16731",
+      "platform": "126",
+      "creator": "42",
+      "user": "16899",
+      "sold": "198",
+      "reserve": "11175",
+      "amount": "198",
+      "sequence": "1",
+      "rawIn": "11175",
+      "rawOut": "0",
+      "sell": false,
+      "signature": "4XB7p6TigBFgyf5FUPNuqba9juZK5hYCDxRzef3z6GC1JbZayyiFFynjSETXspVFxBh6pZgWrZk2tNdRCNHcxpuN"
+    },
+    {
+      "mint": "5BAEoHC1ySsLztS98taCAdv6jqUqDu5iK4M7uJ4T4kBR",
+      "raw": "22286",
+      "platform": "168",
+      "creator": "55",
+      "user": "22509",
+      "sold": "396",
+      "reserve": "27906",
+      "amount": "198",
+      "sequence": "2",
+      "rawIn": "27906",
+      "rawOut": "0",
+      "sell": false,
+      "signature": "P3JUiu3AHcadSU5MEWkywBZWEZtSLUgY3pPYX4sk8SsTSbQ67aP3Y6Vx5UrQF62CnKFDs4uHTG1cgnuaPRRGpCW"
+    },
+    {
+      "mint": "5BAEoHC1ySsLztS98taCAdv6jqUqDu5iK4M7uJ4T4kBR",
+      "raw": "126",
+      "platform": "1",
+      "creator": "1",
+      "user": "124",
+      "sold": "594",
+      "reserve": "50192",
+      "amount": "1",
+      "sequence": "3",
+      "rawIn": "50192",
+      "rawOut": "0",
+      "sell": true,
+      "signature": "2mX2N9w17tNFuPA87eyTViyMYBi1qDhFRYhbKKa5odoWqM4cSDUQqLBLKiYdzWMpVwFHuEjSSKgjJdAg7XFPSn1i"
+    },
+    {
+      "mint": "8LE8YWHqsPXszVacNQQGnNcwaNy79i7Uxb1YjeCMfcQg",
+      "raw": "42",
+      "platform": "1",
+      "creator": "0",
+      "user": "43",
+      "sold": "0",
+      "reserve": "0",
+      "amount": "1",
+      "sequence": "0",
+      "rawIn": "0",
+      "rawOut": "0",
+      "sell": false,
+      "signature": "2VxxoLkSdhtGVTqW7DZv4wkSA4kyZkvWLC64JGi6yfq434e7RHmLSMzKbCnwD8dVSoAzSfnFSnft6KaR1odTaV2W"
+    },
+    {
+      "mint": "8LE8YWHqsPXszVacNQQGnNcwaNy79i7Uxb1YjeCMfcQg",
+      "raw": "42",
+      "platform": "1",
+      "creator": "0",
+      "user": "41",
+      "sold": "1",
+      "reserve": "42",
+      "amount": "1",
+      "sequence": "1",
+      "rawIn": "42",
+      "rawOut": "0",
+      "sell": true,
+      "signature": "5CNGjHmHLq7yvmnA8hcWgbkCtxcew7aeShtxdjwZKaZDhrLQPxBq9Wt8ucBS9hMCJMMMAzdaqciK7gv4YPAc4Cvj"
+    }
+  ],
+  "conservation": [
+    {
+      "buyerExpenditure": "53567",
+      "sellerNet": "2813",
+      "migratedSol": "50192",
+      "platformFees": "422",
+      "creatorFees": "140",
+      "supply": "1000",
+      "creatorTokens": "10",
+      "buyerTokens": "594",
+      "poolTokens": "396"
+    }
+  ],
+  "transactions": [
+    {
+      "signature": "wVGoYytzbRcrRGRU88iyKGNDHkovNt4ovW32jQsNNodWUX9GmrnysSPWeeCYnrn7WmUZ4ikE4XKTvk1beCeRDPh",
+      "computeUnits": 284660,
+      "transactionBytes": 1158,
+      "setupSpent": "190117440",
+      "proof": {
+        "mint": "8DutCQYRNDa5PZSFtnet7FvpDeCVa131A1nQL9Huz1p3",
+        "curve": "tzwh2BwwyT1AbYvMikL7uQTB7ez14gTXJ5rFZaDSGiy",
+        "ammProgram": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+        "config": "5MxLgy9oPdTC3YgkiePHqr3EoCRD9uLVYRQS2ANAs7wy",
+        "migrator": "DGxHd1Be9UnXdW5uGof1apN9CpmsSGimoAusStXZAvNU",
+        "pool": "GpSJHpjFEdLoHyBvSwXtKyPJtw8UAzSxaWGa1qfz8RCF",
+        "solDeposited": "50192",
+        "tokensDeposited": "396",
+        "lpBurned": "4358",
+        "maxPriceGapBps": 60,
+        "createdSlot": "56",
+        "migratedSlot": "90",
+        "sequence": "6",
+        "migrated": true
+      }
+    }
+  ],
+  "postAmm": {
+    "creatorTokens": "10",
+    "buyerTokens": "591",
+    "poolTokens": "399",
+    "totalSupply": "1000",
+    "buyerWrapped": "10157",
+    "poolWrapped": "50035",
+    "totalWrapped": "60192",
+    "lpSupply": "0"
+  },
+  "activations": [
+    "5kFJ8fRWf2FjN6hQbUTG3y8h9joEaaKTVUTEGCit7GqTXYiV47WdevT8JzsZE2tGQZescYmxVr683oropwuRZoCD"
+  ],
+  "completed": true,
+  "jeetSbfSha256": "8b6c38031a1bd3c9ce9605d1f15a884ebba9f884dccf3aead1039089c420d146",
+  "ledger": "/tmp/jeet-graduation-jShDzz",
+  "sourceCommit": "f4b9b26342afe9122d5ff67cd7a4f19ded4ac0a5",
+  "sbfSha256": "a33db1186011da4b21a09c240116a49066cc35baaa7b546cc93a42922c53f614"
+}

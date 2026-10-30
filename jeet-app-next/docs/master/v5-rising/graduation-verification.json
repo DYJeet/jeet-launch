@@ -1,0 +1,134 @@
+{
+  "startingRemoteMain": "07598ee2933781550f6de86807c9693c5bb2efad",
+  "initialLocalHead": "d53eb51a042144bebdd54c25e28dcf37e268c239",
+  "recovery": "Clean fast-forward. Missing uncommitted integration reconstructed and freshly reverified. No old missing logs counted.",
+  "status": "Verified LOCAL V5 graduation; public artifact remains gated; platform completion remains incomplete.",
+  "tools": {
+    "node": "24.22.1",
+    "npm": "11.9.0",
+    "rust": "1.99.1",
+    "cargo": "1.99.1",
+    "validator": "Agave2.3.13",
+    "jeetSbf": "platform-tools1.48 /rustc1.84.1",
+    "cpmmBuilder": "cargo-build-sbf4.5.0 /platform-tools1.57 /SBFv0"
+  },
+  "counts": {
+    "nativeDefault": 13,
+    "nativeLocal": 15,
+    "jsAndHttp": 57,
+    "graduationPositive": 28,
+    "graduationRejections": 51,
+    "previousV5Positive": 25,
+    "previousV5OnChainRejections": 42,
+    "previousV5IntegrityRejections": 7,
+    "fullV4": {
+      "positive": 124,
+      "rejection": 79
+    },
+    "focusedV4": {
+      "positive": 125,
+      "rejection": 79
+    },
+    "feesIncludingIntegrity": {
+      "positive": 46,
+      "rejection": 108
+    },
+    "protectedPositive": 14,
+    "protectedOnChainRejections": 28,
+    "protectedApiRejections": 9,
+    "chromiumUx": 10,
+    "browserFeePositive": 7,
+    "browserFeeRejected": 4,
+    "standaloneCpmmPositive": 4,
+    "standaloneCpmmRejected": 5
+  },
+  "commands": {
+    "npm run build": "PASS",
+    "npm run lint": "PASS",
+    "npx tsc --noEmit": "PASS",
+    "cargo fmt -- --check": "PASS",
+    "locked native default/local": "PASS13/15",
+    "fresh locked SBF default/local": "PASS",
+    "official pinned CPMM SBF build --arch v0": "PASS",
+    "npm run test:local": "PASS full final marker",
+    "npm run test:v5:local": "PASS including7 integrity fixtures",
+    "npm run test:market": "PASS both configurations and5 integrity fixtures",
+    "npm run test:graduation:local": "PASS28positive/51rejections",
+    "npm run test:graduation:client": "PASS4cases included in57",
+    "node scripts/test-v5-ux.mjs": "PASS10",
+    "npm run test:fees:dashboard": "PASS7positive/4rejections",
+    "npm audit": "0advisories",
+    "cargo clippy --all-targets --features local-fee-test": "completed;8library/9test warnings in pre-existing code; no automatic legacy refactor"
+  },
+  "artifactSha256": {
+    "default": "42d2e7b9f8ce690e3b54ca20dce6fe297e03a34bc8ead07059f7b2ab0b4e839c",
+    "local": "8b6c38031a1bd3c9ce9605d1f15a884ebba9f884dccf3aead1039089c420d146",
+    "cpmm": "a33db1186011da4b21a09c240116a49066cc35baaa7b546cc93a42922c53f614"
+  },
+  "conservation": [
+    {
+      "buyerExpenditure": "53567",
+      "sellerNet": "2813",
+      "migratedSol": "50192",
+      "platformFees": "422",
+      "creatorFees": "140",
+      "supply": "1000",
+      "creatorTokens": "10",
+      "buyerTokens": "594",
+      "poolTokens": "396"
+    }
+  ],
+  "postAmmConservation": {
+    "creatorTokens": "10",
+    "buyerTokens": "591",
+    "poolTokens": "399",
+    "totalSupply": "1000",
+    "buyerWrapped": "10157",
+    "poolWrapped": "50035",
+    "totalWrapped": "60192",
+    "lpSupply": "0"
+  },
+  "graduationTransaction": {
+    "signature": "wVGoYytzbRcrRGRU88iyKGNDHkovNt4ovW32jQsNNodWUX9GmrnysSPWeeCYnrn7WmUZ4ikE4XKTvk1beCeRDPh",
+    "computeUnits": 284660,
+    "transactionBytes": 1158,
+    "setupSpent": "190117440",
+    "proof": {
+      "mint": "8DutCQYRNDa5PZSFtnet7FvpDeCVa131A1nQL9Huz1p3",
+      "curve": "tzwh2BwwyT1AbYvMikL7uQTB7ez14gTXJ5rFZaDSGiy",
+      "ammProgram": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+      "config": "5MxLgy9oPdTC3YgkiePHqr3EoCRD9uLVYRQS2ANAs7wy",
+      "migrator": "DGxHd1Be9UnXdW5uGof1apN9CpmsSGimoAusStXZAvNU",
+      "pool": "GpSJHpjFEdLoHyBvSwXtKyPJtw8UAzSxaWGa1qfz8RCF",
+      "solDeposited": "50192",
+      "tokensDeposited": "396",
+      "lpBurned": "4358",
+      "maxPriceGapBps": 60,
+      "createdSlot": "56",
+      "migratedSlot": "90",
+      "sequence": "6",
+      "migrated": true
+    }
+  },
+  "devnet": {
+    "readOnlyObservationSlot": 516641035,
+    "officialCpmmConfigTradeRate": 2500,
+    "officialCpmmSetupLamports": 150000000,
+    "funding": "CLI transport failed; direct official RPC requestAirdrop returned410: RPC faucet closed, use faucet.solana.com. No deployment/lifecycle claimed."
+  },
+  "remaining": [
+    "Public V5 wallet/trading UI",
+    "Full metadata/image/storage flow",
+    "Real Explore/integrity indexing",
+    "Isolated public Devnet candidate identity and funded lifecycle",
+    "Production setup funding policy",
+    "External program upgrade/governance and bytecode equivalence review",
+    "Independent audit"
+  ],
+  "limitations": [
+    "Local signatures are not public Devnet transactions.",
+    "No claim of unconditional LP permanence across external upgrades.",
+    "No RustSec advisory scan completed in this continuation.",
+    "V4 positive log count can vary with race-dependent cleanup; test assertions retained."
+  ]
+}

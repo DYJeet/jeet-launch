@@ -96,16 +96,19 @@ export function decodeV5PreviewState(data: Uint8Array) {
     returned: read(220),
     sequence: read(228),
     eligible: data[261] === 1,
+    migrated: data[261] === 2,
+    migrationSol: data[261] === 2 ? read(204) - read(212) : 0n,
     quantum: read(245),
     migrationInventory: read(253),
   };
   if (
-    data[261] > 1 ||
-    data[236] !== data[261] ||
-    state.eligible !== (state.sold === state.inventory) ||
+    data[261] > 2 ||
+    data[236] !== (state.sold === state.inventory ? 1 : 0) ||
+    (!state.migrated && state.eligible !== (state.sold === state.inventory)) ||
+    (state.migrated && (state.sold !== state.inventory || state.reserve !== 0n)) ||
     !state.quantum ||
     state.rawIn < state.rawOut ||
-    state.reserve !== state.rawIn - state.rawOut
+    state.reserve + state.migrationSol !== state.rawIn - state.rawOut
   )
     throw new Error("V5 inconsistent state");
   return state;

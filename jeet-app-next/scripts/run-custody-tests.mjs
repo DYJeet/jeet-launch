@@ -8,6 +8,14 @@ import { once } from "node:events";
 // Keep app, validator, and RPC test client in one network namespace.
 const directory = await mkdtemp(path.join(tmpdir(), "jeet-custody-"));
 const processes = [];
+// A lost RPC/WebSocket confirmation must fail the suite, never leave an unfinished run.
+const suiteDeadline = setTimeout(() => {
+  console.error(`FAIL local suite exceeded 30 minutes; inspect ${directory}`);
+  process.exitCode = 1;
+  for (const child of processes)
+    if (child.exitCode === null) child.kill("SIGTERM");
+}, 1800000);
+
 async function start(command, args, name) {
   const log = await open(path.join(directory, `${name}.log`), "w");
   const child = spawn(command, args, { stdio: ["ignore", log.fd, log.fd] });
@@ -190,5 +198,6 @@ try {
     `PASS full local suite (allocation, custody, opening caps, bonding curve, protected opening, fees). Logs and disposable ledgers: ${directory}`,
   );
 } finally {
+  clearTimeout(suiteDeadline);
   for (const child of processes.reverse()) await stop(child);
 }

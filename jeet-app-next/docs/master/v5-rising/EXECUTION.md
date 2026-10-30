@@ -1,3 +1,5 @@
+> Current integrated local graduation: see [GRADUATION-EXECUTION.md](GRADUATION-EXECUTION.md). The original checkpoint record below remains historical.
+
 # V5 local execution checkpoint (not activation approval)
 
 Starting remote main: 342796657a0f009e80cb5cc14c8742685f42b679. Remote main had no
