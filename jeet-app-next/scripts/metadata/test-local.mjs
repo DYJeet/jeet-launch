@@ -4,7 +4,6 @@ import {
   generateKeyPairSigner,
   getAddressEncoder,
   getProgramDerivedAddress,
-  createKeyPairSignerFromPrivateKeyBytes,
   lamports,
 } from "@solana/kit";
 import { solanaRpc, rpcAirdrop } from "@solana/kit-plugin-rpc";
@@ -21,10 +20,7 @@ import {
   initializeOpeningInstruction,
 } from "../../src/lib/launch-custody.ts";
 import { decodeMarketQuote } from "../../src/lib/launch-market.ts";
-import {
-  claimFeeInstruction,
-  decodeFeeState,
-} from "../../src/lib/launch-fees.ts";
+import { decodeFeeState } from "../../src/lib/launch-fees.ts";
 import {
   V5_PREVIEW_PROGRAM as program,
   initializeV5PreviewInstruction,
@@ -36,18 +32,8 @@ import { potential, v5Quote } from "../../src/lib/v5-pricing.ts";
 import {
   activateGraduationInstructions,
   graduationAddresses,
-  initializeGraduationInstruction,
-  graduateInstruction,
   decodeGraduation,
 } from "../../src/lib/launch-graduation.ts";
-import {
-  computeBudget,
-  FEE,
-  WSOL,
-  TOKEN,
-  swapPool,
-  systemTransfer,
-} from "../amm/cpmm.mjs";
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import {
@@ -133,9 +119,7 @@ export async function testMetadata() {
   }
   const sponsor = await client(),
     alice = await client(),
-    bob = await client(),
-    creator = await client(),
-    creator2 = await client();
+    creator = await client();
   keys.delete(sponsor.payer.address);
   function pass(s) {
     evidence.positive.push(s);

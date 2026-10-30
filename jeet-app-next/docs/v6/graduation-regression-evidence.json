@@ -1,0 +1,28 @@
+{
+  "positive": 28,
+  "rejection": 51,
+  "transactions": [
+    {
+      "signature": "2Sobrt6iE53nrzk91FMrraXqaPeggufCiPeboT69Z6sPqCv1zPwpRBFtzbLy31A1YoNg3ekKXZDFtEkWEUqz1otz",
+      "computeUnits": 302620,
+      "transactionBytes": 1158,
+      "setupSpent": "190117440",
+      "proof": {
+        "mint": "6x4eq8UP3iVQudH6AeF39feYv9QvPzfxYR2ZHPD6cQA",
+        "curve": "GrChohZrgxmn5Q7Mkt2EKJB9PEn4GyV5oSHt8s6zbdH4",
+        "ammProgram": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+        "config": "5MxLgy9oPdTC3YgkiePHqr3EoCRD9uLVYRQS2ANAs7wy",
+        "migrator": "C3u7NjQL9iijCWRX9WqJzxPcei9vVvHUC7Z98LNi2FmH",
+        "pool": "8fsRaTtwB5wLcppqobDr4CuSe1uY374qi5oeWu8tHFk2",
+        "solDeposited": "50192",
+        "tokensDeposited": "396",
+        "lpBurned": "4358",
+        "maxPriceGapBps": 60,
+        "createdSlot": "56",
+        "migratedSlot": "90",
+        "sequence": "6",
+        "migrated": true
+      }
+    }
+  ]
+}

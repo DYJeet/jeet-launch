@@ -1,0 +1,16 @@
+[
+  {
+    "width": 390,
+    "checks": "valid PNG decoded; forged/truncated files rejected; review blocked; removal/recovery; UTF-8 boundary; no overflow/client exception"
+  },
+  {
+    "width": 1440,
+    "checks": "valid PNG decoded; forged/truncated files rejected; review blocked; removal/recovery; UTF-8 boundary; no overflow/client exception"
+  },
+  {
+    "check": "real Image.decode fallback"
+  },
+  {
+    "check": "out-of-order codec completion cannot overwrite latest upload"
+  }
+]

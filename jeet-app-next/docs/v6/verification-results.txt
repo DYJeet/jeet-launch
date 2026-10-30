@@ -1,0 +1,215 @@
+Fresh V6 verification, 2026-10-30 UTC. Local-only; no Devnet lifecycle.
+
+=== v6-native-default.log ===
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+=== v6-native-local.log ===
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+=== v6-sbf-default.log ===
+    Finished `release` profile [optimized] target(s) in 1m 35s
+
+=== v6-sbf-local.log ===
+    Finished `release` profile [optimized] target(s) in 6.83s
+
+=== v6-cpmm-build.log ===
+    Finished `release` profile [optimized] target(s) in 5m 11s
+
+=== v6-unit.log ===
+✔ zero, negative, dust, invalid partition, maximum values and intermediate overflow (3.895965ms)
+✔ alternative curves, large trade slippage and migration allocation separation (0.729171ms)
+ℹ tests 61
+ℹ suites 0
+ℹ pass 61
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7218.506574
+
+=== v6-full-local.log ===
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap conservation: 20 + 980 + 0 = 1000
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap conservation: 20 + 780 + 200 = 1000
+PASS wallet cap conservation: 20 + 980 + 0 = 1000
+PASS curve conservation: 20 + 959 + 21 = 1000
+PASS curve conservation: 20 + 970 + 10 = 1000
+PASS curve conservation: 20 + 0 + 980 = 1000
+PASS curve conservation: 2000 + 97899 + 101 = 100000
+PASS curve conservation: 20 + 977 + 3 = 1000
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve conservation: 20000000000000000 + 980000000000000000 + 0 = 1000000000000000000
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve conservation: 20 + 980 + 0 = 1000
+PASS curve conservation: 20 + 978 + 2 = 1000
+PASS protected conservation: 20 + 960 + 20 = 1000
+PASS protected conservation: 20 + 950 + 30 = 1000
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected conservation: 20 + 980 + 0 = 1000
+PASS protected integrity: inconsistent state rejected without a program bypass
+PASS protected-opening suite: 14 positive checks, 28 on-chain rejections, 9 API rejections
+PASS fee totals {"positive":22,"rejection":52}
+PASS fee totals {"positive":24,"rejection":52}
+PASS market totals {"positive":62,"rejection":37}
+PASS market totals {"positive":63,"rejection":37}
+PASS fee integrity: withdrawn exceeds accrued rejected (1308); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: redirected production treasury configuration rejected (1302); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: inconsistent creator liability rejected (1303); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: curve reserve depleted below recorded consideration rejected (1102); all SOL/tokens/state unchanged; token supply 1000
+PASS market integrity: V4 lifetime accounting overflow rolls back payment and token CPI rejected (1407); balances/state unchanged; supply 1000
+PASS market integrity: V4 gross distribution invariant corruption rejected (1410); balances/state unchanged; supply 1000
+PASS market integrity: V4 exhausted trade sequence rejects before transfer rejected (1407); balances/state unchanged; supply 1000
+PASS market integrity: V4 reserve insolvency cannot fund redemption rejected (1406); balances/state unchanged; supply 1000
+PASS market integrity: V4 inconsistent fee allocation carry rejected (1412); balances/state unchanged; supply 1000
+PASS full local suite (allocation, custody, opening caps, bonding curve, protected opening, fees). Logs and disposable ledgers: /tmp/jeet-custody-QIAWW7
+
+=== v6-v5-local.log ===
+PASS V5 integrity: reserved inventory partition corruption (1510); protected accounts unchanged
+PASS V5 integrity: gross opening receipt corruption (1510); protected accounts unchanged
+PASS V5 integrity: migration custody authority corruption (1501); protected accounts unchanged
+PASS V5 integrity: redemption reserve insolvency (1506); protected accounts unchanged
+PASS V5 integrity: fee carry inconsistency (1412); protected accounts unchanged
+Market logs: /tmp/jeet-v5-BdIxJl
+
+=== v6-graduation-local.log ===
+PASS V5 rejection: duplicate post migration fee claim 1 (1307); rollback exact
+PASS V5: post migration fee beneficiary claim 1
+PASS V5: exact SOL and token conservation across buys, sells, migration and fee withdrawals
+PASS V5: actual post graduation AMM buy/sell preserve supply and burned LP
+PASS V5 rejection: trading requires revoked mint/freeze authorities (1501); rollback exact
+PASS V5: init: exact 1/59.4/39.6 partition and curve-PDA migration custody
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5 rejection: graduation cannot bypass active protected opening (1610); rollback exact
+PASS V5: sell: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: opening-phase rejection leaves redemption funded and executable
+PASS V5 rejection: trading requires revoked mint/freeze authorities (1501); rollback exact
+PASS V5 rejection: failed activation rolls back mint/freeze revocation (1605); rollback exact
+PASS V5: one transaction revokes both authorities and records prospective terms before trading
+PASS V5: init: exact 1/59.4/39.6 partition and curve-PDA migration custody
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5 rejection: graduation cannot bypass active cumulative wallet-cap phase (1610); rollback exact
+PASS V5: sell: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: enabled ordinary cap window cannot be bypassed through graduation
+PASS V5 rejection: trading requires revoked mint/freeze authorities (1501); rollback exact
+PASS V5: init: exact 1/59.4/39.6 partition and curve-PDA migration custody
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: sell: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5 rejection: no retroactive redemption cutoff after a complete round trip (1604); rollback exact
+PASS V5: unopted older V5 redemption rights remain unchanged
+GRADUATION VERIFIED {"positive":28,"rejection":51,"transactions":[{"signature":"2Sobrt6iE53nrzk91FMrraXqaPeggufCiPeboT69Z6sPqCv1zPwpRBFtzbLy31A1YoNg3ekKXZDFtEkWEUqz1otz","computeUnits":302620,"transactionBytes":1158,"setupSpent":"190117440","proof":{"mint":"6x4eq8UP3iVQudH6AeF39feYv9QvPzfxYR2ZHPD6cQA","curve":"GrChohZrgxmn5Q7Mkt2EKJB9PEn4GyV5oSHt8s6zbdH4","ammProgram":"DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb","config":"5MxLgy9oPdTC3YgkiePHqr3EoCRD9uLVYRQS2ANAs7wy","migrator":"C3u7NjQL9iijCWRX9WqJzxPcei9vVvHUC7Z98LNi2FmH","pool":"8fsRaTtwB5wLcppqobDr4CuSe1uY374qi5oeWu8tHFk2","solDeposited":"50192","tokensDeposited":"396","lpBurned":"4358","maxPriceGapBps":60,"createdSlot":"56","migratedSlot":"90","sequence":"6","migrated":true}}]}
+CPMM logs: /tmp/jeet-graduation-mKlwvh
+
+=== v6-metadata-local.log ===
+PASS V5 rejection: initialization zero starting price (1503); rollback exact
+PASS V5 rejection: initialization falling curve (1503); rollback exact
+PASS V5 rejection: initialization inventory partition mismatch (1503); rollback exact
+PASS V5 rejection: initialization zero migration inventory (1503); rollback exact
+PASS V5 rejection: initialization zero protected duration (1202); rollback exact
+PASS V5 rejection: initialization reserve overflow (1507); rollback exact
+PASS V5 rejection: trading requires revoked mint/freeze authorities (1501); rollback exact
+PASS V5 rejection: public artifact metadata gate (1514); rollback exact
+PASS V5 rejection: unsigned metadata creator (1623); rollback exact
+PASS V5 rejection: substituted metadata creator (1623); rollback exact
+PASS V5 rejection: substituted metadata account/program 3 (1621); rollback exact
+PASS V5 rejection: substituted metadata account/program 6 (1621); rollback exact
+PASS V5 rejection: invalid metadata field 9 (1624); rollback exact
+PASS V5 rejection: invalid metadata field 10 (1624); rollback exact
+PASS V5 rejection: invalid metadata field 11 (1624); rollback exact
+PASS V5 rejection: zero metadata budget reverses actual CPI (1625); rollback exact
+PASS V5 rejection: one lamport under actual metadata quote (1625); rollback exact
+PASS V5: actual bounded-cost Metaplex identity, hosted JSON/image and immutable-data flag
+PASS V5 rejection: duplicate metadata creation (1622); rollback exact
+PASS V5 rejection: Metaplex immutable data rejects update (59); rollback exact
+PASS V5 rejection: failed activation rolls back mint/freeze revocation (1605); rollback exact
+PASS V5: one transaction revokes both authorities and records prospective terms before trading
+PASS V5: init: exact 1/59.4/39.6 partition and curve-PDA migration custody
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: sell: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: metadata survives V5 activation and exact buy/sell conservation
+METADATA VERIFIED {"positive":6,"rejection":21,"metadata":{"signature":"4ivJESirWAWDVTfzZxo6xhSKFSPkeyuiGFUirMK7Xew9ZG6RSsbs8PSA8WGuje4meBzYF3oi8pov8BoNDyEg6Gof","record":{"updateAuthority":"AmKW2nNHL65UPYjm1pPy1qsYZBFmLidJobPZboPpdC1J","mint":"A6Fo8Xp2JTtyAeW15vkjGjhCYGMRhhFvLg2JYUidaGNy","name":"JeeT Local Test","symbol":"JTEST","uri":"http://127.0.0.1:9926/metadata.json","sellerFeeBasisPoints":0,"primarySaleHappened":false,"mutable":false},"metadataBytes":607,"rent":"5115600","protocolFee":"10000000","cost":"15115600"},"conservation":[{"buyerExpenditure":"5000","netRedemptions":"1357","platformClaimable":"48","creatorClaimable":"16","creatorTokens":"10000000000","tradingTokens":"519000000000","migrationTokens":"396000000000","buyerTokens":"75000000000","mint":"A6Fo8Xp2JTtyAeW15vkjGjhCYGMRhhFvLg2JYUidaGNy","supply":"1000000000000","sold":"75000000000","reserve":"3579","rawIn":"4950","rawOut":"1371","platformAccrued":"48","creatorAccrued":"16","platformWithdrawn":"0","creatorWithdrawn":"0"}]}
+Metadata logs: /tmp/jeet-metadata-9YcfIp
+
+=== v6-fee-browser.log ===
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> jeet-app@0.1.0 test:fees:dashboard
+> node scripts/test-fee-dashboard.mjs
+
+(node:274) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/45d300329722/jeet-launch/jeet-app-next/src/lib/launch-custody.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/45d300329722/jeet-launch/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS dashboard: fee disclosures and intended treasury render; unauthenticated operations disabled
+PASS dashboard: real on-chain empty state and loading/error recovery
+PASS dashboard: Wallet Standard signer creates real fee-enabled mint and immutable creator entitlement
+PASS dashboard: displayed 10000 + 75 + 25 = 10100 quote comes from actual SBF simulation
+PASS dashboard: browser signs actual atomic buy; confirmed event and both real fee dashboards agree
+PASS dashboard: browser creator claim, zero claimable and verified transaction history; treasury remains isolated
+PASS dashboard: browser launch conserves 20 initial creator + 1 buyer + 979 custody = 1000
+PASS dashboard totals {"positive":7,"rejected":4}
+Browser test logs: /tmp/jeet-fee-browser-0pZx3z
+
+=== v6-ux.log ===
+PASS UX 390px /: rendered, no page exception or horizontal overflow
+PASS UX 390px /explore: rendered, no page exception or horizontal overflow
+PASS UX 390px /create: rendered, no page exception or horizontal overflow
+PASS UX 390px /revenue: rendered, no page exception or horizontal overflow
+PASS UX 390px: fee disclosure and live capability gating
+PASS UX 1440px /: rendered, no page exception or horizontal overflow
+PASS UX 1440px /explore: rendered, no page exception or horizontal overflow
+PASS UX 1440px /create: rendered, no page exception or horizontal overflow
+PASS UX 1440px /revenue: rendered, no page exception or horizontal overflow
+PASS UX 1440px: fee disclosure and live capability gating
+PASS UX 10 checks
+
+=== v6-image-browser.log ===
+PASS creation browser 390px
+PASS creation browser 1440px
+CREATION INPUTS VERIFIED 4 acceptance groups
+
+=== v6-web-final.log ===
+  Creating an optimized production build ...
+✓ Compiled successfully in 7.3s
+  Running TypeScript ...
+  Finished TypeScript in 5.3s ...
+  Collecting page data using 8 workers ...
+  Generating static pages using 8 workers (0/7) ...
+  Generating static pages using 8 workers (1/7)
+  Generating static pages using 8 workers (3/7)
+  Generating static pages using 8 workers (5/7)
+✓ Generating static pages using 8 workers (7/7) in 1087ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/local-test/create
+├ ƒ /api/local-test/health
+├ ○ /create
+├ ○ /explore
+├ ƒ /revenue
+└ ● /token/[mint]
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+
+=== v6-lint.log ===
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> jeet-app@0.1.0 lint
+> eslint
+
+
+=== v6-types.log ===
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.

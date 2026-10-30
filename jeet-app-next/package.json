@@ -25,7 +25,11 @@
     "amm:build:local": "bash scripts/amm/build-cpmm.sh",
     "test:amm:cpmm": "node scripts/amm/run-cpmm.mjs",
     "test:graduation:local": "node scripts/amm/run-graduation.mjs",
-    "test:graduation:client": "node --test scripts/test-graduation-client.mjs"
+    "test:graduation:client": "node --test scripts/test-graduation-client.mjs",
+    "metadata:recover:local": "node scripts/metadata/recover-program.mjs",
+    "test:metadata:client": "node --test scripts/test-metadata-client.mjs",
+    "test:metadata:local": "node scripts/metadata/run-local.mjs",
+    "test:creation:browser": "node scripts/test-creation-inputs.mjs"
   },
   "dependencies": {
     "@solana-program/token": "0.18.0",

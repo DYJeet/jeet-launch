@@ -21,12 +21,12 @@ export function validateMetadataFields(
 ) {
   if (!name.trim() || encoder.encode(name).length > 32 || /\p{Cc}/u.test(name))
     throw Error(
-      "Name must contain1–32 UTF-8 bytes without control characters.",
+      "Name must contain 1–32 UTF-8 bytes without control characters.",
     );
   if (!/^[A-Za-z0-9_]{1,10}$/.test(symbol))
-    throw Error("Ticker must contain1–10 letters, numbers or underscores.");
+    throw Error("Ticker must contain 1–10 letters, numbers or underscores.");
   if (!uri || encoder.encode(uri).length > 200 || /\s|\p{Cc}/u.test(uri))
-    throw Error("Metadata URI must contain1–200 bytes without whitespace.");
+    throw Error("Metadata URI must contain 1–200 bytes without whitespace.");
   const u = new URL(uri);
   if (u.username || u.password) throw Error("URI credentials are prohibited.");
   if (u.protocol === "https:" && u.hostname) return;
