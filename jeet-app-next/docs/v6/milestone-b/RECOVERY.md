@@ -27,7 +27,7 @@ e3fff6c5a98cf2ceec0b532bc5be9313c6c6d98a, recovery/v6-b-resume.
 - Both 390px and 1440px journeys rejected mint/supply signatures, resumed after
   reload without persisting a mint secret, completed all five signing stages,
   verified revoked authorities, loaded the token page, and reloaded it.
-- Four positive grouped browser assertions and two grouped rejection assertions
+- Four positive grouped browser assertions and four grouped rejection assertions
   passed. Ten actual confirmed transactions are in creation-browser-evidence.json.
   Token conservation, each launch: 10 creator + 594 curve + 396 migration = 1000.
   SOL, each creator: 1,000,000,000 = 964,844,400 remaining + 35,125,600 new-account
@@ -40,10 +40,18 @@ e3fff6c5a98cf2ceec0b532bc5be9313c6c6d98a, recovery/v6-b-resume.
   Metadata suite SOL: 5000 payment = 1357 seller + 3579 reserve + 48 platform +
   16 creator, excluding separate rent/network funding. Supply 1e12 = 1e10 creator
   + 75e9 buyer + 519e9 curve + 396e9 migration base units.
-- Existing V5 runner printed PASS: 25 positive, 42 on-chain rejection checks;
-  inspect runner exit/cleanup before recording a complete final regression run.
-- Frontend build, type check and lint passed before the storage-adapter extension.
-  Rerun on final source. Public gating recheck passed all 5 tests.
+- V5 runner completed, including its saved integrity evidence: 25 positive,
+  42 on-chain rejection and 7 integrity rejection checks.
+- Final-source production build, type check and lint passed. Unit/SDK/HTTP
+  selection: 80 passed; the focused overlapping recheck passed 14. Public gating
+  passed all 5 tests. Image-input browser regression passed 4 acceptance groups.
+- Wallet browser regression: 8 positive / 5 rejection groups, genuine local
+  signatures at both widths. Installed extensions/native mobile remain unverified.
+- The full legacy runner reached its final PASS marker: fee variants total 46
+  positive / 104 transaction rejections plus 4 integrity rejections; V4 variants
+  125 positive / 74 transaction rejections plus 5 integrity rejections. Protected
+  opening: 14 positive / 28 on-chain and 9 API rejections. Allocation, custody,
+  caps and pricing also passed. All relevant financial assertions were preserved.
 
 ## Storage dependency — milestone acceptance blocked
 
@@ -76,7 +84,8 @@ No milestone B completion or main promotion is justified by these unit tests.
 ## Continue safely
 
 1. Preserve/fetch the latest recovery branch; do not recreate saved code.
-2. Finish final-source build/lint/types, creation browser rerun and regressions.
+2. Local source/build/browser/financial verification has passed; preserve evidence.
+   Rerun relevant checks if implementation changes.
 3. Official CPMM build and integrated graduation regression have now passed:
    28 positive / 51 rejection checks, migration 1158 bytes / 322132 compute units.
    Keep the evidence and rerun if relevant code changes.

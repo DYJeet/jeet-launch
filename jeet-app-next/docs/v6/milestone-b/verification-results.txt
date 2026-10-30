@@ -1,0 +1,149 @@
+Milestone B: verified LOCAL functionality, persistent provider acceptance BLOCKED.
+No main promotion. No mainnet deployment.
+Node 24.22.1; npm 11.9.0; Rust/Cargo 1.99.1.
+Agave/validator/build-sbf 2.3.13; platform-tools 1.48 / Rust 1.84.1.
+CPMM builder 4.5.0, explicit --arch v0, platform-tools 1.57 / Rust 1.95.0.
+Fresh locked default/local JeeT SBF and pinned CPMM builds completed.
+Default SHA256 4691dffcbf4907d1826e386a1736b86d0779bc60511e37bd6095cf5efbf7ecb3
+Local SHA256 de162b056a588d075d186833f6e8ad2e355d7c8638ec9fbce8d2976414e11ebe
+CPMM SHA256 a33db1186011da4b21a09c240116a49066cc35baaa7b546cc93a42922c53f614
+Old builder syscall warning remains; actual fresh-artifact validator execution passed.
+Commands: npm run build; npm run lint; npx tsc --noEmit; npm run custody:build;
+npm run fees:build:local; bash scripts/amm/build-cpmm.sh; cargo test --locked --manifest-path programs/launch-custody/Cargo.toml [also --features local-fee-test];
+node --test scripts/test-{wallet-infrastructure,wallet-launch-plan,metadata-client,graduation-client,v5-flexible,v5-rising,fee-client,market-math,rpc-reads,public-gating,metadata-storage}.mjs;
+npm run test:metadata:local; npm run test:v5:local; npm run test:graduation:local; npm run test:local;
+npm run test:wallet:creation:browser; npm run test:wallet:browser; npm run test:creation:browser.
+Browser commands require JEET_CHROMIUM_PATH set to recovered official Chromium.
+Pinata tests use injected transport: no real external storage verification is claimed.
+
+=== v6-b-unit-final.log ===
+✔ invalid supply, precision, protected durations and incompatible allocation fail before minting (0.688558ms)
+✔ all staged transactions fit wire limit and preserve exact atomic activation bundle (67.924427ms)
+ℹ tests 80
+ℹ suites 0
+ℹ pass 80
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2167.328922
+
+=== v6-b-focused-final.log ===
+✔ invalid supply, precision, protected durations and incompatible allocation fail before minting (0.454105ms)
+✔ all staged transactions fit wire limit and preserve exact atomic activation bundle (43.607425ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 650.754182
+
+=== v6-b-storage.log ===
+✔ substituted provider identity fails before retrieval (0.503649ms)
+✔ corrupted or unavailable persisted bytes cannot be marked uploaded (1.320101ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 162.160696
+
+=== v6-b-native.log ===
+running 13 tests
+test fees::tests::fixtures ... ok
+test protected::tests::checked_slot_overflow ... ok
+test market::tests::rounding_and_carry ... ok
+test market::tests::exact_and_invalid_redemption ... ok
+test protected::tests::invalid_durations ... ok
+test v5_math::tests::bounds ... ok
+test test_id ... ok
+test v5_math::tests::legacy_lot_reference ... ok
+test v5_math::tests::representative ... ok
+test protected::tests::exact_boundaries ... ok
+test market::tests::inverse_never_refunds_more_than_buy ... ok
+test fees::tests::splitting_cannot_reduce_fees ... ok
+test v5_math::tests::brute_force ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+=== v6-b-native-local.log ===
+running 17 tests
+test graduation::tests::ratio_boundary ... ok
+test fees::tests::fixtures ... ok
+test market::tests::exact_and_invalid_redemption ... ok
+test metadata::tests::bounded_parser ... ok
+test protected::tests::exact_boundaries ... ok
+test metadata::tests::valid_and_invalid_fields ... ok
+test market::tests::rounding_and_carry ... ok
+test protected::tests::invalid_durations ... ok
+test test_id ... ok
+test v5_math::tests::bounds ... ok
+test v5_math::tests::representative ... ok
+test v5_math::tests::legacy_lot_reference ... ok
+test protected::tests::checked_slot_overflow ... ok
+test graduation::tests::checked_sqrt ... ok
+test market::tests::inverse_never_refunds_more_than_buy ... ok
+test fees::tests::splitting_cannot_reduce_fees ... ok
+test v5_math::tests::brute_force ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+=== v6-b-build.log ===
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/local-assets
+├ ƒ /api/local-assets/[name]
+├ ƒ /api/local-test/create
+├ ƒ /api/local-test/health
+├ ƒ /api/wallet/environment
+├ ƒ /api/wallet/rpc
+├ ○ /create
+├ ○ /explore
+├ ○ /local-create
+├ ○ /local-wallet
+├ ƒ /revenue
+└ ● /token/[mint]
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+
+=== v6-b-lint.log ===
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> jeet-app@0.1.0 lint
+> eslint
+
+
+=== v6-b-types.log ===
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+=== Completed legacy runner ===
+PASS protected-opening suite: 14 positive checks, 28 on-chain rejections, 9 API rejections
+PASS fee totals {"positive":22,"rejection":52}
+PASS fee totals {"positive":24,"rejection":52}
+PASS market totals {"positive":62,"rejection":37}
+PASS market totals {"positive":63,"rejection":37}
+PASS fee integrity: withdrawn exceeds accrued rejected (1308); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: redirected production treasury configuration rejected (1302); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: inconsistent creator liability rejected (1303); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: curve reserve depleted below recorded consideration rejected (1102); all SOL/tokens/state unchanged; token supply 1000
+PASS market integrity: V4 lifetime accounting overflow rolls back payment and token CPI rejected (1407); balances/state unchanged; supply 1000
+PASS market integrity: V4 gross distribution invariant corruption rejected (1410); balances/state unchanged; supply 1000
+PASS market integrity: V4 exhausted trade sequence rejects before transfer rejected (1407); balances/state unchanged; supply 1000
+PASS market integrity: V4 reserve insolvency cannot fund redemption rejected (1406); balances/state unchanged; supply 1000
+PASS market integrity: V4 inconsistent fee allocation carry rejected (1412); balances/state unchanged; supply 1000
+PASS full local suite (allocation, custody, opening caps, bonding curve, protected opening, fees). Logs and disposable ledgers: /tmp/jeet-custody-MT0Mpt

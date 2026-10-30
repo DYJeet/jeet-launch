@@ -6,7 +6,9 @@
     "1440px token page reload and mobile layout"
   ],
   "rejection": [
+    "390px forged image rejected before signing",
     "390px rejected setup leaves minted supply at zero",
+    "1440px forged image rejected before signing",
     "1440px rejected setup leaves minted supply at zero"
   ],
   "transactions": [
@@ -21,26 +23,26 @@
     },
     {
       "width": 390,
-      "mint": "ABXfKFkcvdt9v5NA8Su7vn77w49ambCJbt28My4aNjBm",
+      "mint": "3GBUJWQRvRBhwmDMXjskpP7c7koRVd68iW7kUBW2xUzU",
       "wires": [
         {
-          "signature": "4seR9AWBnW1J6jaSuexm3qpKRyzSPw53imtNyi2oHCc8XBMP2qtcvQDQdZArGtPTmeB9wCyTJL22kG79Mnt2g1fa",
+          "signature": "38oSjxBuhwdW4LJ1HJpHmWeY3aYvneWDdzBaAtqiPnmUGUjCUKaGfUADTQfRMyu6MdFUN5p4sadyorStB5uroZ4Y",
           "bytes": 464
         },
         {
-          "signature": "4ya5nKWtdh6puGFrJN8LnyA9XKbxaKHQZ8q4jLNcsi8xCKGdnS9zrXrGMEC2ky6vB6DVADCSZ3eDZkcuoS8kEamS",
+          "signature": "47qTSHwuUqTuKM2bUoVXJn89DXF2SyWpncYmSPjPnEjBTbzzro3tF5jAzw84BPCFepKe1gyGinbrs8L9dZnBtNs6",
           "bytes": 526
         },
         {
-          "signature": "3hXcquyT3oVnpDCBmUTDZv7RwHcdHN76LuRFxAu9Q9zbQSwLHDSkeaKoV6CPffKrwM67puNDPFQ3bj5ru3sHvH8p",
+          "signature": "58m8wT9d5j93McSqAaz3UAFkqzKa8SkAABGFy7wcFofGBqPTNGadhDqc2kHr76CoRGd15Nu8vhFipmYJYC6FLnR8",
           "bytes": 713
         },
         {
-          "signature": "MzegasxyTDArUSfoaHvLjm36XxprgLYrHMfvEqQqhdtDBd235RXqZn783eAQFLDuTKQoDD7HEenqkEc6SptY4LX",
+          "signature": "2gJGJf6PacW5VZ9e1uBSBLVPHdyMR3bBya6uUnyUxM4WTPhgS1JWQpF9bytVtPbPWMmEsSfuVBdDeBD1srAtBy3D",
           "bytes": 513
         },
         {
-          "signature": "4p3v8mgfwP2FX49TkLsKM34v39xKEAH4R8McHantGPfsnXEuCnjqUpVcRMm86hwL7Gydd7RbvxBh31jmbeZeVY8Z",
+          "signature": "46npsdmzDu7dNx73oPvwQ6FW2uDcapCWsBzcdow2KjKy2aVSXdb2PLdqrfZJmUr29XPkTPmvDUjajAobPHYncViZ",
           "bytes": 527
         }
       ],
@@ -57,26 +59,26 @@
     },
     {
       "width": 1440,
-      "mint": "F6CWCu1GLau56VfdwVGV1emTShqJb2ngPnzKpzAv4Uex",
+      "mint": "GhJznftU4iVyNh7Vi1Pv5CPE1SECTRSLKHbaDntFtLCq",
       "wires": [
         {
-          "signature": "3NKiijgbPft7VbwjD7HAnGKqFmdvxbRUQeGa67puZoPXaPJpvintsagg6z4i7FKygMoDSpiwvYfRKk5Zxvys4Q7S",
+          "signature": "VLtbrwW9Fan8JN8TKr9KMygZoxzTGeQyxQ8WWUhJVhbfmUeCgFAJpAWPSZurAiPbs1SgnaVbiu68ZHuLQFko7nT",
           "bytes": 464
         },
         {
-          "signature": "2mx5YyS8CBN7nXYwRKkgRZTkZsctkN6M4QS1DtzPpHFfbNpbsWKTui6rJRASVQ6YZSH8Q4mAr4gKkjH2ESvUU4X1",
+          "signature": "3QC9SbK9APKtaSbXm297d4dXZq2jHLPCkmUAUins8jaChWKhptmCAba5JwsepB2KLb8ojQ4PYPGpa3RT72tfKtjF",
           "bytes": 526
         },
         {
-          "signature": "64AutBmiqVhyXFaeKUg8YFRR877bWNN4gFCZWqgfVPVWAmANALGgUBAnPNRmG9LzspSaAUeNB1SmPUBimxfyprbQ",
+          "signature": "53xxdMEfTeWDkdGo9hk87c6aHh3zGRZtPFgXB3JdTKDCp7t9HM2snQVKShuwTDEMpasGswKymEX596zREnLc6ozB",
           "bytes": 713
         },
         {
-          "signature": "3HvwzSTBkgFKp78U1tsmQE8xEBmVQuqVT9XwVT8GJMvBRquRVKutxWwKQmhhvU1juiiMbupJztwriVPZEWwDDNNw",
+          "signature": "3SKL5hoxGnnhHj7VPz55gDjYCFmF9GNn7uN9TEDLKoChTneZ971U1ypKiFdUck9ByEBYdt2iKL2X2AkAYp3Xsahk",
           "bytes": 515
         },
         {
-          "signature": "3BWDg5UWPYBi58j6xCjeun5h3d5FBGkMrigu4tWzFPPD9dCdSD7RuiuH6w43uzc58RRUnpb7uUfkDZqRqcEu4Yqy",
+          "signature": "3dWrx6PHnsomrtwaGKJQJDLj1FzgMqeQ4MCyudxLqJJKZLa9hSk9XZzbE3HhibL1GKh7QCCcgzHzuzS9U1FQPCZQ",
           "bytes": 527
         }
       ],
@@ -88,5 +90,5 @@
     "No installed extension or public metadata persistence is claimed."
   ],
   "completed": true,
-  "genesis": "Dkns3jW3h4UrEAMiPjuzYJbTLdGdXVPLs9fhbvAqSZoc"
+  "genesis": "9dbJMHyZbYTM4LNcmzaxBKxNQ5T3YaRtSbHq8yBkXb24"
 }

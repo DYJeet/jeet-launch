@@ -246,6 +246,12 @@ try {
     await page.getByLabel("Launch delay (slots)", {exact:true}).fill("0");
     await page.getByLabel("Protected duration (slots)", {exact:true}).fill("1");
     await page.getByText("Enable cumulative opening wallet cap").uncheck();
+    await page.getByLabel("Token image", {exact:true}).setInputFiles({name:"forged.png",mimeType:"image/png",buffer:Buffer.from("<svg></svg>")});
+    await page.getByText("I reviewed the allocations", {exact:false}).check();
+    await page.getByRole("button", {name:"Sign and create coin"}).click();
+    await expect(page.getByTestId("creation-error")).toContainText("match",{timeout:10000});
+    assert.equal(signCount,0);
+    pass(width + "px forged image rejected before signing",true);
     await page.getByLabel("Token image", {exact:true}).setInputFiles("public/jeet-promo.png");
     await page.getByText("I reviewed the allocations", {exact:false}).check();
     reject = true;
@@ -296,6 +302,8 @@ try {
     await page.getByRole("link", {name:"Open token details"}).click();
     await expect(page.getByTestId("launch-reader")).toContainText("JeeT Browser " + width,{timeout:15000});
     await expect(page.getByTestId("launch-reader")).toContainText("Revoked");
+    await expect(page.getByText("Genuine local wallet creation test",{exact:true})).toBeVisible();
+    await expect(page.getByAltText("Creator-supplied token image")).toBeVisible();
     await page.reload();
     await expect(page.getByTestId("launch-reader")).toContainText("JeeT Browser " + width,{timeout:15000});
     assert.deepEqual(errors,[]);
