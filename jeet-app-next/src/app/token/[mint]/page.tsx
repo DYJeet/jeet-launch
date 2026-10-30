@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import WalletLaunchReader from "@/components/WalletLaunchReader";
 import SiteHeader from "@/components/SiteHeader";
 import LiveMintData from "@/components/LiveMintData";
 import { calculateIntegrityScore, findLaunch, getIntegrityNotes, launches } from "@/lib/launches";
@@ -14,7 +14,7 @@ export default async function TokenPage({ params }: { params: Promise<{ mint: st
   const { mint } = await params;
   const coin = findLaunch(mint);
 
-  if (!coin) notFound();
+  if (!coin) return <main className="min-h-screen bg-[#050605] text-white"><SiteHeader /><WalletLaunchReader mint={mint} /></main>;
 
   const integrity = calculateIntegrityScore(coin);
   const notes = getIntegrityNotes(coin);

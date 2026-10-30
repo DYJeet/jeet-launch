@@ -446,6 +446,7 @@ function Creation({ environment }: { environment: WalletEnvironment }) {
             <p className="rounded-xl border border-[#9cff43]/30 p-4 text-[#9cff43]">
               Launch confirmed: supply, metadata, custody, revoked mint/freeze
               authorities and graduation terms verified. Mint: {current.mint}
+              <Link className="mt-3 block underline" href={`/token/${current.mint}`}>Open token details</Link>
             </p>
           )}
         </>

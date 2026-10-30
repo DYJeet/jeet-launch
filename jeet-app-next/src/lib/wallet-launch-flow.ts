@@ -182,7 +182,11 @@ export async function readWalletLaunch(
       terms.config !== l.config ||
       terms.migrator !== l.migrator)
   )
-    throw Error("Graduation destination mismatch.");
+    throw Error("Graduation destination mismatch: " + JSON.stringify({
+      mint: [terms.mint, mint], curve: [terms.curve, l.curve],
+      pool: [terms.pool, terms.migrated], config: [terms.config, l.config],
+      migrator: [terms.migrator, l.migrator],
+    }));
   const fees = [platform, creatorFee].map((account, kind) => {
     if (!account) return null;
     const f = decodeFeeState(owned(account, V5_PREVIEW_PROGRAM, 153));
