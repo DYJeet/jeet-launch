@@ -178,7 +178,7 @@ export async function readWalletLaunch(
     terms &&
     (terms.mint !== mint ||
       terms.curve !== l.curve ||
-      terms.pool !== l.pool ||
+      (!terms.migrated && terms.pool !== address("11111111111111111111111111111111")) ||
       terms.config !== l.config ||
       terms.migrator !== l.migrator)
   )
