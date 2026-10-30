@@ -67,17 +67,19 @@ Official interface reference: https://github.com/PinataCloud/pinata/blob/main/ai
 Five adapter contract/failure unit tests passed using an injected fake transport.
 Those tests are NOT real Pinata upload or persistence evidence. No provider
 credential/account was available and no external upload was performed. Actual
-provider retrieval, CORS, wallet creation using the resulting URI, and token-page
-remote metadata handling still need verification. The local token reader safely
-shows external off-chain metadata as unavailable until that handling is verified.
+provider retrieval, CORS and wallet creation using the resulting URI still need
+verification. The bounded browser reader supports only the fixed Pinata gateway
+or local asset route, rejects redirects and validates decoded images. Remote
+UnixFS proofs are not independently checked; this trust boundary is disclosed.
 No milestone B completion or main promotion is justified by these unit tests.
 
 ## Continue safely
 
 1. Preserve/fetch the latest recovery branch; do not recreate saved code.
 2. Finish final-source build/lint/types, creation browser rerun and regressions.
-3. Run official CPMM build and integrated graduation regression (download/build
-   was started; do not count unfinished logs as passing).
+3. Official CPMM build and integrated graduation regression have now passed:
+   28 positive / 51 rejection checks, migration 1158 bytes / 322132 compute units.
+   Keep the evidence and rerun if relevant code changes.
 4. Configure an approved Pinata account/server secret, verify genuine upload and
    retrieval, finish bounded remote reader, then repeat browser creation/reload.
 5. Verify all acceptance criteria and inspect diff, secrets and baseline scope.

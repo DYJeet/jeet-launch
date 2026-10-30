@@ -31,7 +31,9 @@
     "test:metadata:local": "node scripts/metadata/run-local.mjs",
     "test:creation:browser": "node scripts/test-creation-inputs.mjs",
     "test:wallet:unit": "node --test scripts/test-wallet-infrastructure.mjs",
-    "test:wallet:browser": "node scripts/test-wallet-browser.mjs"
+    "test:wallet:browser": "node scripts/test-wallet-browser.mjs",
+    "test:wallet:creation:browser": "node scripts/test-wallet-creation-browser.mjs",
+    "test:metadata:storage": "node --test scripts/test-metadata-storage.mjs"
   },
   "dependencies": {
     "@solana-program/token": "0.18.0",

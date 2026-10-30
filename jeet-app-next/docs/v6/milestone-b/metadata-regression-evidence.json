@@ -1,0 +1,219 @@
+{
+  "positive": [
+    "actual bounded-cost Metaplex identity, hosted JSON/image and immutable-data flag",
+    "one transaction revokes both authorities and records prospective terms before trading",
+    "init: exact 1/59.4/39.6 partition and curve-PDA migration custody",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "sell: exact quote/payment/fees, gross receipts, reserve and supply",
+    "metadata survives V5 activation and exact buy/sell conservation"
+  ],
+  "rejections": [
+    {
+      "label": "initialization zero quantum",
+      "code": 1503,
+      "signature": "2syUtZfPJ1gGmuwXzkYsyB7TC3krC1wbAL37sy1uJTretGBwxBiMavVJgphEt8CnSBvBLdXPr95imuxtUKrStDF6",
+      "slot": 42
+    },
+    {
+      "label": "initialization zero starting price",
+      "code": 1503,
+      "signature": "5DDKChTMKLCt9Zn8g34XeftfoK584m5Yb73rBiedxGgGioMWfTeYStnu8pHgySvx8hnt5PKU7EYKSwu2qfabMa14",
+      "slot": 43
+    },
+    {
+      "label": "initialization falling curve",
+      "code": 1503,
+      "signature": "4P1zBcaBxsKZm3RbWdkPHGA5X6dMWhVqwthUe3wJXcuJrt13YnYKNwvwocHYLdzrK5GZZdt2oko37ywhWrFqNSHb",
+      "slot": 44
+    },
+    {
+      "label": "initialization inventory partition mismatch",
+      "code": 1503,
+      "signature": "Y341sDfJtk3TrjN4JPNXb57x6j3jnKrNuWDY5TNfRA3aSEW9VQ2vXiwBvwaqtLg3qwBXqeUxEBhfpeStpj36n6p",
+      "slot": 45
+    },
+    {
+      "label": "initialization zero migration inventory",
+      "code": 1503,
+      "signature": "66ysAxwWuVeqUThW7ugBp5nwYYTvAx3QVcgZKc61xSRfxg1bP1Z6kNJddiLt4cNZMYKK3CXkqpKS8S4nCXjJYejh",
+      "slot": 46
+    },
+    {
+      "label": "initialization zero protected duration",
+      "code": 1202,
+      "signature": "5CsmtZt8xm4FeEjniyiW1UxeTiZ417xcDPkAGAUfEXBvwxSUGYQsK2U4G115BNQJTGBsfzLQaHj3C6TGy7yhG32o",
+      "slot": 47
+    },
+    {
+      "label": "initialization reserve overflow",
+      "code": 1507,
+      "signature": "hv11hEhf7KeQq4xbvKF4Q7h96adPxrvXyVRdbpLBwpjUcJjjYHXVWAeWDK8cMzoL4cjotUT5yfUunyxwPef5fJy",
+      "slot": 48
+    },
+    {
+      "label": "trading requires revoked mint/freeze authorities",
+      "code": 1501,
+      "signature": "2gEdr3BUueSdBZFMyNB3dDGC4r9Lmj4A8SCjhvT53R8Zoqi528iMGDT9S4EkZgEwFDYnT36SauwAWqNagyw29t2L",
+      "slot": 50
+    },
+    {
+      "label": "public artifact metadata gate",
+      "code": 1514,
+      "signature": "2r6X9U1bFWqBUhCfq7HMbPYjuCmPX6YPDA1zqtEKzGVncU6rJ2iCyJdKuJ66JrsVdRcFf4BsubpBATLzMQEqadTE",
+      "slot": 51
+    },
+    {
+      "label": "unsigned metadata creator",
+      "code": 1623,
+      "signature": "4nx6FzS2MZhpSgvACHc9XGQ7BXcBaYZ5AGd14r3hhWX7E7JxiNKyL5U6K156QFBWicvkKV4HpWD5ga9z7PToXuLL",
+      "slot": 52
+    },
+    {
+      "label": "substituted metadata creator",
+      "code": 1623,
+      "signature": "2USPmni9HFraNo3F7sc8PiGC7JMc4MZtncDhG3BxhrMHTG7AbqX6wkrgunhj2Bt4p97e3G6ATqfwTjAec3YwWmVw",
+      "slot": 53
+    },
+    {
+      "label": "substituted metadata account/program 3",
+      "code": 1621,
+      "signature": "3JerQ6FU9XxV65iGfAcg1yT18gksvXmHJLujW8YY2r5cuqEDApNjBijNjQTSMaabo6tzzsv3z3oJoMRZ36QRtBoU",
+      "slot": 54
+    },
+    {
+      "label": "substituted metadata account/program 6",
+      "code": 1621,
+      "signature": "45AwNWnQjCicbDUNhj3NnR8wxUPApqkUXLFp7gCeid1sXTQUtjKXAtuFGU4rVEHbABa9s9erZo4ZL4mHzCD3twoo",
+      "slot": 55
+    },
+    {
+      "label": "invalid metadata field 9",
+      "code": 1624,
+      "signature": "424Hx2ajMiksheBAq9UKsTHuLESDaawyx5zG4x53QQqS34aGhmaCc62RSS2phEyfmm11imj3PbB64P4FNZxfWbim",
+      "slot": 56
+    },
+    {
+      "label": "invalid metadata field 10",
+      "code": 1624,
+      "signature": "5EG6xiwN7foVFUKk39cwXVd6wH6wfJSVLPUSteUvX1sGyv9mnJWVSUXNUiHdC3nxcgYh4akuTnNiufbfYh1omVNV",
+      "slot": 57
+    },
+    {
+      "label": "invalid metadata field 11",
+      "code": 1624,
+      "signature": "3x23bCydH78er6DV3QZ2pTTr69jrTwUeKBoLW4Ltfrh9bJVB6STL9mGsSdDHL7JQJ1suXFVtZB3UPMCXQBUbozNQ",
+      "slot": 58
+    },
+    {
+      "label": "zero metadata budget reverses actual CPI",
+      "code": 1625,
+      "signature": "22dLbEyMt7UEw88qsJoNdBtfDYmTNK5uWGTngyEvhu9P7iBgVbMTXNyxJktdoZ2YGDRRXfc8rxe787TgxLVkB4Re",
+      "slot": 59
+    },
+    {
+      "label": "one lamport under actual metadata quote",
+      "code": 1625,
+      "signature": "3fWAZwtEWT5CQkHP6gF4tmuqvbYQSqZKdT4LfbERWTgmxt7LMkduE3bNvjR7MizXzsNTpuPcKr3ygNfAxFMzcud",
+      "slot": 60
+    },
+    {
+      "label": "duplicate metadata creation",
+      "code": 1622,
+      "signature": "2pZd1QTA3ChUzC4WS5z7oiVkZvDn9dUSCPMtFstrPSUAV7p68khD2942bBN6Eor9hyogNaVYsWv5yEEyBZaSZ3RX",
+      "slot": 62
+    },
+    {
+      "label": "Metaplex immutable data rejects update",
+      "code": 59,
+      "signature": "jyi2LMGv7LnaFNrZosiR7adkdMrPbqDxQnK5e5naF36h9VNgCzSaxDFyyBUJTTWXouns3SSrLppWcTJRsMXeZJD",
+      "slot": 63
+    },
+    {
+      "label": "failed activation rolls back mint/freeze revocation",
+      "code": 1605,
+      "signature": "26JNG1grQGEzeWAUQoC4PXwGJx5YGTAgU5gfoYJ61uH8Sh9uTaVqcGX8L3KSTkZ4ZDjN82xb9Dm9XHhjamF1bKTD",
+      "slot": 64
+    }
+  ],
+  "trades": [
+    {
+      "mint": "CapLuMXnjDe2q5yeG6HSVC8doXHRFdAkpjmkYLri8fJB",
+      "raw": "4950",
+      "platform": "38",
+      "creator": "12",
+      "user": "5000",
+      "sold": "0",
+      "reserve": "0",
+      "amount": "100000000000",
+      "sequence": "0",
+      "rawIn": "0",
+      "rawOut": "0",
+      "sell": false,
+      "signature": "2Z7tAGqKuqPxUDRuvoJKxCYwLmhCHG4LmDa6KbJQio5yLWtNbtkczyZ9DbNcaBtS7sb8yJHgSXvisbHUVeEhTjmq"
+    },
+    {
+      "mint": "CapLuMXnjDe2q5yeG6HSVC8doXHRFdAkpjmkYLri8fJB",
+      "raw": "1371",
+      "platform": "10",
+      "creator": "4",
+      "user": "1357",
+      "sold": "100000000000",
+      "reserve": "4950",
+      "amount": "25000000000",
+      "sequence": "1",
+      "rawIn": "4950",
+      "rawOut": "0",
+      "sell": true,
+      "signature": "ntZSWPSWU6iSomQhhTg6Qz31dvJJXixcAey1rTra66kLRxLvWJvkNgEuhRUrmHCV5e9X8jsEHYvR9JGbxQf38dE"
+    }
+  ],
+  "conservation": [
+    {
+      "buyerExpenditure": "5000",
+      "netRedemptions": "1357",
+      "platformClaimable": "48",
+      "creatorClaimable": "16",
+      "creatorTokens": "10000000000",
+      "tradingTokens": "519000000000",
+      "migrationTokens": "396000000000",
+      "buyerTokens": "75000000000",
+      "mint": "CapLuMXnjDe2q5yeG6HSVC8doXHRFdAkpjmkYLri8fJB",
+      "supply": "1000000000000",
+      "sold": "75000000000",
+      "reserve": "3579",
+      "rawIn": "4950",
+      "rawOut": "1371",
+      "platformAccrued": "48",
+      "creatorAccrued": "16",
+      "platformWithdrawn": "0",
+      "creatorWithdrawn": "0"
+    }
+  ],
+  "metadata": {
+    "signature": "3aE9Ab9fgJNnqXiN6PREqHfzbo8mmrpJ4SDM2Gomku3wYyCq9dazfHQjxyQaSY5M9xY6pXpog3m6VJmUW88ujNjY",
+    "record": {
+      "updateAuthority": "C1JCaEDLbiHx7aztQe43rpKvia48n4EUH1UNDwSEjFgt",
+      "mint": "CapLuMXnjDe2q5yeG6HSVC8doXHRFdAkpjmkYLri8fJB",
+      "name": "JeeT Local Test",
+      "symbol": "JTEST",
+      "uri": "http://127.0.0.1:9926/metadata.json",
+      "sellerFeeBasisPoints": 0,
+      "primarySaleHappened": false,
+      "mutable": false
+    },
+    "metadataBytes": 607,
+    "rent": "5115600",
+    "protocolFee": "10000000",
+    "cost": "15115600"
+  },
+  "activations": [
+    "45qbo44mnLMcvUuaeBE7aMAZRFZE7gq7tqBorN2Bt2EMfuQoxvhLUhvxG8xQWRUwa2MVYAvkJarusAn4LhB2ouHV"
+  ],
+  "completed": true,
+  "ledger": "/tmp/jeet-metadata-buS7or",
+  "artifactSha256": {
+    "jeet": "de162b056a588d075d186833f6e8ad2e355d7c8638ec9fbce8d2976414e11ebe",
+    "default": "4691dffcbf4907d1826e386a1736b86d0779bc60511e37bd6095cf5efbf7ecb3",
+    "metaplex": "bb0842f6d5740eabe8f9fb3b723b9ecd89cadf9f48ef9ad6a9dc6cfa8a9658e4"
+  }
+}

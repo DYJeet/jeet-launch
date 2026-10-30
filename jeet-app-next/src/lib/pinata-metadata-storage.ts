@@ -13,9 +13,16 @@ export async function pinMetadataFile(bytes: Uint8Array, name: string, mime: str
   const response = await request(UPLOAD,{method:"POST",headers:{authorization:`Bearer ${jwt}`},body,redirect:"error",signal:AbortSignal.timeout(30000)});
   if(!response.ok) throw Error(`Metadata pinning failed (HTTP ${response.status}); no launch activated.`);
   // Do not include provider error bodies or credentials in user-visible errors.
-  const text = await response.text();
-  if(text.length>16000) throw Error("Invalid pinning response.");
-  const result = JSON.parse(text);
+  const responseReader = response.body?.getReader();
+  if (!responseReader) throw Error("Invalid pinning response.");
+  const responseParts: Uint8Array[] = []; let responseSize = 0;
+  for (;;) {const {value,done} = await responseReader.read(); if(done)break;
+    responseSize += value.length; if(responseSize>16000){await responseReader.cancel();throw Error("Invalid pinning response.");} responseParts.push(value);}
+  const responseBytes = new Uint8Array(responseSize); let responseOffset=0;
+  for(const part of responseParts){responseBytes.set(part,responseOffset);responseOffset+=part.length;}
+  let result;
+  try { result = JSON.parse(new TextDecoder("utf-8",{fatal:true}).decode(responseBytes)); }
+  catch { throw Error("Invalid pinning response."); }
   const cid = result?.data?.cid;
   if(typeof cid!=="string" || !cidPattern.test(cid) || result.data.size !== bytes.length) throw Error("Invalid pinned file identity/size.");
   const uri = GATEWAY+cid;

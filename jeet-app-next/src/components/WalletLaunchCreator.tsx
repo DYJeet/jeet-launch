@@ -260,9 +260,10 @@ function Creation({ environment }: { environment: WalletEnvironment }) {
   return (
     <div className="space-y-6">
       <p className="rounded-xl border border-yellow-300/20 p-4 text-sm text-yellow-100">
-        Local validator and disposable wallets only. Images and JSON are stored
-        in this local workspace, not permanent public hosting. No mainnet or
-        Devnet launch is enabled.
+        Local validator and disposable wallets only. Default image/JSON storage is
+        temporary workspace storage. If the operator explicitly configures Pinata,
+        uploads are public IPFS files dependent on continued provider pinning.
+        Do not upload private information. No mainnet or Devnet launch is enabled.
       </p>
       {!wallet ? (
         <div className="flex flex-wrap gap-3">
@@ -398,7 +399,7 @@ function Creation({ environment }: { environment: WalletEnvironment }) {
                 onChange={(e) => setReview(e.target.checked)}
               />
               I reviewed the allocations, five signing stages, slot timing,
-              local-only storage and cost budgets.
+              temporary local storage or operator-configured public IPFS uploads, and cost budgets.
             </label>
           )}
           <div className="flex flex-wrap gap-3">
@@ -441,6 +442,15 @@ function Creation({ environment }: { environment: WalletEnvironment }) {
                 ? ` · network fee ${formatUnits(notice.networkFee)} SOL`
                 : ""}
             </p>
+          )}
+          {current && Object.keys(current.signatures).length > 0 && (
+            <details className="rounded-xl border border-white/10 p-4 text-xs">
+              <summary>Confirmed setup transactions</summary>
+              <dl>{Object.entries(current.signatures).map(([name, signature]) => (
+                <div key={name} className="mt-3 break-all"><dt className="font-bold">{name}</dt><dd>{signature}</dd></div>
+              ))}</dl>
+              <p className="mt-3 text-white/50">These signatures belong to the configured local validator. Public explorers cannot resolve this disposable local chain.</p>
+            </details>
           )}
           {stage === "confirmed" && current && (
             <p className="rounded-xl border border-[#9cff43]/30 p-4 text-[#9cff43]">

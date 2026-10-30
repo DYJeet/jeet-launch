@@ -1,0 +1,45 @@
+{
+  "positive": [
+    "390px discovery, connection and exact local balance",
+    "390px genuine signing, confirmation, duplicate-button protection and exact SOL reconciliation",
+    "390px wallet reconnect and refreshed balance after reload",
+    "390px disconnect clears account display",
+    "1440px discovery, connection and exact local balance",
+    "1440px genuine signing, confirmation, duplicate-button protection and exact SOL reconciliation",
+    "1440px wallet reconnect and refreshed balance after reload",
+    "1440px disconnect clears account display"
+  ],
+  "rejection": [
+    "390px wallet rejection leaves SOL unchanged",
+    "390px injected network mismatch blocks signing and preserves balances",
+    "1440px wallet rejection leaves SOL unchanged",
+    "1440px injected network mismatch blocks signing and preserves balances",
+    "cross-origin server request rejected"
+  ],
+  "transactions": [
+    {
+      "width": 390,
+      "signature": "2WHHf9McYM1mgTu6AfZfARkvEUTdiJAyfwj8s4xJJCmfEZAZKNPvvBfyZUSaVxxo69eL1GWgkQdDDtRGTwy9w1Gt",
+      "before": "1000000000",
+      "after": "999995000",
+      "networkFee": "5000",
+      "bytes": 185
+    },
+    {
+      "width": 1440,
+      "signature": "34s1QekuUqsXVwGkXSFuXsscJGTLzpM3ge4qRAPtti5se4HWAfiufGJf8M7iHLSRhk6CnL9oqnc7UKuKBQjSv7Fk",
+      "before": "1000000000",
+      "after": "999995000",
+      "networkFee": "5000",
+      "bytes": 185
+    }
+  ],
+  "limitations": [
+    "Disposable Wallet Standard adapter, not installed Phantom/Solflare or native mobile application acceptance.",
+    "No creation/trading lifecycle is claimed by the infrastructure test."
+  ],
+  "genesis": "5H7YSNVd66iQU2zeGkZmMTvz5HUAHNrsWGZCfU4Fwpys",
+  "completed": true,
+  "artifactSha256": "de162b056a588d075d186833f6e8ad2e355d7c8638ec9fbce8d2976414e11ebe",
+  "logs": "/tmp/jeet-wallet-browser-U1zJwt"
+}

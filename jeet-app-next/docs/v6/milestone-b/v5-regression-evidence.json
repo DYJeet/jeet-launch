@@ -1,0 +1,631 @@
+{
+  "positive": [
+    "init: exact 1/59.4/39.6 partition and curve-PDA migration custody",
+    "init: exact 1/59.4/39.6 partition and curve-PDA migration custody",
+    "init: exact 1/59.4/39.6 partition and curve-PDA migration custody",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "sell: exact quote/payment/fees, gross receipts, reserve and supply",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "sell: exact quote/payment/fees, gross receipts, reserve and supply",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "sell: exact quote/payment/fees, gross receipts, reserve and supply",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "SOL-denominated budget converts to maximal affordable whole-token quote",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "exact completion marks eligible but does not cut off redemptions",
+    "sell: exact quote/payment/fees, gross receipts, reserve and supply",
+    "buy: exact quote/payment/fees, gross receipts, reserve and supply",
+    "eligibility is reversible; no stranded redemption backing",
+    "concurrent sells: one commits, stale competitor cannot double-redeem",
+    "authorized treasury full claim leaves redemption reserve unchanged",
+    "authorized creator full claim leaves redemption reserve unchanged",
+    "sell: exact quote/payment/fees, gross receipts, reserve and supply",
+    "sell: exact quote/payment/fees, gross receipts, reserve and supply",
+    "full multiwallet redemption returns reserve to zero, migration tokens untouched"
+  ],
+  "rejections": [
+    {
+      "label": "initialization zero quantum",
+      "code": 1503,
+      "signature": "fMAVDdf55pYP2KCb5725uHixUjEHKpJq3ULDhQKekx3wiWVko75nAPhPWXrx7DEQvmKbFNh86xereRGv6AS8xrh",
+      "slot": 41
+    },
+    {
+      "label": "initialization zero starting price",
+      "code": 1503,
+      "signature": "3J3vkkeU83hiuzCX9JwVKZF6aaaBRcatEugWRntXq65euqXR85NLfWPXCuoBzS7rVBUkt5uBRB8B7UWhUuZJuHPX",
+      "slot": 42
+    },
+    {
+      "label": "initialization falling curve",
+      "code": 1503,
+      "signature": "4wcoes1xJW5Ypwy4a2mZN1nLdLP6fs25a64fVadjGZnV56iG8LnjR3wNvgiRPDGn5sGWQPbvuGS7FFSSYgNaaFBt",
+      "slot": 43
+    },
+    {
+      "label": "initialization inventory partition mismatch",
+      "code": 1503,
+      "signature": "62wLnHUSnBwdUMcgPALBpzNdL3pfWCA9Yv1dtcoCndoADr8rA7mNqcvqkt7JkaadEFw8HXHUN5qGmWKyYArrTtVA",
+      "slot": 44
+    },
+    {
+      "label": "initialization zero migration inventory",
+      "code": 1503,
+      "signature": "CEoRPGkd9wQ14SYM2cesTsXQK2VWEa6rhZoobBQUrewMBio2gP5wjVbEWK3YCQSpgcQ2Wu2tSok76Zgo7GWgnNj",
+      "slot": 45
+    },
+    {
+      "label": "initialization zero protected duration",
+      "code": 1202,
+      "signature": "4PydbSqBkB69YgKPeQQ1PxwdJABq5knnxBYWsyahbyWVCCgPwgVz63UgbPPUaxqfCsP83ARFCA99kxwnhP1qzGa8",
+      "slot": 46
+    },
+    {
+      "label": "initialization reserve overflow",
+      "code": 1507,
+      "signature": "3fcARQ7wrs3nhHagbwKQdG52PpZkZfsh6p9YpXiaLSXQjEFNMCHNapLyX9dLRDDmRuPgLzeshs3qHmnQmJsiFLqv",
+      "slot": 47
+    },
+    {
+      "label": "trading requires revoked mint/freeze authorities",
+      "code": 1501,
+      "signature": "2KktdfDEZwDNPNmSq1D9FmwKfdRYXeMqyNgbNGuxnmUXA9VfvrogpN1auDm56YJvPZSqCZ4Me6MGKy27mWmqwKBG",
+      "slot": 49
+    },
+    {
+      "label": "trading requires revoked mint/freeze authorities",
+      "code": 1501,
+      "signature": "5FvgzcFofJifMAnsadQZCysAGwuA9B72Sjtm9eudcorauqpeRzHera9bwpegXRVaRRSvwoRuStx8po6iDPaGpLqK",
+      "slot": 56
+    },
+    {
+      "label": "unauthorized migration token movement",
+      "code": 4,
+      "signature": "2B5V2A7yxZVPGaCqrVg1ko9HDcgK2BpPbpACigfbxibkLVN85fKbndEhZso7rArJ42ysjSVxg32HQKMwtpQrDocJ",
+      "slot": 63
+    },
+    {
+      "label": "trading requires revoked mint/freeze authorities",
+      "code": 1501,
+      "signature": "2apG1cE2WyofRjKHnTXpcdoiAZFUU3riHCfeCDZqFGqwTGmSBLA6c7C8TEi87rygx37mj6yNSUGHzuzYVQrhtpME",
+      "slot": 69
+    },
+    {
+      "label": "post-protection exact cumulative wallet cap",
+      "code": 1005,
+      "signature": "4ZpGS1PR7sKVvxjEJTnU2ug6Cv7EQzxmDuNPoruCCHraLaij2hEFLHsjDqEYwu86xYRkqMUNZKy4VB5KbctzX2cQ",
+      "slot": 75
+    },
+    {
+      "label": "sell cannot reset ordinary cumulative wallet cap",
+      "code": 1005,
+      "signature": "1mhFmaCtAh9iUrfQdh1XRvxyEcaNVyyrwUQdEKfuivAAJZu3ph5E4PwK7Qp6qdwnEUwUj2K637qjnhswDnodkiF",
+      "slot": 79
+    },
+    {
+      "label": "alternate account cannot exceed cumulative protected limit",
+      "code": 1201,
+      "signature": "3jrrs5DxZsbAtGsC7pm1PhJNobqhXdRkfrUYDYa6vezY15AJ3vuM78QUUVdu4Z3cqqgVNFMzxs8Vjo79NhQYhHpH",
+      "slot": 85
+    },
+    {
+      "label": "sell does not reset gross protected receipt",
+      "code": 1201,
+      "signature": "2ePKkVHs3ZAJFFfAzs7TeoiDeo6s8VnDFA6rTbCQ2tn2jNrwWw89v5qwW7TbhotWA2MMxGmBY4YU2QarySm6eHNt",
+      "slot": 91
+    },
+    {
+      "label": "fee-inclusive maximum spend",
+      "code": 1508,
+      "signature": "2XM2EbtUu6QwWWfqTfZhATrbi25gWqGUsPxz7PDWvDxbQCTjbZmnrB4v1fUsgEj6PDdsGaKqFeufu8ijdDUrBSm5",
+      "slot": 93
+    },
+    {
+      "label": "substituted mint",
+      "code": 1501,
+      "signature": "5gMqgbjTsiNBfhPZVpVMXgdyE3CXjTbwRsPrfRQLwpQrHngWt2mc5MDjCj9dNg65LXteSuwu5bszDQqAi2vnJigL",
+      "slot": 94
+    },
+    {
+      "label": "substituted custody",
+      "code": 1501,
+      "signature": "2TS2MHbHqmZo17AGnJ7nmGgZCGcfTj1SjWNytM4pYb4htCezu9ZTWW3iooLybFQX7nG3miKYLmcfknHUs2ExMGJX",
+      "slot": 95
+    },
+    {
+      "label": "substituted inventory",
+      "code": 1501,
+      "signature": "4ZxkPgnK4CAFNECGZnttaY1Vg3KGWkiQmbQT2eVT9e1scXCfTs2gSwLsKmbxvSB9PFR2ANvm3bESpSMsTZcuieFc",
+      "slot": 96
+    },
+    {
+      "label": "substituted destination",
+      "code": 1501,
+      "signature": "yjZXgij9vbAxMuwAHYAj7F5kc9B6pjk39t6jybQj8ah2kdw4oE5LaW4qw6bdrkfyJihmnePeypKVCx3WuQApqoT",
+      "slot": 97
+    },
+    {
+      "label": "substituted opening",
+      "code": 1501,
+      "signature": "4919QwSc8oTdUGZcwRJBstXNpTsEJGG78qZKBi3Jkp3hkBJcMzhMYvxrMMzy9e6ZV3V3KZ2p8qBf6MXdMxJ4X56H",
+      "slot": 98
+    },
+    {
+      "label": "substituted receipt",
+      "code": 1501,
+      "signature": "35sY8jv1RhzH6jCECJeUzoWPoTwbgEFnCw79pvJZJYJzq7aNx8bWUBhcVytJPJnJDrEsC1w3HZvjikWaThjdwsmL",
+      "slot": 99
+    },
+    {
+      "label": "substituted curve",
+      "code": 1501,
+      "signature": "uBpRPfXCM4sTN4kchv2AAcntZNpZUmnVvHKo22TRJYuQm59iJiTX4HxrqiC3UVmuyqkLkWzeHC2PWhej5c4pQFt",
+      "slot": 100
+    },
+    {
+      "label": "substituted platform vault",
+      "code": 1501,
+      "signature": "53CWczKkiUvjPKBdqDkJasFuzKpFuNc3G7e4bL6xmSDJ16cYxVES2PKHojtSXGf8sc1vVcuyQ4LcxgHpcbe5k38H",
+      "slot": 101
+    },
+    {
+      "label": "substituted creator vault",
+      "code": 1501,
+      "signature": "5DSP5jh1akTZH3zen7EMuUekA79JwFNY2SARjvqXQhbaFzPs4fEKqYF4nvhh2NkvFS9wqg9U8azc5eLqAKpu4Ap4",
+      "slot": 102
+    },
+    {
+      "label": "substituted migration vault",
+      "code": 1501,
+      "signature": "3embuYLTSa1SZ7VquehCuwXiobN4CXYAYiNtkkuVnnHuQrXtL5KD9HWk6RFHbAoLj6WZ2AmhhY5bm5n7UbpSChk5",
+      "slot": 103
+    },
+    {
+      "label": "missing buyer signature",
+      "code": 1502,
+      "signature": "5tTwr4kz6C7mhyrUsp6wbYyB49dr8wRKgVmh51z948ovSZTjGoknwxt5sTWSZUjhV67qHnSrZhSEmoJcqEqjrfvZ",
+      "slot": 104
+    },
+    {
+      "label": "malformed instruction",
+      "code": 1500,
+      "signature": "5ri9Y7TjntcdJPT6i4Axy2VxD9JvyQTrv3ztwXbACQr2oUdFfyxz4Ek8crPWbpF9h5ASz5fjXNbZ2FNo6GYvHPeb",
+      "slot": 105
+    },
+    {
+      "label": "zero purchase",
+      "code": 1503,
+      "signature": "MdmB9yJgavQxF5hxURc9eQy8EMNfQqD9j1BR4CP2qKC2iwSig8NgeWU1ZeVi6BNNv9ZBk2CyDhzxjT9CSpj2VUH",
+      "slot": 106
+    },
+    {
+      "label": "fractional quantum rejected",
+      "code": 1503,
+      "signature": "5MptUPbP4orf1fcbyYZjXtyZ3ZD9iji1JfG1Em9EGcWsPTbwM24eWpxstmNYJcJttchtLPq4mRDJAeqsnWV3Y9jp",
+      "slot": 107
+    },
+    {
+      "label": "same-transaction stale repeated buy rolls back first buy",
+      "code": 1504,
+      "signature": "4KRuDUViin5HmfQdiRWgKSo9aFqKmcrSKRTo5VPFAPCaoAyjykCgyGXqBrkjAT7r4ym3TkvkYktzypLJqNb1kh6L",
+      "slot": 108
+    },
+    {
+      "label": "stale sold and sequence",
+      "code": 1504,
+      "signature": "GgW6Pi6VoUiAUZ61ErAsjBx3umHa8CWaUmuq9fev2Qmg6MHXTTSFXyEPN8WpXTTyfR4gc7CLQAsZ8zqfqDzA9GH",
+      "slot": 111
+    },
+    {
+      "label": "legacy V4 buy cannot access V5",
+      "code": 1401,
+      "signature": "5eZSBP615gxcTUGHwbPxpWL3jsrJfJr6CZkBbhvRYprjPN8VeUbbAxhSAx24wAcuCTrwC1SQoXdBafMtbBqqaDfQ",
+      "slot": 112
+    },
+    {
+      "label": "legacy V4 quote cannot access V5",
+      "code": 1401,
+      "signature": "3vGjCc88E3JbEmLWzurjTfg2cCJjeK8NufomJfi7N9jMnYrG9bBWKGD2v3ZCzsfdvTanQm5gLQFtTzt9dVgQtXEL",
+      "slot": 114
+    },
+    {
+      "label": "production artifact refuses V5 execution",
+      "code": 1514,
+      "signature": "2m95Lm6UscBoud4oLJakN6FGvPzF8ZuYSwLpp1hprxfdLwWnA5GXT83wYR4FrM1EfQE22CNfAWQqtvpnEbWhRZKT",
+      "slot": 115
+    },
+    {
+      "label": "minimum net proceeds",
+      "code": 1508,
+      "signature": "3ncN5Dg6trEwtCry91q6VeA4gJRqPWa9j1S3cRkuYFULD7E6ZUeYcH8aond9bQBCkTMbBTy9k5PWUWheArKywJfH",
+      "slot": 119
+    },
+    {
+      "label": "one quantum beyond completion",
+      "code": 1503,
+      "signature": "tfv79VRejZSTK6XDVtcmjN19Tbsdgsq1kgSQsk434pAntB1TAdtyDbQ6Cn31WK1qtt4RV5G5JRh77ucjrUpSZMC",
+      "slot": 126
+    },
+    {
+      "label": "same-transaction repeated sell rolls back",
+      "code": 1504,
+      "signature": "3xMRP4FMx7XwDgtw95SNsiJyy7m71oBH3mxZmJH7ZRghesD7mWEbYi8o3kexG5L4WCyuBPQhjuSBmUCFhouJo8Si",
+      "slot": 132
+    },
+    {
+      "label": "unauthorized platform claim",
+      "code": 1304,
+      "signature": "3GnbTneUEXJW6dZ71d2z2pqYEqzxPPQnLJuGxj7jeYxy2bWHs8WMJ8RRrvZiDukww9vqyAGW1BzdGHiprJcYCdS1",
+      "slot": 135
+    },
+    {
+      "label": "duplicate 0 claim",
+      "code": 1307,
+      "signature": "2FsC3EjBFiNen4RLGXzYiB3vNDbVEYCW2pWEYeD4NNubiRCikYHbE9SZFPNZwmo2YJjsF87iCpvHaXbKsxuKGaay",
+      "slot": 137
+    },
+    {
+      "label": "unauthorized creator claim",
+      "code": 1304,
+      "signature": "4wwT9QqURazK5hUNT8YkKQTqdwfxGhbqx5QM3DefogRZFvvVFsVMHvigLkqT9a7GBXhNNdDTe4evwS8MPqWAg2mW",
+      "slot": 138
+    },
+    {
+      "label": "duplicate 1 claim",
+      "code": 1307,
+      "signature": "5wAgopBTdSPL7wmDgkDjs3aMejCvMJeMLa3bt9St1j4rbP5hSZt8DUnPZWkV2AJpv7daobY6DxAXk1vhbxL6xSzJ",
+      "slot": 140
+    }
+  ],
+  "trades": [
+    {
+      "mint": "HnLo6hAKBVEMkts1s9AEY7on53msseKrivL1TcNGP4aZ",
+      "raw": "11317",
+      "platform": "86",
+      "creator": "28",
+      "user": "11431",
+      "sold": "0",
+      "reserve": "0",
+      "amount": "200",
+      "sequence": "0",
+      "rawIn": "0",
+      "rawOut": "0",
+      "sell": false,
+      "signature": "3gBQXgebP4xmHUjakbnWM827riXfu8RuotiCzJfyxfLQMf5yZJRYjr7WwSvJpUJPWugUXk6JxoXeNaVVXEx6xi8Y"
+    },
+    {
+      "mint": "HnLo6hAKBVEMkts1s9AEY7on53msseKrivL1TcNGP4aZ",
+      "raw": "71",
+      "platform": "1",
+      "creator": "0",
+      "user": "70",
+      "sold": "200",
+      "reserve": "11317",
+      "amount": "1",
+      "sequence": "1",
+      "rawIn": "11317",
+      "rawOut": "0",
+      "sell": true,
+      "signature": "3sEx8GPRFh88C43yj6jmDsJdp8KY4XdYp8j5kkjnPM88PPk6o4wCpCNhQLEYHiUxLVEuwET3soEhNnrofPFFSBaX"
+    },
+    {
+      "mint": "7WbS1Pzo9vwoJ8RsgBgz4rCSbwqSe3ssaCmxyGsaoLtF",
+      "raw": "2799",
+      "platform": "21",
+      "creator": "7",
+      "user": "2827",
+      "sold": "0",
+      "reserve": "0",
+      "amount": "60",
+      "sequence": "0",
+      "rawIn": "0",
+      "rawOut": "0",
+      "sell": false,
+      "signature": "ZQcvoudu5gu2EMYBoMGJQzZkp7EXsXmci5CnC5tnnmvtCNgpTHUcEGEQvB2qQae58zc2e13oG54p3hBQepN8ewB"
+    },
+    {
+      "mint": "7WbS1Pzo9vwoJ8RsgBgz4rCSbwqSe3ssaCmxyGsaoLtF",
+      "raw": "2151",
+      "platform": "17",
+      "creator": "5",
+      "user": "2173",
+      "sold": "60",
+      "reserve": "2799",
+      "amount": "40",
+      "sequence": "1",
+      "rawIn": "2799",
+      "rawOut": "0",
+      "sell": false,
+      "signature": "4a3dnC8qNK7sxDD3SZn7GtTjQGHcmP8X2G5A84PMJmC7XcNRUkpfyQe84d3UBvagChs8t8hTU4Gnsq1Xac3Mm9Un"
+    },
+    {
+      "mint": "7WbS1Pzo9vwoJ8RsgBgz4rCSbwqSe3ssaCmxyGsaoLtF",
+      "raw": "6367",
+      "platform": "48",
+      "creator": "16",
+      "user": "6431",
+      "sold": "100",
+      "reserve": "4950",
+      "amount": "100",
+      "sequence": "2",
+      "rawIn": "4950",
+      "rawOut": "0",
+      "sell": false,
+      "signature": "2fDzhbXRUeidrPmndNFJifcgrTfeoC9Mq2bC3mLVUPeKVr2szBGwCvVQ81wPHKgTx3zbZnrTmdML22HfM2ERYTS5"
+    },
+    {
+      "mint": "7WbS1Pzo9vwoJ8RsgBgz4rCSbwqSe3ssaCmxyGsaoLtF",
+      "raw": "1387",
+      "platform": "10",
+      "creator": "4",
+      "user": "1373",
+      "sold": "200",
+      "reserve": "11317",
+      "amount": "20",
+      "sequence": "3",
+      "rawIn": "11317",
+      "rawOut": "0",
+      "sell": true,
+      "signature": "4U7HoB1y4aPmyrURoZf5bb1fQSHXiAk4MmAntYtttwcKfCcXTk41jj6JHfsTeeSatAxuWdQKfizy2q7zprsVpwL7"
+    },
+    {
+      "mint": "DDSXhumaZokda7Qe6Qie31USg26iNeT6Rpf7FZ1Gcxm5",
+      "raw": "741",
+      "platform": "6",
+      "creator": "2",
+      "user": "749",
+      "sold": "0",
+      "reserve": "0",
+      "amount": "17000000000",
+      "sequence": "0",
+      "rawIn": "0",
+      "rawOut": "0",
+      "sell": false,
+      "signature": "msCSpYdJ7GoNR3MDqsmTXe5x4fmDQjhNE21G9Ud9BuHBGMcHbscTrBvCy6bPBZUCYvG93UwfuxV5pLx49a2xm5b"
+    },
+    {
+      "mint": "DDSXhumaZokda7Qe6Qie31USg26iNeT6Rpf7FZ1Gcxm5",
+      "raw": "5193",
+      "platform": "39",
+      "creator": "13",
+      "user": "5245",
+      "sold": "17000000000",
+      "reserve": "741",
+      "amount": "100000000000",
+      "sequence": "1",
+      "rawIn": "741",
+      "rawOut": "0",
+      "sell": false,
+      "signature": "23mNaCNQgChPZ66kWF96Xt1NTX94zVUMR5hAoCYt3hEhvp2LZ4NbhdThMG46h3AeHk4E9Ba2sfFXpU5wiZZEj7wP"
+    },
+    {
+      "mint": "DDSXhumaZokda7Qe6Qie31USg26iNeT6Rpf7FZ1Gcxm5",
+      "raw": "294",
+      "platform": "3",
+      "creator": "0",
+      "user": "291",
+      "sold": "117000000000",
+      "reserve": "5934",
+      "amount": "5000000000",
+      "sequence": "2",
+      "rawIn": "5934",
+      "rawOut": "0",
+      "sell": true,
+      "signature": "XJGecViqRE45imzYkjjwsePGhaHUsZnmBpJmCD98ASzoTpj9NJzeZ4xZSmgk3XnxHnWDHk86HSDSEoXnDmveR7v"
+    },
+    {
+      "mint": "DDSXhumaZokda7Qe6Qie31USg26iNeT6Rpf7FZ1Gcxm5",
+      "raw": "9862",
+      "platform": "74",
+      "creator": "25",
+      "user": "9961",
+      "sold": "112000000000",
+      "reserve": "5640",
+      "amount": "144000000000",
+      "sequence": "3",
+      "rawIn": "5934",
+      "rawOut": "294",
+      "sell": false,
+      "signature": "5fi9GaWxZK6yUpW2EpgEMU1fNaF9KeY5KtJeP9an7bPdnNmPZeKwi4AYxbz48LqUc2JEyKdHUMYDryr74FDS6mzU"
+    },
+    {
+      "mint": "DDSXhumaZokda7Qe6Qie31USg26iNeT6Rpf7FZ1Gcxm5",
+      "raw": "34690",
+      "platform": "260",
+      "creator": "87",
+      "user": "35037",
+      "sold": "256000000000",
+      "reserve": "15502",
+      "amount": "338000000000",
+      "sequence": "4",
+      "rawIn": "15796",
+      "rawOut": "294",
+      "sell": false,
+      "signature": "5qAYrJ3F1cTcRnWJjSTf7y4JaDFrvJaeUqBwWbtVvvCZfed9qCUX5BAVSqbyJEnQKFztT6gLqWuahWJqTH4mCXGN"
+    },
+    {
+      "mint": "DDSXhumaZokda7Qe6Qie31USg26iNeT6Rpf7FZ1Gcxm5",
+      "raw": "126",
+      "platform": "2",
+      "creator": "0",
+      "user": "124",
+      "sold": "594000000000",
+      "reserve": "50192",
+      "amount": "1000000000",
+      "sequence": "5",
+      "rawIn": "50486",
+      "rawOut": "294",
+      "sell": true,
+      "signature": "3mmuwZofaCYQjkJfopFL1LBjReswLQSfnV8gas5gVpztgQm3HTXub6Pv91q6wmtQhozNuP1RLYvizbiqvEGLiEik"
+    },
+    {
+      "mint": "DDSXhumaZokda7Qe6Qie31USg26iNeT6Rpf7FZ1Gcxm5",
+      "raw": "126",
+      "platform": "1",
+      "creator": "1",
+      "user": "128",
+      "sold": "593000000000",
+      "reserve": "50066",
+      "amount": "1000000000",
+      "sequence": "6",
+      "rawIn": "50486",
+      "rawOut": "420",
+      "sell": false,
+      "signature": "5wL77aoB9L4hFFE7oFgs9Y8qifqS4ZScUuepU8wospvCfxffZN1wxGq2WgnDzcQESwtYYbzRN76ps286ZFmDP84u"
+    },
+    {
+      "mint": "DDSXhumaZokda7Qe6Qie31USg26iNeT6Rpf7FZ1Gcxm5",
+      "raw": "126",
+      "platform": "2",
+      "creator": "0",
+      "user": "124",
+      "sold": "594000000000",
+      "reserve": "50192",
+      "amount": "1000000000",
+      "sequence": "7",
+      "rawIn": "50612",
+      "rawOut": "420",
+      "sell": true,
+      "signature": "5KS5n4zRDdMtitmBLSM3GADJxaH8SQ2DjzJBdc34PnZU3mqHrFHH6i4Rz7s23J2m4eiC78qxZ4o2tFQPGBShoC1t"
+    },
+    {
+      "mint": "DDSXhumaZokda7Qe6Qie31USg26iNeT6Rpf7FZ1Gcxm5",
+      "raw": "45397",
+      "platform": "340",
+      "creator": "114",
+      "user": "44943",
+      "sold": "593000000000",
+      "reserve": "50066",
+      "amount": "498000000000",
+      "sequence": "8",
+      "rawIn": "50612",
+      "rawOut": "546",
+      "sell": true,
+      "signature": "557qPD6LpnqYsibsZoXfoxHXeXcTtc7rDRXHZ3rv9uJ3XkDs2Uvo8yTJ6uRKtdLr2ZrsiMmrdkLN1KTyDyqKzin6"
+    },
+    {
+      "mint": "DDSXhumaZokda7Qe6Qie31USg26iNeT6Rpf7FZ1Gcxm5",
+      "raw": "4669",
+      "platform": "35",
+      "creator": "12",
+      "user": "4622",
+      "sold": "95000000000",
+      "reserve": "4669",
+      "amount": "95000000000",
+      "sequence": "9",
+      "rawIn": "50612",
+      "rawOut": "45943",
+      "sell": true,
+      "signature": "3y94csabDMK2XAxdHGvDdviS55Fr4fofCkynHFN3yeQLrXzdwNdTuDZPd2mV7MnJGwBMyBZwn7omw9bxD6D9ciM1"
+    }
+  ],
+  "conservation": [
+    {
+      "buyerExpenditure": "11431",
+      "netRedemptions": "1373",
+      "platformClaimable": "96",
+      "creatorClaimable": "32",
+      "creatorTokens": "10",
+      "tradingTokens": "414",
+      "migrationTokens": "396",
+      "buyerTokens": "180",
+      "mint": "7WbS1Pzo9vwoJ8RsgBgz4rCSbwqSe3ssaCmxyGsaoLtF",
+      "supply": "1000",
+      "sold": "180",
+      "reserve": "9930",
+      "rawIn": "11317",
+      "rawOut": "1387",
+      "platformAccrued": "96",
+      "creatorAccrued": "32",
+      "platformWithdrawn": "0",
+      "creatorWithdrawn": "0"
+    },
+    {
+      "buyerExpenditure": "51120",
+      "netRedemptions": "50104",
+      "platformClaimable": "375",
+      "creatorClaimable": "126",
+      "creatorTokens": "10000000000",
+      "tradingTokens": "594000000000",
+      "migrationTokens": "396000000000",
+      "buyerTokens": "0",
+      "mint": "DDSXhumaZokda7Qe6Qie31USg26iNeT6Rpf7FZ1Gcxm5",
+      "supply": "1000000000000",
+      "sold": "0",
+      "reserve": "0",
+      "rawIn": "50612",
+      "rawOut": "50612",
+      "platformAccrued": "762",
+      "creatorAccrued": "254",
+      "platformWithdrawn": "387",
+      "creatorWithdrawn": "128"
+    },
+    {
+      "buyerExpenditure": "11431",
+      "netRedemptions": "70",
+      "platformClaimable": "87",
+      "creatorClaimable": "28",
+      "creatorTokens": "10",
+      "tradingTokens": "395",
+      "migrationTokens": "396",
+      "buyerTokens": "199",
+      "mint": "HnLo6hAKBVEMkts1s9AEY7on53msseKrivL1TcNGP4aZ",
+      "supply": "1000",
+      "sold": "199",
+      "reserve": "11246",
+      "rawIn": "11317",
+      "rawOut": "71",
+      "platformAccrued": "87",
+      "creatorAccrued": "28",
+      "platformWithdrawn": "0",
+      "creatorWithdrawn": "0"
+    }
+  ],
+  "integrityRejections": [
+    {
+      "label": "potential/reserve mismatch",
+      "code": 1510,
+      "signature": "5tL3kGdforguxaUwVLJwsd7FdYBUcxL5o95cxnyo6p41zLeknLVyQPdsxuFfcieeSDUgGq8iTbiCBcdHT83iFLMD",
+      "slot": 35
+    },
+    {
+      "label": "zero quantum state",
+      "code": 1510,
+      "signature": "2b1jv2J6N7wEHjSFX1Tdc6ARZrpzPJhbZPvS6kfKC1QPv3rZGfupNuRHiw858mAwKq3xoRiB8pQPMHjsfKGV8AAA",
+      "slot": 41
+    },
+    {
+      "label": "reserved inventory partition corruption",
+      "code": 1510,
+      "signature": "4zKrQVG2LpcWUtNxwncRG6MNHyabAWXMLTxLXH2evEA3L6b12zj7NfnUEUKE8EuhzDQWqpKa59ZXCYoB9NbsBCdj",
+      "slot": 41
+    },
+    {
+      "label": "gross opening receipt corruption",
+      "code": 1510,
+      "signature": "4pvTtXPqYWvaFD4iNbntjGRuPLLX6yJrjCd3wpqVc6GZnYoGLmqK74ep1BnBbTvCJqz1bk63b5mwjGuYcovTZdKW",
+      "slot": 40
+    },
+    {
+      "label": "migration custody authority corruption",
+      "code": 1501,
+      "signature": "8jpnVJSzf7ZGDSxwFWkdguYRvnUf3an8Xft3KEM7LTJ9cvJSp1VYwLZcDkbsW2S5EQaHmBn9WMK9WEYkL3uvcEb",
+      "slot": 38
+    },
+    {
+      "label": "redemption reserve insolvency",
+      "code": 1506,
+      "signature": "4ejVnZdTNrkZigqYhXck6v7EjaccVHWkcNDMGfjX8YNoLiCTmLyk756xKdhDCxeuHE9zYKdqpLsQfHratqm1SRWv",
+      "slot": 37
+    },
+    {
+      "label": "fee carry inconsistency",
+      "code": 1412,
+      "signature": "5o3DkkaksBz6jR9Y5SZvSFVv4Vq8FLgiDnQa2iZGUQZwacMnAYxqgqdJSFeUbS81rtKnDCt4Kn4VnB6ur1F1tetM",
+      "slot": 33
+    }
+  ]
+}
