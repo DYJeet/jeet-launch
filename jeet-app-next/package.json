@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "validator": "bash scripts/local-validator.sh",
-    "custody:build": "cargo-build-sbf --manifest-path programs/launch-custody/Cargo.toml -- --locked",
+    "custody:build": "cargo-build-sbf --manifest-path programs/launch-custody/Cargo.toml --sbf-out-dir programs/launch-custody/target/deploy -- --locked",
     "test:custody": "node scripts/run-custody-tests.mjs",
     "test:local": "node scripts/run-custody-tests.mjs",
     "fees:build:local": "cargo-build-sbf --manifest-path programs/launch-custody/Cargo.toml --sbf-out-dir programs/launch-custody/target/local-fee-test -- --locked --features local-fee-test",
@@ -29,7 +29,9 @@
     "metadata:recover:local": "node scripts/metadata/recover-program.mjs",
     "test:metadata:client": "node --test scripts/test-metadata-client.mjs",
     "test:metadata:local": "node scripts/metadata/run-local.mjs",
-    "test:creation:browser": "node scripts/test-creation-inputs.mjs"
+    "test:creation:browser": "node scripts/test-creation-inputs.mjs",
+    "test:wallet:unit": "node --test scripts/test-wallet-infrastructure.mjs",
+    "test:wallet:browser": "node scripts/test-wallet-browser.mjs"
   },
   "dependencies": {
     "@solana-program/token": "0.18.0",

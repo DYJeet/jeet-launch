@@ -1,0 +1,227 @@
+Executed local verification, 2026-10-30. No Devnet lifecycle.
+Earlier stale-default regression excluded; use legacy-fresh below.
+
+=== native ===
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+=== native-local ===
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+=== sbf ===
+   Compiling jeet-launch-custody v0.1.0 (/workspace/scratch/45d300329722/jeet-launch/jeet-app-next/programs/launch-custody)
+    Finished `release` profile [optimized] target(s) in 43.57s
+[2026-10-30T15:08:01.233983231Z WARN  cargo_build_sbf::post_processing] The following functions are undefined and not known syscalls ["abort", "sol_log_", "sol_memcmp_", "sol_log_data", "sol_get_clock_sysvar", "sol_get_rent_sysvar", "sol_invoke_signed_rust", "sol_set_return_data", "sol_memset_", "sol_try_find_program_address", "sol_memcpy_"].
+[2026-10-30T15:08:01.234002950Z WARN  cargo_build_sbf::post_processing]          Calling them will trigger a run-time error.
+
+=== sbf-local ===
+   Compiling jeet-launch-custody v0.1.0 (/workspace/scratch/45d300329722/jeet-launch/jeet-app-next/programs/launch-custody)
+    Finished `release` profile [optimized] target(s) in 3.67s
+[2026-10-30T15:08:05.233770208Z WARN  cargo_build_sbf::post_processing] The following functions are undefined and not known syscalls ["abort", "sol_log_", "sol_memcmp_", "sol_log_data", "sol_get_clock_sysvar", "sol_get_rent_sysvar", "sol_invoke_signed_rust", "sol_set_return_data", "sol_memset_", "sol_try_find_program_address", "sol_memcpy_"].
+[2026-10-30T15:08:05.233799801Z WARN  cargo_build_sbf::post_processing]          Calling them will trigger a run-time error.
+
+=== sbf-explicit ===
+   Compiling jeet-launch-custody v0.1.0 (/workspace/scratch/45d300329722/jeet-launch/jeet-app-next/programs/launch-custody)
+    Finished `release` profile [optimized] target(s) in 2.01s
+[2026-10-30T15:28:58.290418136Z WARN  cargo_build_sbf::post_processing] The following functions are undefined and not known syscalls ["abort", "sol_log_", "sol_memcmp_", "sol_log_data", "sol_get_clock_sysvar", "sol_get_rent_sysvar", "sol_invoke_signed_rust", "sol_set_return_data", "sol_memset_", "sol_try_find_program_address", "sol_memcpy_"].
+[2026-10-30T15:28:58.290469502Z WARN  cargo_build_sbf::post_processing]          Calling them will trigger a run-time error.
+
+=== cpmm-build ===
+[2026-10-30T15:25:27.901711046Z WARN  cargo_build_sbf] Package 'raydium-cp-swap' has two crate types defined: cdylib and lib. This setting precludes link-time optimizations (LTO). Use cdylib for programs to be deployed and rlib for packages to be imported by other programs as libraries.
+    Finished `release` profile [optimized] target(s) in 1m 47s
+
+=== all-unit-final ===
+✔ missing program never broadcasts (3.480626ms)
+✔ simulation rejection never broadcasts (4.671087ms)
+✔ insufficient SOL never broadcasts (8.129434ms)
+✔ no network fee never broadcasts (17.284808ms)
+✔ expired signing never broadcasts (14.254795ms)
+✔ rejection is explicit; duplicate calls are blocked while wallet signing is pending (11.888075ms)
+✔ disconnect or changed chain after signature cannot broadcast (12.244774ms)
+✔ wallet message substitution cannot broadcast (6.695279ms)
+✔ save failure blocks broadcasting (11.956268ms)
+✔ lost send response reconciles known signature without resending (23.883517ms)
+✔ unknown result remains saved and blocks new submissions, even with a new executor (476.198803ms)
+✔ confirmed failure clears liability to retry without reporting success (17.707017ms)
+✔ finalized expiration clears only after history is checked again (472.338081ms)
+✔ abort after wallet signature prevents submission (8.79783ms)
+✔ read-only and send-only wallets cannot silently broadcast (0.910477ms)
+✔ network change after wallet signature prevents broadcast (12.17643ms)
+✔ reconciliation never clears a newer saved signature (474.621709ms)
+ℹ tests 83
+ℹ suites 0
+ℹ pass 83
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2300.240446
+
+=== legacy-fresh ===
+PASS protected integrity: inconsistent state rejected without a program bypass
+PASS protected-opening suite: 14 positive checks, 28 on-chain rejections, 9 API rejections
+PASS fee totals {"positive":22,"rejection":52}
+PASS fee totals {"positive":24,"rejection":52}
+PASS market totals {"positive":62,"rejection":37}
+PASS market totals {"positive":63,"rejection":37}
+PASS fee integrity: withdrawn exceeds accrued rejected (1308); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: redirected production treasury configuration rejected (1302); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: inconsistent creator liability rejected (1303); all SOL/tokens/state unchanged; token supply 1000
+PASS fee integrity: curve reserve depleted below recorded consideration rejected (1102); all SOL/tokens/state unchanged; token supply 1000
+PASS market integrity: V4 lifetime accounting overflow rolls back payment and token CPI rejected (1407); balances/state unchanged; supply 1000
+PASS market integrity: V4 gross distribution invariant corruption rejected (1410); balances/state unchanged; supply 1000
+PASS market integrity: V4 exhausted trade sequence rejects before transfer rejected (1407); balances/state unchanged; supply 1000
+PASS market integrity: V4 reserve insolvency cannot fund redemption rejected (1406); balances/state unchanged; supply 1000
+PASS market integrity: V4 inconsistent fee allocation carry rejected (1412); balances/state unchanged; supply 1000
+PASS full local suite (allocation, custody, opening caps, bonding curve, protected opening, fees). Logs and disposable ledgers: /tmp/jeet-custody-Xy2H1p
+
+=== v5 ===
+    }
+  ]
+}
+V5 PASS 25 positive; 42 on-chain rejection/rollback checks
+PASS V5 integrity: potential/reserve mismatch (1510); protected accounts unchanged
+PASS V5 integrity: zero quantum state (1510); protected accounts unchanged
+PASS V5 integrity: reserved inventory partition corruption (1510); protected accounts unchanged
+PASS V5 integrity: gross opening receipt corruption (1510); protected accounts unchanged
+PASS V5 integrity: migration custody authority corruption (1501); protected accounts unchanged
+PASS V5 integrity: redemption reserve insolvency (1506); protected accounts unchanged
+PASS V5 integrity: fee carry inconsistency (1412); protected accounts unchanged
+Market logs: /tmp/jeet-v5-h3GVi4
+
+=== metadata ===
+PASS V5 rejection: initialization zero migration inventory (1503); rollback exact
+PASS V5 rejection: initialization zero protected duration (1202); rollback exact
+PASS V5 rejection: initialization reserve overflow (1507); rollback exact
+PASS V5 rejection: trading requires revoked mint/freeze authorities (1501); rollback exact
+PASS V5 rejection: public artifact metadata gate (1514); rollback exact
+PASS V5 rejection: unsigned metadata creator (1623); rollback exact
+PASS V5 rejection: substituted metadata creator (1623); rollback exact
+PASS V5 rejection: substituted metadata account/program 3 (1621); rollback exact
+PASS V5 rejection: substituted metadata account/program 6 (1621); rollback exact
+PASS V5 rejection: invalid metadata field 9 (1624); rollback exact
+PASS V5 rejection: invalid metadata field 10 (1624); rollback exact
+PASS V5 rejection: invalid metadata field 11 (1624); rollback exact
+PASS V5 rejection: zero metadata budget reverses actual CPI (1625); rollback exact
+PASS V5 rejection: one lamport under actual metadata quote (1625); rollback exact
+PASS V5: actual bounded-cost Metaplex identity, hosted JSON/image and immutable-data flag
+PASS V5 rejection: duplicate metadata creation (1622); rollback exact
+PASS V5 rejection: Metaplex immutable data rejects update (59); rollback exact
+PASS V5 rejection: failed activation rolls back mint/freeze revocation (1605); rollback exact
+PASS V5: one transaction revokes both authorities and records prospective terms before trading
+PASS V5: init: exact 1/59.4/39.6 partition and curve-PDA migration custody
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: sell: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: metadata survives V5 activation and exact buy/sell conservation
+METADATA VERIFIED {"positive":6,"rejection":21,"metadata":{"signature":"5WyTzov57MDofdHQvaSjtiZbGbMMHw3euNJSpyv8Dwv8n1Bc7oa11MQHMph6YKcrxe7YkuoBiEQxmRdcH8kU6kpw","record":{"updateAuthority":"2NwCLz9m4JePqXFPao8HyCShe4aKPgirr44z6Ezb3FnG","mint":"E6i6HtY8fkLqvoAZzMeonKuVfPEsMbbkW88kC3frLzst","name":"JeeT Local Test","symbol":"JTEST","uri":"http://127.0.0.1:9926/metadata.json","sellerFeeBasisPoints":0,"primarySaleHappened":false,"mutable":false},"metadataBytes":607,"rent":"5115600","protocolFee":"10000000","cost":"15115600"},"conservation":[{"buyerExpenditure":"5000","netRedemptions":"1357","platformClaimable":"48","creatorClaimable":"16","creatorTokens":"10000000000","tradingTokens":"519000000000","migrationTokens":"396000000000","buyerTokens":"75000000000","mint":"E6i6HtY8fkLqvoAZzMeonKuVfPEsMbbkW88kC3frLzst","supply":"1000000000000","sold":"75000000000","reserve":"3579","rawIn":"4950","rawOut":"1371","platformAccrued":"48","creatorAccrued":"16","platformWithdrawn":"0","creatorWithdrawn":"0"}]}
+Metadata logs: /tmp/jeet-metadata-hGRgbu
+
+=== graduation ===
+PASS V5: actual post graduation AMM buy/sell preserve supply and burned LP
+PASS V5 rejection: trading requires revoked mint/freeze authorities (1501); rollback exact
+PASS V5: init: exact 1/59.4/39.6 partition and curve-PDA migration custody
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5 rejection: graduation cannot bypass active protected opening (1610); rollback exact
+PASS V5: sell: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: opening-phase rejection leaves redemption funded and executable
+PASS V5 rejection: trading requires revoked mint/freeze authorities (1501); rollback exact
+PASS V5 rejection: failed activation rolls back mint/freeze revocation (1605); rollback exact
+PASS V5: one transaction revokes both authorities and records prospective terms before trading
+PASS V5: init: exact 1/59.4/39.6 partition and curve-PDA migration custody
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5 rejection: graduation cannot bypass active cumulative wallet-cap phase (1610); rollback exact
+PASS V5: sell: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: enabled ordinary cap window cannot be bypassed through graduation
+PASS V5 rejection: trading requires revoked mint/freeze authorities (1501); rollback exact
+PASS V5: init: exact 1/59.4/39.6 partition and curve-PDA migration custody
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: sell: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5 rejection: no retroactive redemption cutoff after a complete round trip (1604); rollback exact
+PASS V5: unopted older V5 redemption rights remain unchanged
+GRADUATION VERIFIED {"positive":28,"rejection":51,"transactions":[{"signature":"5pSRN4ziDPdaJgaAiBCzpACcL1FberdAZXwSG8PDGzvmgk2mXF1mWsTp5pwBiU4VsN8sh2Xf3XY2UBqRBRF5suqF","computeUnits":310132,"transactionBytes":1158,"setupSpent":"190117440","proof":{"mint":"CVHaf55W8miU1TDJW3wQkFw8Cgbjotj9kBKPf8iMhAEx","curve":"6fCz894o8xCCy98RHWMMdqwuD6p6EBNvqcyeQcLswWZ","ammProgram":"DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb","config":"5MxLgy9oPdTC3YgkiePHqr3EoCRD9uLVYRQS2ANAs7wy","migrator":"43WsXUTY1wLz1euaiJGzhupKufWYxedyiSaa1nbjhgVf","pool":"8ALAB4JhbBsqpxe5MQGeBSCei4r3bQuL3nDqQ9Qnt99p","solDeposited":"50192","tokensDeposited":"396","lpBurned":"4358","maxPriceGapBps":60,"createdSlot":"56","migratedSlot":"90","sequence":"6","migrated":true}}]}
+CPMM logs: /tmp/jeet-graduation-VgItAc
+
+=== fee-browser ===
+(node:134) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/45d300329722/jeet-launch/jeet-app-next/src/lib/launch-custody.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/45d300329722/jeet-launch/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS dashboard: fee disclosures and intended treasury render; unauthenticated operations disabled
+PASS dashboard: real on-chain empty state and loading/error recovery
+PASS dashboard: Wallet Standard signer creates real fee-enabled mint and immutable creator entitlement
+PASS dashboard: displayed 10000 + 75 + 25 = 10100 quote comes from actual SBF simulation
+PASS dashboard: browser signs actual atomic buy; confirmed event and both real fee dashboards agree
+PASS dashboard: browser creator claim, zero claimable and verified transaction history; treasury remains isolated
+PASS dashboard: browser launch conserves 20 initial creator + 1 buyer + 979 custody = 1000
+PASS dashboard totals {"positive":7,"rejected":4}
+Browser test logs: /tmp/jeet-fee-browser-jqAdfk
+
+=== ux ===
+PASS UX 390px /: rendered, no page exception or horizontal overflow
+PASS UX 390px /explore: rendered, no page exception or horizontal overflow
+PASS UX 390px /create: rendered, no page exception or horizontal overflow
+PASS UX 390px /revenue: rendered, no page exception or horizontal overflow
+PASS UX 390px: fee disclosure and live capability gating
+PASS UX 1440px /: rendered, no page exception or horizontal overflow
+PASS UX 1440px /explore: rendered, no page exception or horizontal overflow
+PASS UX 1440px /create: rendered, no page exception or horizontal overflow
+PASS UX 1440px /revenue: rendered, no page exception or horizontal overflow
+PASS UX 1440px: fee disclosure and live capability gating
+PASS UX 10 checks
+
+=== browser-final ===
+(node:454) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/45d300329722/jeet-launch/jeet-app-next/src/lib/wallet-environment.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/45d300329722/jeet-launch/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS wallet browser: 390px discovery, connection and exact local balance
+PASS wallet browser: 390px genuine signing, confirmation, duplicate-button protection and exact SOL reconciliation
+PASS wallet browser: 390px wallet rejection leaves SOL unchanged
+PASS wallet browser: 390px injected network mismatch blocks signing and preserves balances
+PASS wallet browser: 390px wallet reconnect and refreshed balance after reload
+PASS wallet browser: 390px disconnect clears account display
+PASS wallet browser: 1440px discovery, connection and exact local balance
+PASS wallet browser: 1440px genuine signing, confirmation, duplicate-button protection and exact SOL reconciliation
+PASS wallet browser: 1440px wallet rejection leaves SOL unchanged
+PASS wallet browser: 1440px injected network mismatch blocks signing and preserves balances
+PASS wallet browser: 1440px wallet reconnect and refreshed balance after reload
+PASS wallet browser: 1440px disconnect clears account display
+PASS wallet browser: cross-origin server request rejected
+WALLET BROWSER VERIFIED {"positive":["390px discovery, connection and exact local balance","390px genuine signing, confirmation, duplicate-button protection and exact SOL reconciliation","390px wallet reconnect and refreshed balance after reload","390px disconnect clears account display","1440px discovery, connection and exact local balance","1440px genuine signing, confirmation, duplicate-button protection and exact SOL reconciliation","1440px wallet reconnect and refreshed balance after reload","1440px disconnect clears account display"],"rejection":["390px wallet rejection leaves SOL unchanged","390px injected network mismatch blocks signing and preserves balances","1440px wallet rejection leaves SOL unchanged","1440px injected network mismatch blocks signing and preserves balances","cross-origin server request rejected"],"transactions":[{"width":390,"signature":"E5QTq6CVqEAJLiTCbAVkkatVA7CgzpDk4hhUtU4yoFWEdnTojLTPo32xSfyaDvghxrngi8ht4i8oxQRB9jQn1na","before":"1000000000","after":"999995000","networkFee":"5000","bytes":185},{"width":1440,"signature":"2TMhgPQo9LdSRU59rKXub359vWGW9i9DU5uZ4sUaRxNUwoChpCHYRRaLW87widRsq5rSFHcfY4Z1C5A2UVtk8nCB","before":"1000000000","after":"999995000","networkFee":"5000","bytes":185}],"limitations":["Disposable Wallet Standard adapter, not installed Phantom/Solflare or native mobile application acceptance.","No creation/trading lifecycle is claimed by the infrastructure test."],"genesis":"U3HkdxonjimDeUxm7dQ74sm6hEohJg3EC78nveJbz9s","completed":true,"artifactSha256":"de162b056a588d075d186833f6e8ad2e355d7c8638ec9fbce8d2976414e11ebe","logs":"/tmp/jeet-wallet-browser-9NLTQ2"}
+
+=== lint-final ===
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> jeet-app@0.1.0 lint
+> eslint
+
+
+=== types-final ===
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+=== build-final ===
+  Generating static pages using 8 workers (2/8)
+  Generating static pages using 8 workers (4/8)
+  Generating static pages using 8 workers (6/8)
+✓ Generating static pages using 8 workers (8/8) in 286ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/local-test/create
+├ ƒ /api/local-test/health
+├ ƒ /api/wallet/environment
+├ ƒ /api/wallet/rpc
+├ ○ /create
+├ ○ /explore
+├ ○ /local-wallet
+├ ƒ /revenue
+└ ● /token/[mint]
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
