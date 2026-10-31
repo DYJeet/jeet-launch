@@ -40,3 +40,28 @@ test('validated image → public IPFS image → matching JSON → IPFS metadata;
   globalThis.fetch=old.fetch;for(const [key,val]of [['PINATA_JWT',old.jwt],['JEET_METADATA_STORAGE',old.storage]]){if(val===undefined)delete process.env[key];else process.env[key]=val;}
  }
 });
+
+test('failure of either image or JSON pin rejects the entire storage result without a temporary URI fallback',async()=>{
+ const old={jwt:process.env.PINATA_JWT,storage:process.env.JEET_METADATA_STORAGE,fetch:globalThis.fetch};
+ try{
+  process.env.JEET_METADATA_STORAGE='pinata';
+  const png=await sharp({create:{width:8,height:8,channels:4,background:'#9cff43'}}).png().toBuffer();
+  for(const failAt of [1,2]){
+   process.env.PINATA_JWT=`failure${failAt}.payload.signature`;
+   const records=new Map(),contents=new Map();let uploads=0;
+   globalThis.fetch=async(url,init)=>{
+    if(url==='https://uploads.pinata.cloud/v3/files'){
+     uploads++;if(uploads===failAt)return new Response('simulated failure',{status:503});
+     const bytes=new Uint8Array(await init.body.get('file').arrayBuffer()),cid=cidFor(bytes),id='00000000-0000-0000-0000-000000000001';
+     const data={id,cid,size:bytes.length};records.set(id,data);contents.set(cid,bytes);return Response.json({data});
+    }
+    if(url.startsWith('https://api.pinata.cloud/v3/files/public/'))return Response.json({data:records.get(url.split('/').at(-1))});
+    return new Response(contents.get(url.split('/').at(-1)));
+   };
+   await assert.rejects(createLocalLaunchAssets({name:'JeeT failure',symbol:'JFAIL',description:'Failure fixture',mime:'image/png',imageBase64:png.toString('base64')},'http://127.0.0.1:3006'),/launch blocked/);
+   assert.equal(uploads,failAt);
+  }
+ }finally{
+  globalThis.fetch=old.fetch;for(const [key,val]of [['PINATA_JWT',old.jwt],['JEET_METADATA_STORAGE',old.storage]]){if(val===undefined)delete process.env[key];else process.env[key]=val;}
+ }
+});
