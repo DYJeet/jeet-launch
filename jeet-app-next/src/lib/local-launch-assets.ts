@@ -119,10 +119,9 @@ export async function createLocalLaunchAssets(value: unknown, origin: string) {
   if (provider !== "local-workspace" && provider !== "pinata") throw Error("Unknown metadata storage provider.");
   const jwt = process.env.PINATA_JWT ?? "";
   if (provider === "pinata" && !jwt) throw Error("Pinata storage requires server PINATA_JWT; no mint was created.");
-  const imageName = await put(image, ext);
-  const imageUri = provider === "pinata"
-    ? (await pinMetadataFile(image, imageName, v.mime, jwt)).uri
-    : `${origin}/api/local-assets/${imageName}`;
+  const imageName = provider === "pinata" ? `${hash(image)}.${ext}` : await put(image, ext);
+  const imagePin = provider === "pinata" ? await pinMetadataFile(image, imageName, v.mime, jwt) : null;
+  const imageUri = imagePin?.uri ?? `${origin}/api/local-assets/${imageName}`;
   const document = {
     name: v.name,
     symbol: v.symbol,
@@ -133,14 +132,14 @@ export async function createLocalLaunchAssets(value: unknown, origin: string) {
     properties: { category: "image", files: [{ uri: imageUri, type: v.mime }] },
   };
   const bytes = Buffer.from(JSON.stringify(document)),
-    metadataName = await put(bytes, "json");
-  const uri = provider === "pinata"
-    ? (await pinMetadataFile(bytes, metadataName, "application/json", jwt)).uri
-    : `${origin}/api/local-assets/${metadataName}`;
+    metadataName = provider === "pinata" ? `${hash(bytes)}.json` : await put(bytes, "json");
+  const metadataPin = provider === "pinata" ? await pinMetadataFile(bytes, metadataName, "application/json", jwt) : null;
+  const uri = metadataPin?.uri ?? `${origin}/api/local-assets/${metadataName}`;
   validateMetadataFields(v.name, v.symbol, uri, true);
   return {
     storage: provider,
     sha256: hash(bytes),
+    storageEvidence: imagePin && metadataPin ? { image: imagePin, metadata: metadataPin } : null,
     uri,
     imageUri,
     metadataName,

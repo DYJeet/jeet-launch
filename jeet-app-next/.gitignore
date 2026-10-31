@@ -44,3 +44,6 @@ next-env.d.ts
 /programs/*/target/
 /test-ledger/
 /.local-ledger*/
+
+# Intentionally secret-free setup template
+!.env.pinata.example

@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { resolveMetadataUri } from "@/lib/metadata-storage-uri";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useClient } from "@solana/react";
 import {
@@ -180,28 +181,33 @@ function Creation({ environment }: { environment: WalletEnvironment }) {
             });
             const uploaded = await response.json();
             if (!response.ok) throw Error(uploaded.error ?? "Upload failed");
-            const uri = new URL(uploaded.uri);
-            if (
-              !(uploaded.storage === "local-workspace" && uri.origin === window.location.origin && /^\/api\/local-assets\/[a-f0-9]{64}\.json$/.test(uri.pathname)) &&
-              !(uploaded.storage === "pinata" && uri.origin === "https://gateway.pinata.cloud" && /^\/ipfs\/[a-zA-Z0-9]{46,100}$/.test(uri.pathname) && !uri.search && !uri.hash)
-            )
-              throw Error("Upload returned an unexpected URI.");
-            const documentResponse = await fetch(uri, {
-              cache: "no-store",
-              signal: controller.current!.signal,
+            if (!["local-workspace", "pinata"].includes(uploaded.storage)) throw Error("Unexpected storage provider.");
+            const resolved = resolveMetadataUri(uploaded.uri, window.location.origin);
+            if (uploaded.storage === "pinata" && !uploaded.uri.startsWith("ipfs://")) throw Error("Expected content-addressed IPFS metadata.");
+            const documentResponse = await fetch(resolved.url, {
+              cache: "no-store", redirect: "error",
+              signal: AbortSignal.any([controller.current!.signal, AbortSignal.timeout(15000)]),
             });
             if (!documentResponse.ok)
               throw Error("Uploaded metadata is unavailable.");
-            const documentBytes = new Uint8Array(
-              await documentResponse.arrayBuffer(),
-            );
+            const metadataReader = documentResponse.body?.getReader();
+            if (!metadataReader) throw Error("Uploaded metadata is empty.");
+            const chunks: Uint8Array[] = []; let size = 0;
+            for (;;) {
+              const { value, done } = await metadataReader.read(); if (done) break;
+              size += value.length;
+              if (size > 32000) { await metadataReader.cancel(); throw Error("Uploaded metadata exceeds size limit."); }
+              chunks.push(value);
+            }
+            const documentBytes = new Uint8Array(size); let offset = 0;
+            for (const chunk of chunks) { documentBytes.set(chunk, offset); offset += chunk.length; }
             const digest = new Uint8Array(
               await crypto.subtle.digest("SHA-256", documentBytes),
             );
             const hash = Array.from(digest, (b) =>
               b.toString(16).padStart(2, "0"),
             ).join("");
-            if (hash !== uploaded.sha256 || (uploaded.storage === "local-workspace" && uri.pathname !== `/api/local-assets/${hash}.json`))
+            if (hash !== uploaded.sha256 || (resolved.sha256 && resolved.sha256 !== hash))
               throw Error("Uploaded metadata hash mismatch.");
             const document = JSON.parse(
               new TextDecoder().decode(documentBytes),
@@ -209,12 +215,13 @@ function Creation({ environment }: { environment: WalletEnvironment }) {
             if (
               document.name !== form.name.trim() ||
               document.symbol !== form.symbol.trim() ||
-              document.description !== form.description
+              document.description !== form.description ||
+              document.image !== uploaded.imageUri
             )
               throw Error("Uploaded metadata differs from the review.");
             mintSigner.current = await generateKeyPairSigner();
             saved = launchJob(
-              parameters(uri.toString()),
+              parameters(uploaded.uri),
               mintSigner.current.address,
               address(wallet),
               environment.genesis,

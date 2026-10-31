@@ -3,14 +3,17 @@ import {
   checkedLocalGenesis,
 } from "@/lib/local-wallet-server";
 import { createLocalLaunchAssets } from "@/lib/local-launch-assets";
+import { createLocalUploadLimiter } from "@/lib/local-upload-limit";
+const admit = createLocalUploadLimiter();
 export const dynamic = "force-dynamic";
 let active = 0;
 export async function POST(request: Request) {
   try {
     const config = localWalletConfiguration(request);
-    if (active >= 2) return new Response("Upload busy", { status: 429 });
+    if (active >= 2) return Response.json({error:"Upload busy; retry after the current operation finishes."}, { status: 429 });
     if (!request.headers.get("content-type")?.startsWith("application/json"))
-      return new Response("JSON required", { status: 415 });
+      return Response.json({error:"JSON required"}, { status: 415 });
+    if (!admit()) return Response.json({error:"Local upload quota exhausted; retry later."}, {status:429, headers:{"retry-after":"3600"}});
     active++;
     try {
       await checkedLocalGenesis(config.url, config.environment.genesis);

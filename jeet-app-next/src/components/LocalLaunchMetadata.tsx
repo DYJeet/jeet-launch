@@ -1,4 +1,5 @@
 "use client";
+import { resolveMetadataUri } from "@/lib/metadata-storage-uri";
 import { validateImageUpload } from "@/lib/launch-image";
 import { useEffect, useState } from "react";
 
@@ -11,13 +12,9 @@ export default function LocalLaunchMetadata({ uri }: { uri: string }) {
     let active = true;
     let imageUrl: string | undefined;
     const read = async (uri: string, extension: string, max: number) => {
-      const url = new URL(uri);
-      const local = url.origin === window.location.origin && new RegExp("^/api/local-assets/[a-f0-9]{64}\\.("+extension+")$").test(url.pathname);
-      const pinned = url.origin === "https://gateway.pinata.cloud" && /^\/ipfs\/(Qm[1-9A-HJ-NP-Za-km-z]{44}|b[a-z2-7]{45,99})$/.test(url.pathname);
-      if ((!local && !pinned) || url.search || url.hash || url.username || url.password)
-        throw Error("This metadata host is unsupported; no arbitrary remote URL is fetched.");
-      const response = await fetch(url, {cache:"no-store", redirect:"error", signal:AbortSignal.any([controller.signal,AbortSignal.timeout(8000)])});
-      if (!response.ok) throw Error("Local metadata asset is unavailable; workspace storage is not permanent.");
+      const resolved = resolveMetadataUri(uri, window.location.origin, extension);
+      const response = await fetch(resolved.url, {cache:"no-store", redirect:"error", signal:AbortSignal.any([controller.signal,AbortSignal.timeout(15000)])});
+      if (!response.ok) throw Error("Metadata asset is unavailable. Gateway availability and continued pinning are external dependencies.");
       const reader = response.body?.getReader();
       if (!reader) throw Error("Empty asset response.");
       const parts: Uint8Array[] = []; let size = 0;
@@ -26,7 +23,7 @@ export default function LocalLaunchMetadata({ uri }: { uri: string }) {
       const bytes = new Uint8Array(size); let offset = 0;
       for(const part of parts) { bytes.set(part,offset); offset += part.length; }
       const digest = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",bytes))).map(n=>n.toString(16).padStart(2,"0")).join("");
-      if (local && !url.pathname.endsWith("/"+digest+"."+url.pathname.split(".").at(-1))) throw Error("Asset content hash mismatch.");
+      if (resolved.sha256 && resolved.sha256 !== digest) throw Error("Asset content hash mismatch.");
       return bytes;
     };
     void (async () => {
