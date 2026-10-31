@@ -1,6 +1,12 @@
-# Pinata continuation: secure setup and verification
+# Pinata: secure setup and verification
 
-## Current state (2026-10-31)
+**Current status:** genuine Pinata image/JSON uploads, authenticated file records,
+exact retrieval, and actual read-only browser rendering/reload are VERIFIED.
+See PINATA-LIVE-CHECKPOINT.md and pinata-live-evidence.json. Full wallet-signed
+creation using this real URI still needs its integrated acceptance run before
+Milestone B promotion. The historical preparation state below is retained for context.
+
+## Historical preparation state (before authenticated Codespaces execution)
 
 Actual restored local HEAD was 44009f6ec4142702532e7d4b73a56e1c181f7c4d,
 with a clean tree. It is preserved as recovery/v6-b-local-preserved-20261031.
@@ -16,7 +22,7 @@ and the connected GitHub connector does not expose secret management or remote
 Codespaces execution. The saved credential was not assumed available here.
 No actual credential-bearing app server was started. No live upload was made.
 
-## Minimal owner action
+## Secure setup instructions (already completed for the current Codespace)
 
 1. Open https://github.com/settings/codespaces . Under Codespaces secrets, choose
    New secret (or update the existing secret).

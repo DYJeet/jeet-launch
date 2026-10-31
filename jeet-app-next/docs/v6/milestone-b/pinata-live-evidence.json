@@ -31,5 +31,40 @@
   "executionRuntime": "GitHub Codespaces: symmetrical-adventure-544vrwjwxppcv7wx",
   "originalCodespaceHead": "c9b2d9b962c6c79428f652adf733a892a8a3f766",
   "originalCheckoutPreserved": true,
-  "browserMetadataRenderingVerified": false
+  "browserMetadataRenderingVerified": true,
+  "browserVerification": {
+    "sourceCommit": "72911813a4e234c96978ca3fcc335d2bcd1077b7",
+    "mode": "actual Next.js read-only metadata renderer, private Codespaces port",
+    "portVisibility": "Private",
+    "port": 3012,
+    "route": "/local-metadata",
+    "flag": "JEET_LOCAL_METADATA_VERIFY=1",
+    "loadedRealPinnedDescription": true,
+    "loadedRealPinnedWebsite": true,
+    "imageDecoded": {
+      "complete": true,
+      "width": 8,
+      "height": 8
+    },
+    "successfulFullReload": true,
+    "walletTransaction": false,
+    "mockedProviderResponses": false
+  },
+  "codespaceChecks": {
+    "nodeVersion": "24.21.0",
+    "productionBuild": "passed",
+    "lint": "passed",
+    "typecheck": "passed",
+    "selectedTests": 87,
+    "passed": 87,
+    "failed": 0,
+    "skipped": 0,
+    "outsideAppStatusPreserved": true,
+    "preexistingGitStatusGroupsRemaining": 29
+  },
+  "cleanup": {
+    "temporaryTestServerStopped": true,
+    "privatePortForwardRemoved": true,
+    "testAssetsRetained": true
+  }
 }

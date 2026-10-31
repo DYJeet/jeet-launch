@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
 import { before, after, test } from 'node:test';
 import { spawn } from 'node:child_process';
-import { open } from 'node:fs/promises';
+import { mkdir, open } from 'node:fs/promises';
 import { once } from 'node:events';
 let server;
 const origin='http://127.0.0.1:3003';
 before(async()=>{
+ await mkdir('programs/launch-custody/target/master-verification',{recursive:true});
  const log=await open('programs/launch-custody/target/master-verification/public-gating-server.log','w');
  server=spawn(process.execPath,['node_modules/next/dist/bin/next','start','--hostname','127.0.0.1','--port','3003'],{stdio:['ignore',log.fd,log.fd]});await log.close();
  for(let n=0;n<60;n++){if(server.exitCode!==null)throw Error('App exited');try{if((await fetch(origin,{signal:AbortSignal.timeout(1000)})).ok)return;}catch{}await new Promise(r=>setTimeout(r,250));}

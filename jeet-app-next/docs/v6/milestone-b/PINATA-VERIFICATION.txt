@@ -1,3 +1,6 @@
+Historical preparation evidence at f2a3d06; live verification now supersedes its storage blocker.
+See PINATA-LIVE-CHECKPOINT.md and pinata-live-evidence.json.
+
 Pinata preparation checkpoint; live provider verification BLOCKED, not passed.
 Starting remote: 53c50c03dab48b56c21f1d502b77baac424fcfc6, recovery/v6-b-resume.
 Current Work process: PINATA_JWT absent. Codespaces status unknown; separate runtime.

@@ -1,5 +1,12 @@
 # Milestone B continuation — not a verified main checkpoint
 
+**Latest continuation (2026-10-31): real Pinata uploads, account records, exact
+retrieval and read-only browser rendering/reload are now VERIFIED. The Codespaces
+secret works and was not copied to Work. See PINATA-LIVE-CHECKPOINT.md and
+pinata-live-evidence.json. Do not recreate the adapter or request the JWT again.
+Full wallet-signed creation with this provider remains the next B acceptance
+step before main promotion; do not begin C. The earlier notes below are historical.**
+
 Starting local branch: recovery/v6-b-resume, 44009f6ec4142702532e7d4b73a56e1c181f7c4d.
 That local commit has the exact same tree as remote recovery commit
 84042a661583f25715a9e2bf970fd5aad9147c4d (tree 7a3614b2015bfef3e65b090bdbb39d0b2d5f0a70).
@@ -53,7 +60,7 @@ e3fff6c5a98cf2ceec0b532bc5be9313c6c6d98a, recovery/v6-b-resume.
   opening: 14 positive / 28 on-chain and 9 API rejections. Allocation, custody,
   caps and pricing also passed. All relevant financial assertions were preserved.
 
-## Storage dependency — milestone acceptance blocked
+## Historical storage blocker — provider verification now resolved (see latest checkpoint)
 
 Default storage is real, retrievable content-addressed LOCAL WORKSPACE files.
 It is explicitly not permanent. Losing this runtime can lose those files.
