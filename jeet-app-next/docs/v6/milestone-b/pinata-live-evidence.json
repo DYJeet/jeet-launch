@@ -1,0 +1,35 @@
+{
+  "completed": true,
+  "provider": "Pinata public IPFS",
+  "testedAt": "2026-10-31T16:44:58.710Z",
+  "image": {
+    "uri": "ipfs://bafkreicj7f73y73dqbw7blmpjvfnlxt7kle5nufbbcy2bn5inhb2tk4rhi",
+    "gatewayUri": "https://gateway.pinata.cloud/ipfs/bafkreicj7f73y73dqbw7blmpjvfnlxt7kle5nufbbcy2bn5inhb2tk4rhi",
+    "cid": "bafkreicj7f73y73dqbw7blmpjvfnlxt7kle5nufbbcy2bn5inhb2tk4rhi",
+    "id": "01a192d9-5f29-76ce-85d1-d35a33c456b8",
+    "sha256": "49f97fbc7f63806df0ad8f4d4ad5de7f52c9d6d0a108b1a0b7a869c3a9ab913a",
+    "accountStatus": "public-file-record-confirmed"
+  },
+  "metadata": {
+    "uri": "ipfs://bafkreigtvuzpf7evzmsl75qz5slgozvlgtiqpcg52forqpy2hvyvliflom",
+    "gatewayUri": "https://gateway.pinata.cloud/ipfs/bafkreigtvuzpf7evzmsl75qz5slgozvlgtiqpcg52forqpy2hvyvliflom",
+    "cid": "bafkreigtvuzpf7evzmsl75qz5slgozvlgtiqpcg52forqpy2hvyvliflom",
+    "id": "01a192d9-81ad-7a56-a8b7-ef0971e27084",
+    "sha256": "d3ad32f2fc95cb24bff619ec966766ab34d10788ddd15d183f1a3d7155a0ab73",
+    "accountStatus": "public-file-record-confirmed"
+  },
+  "imageSha256": "49f97fbc7f63806df0ad8f4d4ad5de7f52c9d6d0a108b1a0b7a869c3a9ab913a",
+  "tokenMetadataUriAccepted": true,
+  "browserWalletVerified": false,
+  "solanaTransactions": 0,
+  "limitations": [
+    "Account public-file records and exact current gateway bytes verified; indefinite pinning not guaranteed.",
+    "No assets automatically deleted: retain for refresh verification. Only these disposable file IDs may be manually cleaned up after acceptance.",
+    "This script is provider/API verification, not browser-wallet creation proof."
+  ],
+  "sourceCommit": "f2a3d06c38b71a0eab7a9299ffbe2946a909ba1d",
+  "executionRuntime": "GitHub Codespaces: symmetrical-adventure-544vrwjwxppcv7wx",
+  "originalCodespaceHead": "c9b2d9b962c6c79428f652adf733a892a8a3f766",
+  "originalCheckoutPreserved": true,
+  "browserMetadataRenderingVerified": false
+}
