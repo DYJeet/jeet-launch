@@ -7,6 +7,14 @@ pinata-live-evidence.json. Do not recreate the adapter or request the JWT again.
 Full wallet-signed creation with this provider remains the next B acceptance
 step before main promotion; do not begin C. The earlier notes below are historical.**
 
+## Interrupted integrated acceptance run
+
+Recovery parent: `741a22136f8f4a2b2926e7543a3d5928df53c3fa`. This WIP preserves the local Next.js tracing-root experiment. The change scopes tracing to the app directory when built from `jeet-app-next`. Its Codespaces build outcome was not recovered.
+
+The earlier run completed fresh default/local JeeT SBF builds, native Rust tests (13 default and 17 local-feature passes), and verified the pinned Metaplex executable. Work passed 84 selected JS/SDK tests and lint for the changed harnesses, and built the frontend before the tracing-root change. Codespaces frontend workers exited with SIGTERM. The Raydium SBF tools extraction failed while persistent storage was nearly full. The isolated toolchain was relocated to temporary storage and its Rust, Cargo, and validator executables were checked before the interruption. Build retries and the integrated browser run have no confirmed result.
+
+Resume by inspecting the isolated checkout and `b-final-*.log` files at the Codespaces path in PINATA-LIVE-CHECKPOINT.md. Verify temporary storage and tool symlink targets after restart before launching anything. Reuse confirmed build outputs for the matching source and preserve the original dirty checkout. After a successful frontend build, source `scripts/solana-tools-env.sh`, set `JEET_CHROMIUM_PATH` to the recovered executable if needed, and run `JEET_CREATION_STORAGE=pinata npm run test:wallet:creation:browser` with the inherited server secret. Run the remaining validator suites sequentially where ports overlap. Capture actual transaction and rendering evidence before promoting main. The separate Pinata storage proof and local-storage wallet proof do not satisfy integrated acceptance.
+
 Starting local branch: recovery/v6-b-resume, 44009f6ec4142702532e7d4b73a56e1c181f7c4d.
 That local commit has the exact same tree as remote recovery commit
 84042a661583f25715a9e2bf970fd5aad9147c4d (tree 7a3614b2015bfef3e65b090bdbb39d0b2d5f0a70).
