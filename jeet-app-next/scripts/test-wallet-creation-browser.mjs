@@ -296,7 +296,13 @@ try {
     }
     reject = true; hold = true;
     await page.getByRole("button", {name:"Sign and create coin"}).click();
-    await expect.poll(() => signCount, {timeout:120000}).toBe(1);
+    try {
+      await expect.poll(() => signCount, {timeout:120000}).toBe(1);
+    } catch (error) {
+      const message = page.getByTestId("creation-error");
+      if (await message.isVisible()) console.log("Creation before signing:", await message.innerText());
+      throw error;
+    }
     assert.equal(await page.getByRole("button", {name:"Working…", exact:true}).first().isDisabled(), true);
     assert.equal(await page.evaluate(key => navigator.locks.request(key,{ifAvailable:true},lock=>!!lock), "jeet-create:"+genesis+":"+wallet.address), false);
     release(); hold = false;
