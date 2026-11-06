@@ -396,22 +396,30 @@ try {
     await page.getByRole("button",{name:"Disconnect wallet",exact:true}).click();
     await page.getByRole("button",{name:"Connect JeeT genuine local signer",exact:true}).click();
     await expect(page.getByTestId("created-mint")).toHaveText(mint);
+    async function expectRenderedMetadata() {
+      try {
+        // The reader allows 15 seconds each for the JSON and image requests.
+        await expect(page.getByText("Genuine local wallet creation test",{exact:true})).toBeVisible({timeout:35000});
+        await expect(page.getByAltText("Creator-supplied token image")).toBeVisible();
+      } catch (error) {
+        const section = page.getByRole("heading", {name: "Off-chain metadata · creator supplied"}).locator("..");
+        if (await section.isVisible()) console.log("Token-page metadata:", await section.innerText());
+        throw error;
+      }
+    }
     await page.goto(appUrl+"/token/"+mint);
-    await expect(page.getByText("Genuine local wallet creation test",{exact:true})).toBeVisible();
-    await expect(page.getByAltText("Creator-supplied token image")).toBeVisible();
+    await expectRenderedMetadata();
     await page.reload();
     await expect(page.getByTestId("launch-reader")).toContainText("JeeT Browser " + width,{timeout:15000});
-    await expect(page.getByText("Genuine local wallet creation test",{exact:true})).toBeVisible();
-    await expect(page.getByAltText("Creator-supplied token image")).toBeVisible();
+    await expectRenderedMetadata();
     if(livePinata){
-      await page.route("https://gateway.pinata.cloud/ipfs/**",route=>route.fulfill({status:503,body:"Injected unavailable gateway"}));
+      await page.route("https://gateway.pinata.cloud/ipfs/**",route=>route.fulfill({status:503,headers:{"access-control-allow-origin":"*"},body:"Injected unavailable gateway"}));
       await page.reload();
       await expect(page.getByText(/Metadata asset is unavailable/)).toBeVisible({timeout:15000});
       assert.deepEqual((await rpc("getMultipleAccounts",[allAddresses,{encoding:"base64",commitment:"confirmed"}])).value,allAccounts);
       await page.unroute("https://gateway.pinata.cloud/ipfs/**");
       await page.reload();
-      await expect(page.getByText("Genuine local wallet creation test",{exact:true})).toBeVisible();
-      await expect(page.getByAltText("Creator-supplied token image")).toBeVisible();
+      await expectRenderedMetadata();
       pass(width+"px injected gateway failure is explicit; on-chain state unchanged; real retrieval recovers",true);
     }
     const image=await page.getByAltText("Creator-supplied token image").evaluate(el=>({complete:el.complete,width:el.naturalWidth,height:el.naturalHeight}));
