@@ -21,6 +21,17 @@ test('public upload, authenticated account record and exact gateway bytes; crede
  assert.equal(p.calls[1].url,'https://api.pinata.cloud/v3/files/public/'+id);assert.equal(p.calls[2].init.headers,undefined);
  for(const c of p.calls){assert.equal(c.init.redirect,'error');assert.ok(c.init.signal);}
 });
+test('UnixFS record size includes overhead while gateway must return the original bytes',async()=>{
+ const dag={...data,cid:'bafybeieafk7f66b244czbfajlfteaxlojxsnxpxyotl2wggctw45kous24',size:bytes.length+308};
+ const receipt=()=>Response.json({data:dag});
+ const p=provider({upload:receipt,account:receipt});
+ const result=await pinMetadataFile(bytes,'image.png','image/png',jwt(),p.request);
+ assert.equal(result.cid,dag.cid);
+ const mismatched=provider({upload:receipt,account:()=>Response.json({data:{...dag,size:dag.size+1}})});
+ await assert.rejects(pinMetadataFile(bytes,'image.png','image/png',jwt(),mismatched.request));
+ const corrupted=provider({upload:receipt,account:receipt,gateway:()=>new Response(new Uint8Array(bytes.length))});
+ await assert.rejects(pinMetadataFile(bytes,'image.png','image/png',jwt(),corrupted.request));
+});
 test('missing credential and invalid input reject before upload',async()=>{
  for(const [b,name,mime,token] of [[bytes,'x.json','application/json',''],[new Uint8Array(),'x.json','application/json',jwt()],[bytes,'../x','application/json',jwt()],[bytes,'x.svg','image/svg+xml',jwt()]])await assert.rejects(pinMetadataFile(b,name,mime,token,()=>{throw Error('must not call');}));
 });

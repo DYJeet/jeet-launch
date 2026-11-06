@@ -24,11 +24,11 @@ async function json(response: Response) {
   try {return JSON.parse(new TextDecoder("utf-8",{fatal:true}).decode(b));}
   catch {throw Error("Invalid Pinata response.");}
 }
-function record(value: unknown, size: number) {
+function record(value: unknown, rawSize: number) {
   const v=value as {id?:unknown;cid?:unknown;size?:unknown};
-  if(!v || typeof v.id!=="string" || !/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(v.id) || !validMetadataCid(v.cid) || v.size!==size)
+  if(!v || typeof v.id!=="string" || !/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(v.id) || !validMetadataCid(v.cid) || typeof v.size!=="number" || !Number.isSafeInteger(v.size) || v.size<rawSize || (v.cid.startsWith("bafkrei") && v.size!==rawSize))
     throw Error("Invalid pinned file identity/size.");
-  return {id:v.id,cid:v.cid,size};
+  return {id:v.id,cid:v.cid,size:v.size};
 }
 export async function pinMetadataFile(bytes: Uint8Array, name: string, mime: string,
   jwt: string, request: typeof fetch = fetch): Promise<PinnedMetadataFile> {
@@ -44,12 +44,13 @@ export async function pinMetadataFile(bytes: Uint8Array, name: string, mime: str
     if(!saved){
       const body=new FormData();body.set("network","public");body.set("file",new File([new Uint8Array(bytes)],name,{type:mime}));
       const result=await json(await request(UPLOAD,{method:"POST",headers:auth,body,redirect:"error",signal:AbortSignal.timeout(30000)}));
+      // UnixFS record sizes can include DAG overhead. Verify raw size at retrieval.
       saved=record(result?.data,bytes.length);
       if(receipts.size>=128)receipts.delete(receipts.keys().next().value!);
       receipts.set(key,saved); // Retain a returned receipt even if subsequent verification fails.
     }
     const status=record((await json(await request(API+"/"+saved.id,{headers:auth,redirect:"error",signal:AbortSignal.timeout(15000)})))?.data,bytes.length);
-    if(status.id!==saved.id || status.cid!==saved.cid)throw Error("Pinata account record substitution.");
+    if(status.id!==saved.id || status.cid!==saved.cid || status.size!==saved.size)throw Error("Pinata account record substitution.");
     const gatewayUri=PINATA_GATEWAY+saved.cid;
     const response=await request(gatewayUri,{redirect:"error",signal:AbortSignal.timeout(30000)});
     if(!response.ok)throw Error("Pinned file is not retrievable; launch blocked.");
