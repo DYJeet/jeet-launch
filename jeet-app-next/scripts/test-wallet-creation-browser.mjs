@@ -499,7 +499,10 @@ try {
         assert.equal(after.tokens+after.vault+after.migration,1000n);
         console.log("Trade reconciled on-chain", width, side, sig);
         await page.reload();
-        // The disposable wallet starts disconnected on each document load.
+        const tokenBalance = panel.getByTestId("trade-token-balance");
+        await expect(connectTrader.or(tokenBalance)).toBeVisible({timeout:15000});
+        if (!(await connectTrader.isVisible()))
+          await panel.getByRole("button", {name:"Disconnect trading wallet"}).click();
         await connectTrader.click();
         await expect(panel.getByTestId("trade-token-balance")).toContainText("Available tokens: "+after.tokens, {timeout:15000});
         await expect(panel.getByTestId("trade-sol-balance")).toContainText(formatUnits(after.sol)+" SOL");
