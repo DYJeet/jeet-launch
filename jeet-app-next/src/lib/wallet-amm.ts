@@ -1,7 +1,7 @@
 /** Local-only adapter for the pinned Raydium CPMM interface. */
 import {
   AccountRole, address, generateKeyPairSigner, getAddressEncoder, getAddressDecoder,
-  getBase64Encoder, getBase64Decoder, getProgramDerivedAddress, compileTransaction,
+  getBase64Encoder, getBase64Decoder, getBase58Encoder, getProgramDerivedAddress, compileTransaction,
   createTransactionMessage, appendTransactionMessageInstructions,
   setTransactionMessageFeePayerSigner, setTransactionMessageLifetimeUsingBlockhash,
   getTransactionEncoder, getBase64EncodedWireTransaction,
@@ -46,8 +46,8 @@ export function cpmmQuote(input: bigint, reserveIn: bigint, reserveOut: bigint, 
   if (!net) throw Error("Amount is too small after Raydium fees.");
   const output = bounded(net * reserveOut / (reserveIn + net));
   if (!output || output >= reserveOut) throw Error("Swap output is too small or exhausts liquidity.");
-  const minimum = output * (10000n - slippageBps) / 10000n;
-  return { input, output, fee, minimum: minimum || 1n, rate };
+  const minimum = output - output * slippageBps / 10000n;
+  return { input, output, fee, minimum, rate };
 }
 type Account = { owner: Address; executable: boolean; data: readonly [string, string]; lamports: bigint } | null;
 function owned(a: Account, owner: Address, size?: number) {
@@ -75,14 +75,17 @@ async function poolAddresses(launch: WalletLaunchSnapshot) {
 }
 export async function readAmmMarket(executor: WalletTransactionExecutor, mint: Address, creator: Address, wallet: Address) {
   const launch = await readWalletLaunch(executor, mint, creator);
-  if (!launch.terms?.migrated || !launch.state?.migrated || !launch.mint || launch.state.reserve !== 0n)
+  if (!launch.terms?.migrated || !launch.state?.migrated || !launch.mint || launch.state.reserve !== 0n ||
+      launch.terms.sequence !== launch.state.sequence || launch.terms.solDeposited !== launch.state.migrationSol ||
+      launch.terms.tokensDeposited !== launch.state.migrationInventory || launch.migrationTokens !== 0n)
     throw Error("Confirmed migration is required for AMM trading.");
   const a = await poolAddresses(launch);
   const [destination] = await findAssociatedTokenPda({ mint, owner: wallet, tokenProgram: TOKEN_PROGRAM_ADDRESS });
   const response = await executor.rpc.getMultipleAccounts([
     a.pool, a.config, a.vault0, a.vault1, a.lpMint, a.observation, CPMM_TEST_PROGRAM, destination, wallet,
+    address("SysvarC1ock11111111111111111111111111111111"),
   ], { encoding: "base64", commitment: "confirmed", minContextSlot: launch.slot }).send(timeout());
-  const [pool, config, v0, v1, lp, observation, program, user, owner] = response.value;
+  const [pool, config, v0, v1, lp, observation, program, user, owner, clock] = response.value;
   if (!program?.executable) throw Error("Raydium program is unavailable.");
   const b = owned(pool, CPMM_TEST_PROGRAM, 637);
   const cfg = decodeCpmmConfig(owned(config, CPMM_TEST_PROGRAM, 236));
@@ -98,13 +101,11 @@ export async function readAmmMarket(executor: WalletTransactionExecutor, mint: A
   const fees0 = readU64(b,341)+readU64(b,357)+readU64(b,397), fees1 = readU64(b,349)+readU64(b,365)+readU64(b,405);
   if (fees0 > balance0 || fees1 > balance1) throw Error("Pool liabilities exceed reserves.");
   const lpBytes = owned(lp, TOKEN_PROGRAM_ADDRESS, 82);
-  if (lpBytes[45] !== 1 || keyAt(lpBytes,4) !== a.authority || readU64(b,333) === 0n)
+  const lpFields = new DataView(lpBytes.buffer);
+  if (lpBytes[45] !== 1 || lpFields.getUint32(0,true) !== 1 || keyAt(lpBytes,4) !== a.authority ||
+      lpFields.getUint32(46,true) !== 0 || readU64(b,333) === 0n)
     throw Error("Invalid LP mint or liquidity accounting.");
-  const clock = await executor.rpc.getAccountInfo(address("SysvarC1ock11111111111111111111111111111111"), {
-    encoding:"base64", commitment:"confirmed", minContextSlot: response.context.slot,
-  }).send(timeout());
-  const clockBytes = clock.value ? new Uint8Array(getBase64Encoder().encode(clock.value.data[0])) : null;
-  if (!clockBytes || clockBytes.length !== 40) throw Error("On-chain clock is unavailable.");
+  const clockBytes = owned(clock,address("Sysvar1111111111111111111111111111111111111"),40);
   const now = new DataView(clockBytes.buffer).getBigInt64(32,true);
   const setup = await executor.rpc.getMinimumBalanceForRentExemption(165n).send(timeout());
   return { launch, a, wallet, destination, slot: response.context.slot, cfg,
@@ -119,8 +120,9 @@ export function ammPreview(m: AmmMarket, amount: bigint, sell: boolean, slippage
   if (sell && amount > m.tokens) throw Error("Insufficient tokens.");
   const zeroForOne = sell ? m.a.mint0 === m.launch.addresses.mint : m.a.mint0 === NATIVE_MINT;
   const q = cpmmQuote(amount, zeroForOne?m.reserve0:m.reserve1, zeroForOne?m.reserve1:m.reserve0, m.cfg.trade, slippage);
+  const protocol = q.fee*m.cfg.protocol/1000000n, fund = q.fee*m.cfg.fund/1000000n;
   return { ...q, sell, zeroForOne, setup: m.setup + (!sell && m.needsAta ? m.setup : 0n),
-    reserve0:m.reserve0, reserve1:m.reserve1 };
+    reserve0:m.reserve0, reserve1:m.reserve1, protocol, fund, lp:q.fee-protocol-fund };
 }
 export type AmmPreview = ReturnType<typeof ammPreview>;
 export async function ammInstructions(m: AmmMarket, q: AmmPreview, payer: TransactionSigner) {
@@ -156,15 +158,32 @@ export async function graduationPreview(executor: WalletTransactionExecutor, lau
   if (potential(s,s.sold) !== s.reserve || launch.vaultTokens !== 0n || launch.migrationTokens !== s.migrationInventory)
     throw Error("Graduation inventory or redemption backing is inconsistent.");
   const a = await graduationAddresses(launch.addresses.mint,0n);
-  const r = await executor.rpc.getMultipleAccounts([a.config,CPMM_TEST_PROGRAM,a.pool,a.migratorToken,a.migratorSol,a.migratorLp],
+  const r = await executor.rpc.getMultipleAccounts([a.config,CPMM_TEST_PROGRAM,a.pool,a.migratorToken,a.migratorSol,a.migratorLp,launch.addresses.curve],
     {encoding:"base64",commitment:"confirmed",minContextSlot:launch.slot}).send(timeout());
   const cfg = decodeCpmmConfig(owned(r.value[0],CPMM_TEST_PROGRAM,236));
-  if (cfg.disabled || cfg.trade !== 2500n || !r.value[1]?.executable || r.value.slice(2).some(Boolean))
+  const [,program,pool,migratorToken,migratorSol,migratorLp,curve] = r.value;
+  if (cfg.disabled || cfg.trade !== 2500n || !program?.executable || (pool && (pool.owner!==SYSTEM || pool.data[0])) || migratorLp)
     throw Error("Unsupported setup configuration or destination accounts already exist. Refresh the launch.");
-  const rents = await Promise.all([0n,165n,82n,637n,4075n].map(size=>executor.rpc.getMinimumBalanceForRentExemption(size).send(timeout())));
+  if(migratorToken)token(migratorToken,launch.addresses.mint,a.migrator);
+  if(migratorSol)token(migratorSol,NATIVE_MINT,a.migrator);
+  const rents = await Promise.all([0n,165n,82n,637n,4075n,262n].map(size=>executor.rpc.getMinimumBalanceForRentExemption(size).send(timeout())));
+  if(!curve || curve.lamports<rents[5]+s.reserve)throw Error("Curve lamports cannot cover the disclosed liquidity deposit.");
   const maximum = bounded(cfg.setupFee + rents[0] + rents[1]*5n + rents[2] + rents[3] + rents[4]);
   const build = (caller:TransactionSigner) => [compute,graduateInstruction({...launch.addresses,...a,caller,sequence:s.sequence,nonce:0n,maxSetupLamports:maximum})];
   return { wallet, launch, a, maximum, setupFee:cfg.setupFee, tokens:s.migrationInventory, sol:s.reserve, build };
+}
+export async function migrationSignature(executor: WalletTransactionExecutor, launch: WalletLaunchSnapshot) {
+  if(!launch.terms?.migrated)return null;
+  const list=await executor.rpc.getSignaturesForAddress(launch.addresses.terms,{limit:20,commitment:"confirmed"}).send(timeout());
+  for(const item of list) {
+    if(item.err || item.slot!==launch.terms.migratedSlot)continue;
+    const tx=await executor.rpc.getTransaction(item.signature,{commitment:"confirmed",encoding:"json",maxSupportedTransactionVersion:0}).send(timeout());
+    if(!tx?.meta||tx.meta.err)continue;
+    const msg=tx.transaction.message as {accountKeys:readonly string[];instructions:readonly {data:string;programIdIndex:number;accounts:readonly number[]}[]};
+    if(msg.instructions.some(ix=>msg.accountKeys[ix.programIdIndex]===executor.environment.program &&
+      msg.accountKeys[ix.accounts[7]]===launch.addresses.terms && getBase58Encoder().encode(ix.data)[0]===22))return item.signature;
+  }
+  return null;
 }
 export async function inspectTransaction(executor:WalletTransactionExecutor, instructions:readonly Instruction[], payer:TransactionSigner) {
   const {value:lifetime} = await executor.rpc.getLatestBlockhash({commitment:"confirmed"}).send(timeout());
