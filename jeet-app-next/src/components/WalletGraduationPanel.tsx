@@ -106,12 +106,14 @@ function Graduation({environment,launch,onRefresh}:Props) {
   }
   const preflight=async (owner:Address, instructions:Parameters<typeof inspectTransaction>[1])=>inspectTransaction(executor,instructions,createNoopSigner(owner));
 
+  const progress = Number(state.sold * 10_000n / state.inventory);
+
   return <section className="space-y-4 rounded-2xl border border-white/15 bg-black/40 p-4 sm:p-6" data-testid="graduation-panel">
     <h2 className="text-xl font-black">{migrated?"Trade on Raydium CPMM":"Graduation to Raydium"}</h2>
     <p data-testid="graduation-state">{migrated?"Migrated · curve trading closed":state.eligible?"Graduation eligible · pool has not been created":
       state.sold*10n>=state.inventory*9n?"Bonding curve trading · approaching graduation":"Bonding curve trading"}</p>
     <label className="block text-sm">Curve progress: {tokenAmount(state.sold)} / {tokenAmount(state.inventory)} tokens
-      <progress className="block w-full" max={10000} value={Number(state.sold*10000n/state.inventory)}/>
+      <progress className="block w-full" max={10000} value={progress}/>
     </label>
     {!migrated && <p className="text-sm">{tokenAmount(state.inventory-state.sold)} curve tokens remain. Graduation requires full net sales and the end of protected opening and any wallet-cap window. Redemptions remain available until migration confirms.</p>}
     {migrated && <div className="space-y-1 text-sm" data-testid="amm-pool-proof">
