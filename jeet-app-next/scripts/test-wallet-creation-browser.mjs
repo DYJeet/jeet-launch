@@ -8,6 +8,8 @@ import { pinataCredentialAvailable } from "../src/lib/pinata-metadata-storage.ts
 import { decodeLaunchMetadata, findMetadataPda, METADATA_PROGRAM } from "../src/lib/launch-metadata.ts";
 import { decodeGraduation } from "../src/lib/launch-graduation.ts";
 import { decodeV5PreviewState } from "../src/lib/launch-v5-preview.ts";
+import { v5Budget, v5Quote } from "../src/lib/v5-pricing.ts";
+import { formatUnits } from "../src/lib/wallet-environment.ts";
 import { decodeFeeState } from "../src/lib/launch-fees.ts";
 import { getAddressDecoder, getBase58Encoder } from "@solana/kit";
 import { TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
@@ -24,6 +26,7 @@ import { address } from "@solana/kit";
 import { walletLaunchAddresses } from "../src/lib/wallet-launch.ts";
 import { parseMintBytes } from "../src/lib/solana-rpc.ts";
 import { LOCAL_WALLET_PROGRAM } from "../src/lib/wallet-environment.ts";
+const trading = process.env.JEET_BROWSER_TRADE === "1";
 const livePinata = process.env.JEET_CREATION_STORAGE === "pinata";
 if (livePinata && !pinataCredentialAvailable(process.env.PINATA_JWT))
   throw Error("Live creation requires an environment-provided PINATA_JWT in this runtime.");
@@ -147,7 +150,8 @@ try {
     page.on("pageerror", (e) => errors.push(String(e)));
     page.on("response", async (r) => {
       if (r.url().includes("/api/wallet/")) {
-        const t = await r.text();
+        // Reloads can release the response body before diagnostics read it.
+        const t = await r.text().catch(() => "");
         if (r.status() >= 400 || t.includes('\"error\"'))
           console.log(
             "RPC DIAGNOSTIC",
@@ -431,6 +435,81 @@ try {
     assert.deepEqual(errors,[]);
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth+1));
     pass(width + "px token page reload and mobile layout");
+    if (trading) {
+      const panel = page.getByTestId("curve-trade");
+      const connectTrader = panel.getByRole("button", {name:"Connect JeeT genuine local signer"});
+      if (await connectTrader.isVisible()) await connectTrader.click();
+      await expect(panel.getByTestId("trade-sol-balance")).toContainText("0.9648444 SOL", {timeout:15000});
+      const readTrade = async () => {
+        const a = (await rpc("getMultipleAccounts", [allAddresses, {encoding:"base64",commitment:"confirmed"}])).value;
+        const get = i => Buffer.from(a[i].data[0],"base64");
+        return {
+          state: decodeV5PreviewState(get(6)),
+          platform: decodeFeeState(get(7)).accrued,
+          creator: decodeFeeState(get(8)).accrued,
+          tokens: get(1).readBigUInt64LE(64),
+          vault: get(2).readBigUInt64LE(64),
+          migration: get(3).readBigUInt64LE(64),
+          sol: BigInt((await rpc("getBalance",[wallet.address,{commitment:"confirmed"}])).value),
+          reserveLamports: BigInt(a[6].lamports),
+          platformLamports: BigInt(a[7].lamports),
+          creatorLamports: BigInt(a[8].lamports),
+        };
+      };
+      for (const sell of [false, true]) {
+        const before = await readTrade();
+        const side = sell ? "sell" : "buy";
+        await panel.getByRole("button", {name:sell?"Sell":"Buy",exact:true}).click();
+        await panel.getByLabel(sell?"Tokens to sell":"SOL trade budget").fill(sell?"11":"0.000001");
+        const quote = sell
+          ? v5Quote(before.state,before.state.sold,11n,before.platform,before.creator,true)
+          : v5Budget(before.state,before.state.sold,1000n,before.platform,before.creator);
+        await panel.getByRole("button", {name:"Review "+side,exact:true}).click();
+        const preview = panel.getByTestId("trade-quote");
+        await expect(preview).toContainText("Platform fee: "+formatUnits(quote.platform)+" SOL");
+        await expect(preview).toContainText("Creator fee: "+formatUnits(quote.creator)+" SOL");
+        await expect(preview).toContainText("Curve consideration: "+formatUnits(quote.raw)+" SOL");
+        if (!sell) {
+          rejectAt = signCount + 1;
+          await panel.getByRole("button", {name:"Sign and buy",exact:true}).click();
+          await expect(panel.getByRole("alert")).toContainText("User rejected", {timeout:20000});
+          assert.deepEqual(await readTrade(),before);
+          pass(width+"px rejected buy changes no market or wallet balances",true);
+          rejectAt = 0;
+          await panel.getByRole("button", {name:"Review buy",exact:true}).click();
+        }
+        await panel.getByRole("button", {name:"Sign and "+side,exact:true}).click();
+        await expect(panel.getByTestId("trade-receipt")).toContainText("Confirmed and refreshed", {timeout:45000});
+        const sig = wires.at(-1).signature;
+        const tx = await rpc("getTransaction",[sig,{encoding:"json",commitment:"confirmed",maxSupportedTransactionVersion:0}]);
+        assert.equal(tx.meta.err,null);
+        const after = await readTrade();
+        const direction = sell ? -1n : 1n;
+        assert.equal(after.state.sequence,before.state.sequence+1n);
+        assert.equal(after.state.sold,before.state.sold+direction*quote.amount);
+        assert.equal(after.state.reserve,before.state.reserve+direction*quote.raw);
+        assert.equal(after.reserveLamports,before.reserveLamports+direction*quote.raw);
+        assert.equal(after.tokens,before.tokens+direction*quote.amount);
+        assert.equal(after.vault,before.vault-direction*quote.amount);
+        assert.equal(after.platform,before.platform+quote.platform);
+        assert.equal(after.creator,before.creator+quote.creator);
+        assert.equal(after.platformLamports,before.platformLamports+quote.platform);
+        assert.equal(after.creatorLamports,before.creatorLamports+quote.creator);
+        assert.equal(after.sol,before.sol-direction*quote.user-BigInt(tx.meta.fee)-(sell?0n:BigInt(await rpc("getMinimumBalanceForRentExemption",[81]))));
+        assert.equal(after.tokens+after.vault+after.migration,1000n);
+        console.log("Trade reconciled on-chain", width, side, sig);
+        await page.reload();
+        const tokenBalance = panel.getByTestId("trade-token-balance");
+        await expect(connectTrader.or(tokenBalance)).toBeVisible({timeout:15000});
+        if (!(await connectTrader.isVisible()))
+          await panel.getByRole("button", {name:"Disconnect trading wallet"}).click();
+        await connectTrader.click();
+        await expect(panel.getByTestId("trade-token-balance")).toContainText("Available tokens: "+after.tokens, {timeout:15000});
+        await expect(panel.getByTestId("trade-sol-balance")).toContainText(formatUnits(after.sol)+" SOL");
+        evidence.transactions.push({width,mint,side,signature:sig,quote,before,after,networkFee:tx.meta.fee});
+        pass(width+"px real wallet-signed "+side+" reconciled against quote and refreshed balances");
+      }
+    }
     await page.close();
   }
   evidence.completed = true;
