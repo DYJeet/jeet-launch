@@ -183,6 +183,50 @@ export async function testCpmm() {
     FEE,
   ];
   const snap = () => Promise.all(keys.map(raw));
+  const denied = async (ix, label, code, index = 1) => {
+    const before = await snap(),
+      old = (
+        await rpc("getSignaturesForAddress", [
+          sponsor.payer.address,
+          { limit: 1, commitment: "confirmed" },
+        ])
+      )[0]?.signature;
+    let error;
+    try {
+      await sponsor.sendTransaction([computeBudget, ...(Array.isArray(ix) ? ix : [ix])]);
+    } catch (e) {
+      error = e;
+    }
+    assert.ok(error, label + " succeeded");
+    assert.deepEqual(await snap(), before);
+    const failed = (
+      await rpc("getSignaturesForAddress", [
+        sponsor.payer.address,
+        { limit: 1, commitment: "confirmed" },
+      ])
+    )[0];
+    assert.ok(failed.err && failed.signature !== old);
+    assert.deepEqual(failed.err.InstructionError, [index, { Custom: code }]);
+    evidence.rejection.push({
+      label,
+      signature: failed.signature,
+      error: failed.err,
+    });
+    console.log(
+      "PASS CPMM rejection " +
+        label +
+        "; all pool/token/owner balances unchanged",
+    );
+  };
+  await denied(
+    [init, owner.token.instructions.burnChecked({
+      account: lpAccount, mint: a.lpMint, authority: owner.payer,
+      amount: minted + 1n, decimals: 9,
+    })],
+    "failed LP burn rolls back genuine pool initialization",
+    1,
+    2,
+  );
   console.log("CPMM stage: submitting initialize and burn");
   const ownerBefore = await balance(owner.payer.address),
     feeBefore = await balance(FEE);
@@ -243,41 +287,6 @@ export async function testCpmm() {
   pass(
     "genuine initialize + full initial LP burn in one atomic transaction; exact deposited balances and zero withdrawable LP supply",
   );
-  const denied = async (ix, label, code) => {
-    const before = await snap(),
-      old = (
-        await rpc("getSignaturesForAddress", [
-          sponsor.payer.address,
-          { limit: 1, commitment: "confirmed" },
-        ])
-      )[0]?.signature;
-    let error;
-    try {
-      await sponsor.sendTransaction([computeBudget, ix]);
-    } catch (e) {
-      error = e;
-    }
-    assert.ok(error, label + " succeeded");
-    assert.deepEqual(await snap(), before);
-    const failed = (
-      await rpc("getSignaturesForAddress", [
-        sponsor.payer.address,
-        { limit: 1, commitment: "confirmed" },
-      ])
-    )[0];
-    assert.ok(failed.err && failed.signature !== old);
-    assert.deepEqual(failed.err.InstructionError[1], { Custom: code });
-    evidence.rejection.push({
-      label,
-      signature: failed.signature,
-      error: failed.err,
-    });
-    console.log(
-      "PASS CPMM rejection " +
-        label +
-        "; all pool/token/owner balances unchanged",
-    );
-  };
   await denied(
     withdrawPool(a, owner.payer, lpAccount, t0, t1, 1n),
     "creator cannot withdraw burned initial liquidity",
@@ -315,6 +324,12 @@ export async function testCpmm() {
   assert.equal(oldWsol - (await tokens(wsolAccount)), 10000000n);
   assert.ok((await tokens(tokenAccount)) > oldToken);
   pass("real post-burn AMM buy succeeds");
+  await denied(
+    swapPool(a, owner.payer, wsolAccount, tokenAccount, !zero, 10000000n,
+      (await tokens(tokenAccount)) - oldToken),
+    "old quote cannot clear after another swap changes reserves",
+    6005,
+  );
   const sellAmount = 1000000000n,
     oldOut = await tokens(wsolAccount);
   await sponsor.sendTransaction([
@@ -335,6 +350,12 @@ export async function testCpmm() {
     ),
     "swap minimum-output protection",
     6005,
+  );
+  await denied(
+    swapPool(a, owner.payer, wsolAccount, tokenAccount, !zero,
+      (await tokens(wsolAccount)) + 1n, 1n),
+    "insufficient wrapped SOL rolls back swap and fees",
+    1,
   );
   assert.equal(await tokens(lpAccount), 0n);
   assert.equal(
