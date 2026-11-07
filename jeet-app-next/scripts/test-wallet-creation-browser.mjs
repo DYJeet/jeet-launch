@@ -26,8 +26,11 @@ import { address } from "@solana/kit";
 import { walletLaunchAddresses } from "../src/lib/wallet-launch.ts";
 import { parseMintBytes } from "../src/lib/solana-rpc.ts";
 import { LOCAL_WALLET_PROGRAM } from "../src/lib/wallet-environment.ts";
-const trading = process.env.JEET_BROWSER_TRADE === "1";
+const graduation = process.env.JEET_BROWSER_GRADUATION === "1"
+  ? await import("./amm/test-wallet-graduation-browser.mjs") : null;
+const trading = !!graduation || process.env.JEET_BROWSER_TRADE === "1";
 const livePinata = process.env.JEET_CREATION_STORAGE === "pinata";
+if (graduation && !livePinata) throw Error("Browser graduation acceptance requires live Pinata.");
 if (livePinata && !pinataCredentialAvailable(process.env.PINATA_JWT))
   throw Error("Live creation requires an environment-provided PINATA_JWT in this runtime.");
 const dir = await mkdtemp("/tmp/jeet-wallet-browser-"),
@@ -108,6 +111,7 @@ try {
       "--bpf-program",
       LOCAL_WALLET_PROGRAM,
       "programs/launch-custody/target/local-fee-test/jeet_launch_custody.so",
+      ...(graduation ? await graduation.graduationGenesis(dir) : []),
     ],
     "validator",
   );
@@ -510,6 +514,8 @@ try {
         pass(width+"px real wallet-signed "+side+" reconciled against quote and refreshed balances");
       }
     }
+    if (graduation) await graduation.runBrowserGraduation({page,width,mint,l,wallet,wires,rpc,evidence,pass,
+      rejectNext:()=>{rejectAt=signCount+1;},allowSigning:()=>{rejectAt=0;}});
     await page.close();
   }
   evidence.completed = true;
