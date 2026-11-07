@@ -55,8 +55,21 @@ function Graduation({environment,launch,onRefresh}:Props) {
   useEffect(()=>{
     if(!migrated)return;
     let active=true;
-    void load(wallet??readOnlyWallet).then(m=>{if(active)setMarket(m);},e=>{if(active)setError(message(e));});
-    return ()=>{active=false;};
+    let timer: ReturnType<typeof setTimeout>|undefined;
+    let remaining=10;
+    async function refresh() {
+      try {
+        const m=await load(wallet??readOnlyWallet);
+        if(!active)return;
+        setMarket(m);
+        // Raydium sets the opening time after the initialization timestamp.
+        if(!m.swapOpen && !m.swapPaused && remaining-- > 0)timer=setTimeout(()=>void refresh(),1000);
+      } catch(e) {
+        if(active)setError(message(e));
+      }
+    }
+    void refresh();
+    return ()=>{active=false;clearTimeout(timer);};
   },[load,migrated,wallet,launch.slot]);
   if(!launch.state || !launch.terms)return null;
   const pending=wallet ? browserPendingStore().get(environment.genesis+":"+wallet) : null;
