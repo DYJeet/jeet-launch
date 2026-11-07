@@ -514,6 +514,38 @@ try {
         pass(width+"px real wallet-signed "+side+" reconciled against quote and refreshed balances");
       }
     }
+    if (trading && process.env.JEET_RELEASE_BROWSER === "1") {
+      const history = page.getByRole("region", { name: "Confirmed curve activity" });
+      await expect(history.getByRole("listitem")).toHaveCount(2, { timeout: 15000 });
+      await expect(history.getByRole("img")).toBeVisible();
+      await page.goto(appUrl + "/explore");
+      await page.getByRole("textbox", { name: "Search verified launches" }).fill(mint);
+      await page.getByRole("button", { name: "Trending" }).click();
+      await page.getByRole("link", { name: new RegExp(mint) }).click();
+      const fees = page.locator("#fee-accounts");
+      await expect(fees).toBeVisible();
+      const connect = page.getByTestId("curve-trade").getByRole("button", { name: "Connect JeeT genuine local signer" });
+      if (await connect.isVisible()) await connect.click();
+      const readFees = async () => (await rpc("getMultipleAccounts", [[l.platformVault, l.creatorVault],
+        { encoding: "base64", commitment: "confirmed" }])).value;
+      const before = await readFees();
+      const amount = decodeFeeState(Buffer.from(before[1].data[0], "base64")).claimable;
+      assert.ok(amount > 0n);
+      const balance = async () => BigInt((await rpc("getBalance", [wallet.address, { commitment: "confirmed" }])).value);
+      const oldBalance = await balance();
+      await fees.getByRole("button", { name: "Claim " + formatUnits(amount) + " SOL", exact: true }).click();
+      await expect(fees.getByRole("status")).toContainText("confirmed", { timeout: 45000 });
+      const sig = wires.at(-1).signature;
+      const tx = await rpc("getTransaction", [sig, { encoding: "json", commitment: "confirmed", maxSupportedTransactionVersion: 0 }]);
+      assert.equal(tx.meta.err, null);
+      const after = await readFees();
+      assert.deepEqual(after[0], before[0]);
+      assert.equal(decodeFeeState(Buffer.from(after[1].data[0], "base64")).claimable, 0n);
+      assert.equal(BigInt(before[1].lamports) - BigInt(after[1].lamports), amount);
+      assert.equal(await balance(), oldBalance + amount - BigInt(tx.meta.fee));
+      evidence.transactions.push({ width, mint, kind: "creator-claim", signature: sig, amount });
+      pass(width + "px verified discovery, curve chart and wallet-signed creator fee claim");
+    }
     if (graduation) await graduation.runBrowserGraduation({page,width,mint,l,wallet,wires,rpc,evidence,pass,
       rejectNext:()=>{rejectAt=signCount+1;},allowSigning:()=>{rejectAt=0;}});
     await page.close();

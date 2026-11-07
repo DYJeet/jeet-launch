@@ -26,7 +26,7 @@ async function readIndex({ url, environment }: Configuration) {
   const activeMints = new Set(termsAccounts.flatMap(entry => {
     if (entry.account.owner !== environment.program || entry.account.executable) return [];
     try {
-      return [decodeGraduation(getBase64Encoder().encode(entry.account.data[0])).mint];
+      return [decodeGraduation(new Uint8Array(getBase64Encoder().encode(entry.account.data[0]))).mint];
     } catch {
       return [];
     }
