@@ -1,10 +1,6 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
-import LaunchCard from "@/components/LaunchCard";
+import LaunchDiscovery from "@/components/LaunchDiscovery";
 import SiteHeader from "@/components/SiteHeader";
-import { launchTabs, launchesByStatus, type LaunchStatus } from "@/lib/launches";
 
 const fairRules = [
   "Fair launch mechanics",
@@ -15,9 +11,6 @@ const fairRules = [
 ];
 
 export default function Home() {
-  const [activeLaunchTab, setActiveLaunchTab] = useState<LaunchStatus>("Trending");
-  const activeLaunches = launchesByStatus(activeLaunchTab);
-
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#050605] text-white">
       <div className="pointer-events-none fixed inset-0 -z-10">
@@ -82,20 +75,11 @@ export default function Home() {
 
       <section id="launches" className="mx-auto max-w-[1500px] px-5 py-8 lg:px-8">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-sm font-black uppercase tracking-wide text-white/75">🔥 {activeLaunchTab} Launches</h2>
+          <h2 className="text-sm font-black uppercase tracking-wide text-white/75">Explore launches</h2>
           <Link href="/explore" className="text-xs font-black text-[#9cff43]">View All →</Link>
         </div>
 
-        <div className="mb-6 flex flex-wrap gap-2">
-          {launchTabs.map((tab) => (
-            <button key={tab} aria-pressed={activeLaunchTab === tab} onClick={() => setActiveLaunchTab(tab)} className={`rounded-xl px-4 py-2 text-sm font-black transition ${activeLaunchTab === tab ? "bg-[#9cff43] text-black" : "border border-white/[0.08] bg-white/[0.03] text-white/60 hover:bg-white/[0.06] hover:text-white"}`}>{tab}</button>
-          ))}
-        </div>
-
-        {!activeLaunches.length && <p role="status" className="mb-5 rounded-2xl border border-white/10 p-5 text-sm text-white/60">Verified launch listings are not connected yet. No demo market activity is shown. V5 trading and graduation are awaiting approval and implementation.</p>}
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-          {activeLaunches.slice(0, 4).map((coin) => <LaunchCard key={coin.mint} coin={coin} />)}
-        </div>
+        <LaunchDiscovery compact />
       </section>
 
       <section className="mx-auto max-w-[1500px] px-5 pb-10 lg:px-8">

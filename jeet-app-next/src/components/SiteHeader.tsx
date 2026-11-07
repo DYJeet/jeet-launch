@@ -18,7 +18,6 @@ export default function SiteHeader() {
           <Link className="transition hover:text-white" href="/explore">Explore</Link>
           <Link className="transition hover:text-white" href="/create">Create</Link>
           <Link className="transition hover:text-white" href="/revenue">Revenue</Link>
-          <span className="cursor-not-allowed text-white/20">Docs</span>
         </nav>
 
         <div className="flex items-center gap-3">

@@ -1,4 +1,6 @@
 "use client";
+import LaunchFeeClaims from "./LaunchFeeClaims";
+import CurveHistory from "./CurveHistory";
 import LocalLaunchMetadata from "./LocalLaunchMetadata";
 import WalletTradePanel from "./WalletTradePanel";
 import WalletGraduationPanel from "./WalletGraduationPanel";
@@ -11,7 +13,7 @@ import { readWalletLaunch, type WalletLaunchSnapshot } from "@/lib/wallet-launch
 
 /** Read-only local launch inspection. No connected wallet or signing secret required. */
 export default function WalletLaunchReader({ mint }: { mint: string }) {
-  const [result, setResult] = useState<{ snapshot?: WalletLaunchSnapshot; environment?: WalletEnvironment; error?: string } | null>(null);
+  const [result, setResult] = useState<{ snapshot?: WalletLaunchSnapshot; environment?: WalletEnvironment; executor?: WalletTransactionExecutor; error?: string } | null>(null);
   const [refresh, setRefresh] = useState(0);
   useEffect(() => {
     let active = true;
@@ -37,7 +39,7 @@ export default function WalletLaunchReader({ mint }: { mint: string }) {
         const creator = getAddressDecoder().decode(data.subarray(40, 72));
         const snapshot = await readWalletLaunch(executor, key, creator);
         if (!snapshot.mint || !snapshot.state) throw Error("Launch initialization is incomplete.");
-        if (active) setResult({ snapshot, environment });
+        if (active) setResult({ snapshot, environment, executor });
       } catch (e) {
         if (active) setResult({ error: e instanceof Error ? e.message : String(e) });
       }
@@ -80,8 +82,10 @@ export default function WalletLaunchReader({ mint }: { mint: string }) {
     </dl>}
     {s && result?.environment && <>
       {!s.state?.migrated && !s.terms?.migrated && <WalletTradePanel environment={result.environment} launch={s} onRefresh={() => setRefresh(n => n + 1)} />}
+      <LaunchFeeClaims launch={s} environment={result.environment} refresh={() => setRefresh(n => n + 1)} />
       <WalletGraduationPanel environment={result.environment} launch={s} onRefresh={() => setRefresh(n => n + 1)} />
     </>}
-    <p className="text-sm text-white/50">Market statistics and charts are unavailable. Public explorers cannot inspect this disposable local validator.</p>
+    {s?.mint && s.state && result?.executor && <CurveHistory executor={result.executor} curve={s.addresses.curve} mint={mint} decimals={s.mint.decimals} revision={s.state.sequence} />}
+    <p className="text-sm text-white/50">Public explorers cannot inspect this disposable local validator.</p>
   </section>;
 }
