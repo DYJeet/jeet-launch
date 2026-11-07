@@ -1,6 +1,7 @@
 "use client";
 import LocalLaunchMetadata from "./LocalLaunchMetadata";
 import WalletTradePanel from "./WalletTradePanel";
+import WalletGraduationPanel from "./WalletGraduationPanel";
 import { useEffect, useState } from "react";
 import { address, getAddressDecoder, getBase64Encoder } from "@solana/kit";
 import { WalletTransactionExecutor } from "@/lib/wallet-transactions";
@@ -77,7 +78,10 @@ export default function WalletLaunchReader({ mint }: { mint: string }) {
       {row("Metadata data mutability", s.metadata ? (s.metadata.mutable ? "Mutable" : "Immutable data flag; update authority record still exists") : "Unavailable")}
       {row("Observed slot", s.slot.toString())}
     </dl>}
-    {s && result?.environment && <WalletTradePanel environment={result.environment} launch={s} onRefresh={() => setRefresh(n => n + 1)} />}
+    {s && result?.environment && <>
+      {!s.state?.migrated && !s.terms?.migrated && <WalletTradePanel environment={result.environment} launch={s} onRefresh={() => setRefresh(n => n + 1)} />}
+      <WalletGraduationPanel environment={result.environment} launch={s} onRefresh={() => setRefresh(n => n + 1)} />
+    </>}
     <p className="text-sm text-white/50">Market statistics and charts are unavailable. Public explorers cannot inspect this disposable local validator.</p>
   </section>;
 }
