@@ -98,7 +98,7 @@ export async function runBrowserGraduation({ page,width,mint,l,wallet,wires,rpc,
     await panel.getByRole("button",{name:sell?"Sell":"Buy",exact:true}).click();
     await panel.getByLabel(sell?"Tokens to swap":"SOL to swap",{exact:true}).fill(sell?"10":"0.000001");
     const reviewButton=panel.getByRole("button",{name:`Review AMM ${side}`,exact:true});
-    if(!await reviewButton.isEnabled())await panel.getByRole("button",{name:"Refresh graduation and pool state"}).click();
+    await expect(reviewButton).toBeEnabled({timeout:20000});
     await reviewButton.click();
     await expect(review).toContainText(`Minimum received: ${sell?formatUnits(quote.minimum)+" SOL":quote.minimum+" tokens"}`);
     const sign=panel.getByRole("button",{name:`Sign AMM ${side}`,exact:true});
@@ -123,6 +123,7 @@ export async function runBrowserGraduation({ page,width,mint,l,wallet,wires,rpc,
     console.log("Browser AMM swap",width,side,signature);
   }
   await page.reload();await expect(panel.getByTestId("graduation-state")).toContainText("Migrated · curve trading closed",{timeout:15000});
+  await expect(panel.getByTestId("amm-pool-proof")).toContainText(`Confirmed migration signature: ${migration}`,{timeout:15000});
   const connect=panel.getByRole("button",{name:"Connect JeeT genuine local signer",exact:true});
   const balance=panel.getByTestId("amm-wallet-balance");
   await expect(connect.or(balance)).toBeVisible({timeout:15000});
