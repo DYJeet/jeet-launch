@@ -108,9 +108,10 @@ export async function readAmmMarket(executor: WalletTransactionExecutor, mint: A
   const clockBytes = owned(clock,address("Sysvar1111111111111111111111111111111111111"),40);
   const now = new DataView(clockBytes.buffer).getBigInt64(32,true);
   const setup = await executor.rpc.getMinimumBalanceForRentExemption(165n).send(timeout());
+  const swapPaused=!!(b[329]&4);
   return { launch, a, wallet, destination, slot: response.context.slot, cfg,
     poolData: b, balance0, balance1, reserve0:balance0-fees0, reserve1:balance1-fees1,
-    swapOpen: !(b[329]&4) && now >= readU64(b,373), openTime:readU64(b,373),
+    swapOpen: !swapPaused && now >= readU64(b,373), swapPaused,
     lpSupply: readU64(lpBytes,36), lpAccounting:readU64(b,333), initialLpBurned:launch.terms.lpBurned,
     tokens: user ? token(user,mint,wallet) : 0n, needsAta:!user, sol:owner?.lamports??0n, setup };
 }
