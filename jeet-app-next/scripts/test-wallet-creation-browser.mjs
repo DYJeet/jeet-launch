@@ -497,6 +497,8 @@ try {
         assert.equal(after.sol,before.sol-direction*quote.user-BigInt(tx.meta.fee)-(sell?0n:BigInt(await rpc("getMinimumBalanceForRentExemption",[81]))));
         assert.equal(after.tokens+after.vault+after.migration,1000n);
         await page.reload();
+        // The disposable wallet starts disconnected on each document load.
+        await connectTrader.click();
         await expect(panel.getByTestId("trade-token-balance")).toContainText("Available tokens: "+after.tokens, {timeout:15000});
         await expect(panel.getByTestId("trade-sol-balance")).toContainText(formatUnits(after.sol)+" SOL");
         evidence.transactions.push({width,mint,side,signature:sig,quote,before,after,networkFee:tx.meta.fee});
