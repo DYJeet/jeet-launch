@@ -150,7 +150,8 @@ try {
     page.on("pageerror", (e) => errors.push(String(e)));
     page.on("response", async (r) => {
       if (r.url().includes("/api/wallet/")) {
-        const t = await r.text();
+        // Reloads can release the response body before diagnostics read it.
+        const t = await r.text().catch(() => "");
         if (r.status() >= 400 || t.includes('\"error\"'))
           console.log(
             "RPC DIAGNOSTIC",
@@ -496,6 +497,7 @@ try {
         assert.equal(after.creatorLamports,before.creatorLamports+quote.creator);
         assert.equal(after.sol,before.sol-direction*quote.user-BigInt(tx.meta.fee)-(sell?0n:BigInt(await rpc("getMinimumBalanceForRentExemption",[81]))));
         assert.equal(after.tokens+after.vault+after.migration,1000n);
+        console.log("Trade reconciled on-chain", width, side, sig);
         await page.reload();
         // The disposable wallet starts disconnected on each document load.
         await connectTrader.click();
