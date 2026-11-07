@@ -3,14 +3,15 @@ use super::*;
 use solana_program::{
     log::sol_log_data,
     program::{invoke, set_return_data},
-    pubkey,
 };
 pub const LEN: usize = 153;
 pub const MAGIC: &[u8] = b"JEETFEE1";
-#[cfg(not(feature = "local-fee-test"))]
-pub const TREASURY: Pubkey = pubkey!("HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP");
+#[cfg(not(any(feature = "local-fee-test", feature = "devnet")))]
+pub const TREASURY: Pubkey = solana_program::pubkey!("HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP");
+#[cfg(feature = "devnet")]
+pub use crate::DEVNET_TREASURY as TREASURY;
 #[cfg(feature = "local-fee-test")]
-pub const TREASURY: Pubkey = pubkey!("2iXtA8oeZqUU5pofxK971TCEvFGfems2AcDRaZHKD2pQ");
+pub const TREASURY: Pubkey = solana_program::pubkey!("2iXtA8oeZqUU5pofxK971TCEvFGfems2AcDRaZHKD2pQ");
 fn err(n: u32) -> ProgramError {
     ProgramError::Custom(n)
 }
@@ -237,7 +238,7 @@ pub fn process(program: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> Prog
             let supported = (data.len() == super::protected::LEN
                 && &data[..8] == super::curve::FEE_MAGIC)
                 || (data.len() == super::market::LEN && &data[..8] == super::market::MAGIC);
-            #[cfg(feature = "local-fee-test")]
+            #[cfg(any(feature = "local-fee-test", feature = "devnet"))]
             let supported =
                 supported || (data.len() == super::v5::LEN && &data[..8] == super::v5::MAGIC);
             if curve.key != &curve_key || curve.owner != program || !supported {

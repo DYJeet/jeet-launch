@@ -2,15 +2,15 @@
 mod caps;
 mod curve;
 mod fees;
-#[cfg(feature = "local-fee-test")]
+#[cfg(any(feature = "local-fee-test", feature = "devnet"))]
 mod graduation;
 mod market;
-#[cfg(feature = "local-fee-test")]
+#[cfg(any(feature = "local-fee-test", feature = "devnet"))]
 mod metadata;
 mod protected;
-#[cfg(feature = "local-fee-test")]
+#[cfg(any(feature = "local-fee-test", feature = "devnet"))]
 mod v5;
-#[cfg(any(test, feature = "local-fee-test"))]
+#[cfg(any(test, feature = "local-fee-test", feature = "devnet"))]
 mod v5_math;
 
 use solana_program::{
@@ -22,10 +22,12 @@ use solana_sdk_ids::system_program;
 use solana_system_interface::instruction as system_instruction;
 use spl_token::state::{Account as TokenAccount, AccountState, Mint};
 
-#[cfg(not(feature = "local-fee-test"))]
+#[cfg(not(any(feature = "local-fee-test", feature = "devnet")))]
 solana_program::declare_id!("7QhXSnj7igy9HX6n1i3bnuc2SUbMTRWZEouGZKcy9d31");
 #[cfg(feature = "local-fee-test")]
 solana_program::declare_id!("8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo");
+#[cfg(feature = "devnet")]
+include!(concat!(env!("OUT_DIR"), "/devnet_identities.rs"));
 entrypoint!(process_instruction);
 
 const SEED: &[u8] = b"launch";
@@ -77,7 +79,7 @@ pub fn process_instruction(
         return Err(ProgramError::IncorrectProgramId);
     }
     if matches!(input.first(), Some(16..=23)) {
-        #[cfg(feature = "local-fee-test")]
+        #[cfg(any(feature = "local-fee-test", feature = "devnet"))]
         {
             return if matches!(input.first(), Some(21 | 22)) {
                 graduation::process(program_id, accounts, input)
@@ -87,7 +89,7 @@ pub fn process_instruction(
                 v5::process(program_id, accounts, input)
             };
         }
-        #[cfg(not(feature = "local-fee-test"))]
+        #[cfg(not(any(feature = "local-fee-test", feature = "devnet")))]
         {
             return Err(ProgramError::Custom(1514));
         }
