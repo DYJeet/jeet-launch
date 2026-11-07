@@ -9,7 +9,7 @@ import { browserPendingStore, WalletTransactionExecutor, type TransactionNotice 
 import { readWalletLaunch, type WalletLaunchSnapshot } from "@/lib/wallet-launch-flow";
 import { formatUnits, parseUnits, type WalletEnvironment } from "@/lib/wallet-environment";
 import { NATIVE_MINT } from "@/lib/launch-graduation";
-import { ammInstructions, ammPreview, graduationPreview, inspectTransaction, readAmmMarket, type AmmMarket } from "@/lib/wallet-amm";
+import { ammInstructions, ammPreview, graduationPreview, inspectTransaction, migrationSignature, readAmmMarket, type AmmMarket } from "@/lib/wallet-amm";
 
 type Props = { environment: WalletEnvironment; launch: WalletLaunchSnapshot; onRefresh: () => void };
 type Inspection = Awaited<ReturnType<typeof inspectTransaction>>;
@@ -36,6 +36,7 @@ function Graduation({environment,launch,onRefresh}:Props) {
   const wallets=useWallets(client), connect=useConnect(client), disconnect=useDisconnect(client);
   const [market,setMarket]=useState<AmmMarket|null>(null), [review,setReview]=useState<Review|null>(null);
   const [notice,setNotice]=useState<TransactionNotice|null>(null), [receipt,setReceipt]=useState("");
+  const [migrationTx,setMigrationTx]=useState<string|null>(null);
   const [error,setError]=useState(""), [busy,setBusy]=useState(false);
   const [sell,setSell]=useState(false), [amount,setAmount]=useState(""), [slippage,setSlippage]=useState("0.5");
   const abort=useRef<AbortController|null>(null), lock=useRef(false);
@@ -45,6 +46,12 @@ function Graduation({environment,launch,onRefresh}:Props) {
   const {mint,creator}=launch.addresses;
   const load=useCallback((owner:Address)=>readAmmMarket(executor,mint,creator,owner),[executor,mint,creator]);
   const migrated=!!(launch.terms?.migrated && launch.state?.migrated);
+  useEffect(()=>{
+    if(!migrated)return;
+    let active=true;
+    void migrationSignature(executor,launch).then(sig=>{if(active)setMigrationTx(sig);},()=>{if(active)setMigrationTx(null);});
+    return ()=>{active=false;};
+  },[executor,launch,migrated]);
   useEffect(()=>{
     if(!migrated)return;
     let active=true;
@@ -88,7 +95,8 @@ function Graduation({environment,launch,onRefresh}:Props) {
 
   return <section className="space-y-4 rounded-2xl border border-white/15 bg-black/40 p-4 sm:p-6" data-testid="graduation-panel">
     <h2 className="text-xl font-black">{migrated?"Trade on Raydium CPMM":"Graduation to Raydium"}</h2>
-    <p data-testid="graduation-state">{migrated?"Migrated · curve trading closed":state.eligible?"Graduation eligible · pool has not been created":"Bonding curve trading"}</p>
+    <p data-testid="graduation-state">{migrated?"Migrated · curve trading closed":state.eligible?"Graduation eligible · pool has not been created":
+      state.sold*10n>=state.inventory*9n?"Bonding curve trading · approaching graduation":"Bonding curve trading"}</p>
     <label className="block text-sm">Curve progress: {tokenAmount(state.sold)} / {tokenAmount(state.inventory)} tokens
       <progress className="block w-full" max={10000} value={Number(state.sold*10000n/state.inventory)}/>
     </label>
@@ -96,6 +104,7 @@ function Graduation({environment,launch,onRefresh}:Props) {
     {migrated && <div className="space-y-1 text-sm" data-testid="amm-pool-proof">
       <p className="break-all">Pool: {launch.terms.pool}</p>
       <p className="break-all">AMM program: {launch.terms.ammProgram}</p>
+      {migrationTx && <p className="break-all">Confirmed migration signature: {migrationTx}</p>}
       <p>Migration slot {launch.terms.migratedSlot.toString()} · initial deposits {sol(launch.terms.solDeposited)} and {tokenAmount(launch.terms.tokensDeposited)} tokens</p>
       <p>Initial LP units burned: {launch.terms.lpBurned.toString()}. This records the initial position. Later LP issuance and Raydium program controls remain separate.</p>
       {current && <><p>Current SPL LP supply: {current.lpSupply.toString()} base units</p>
@@ -103,7 +112,7 @@ function Graduation({environment,launch,onRefresh}:Props) {
       {!current && <p role="status">External AMM balances unavailable. Refresh state to try again.</p>}
       <p>Raydium fees apply to swaps. JeeT’s bonding-curve fees apply only before migration. This local pool is unavailable in public explorers.</p>
     </div>}
-    {(migrated||state.eligible) && (!wallet ? <div className="flex flex-wrap gap-2">{wallets.map(w=><button key={w.name} className={button} disabled={connect.isRunning} onClick={()=>connect.dispatch(w)}>Connect {w.name}</button>)}</div> : <>
+    {(migrated||state.eligible) && (!wallet ? migrated && <div className="flex flex-wrap gap-2">{wallets.map(w=><button key={w.name} className={button} disabled={connect.isRunning} onClick={()=>connect.dispatch(w)}>Connect {w.name}</button>)}</div> : <>
       {migrated && <button className={button} onClick={()=>{abort.current?.abort();setReview(null);disconnect.dispatch();}}>Disconnect AMM wallet</button>}
       {pending && <button className={button} disabled={busy} onClick={()=>void action(async owner=>{
         const sig=await executor.reconcile(owner);if(sig)await readConfirmed(sig,owner);
@@ -142,6 +151,7 @@ function Graduation({environment,launch,onRefresh}:Props) {
           <p>Estimated output: {preview.plan.sell?sol(preview.plan.output):tokenAmount(preview.plan.output)+" tokens"}</p>
           <p>Minimum received: {preview.plan.sell?sol(preview.plan.minimum):tokenAmount(preview.plan.minimum)+" tokens"}</p>
           <p>Raydium trading fee included in input: {preview.plan.sell?tokenAmount(preview.plan.fee)+" tokens":sol(preview.plan.fee)}</p>
+          <p>Fee allocation (input base units): {preview.plan.lp.toString()} liquidity providers · {preview.plan.protocol.toString()} protocol · {preview.plan.fund.toString()} fund</p>
           <p>Account funding: {sol(preview.plan.setup)}. Temporary wrapped SOL rent is returned in the same transaction.</p>
         </>}
         <p>Estimated network fee: {sol(preview.cost.fee)}</p>
@@ -158,6 +168,7 @@ function Graduation({environment,launch,onRefresh}:Props) {
             }
             const fresh=await load(owner), q=preview.plan;
             if(!fresh.swapOpen || fresh.reserve0!==q.reserve0 || fresh.reserve1!==q.reserve1 || fresh.cfg.trade!==q.rate ||
+              q.fee*fresh.cfg.protocol/1000000n!==q.protocol || q.fee*fresh.cfg.fund/1000000n!==q.fund ||
               (q.sell && fresh.tokens<q.input) || fresh.setup+(!q.sell&&fresh.needsAta?fresh.setup:0n)!==q.setup)
               throw Error("Pool, fees, or wallet state changed. Review a fresh quote.");
             return ammInstructions(fresh,q,signer);
