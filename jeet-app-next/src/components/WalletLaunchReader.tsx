@@ -1,15 +1,16 @@
 "use client";
 import LocalLaunchMetadata from "./LocalLaunchMetadata";
+import WalletTradePanel from "./WalletTradePanel";
 import { useEffect, useState } from "react";
 import { address, getAddressDecoder, getBase64Encoder } from "@solana/kit";
 import { WalletTransactionExecutor } from "@/lib/wallet-transactions";
-import { loadWalletEnvironment, formatUnits } from "@/lib/wallet-environment";
+import { loadWalletEnvironment, formatUnits, type WalletEnvironment } from "@/lib/wallet-environment";
 import { walletLaunchAddresses } from "@/lib/wallet-launch";
 import { readWalletLaunch, type WalletLaunchSnapshot } from "@/lib/wallet-launch-flow";
 
 /** Read-only local launch inspection. No connected wallet or signing secret required. */
 export default function WalletLaunchReader({ mint }: { mint: string }) {
-  const [result, setResult] = useState<{ snapshot?: WalletLaunchSnapshot; error?: string } | null>(null);
+  const [result, setResult] = useState<{ snapshot?: WalletLaunchSnapshot; environment?: WalletEnvironment; error?: string } | null>(null);
   const [refresh, setRefresh] = useState(0);
   useEffect(() => {
     let active = true;
@@ -35,7 +36,7 @@ export default function WalletLaunchReader({ mint }: { mint: string }) {
         const creator = getAddressDecoder().decode(data.subarray(40, 72));
         const snapshot = await readWalletLaunch(executor, key, creator);
         if (!snapshot.mint || !snapshot.state) throw Error("Launch initialization is incomplete.");
-        if (active) setResult({ snapshot });
+        if (active) setResult({ snapshot, environment });
       } catch (e) {
         if (active) setResult({ error: e instanceof Error ? e.message : String(e) });
       }
@@ -76,6 +77,7 @@ export default function WalletLaunchReader({ mint }: { mint: string }) {
       {row("Metadata data mutability", s.metadata ? (s.metadata.mutable ? "Mutable" : "Immutable data flag; update authority record still exists") : "Unavailable")}
       {row("Observed slot", s.slot.toString())}
     </dl>}
-    <p className="text-sm text-white/50">Market statistics, charts and trading are not part of this creation milestone. Public explorers cannot inspect this disposable local validator.</p>
+    {s && result?.environment && <WalletTradePanel environment={result.environment} launch={s} onRefresh={() => setRefresh(n => n + 1)} />}
+    <p className="text-sm text-white/50">Market statistics and charts are unavailable. Public explorers cannot inspect this disposable local validator.</p>
   </section>;
 }
