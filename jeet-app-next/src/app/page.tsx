@@ -65,7 +65,7 @@ export default function Home() {
 
       <section className="mx-auto max-w-[1500px] px-5 lg:px-8">
         <div className="grid grid-cols-2 overflow-hidden rounded-[24px] border border-white/[0.07] bg-[#090b09] md:grid-cols-4">
-          {[["0.75%", "Platform curve fee"], ["0.25%", "Creator curve reward"], ["0 SOL", "Creation platform fee"], ["Devnet", "Current wallet network"]].map(([value, label], index) => (
+          {[["0.75%", "Platform curve fee"], ["0.25%", "Creator curve reward"], ["0 SOL", "Creation platform fee"], ["Test", "Wallet environment"]].map(([value, label], index) => (
             <div key={label} className={`px-6 py-5 ${index !== 3 ? "md:border-r md:border-white/[0.06]" : ""}`}>
               <p className="text-3xl font-black text-[#9cff43]">{value}</p><p className="mt-1 text-sm text-white/40">{label}</p>
             </div>

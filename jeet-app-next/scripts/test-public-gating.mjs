@@ -39,4 +39,5 @@ test('creation discloses zero platform creation fee and disabled public V5',asyn
 
 test("read-only metadata verification is disabled unless explicitly enabled",async()=>{
  assert.equal((await fetch(origin+"/local-metadata")).status,404);
+ assert.equal((await fetch(origin+"/local-create")).status,404);
 });

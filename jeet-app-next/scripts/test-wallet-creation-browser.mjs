@@ -263,7 +263,7 @@ try {
         publicKey: Array.from(getAddressEncoder().encode(wallet.address)),
       },
     );
-    await page.goto(appUrl + "/local-create");
+    await page.goto(appUrl + (process.env.JEET_RELEASE_BROWSER === "1" ? "/create" : "/local-create"));
     await page.getByRole("button", { name: "Connect JeeT genuine local signer" }).click();
     await page.getByLabel("Token name", {exact:true}).fill("JeeT Browser " + width);
     await page.getByLabel("Ticker", {exact:true}).fill("JB" + width);
