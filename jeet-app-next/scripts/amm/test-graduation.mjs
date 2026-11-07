@@ -145,7 +145,8 @@ export async function testGraduation() {
     const detail = JSON.stringify(caught, (_k, v) =>
       typeof v === "bigint" ? v.toString() : v,
     );
-    assert.ok(detail.includes('"code":' + code), label + ": " + detail);
+    if (typeof code === "number")
+      assert.ok(detail.includes('"code":' + code), label + ": " + detail);
     assert.deepEqual(
       await snap(),
       before,
@@ -161,6 +162,14 @@ export async function testGraduation() {
       failed.err && failed.signature !== old,
       "rejection must execute and fail on-chain",
     );
+    if (code === "compute") {
+      const failure = failed.err.InstructionError?.[1];
+      assert.ok(["ComputationalBudgetExceeded", "ProgramFailedToComplete"].includes(failure));
+      const tx = await rpc("getTransaction", [failed.signature, {
+        encoding: "json", commitment: "confirmed", maxSupportedTransactionVersion: 0,
+      }]);
+      assert.ok(tx.meta.logMessages.some(line => /exceeded.*(CUs|compute)|computational budget/i.test(line)));
+    }
     evidence.rejections.push({
       label,
       code,
@@ -639,6 +648,11 @@ export async function testGraduation() {
   await trade(l, bob, b, 434n);
   assert.equal((await state(l)).eligible, true);
   await denied(await grad({ sequence: 0n }), 1604, "stale completion state");
+  await denied(
+    [{ ...computeBudget, data: new Uint8Array([2, 232, 3, 0, 0]) }, await grad()],
+    "compute",
+    "inadequate compute budget cannot partially graduate",
+  );
   await denied(
     [computeBudget, await grad({ maxSetupLamports: 1n })],
     1606,
