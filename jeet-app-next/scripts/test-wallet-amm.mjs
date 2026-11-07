@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { cpmmQuote, decodeCpmmConfig } from "../src/lib/wallet-amm.ts";
+import { address, createNoopSigner } from "@solana/kit";
+import { cpmmQuote, decodeCpmmConfig, inspectTransaction } from "../src/lib/wallet-amm.ts";
 
 test("pinned CPMM exact-input math rounds fee up and output down in raw units",()=>{
   assert.deepEqual(cpmmQuote(1000n,50000n,396n,2500n,50n),{
@@ -28,4 +29,12 @@ test("config parser rejects substituted layouts and unpayable fee shares",()=>{
   assert.throws(()=>decodeCpmmConfig(b),/fee/);
   b[0]=0;
   assert.throws(()=>decodeCpmmConfig(b),/Unsupported/);
+});
+
+test("oversized reviewed transaction is rejected before any simulation or signature",async()=>{
+  const payer=createNoopSigner(address("So11111111111111111111111111111111111111112"));
+  const blockhash="11111111111111111111111111111111";
+  const executor={rpc:{getLatestBlockhash:()=>({send:async()=>({value:{blockhash,lastValidBlockHeight:1n}})}),
+    simulateTransaction:()=>assert.fail("Oversized transaction reached simulation")}};
+  await assert.rejects(inspectTransaction(executor,[{programAddress:address(blockhash),accounts:[],data:new Uint8Array(1250)}],payer),/1232-byte/);
 });
