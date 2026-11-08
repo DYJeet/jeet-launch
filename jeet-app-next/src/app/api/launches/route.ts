@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 type Configuration = ReturnType<typeof localWalletConfiguration>;
 type Row = Awaited<ReturnType<typeof readIndex>>[number];
-let cache: { key: string; until: number; pending: Promise<Row[]> } | undefined;
+let cache: { key: string; until: number; indexedAt: number; pending: Promise<Row[]> } | undefined;
 
 async function readIndex({ url, environment }: Configuration) {
   const executor = new WalletTransactionExecutor(environment, url,
@@ -68,15 +68,16 @@ export async function GET(request: Request) {
   try {
     if (!cache || cache.key !== key || cache.until < Date.now()) {
       const pending = readIndex(config);
-      const entry = { key, pending, until: Infinity };
+      const entry = { key, pending, indexedAt: 0, until: Infinity };
       cache = entry;
-      void pending.then(() => { entry.until = Date.now() + 5000; }, () => {
+      void pending.then(() => { entry.indexedAt = Date.now(); entry.until = entry.indexedAt + 5000; }, () => {
         if (cache === entry) cache = undefined;
       });
     }
     const params = new URL(request.url).searchParams;
-    const result = indexPage(await cache.pending, params);
-    return Response.json(result, { headers: { "Cache-Control": "no-store" } });
+    const entry = cache;
+    const result = indexPage(await entry.pending, params);
+    return Response.json({ ...result, indexedAt: entry.indexedAt }, { headers: { "Cache-Control": "no-store" } });
   } catch {
     return Response.json({ error: "Launch index is temporarily unavailable. Retry shortly." }, { status: 503 });
   }

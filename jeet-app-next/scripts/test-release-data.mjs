@@ -16,6 +16,10 @@ test("launch views filter stages and rank with exact turnover and slot values", 
   assert.deepEqual(mints("view=Final+Stretch"), ["b"]);
   assert.deepEqual(mints("view=Migrated&q=SOBA"), ["a"]);
   assert.deepEqual(mints("view=New&offset=1&limit=1"), ["a"]);
+  const first = indexPage(rows, new URLSearchParams("view=New&limit=1"));
+  assert.equal(first.next, "c");
+  assert.deepEqual(mints("view=New&limit=1&after=c"), ["a"]);
+  assert.equal(indexPage(rows, new URLSearchParams("view=Migrated&after=c")).cursorExpired, true);
 });
 
 test("curve activity accepts attributable trade logs and ignores nested substitutions", () => {
@@ -83,4 +87,25 @@ test("Raydium history reconciles exact scoped transfers and rejects substituted 
     tx.meta.innerInstructions[0].instructions[1] = transfer(output - 1n, [7, 10, 5, 1]);
     assert.deepEqual(ammTradeEvents(tx, pool), []);
   }
+});
+
+test("discovery pages the full 64-launch local snapshot without duplicate mints", () => {
+  const rows = Array.from({ length: 64 }, (_, i) => ({
+    mint: getAddressDecoder().decode(Buffer.alloc(32, i + 1)), name: "Launch " + i,
+    symbol: "TEST", activationSlot: String(i), volume: "0", progress: 0,
+  }));
+  const seen = new Set();
+  const params = new URLSearchParams("view=New&limit=12");
+  for (let i = 0; i < 6; i++) {
+    const page = indexPage(rows, params);
+    assert.equal(page.cursorExpired, false);
+    for (const row of page.rows) {
+      assert.equal(seen.has(row.mint), false);
+      seen.add(row.mint);
+    }
+    if (i < 5) assert.ok(page.next);
+    else assert.equal(page.next, undefined);
+    if (page.next) params.set("after", page.next);
+  }
+  assert.equal(seen.size, 64);
 });

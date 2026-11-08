@@ -522,6 +522,8 @@ try {
       await page.goto(appUrl + "/explore");
       await page.getByRole("textbox", { name: "Search verified launches" }).fill(mint);
       await page.getByRole("button", { name: "Trending" }).click();
+      await expect(page.getByText(/confirmed snapshot/)).toBeVisible();
+      await page.getByRole("button", { name: "Refresh listings" }).click();
       await page.getByRole("link", { name: new RegExp(mint) }).click();
       const fees = page.locator("#fee-accounts");
       await expect(fees).toBeVisible();

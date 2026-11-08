@@ -27,5 +27,11 @@ export function indexPage(rows: IndexedLaunch[], params: URLSearchParams) {
     view === "Trending" ? cmp(a.volume, b.volume) :
     view === "Final Stretch" ? b.progress - a.progress : 0
   ) || cmp(a.activationSlot, b.activationSlot) || a.mint.localeCompare(b.mint));
-  return { rows: filtered.slice(offset, offset + limit), total: filtered.length, offset, limit };
+  const after = params.get("after");
+  const anchor = after ? filtered.findIndex(row => row.mint === after) : -1;
+  const cursorExpired = !!after && anchor === -1;
+  const start = after ? anchor + 1 : offset;
+  const page = cursorExpired ? [] : filtered.slice(start, start + limit);
+  return { rows: page, total: filtered.length, offset: start, limit, cursorExpired,
+    next: start + page.length < filtered.length ? page.at(-1)?.mint : undefined };
 }
