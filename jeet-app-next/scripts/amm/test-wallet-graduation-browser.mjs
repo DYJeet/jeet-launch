@@ -120,6 +120,8 @@ export async function runBrowserGraduation({ page,width,mint,l,wallet,wires,rpc,
     assert.equal(after.tokens+after.poolTokens,1000n);assert.deepEqual(await feeState(),fees);
     evidence.transactions.push({width,kind:`amm-${side}`,signature,mint,pool:a.pool,before,after,quote,networkFee:result.meta.fee});
     pass(`${width}px signed Raydium ${side} exactly reconciles wallet and pool reserves`);
+    const activity=page.getByRole("region",{name:"Confirmed Raydium activity"});
+    await expect(activity.getByText(signature,{exact:false})).toBeVisible({timeout:15000});
     console.log("Browser AMM swap",width,side,signature);
   }
   await page.reload();await expect(panel.getByTestId("graduation-state")).toContainText("Migrated · curve trading closed",{timeout:15000});

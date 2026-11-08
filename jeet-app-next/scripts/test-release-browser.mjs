@@ -18,12 +18,12 @@ try {
     executablePath: process.env.JEET_CHROMIUM_PATH,
     headless: true, args: ["--no-sandbox"],
   });
-  for (const width of [390, 1440]) {
+  for (const width of [390, 768, 1440]) {
     const page = await browser.newPage({ viewport: { width, height: 900 } });
     const errors = [];
     page.on("pageerror", error => errors.push(error.message));
     await page.goto(origin);
-    await expect(page.getByRole("alert").filter({ hasText: "Verified index is unavailable" }).filter({ hasText: "Verified index is unavailable" })).toBeVisible();
+    await expect(page.getByRole("alert").filter({ hasText: "Verified index is unavailable" })).toBeVisible();
     await page.getByRole("link", { name: "Explore Launches", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Explore launches" })).toBeVisible();
     await page.getByRole("textbox", { name: "Search verified launches" }).fill("JEET");

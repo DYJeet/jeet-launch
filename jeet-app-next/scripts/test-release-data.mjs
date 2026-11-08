@@ -36,3 +36,51 @@ test("curve activity accepts attributable trade logs and ignores nested substitu
   assert.deepEqual(curveTradeEvents(logs.slice(0, -1), "AAA", mint), []);
   assert.deepEqual(curveTradeEvents(logs, "AAA", "wrong-mint"), []);
 });
+
+test("Raydium history reconciles exact scoped transfers and rejects substituted evidence", async () => {
+  const { getBase58Decoder } = await import("@solana/kit");
+  const { TOKEN_PROGRAM_ADDRESS } = await import("@solana-program/token");
+  const { CPMM_TEST_PROGRAM, NATIVE_MINT, graduationAddresses } = await import("../src/lib/launch-graduation.ts");
+  const { ammHistoryPool, ammTradeEvents } = await import("../src/lib/amm-history.ts");
+  const key = n => getAddressDecoder().decode(Buffer.alloc(32, n));
+  const mint = key(1);
+  const pool = await graduationAddresses(mint, 0n);
+  await assert.rejects(ammHistoryPool(mint, key(5)), /Unrecognized/);
+  assert.equal((await ammHistoryPool(mint, pool.pool)).pool, pool.pool);
+  const encode = bytes => getBase58Decoder().decode(bytes);
+  for (const sell of [false, true]) {
+    const mintIn = sell ? mint : NATIVE_MINT;
+    const mintOut = sell ? NATIVE_MINT : mint;
+    const forward = mintIn === pool.mint0;
+    const wallet = key(2);
+    const keys = [wallet, pool.authority, pool.config, pool.pool, key(3), key(4),
+      forward ? pool.vault0 : pool.vault1, forward ? pool.vault1 : pool.vault0,
+      TOKEN_PROGRAM_ADDRESS, mintIn, mintOut, pool.observation, CPMM_TEST_PROGRAM];
+    const data = Buffer.alloc(24);
+    data.set([143, 190, 90, 218, 196, 30, 51, 222]);
+    const input = sell ? 10n : 1000n;
+    const output = sell ? 1157n : 7n;
+    data.writeBigUInt64LE(input, 8);
+    data.writeBigUInt64LE(output, 16);
+    const transfer = (amount, accounts) => {
+      const bytes = Buffer.alloc(10);
+      bytes[0] = 12;
+      bytes.writeBigUInt64LE(amount, 1);
+      return { programIdIndex: 8, accounts, data: encode(bytes) };
+    };
+    const deposit = transfer(input, [4, 9, 6, 0]);
+    const payout = transfer(output, [7, 10, 5, 1]);
+    const tx = { transaction: { message: { accountKeys: keys.slice(0, 11), instructions: [
+      { programIdIndex: 12, accounts: [0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 10, 11], data: encode(data) },
+    ] } }, meta: { err: null, loadedAddresses: { writable: [], readonly: keys.slice(11) },
+      innerInstructions: [{ index: 0, instructions: [deposit, payout] }] } };
+    assert.deepEqual(ammTradeEvents(tx, pool), [{ index: 0, wallet, sell,
+      tokens: sell ? input : output, raw: sell ? output : input }]);
+    assert.deepEqual(ammTradeEvents({ ...tx, meta: { ...tx.meta, err: "Failed" } }, pool), []);
+    assert.deepEqual(ammTradeEvents({ ...tx, meta: { ...tx.meta, innerInstructions: [{ index: 1, instructions: [deposit, payout] }] } }, pool), []);
+    tx.meta.innerInstructions[0].instructions[1] = transfer(output, [6, 10, 5, 1]);
+    assert.deepEqual(ammTradeEvents(tx, pool), []);
+    tx.meta.innerInstructions[0].instructions[1] = transfer(output - 1n, [7, 10, 5, 1]);
+    assert.deepEqual(ammTradeEvents(tx, pool), []);
+  }
+});
