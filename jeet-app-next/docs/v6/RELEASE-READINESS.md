@@ -1,5 +1,7 @@
 # JeeT Launch release readiness
 
+This records the initial release checkpoint. See the [current local review handoff](LOCAL-AUDIT-HANDOFF.md) for verified Raydium history, newer browser evidence, and local release gates.
+
 Baseline: Milestone D main commit `2eb12a91af071ef23f313a28e864c25a49fbe712`.
 Release work is on `development/v6-release`. All changes are under `jeet-app-next`.
 

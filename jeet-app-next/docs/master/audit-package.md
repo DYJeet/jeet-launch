@@ -1,5 +1,7 @@
 # JeeT Launch internal financial review package
 
+For the current V6 local candidate, start with the [local security review handoff](../v6/LOCAL-AUDIT-HANDOFF.md). The V4 and early V5 sections below retain their historical checkpoint context.
+
 Status: **INCOMPLETE** master assignment. This package is a review aid for the
 verified financial phase, not a claim that the full platform is audit-ready.
 No independent security audit has occurred.
