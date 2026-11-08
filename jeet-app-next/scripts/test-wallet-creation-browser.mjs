@@ -30,7 +30,8 @@ const graduation = process.env.JEET_BROWSER_GRADUATION === "1"
   ? await import("./amm/test-wallet-graduation-browser.mjs") : null;
 const trading = !!graduation || process.env.JEET_BROWSER_TRADE === "1";
 const livePinata = process.env.JEET_CREATION_STORAGE === "pinata";
-if (graduation && !livePinata) throw Error("Browser graduation acceptance requires live Pinata.");
+if (graduation && !livePinata && process.env.JEET_BROWSER_LOCAL_METADATA !== "1")
+  throw Error("Use live Pinata or opt into local-only metadata with JEET_BROWSER_LOCAL_METADATA=1.");
 if (livePinata && !pinataCredentialAvailable(process.env.PINATA_JWT))
   throw Error("Live creation requires an environment-provided PINATA_JWT in this runtime.");
 const dir = await mkdtemp("/tmp/jeet-wallet-browser-"),
