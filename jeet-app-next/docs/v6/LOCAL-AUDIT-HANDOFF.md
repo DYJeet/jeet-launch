@@ -54,3 +54,11 @@ JEET_BROWSER_LOCAL_METADATA=1 JEET_BROWSER_GRADUATION=1 JEET_RELEASE_BROWSER=1 n
 ```
 
 Use separate disposable validator ledgers and Wallet Standard harness identities. Preserve command exit codes, binary digests, signatures and accounting snapshots. Genuine installed Phantom and Solflare, shared Devnet, public indexing, and independent review remain release gates. See [release readiness](RELEASE-READINESS.md) for the preceding evidence and [Devnet acceptance](DEVNET-ACCEPTANCE.md) for installed-wallet procedures.
+
+## Local release evidence
+
+[Lifecycle signatures and accounting](local-release-lifecycle.json) record 18 positive and 17 rejection groups at 390px and 1440px. Both runs used genuine local-validator transactions with disposable wallet harness identities and local-workspace metadata. Milestone D records the separate live Pinata test. Public navigation, responsive Explore, retry and signing-gate smoke tests passed at 390px, 768px and 1440px.
+
+Each launch issued 1,000 base units. Graduation deposited 396 token units and 50,192 lamports, burned 4,358 initial LP units, and left zero initial LP supply. The AMM buy exchanged 1,000 lamports for 7 token units and the sell exchanged 10 token units for 1,157 lamports. The pool ended at 399 token units and 50,035 lamports. Wallet and pool token balances reconciled to 601 + 399 = 1,000. Each creator claimed 3 lamports before graduation. The browser verified both AMM transaction signatures appeared in confirmed Raydium activity.
+
+Fresh builds used the locked dependency graph and restored Agave 2.3.13. Frontend production build, TypeScript, ESLint, 36 targeted JS/SDK cases, 17 native Rust cases, and standard and local-fixture SBF builds passed. Fresh Raydium SBF from pinned commit `f4b9b26342afe9122d5ff67cd7a4f19ded4ac0a5` had SHA-256 `a33db1186011da4b21a09c240116a49066cc35baaa7b546cc93a42922c53f614`. This digest differs from the prior milestone artifact. The lifecycle evidence is for the freshly built binary. npm audit found no production advisories and eight moderate development-only advisories.

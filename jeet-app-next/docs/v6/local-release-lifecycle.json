@@ -1,0 +1,510 @@
+{
+  "scope": "Agave 2.3.13 disposable local validator, genuine Wallet Standard harness, local-workspace metadata",
+  "completed": true,
+  "genesis": "8FJxzZh4GHJ6oWRrN9NDtAQ6JiFzVNhbrjZeadByg1Mr",
+  "program": "8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo",
+  "artifactSha256": "f77d6eac73d0725ee0cb43294e39c6eec4cb5cb51520658e4bcce20db85909f3",
+  "positive": [
+    "390px genuine five-stage wallet creation, metadata URI, authority/terms bundle and exact conservation",
+    "390px token page reload and mobile layout",
+    "390px real wallet-signed buy reconciled against quote and refreshed balances",
+    "390px real wallet-signed sell reconciled against quote and refreshed balances",
+    "390px verified discovery, curve chart and wallet-signed creator fee claim",
+    "390px browser graduation confirms deposits, LP burn, fee isolation and curve closure",
+    "390px signed Raydium buy exactly reconciles wallet and pool reserves",
+    "390px signed Raydium sell exactly reconciles wallet and pool reserves",
+    "390px migrated route and balances survive reload and wallet reconnection",
+    "1440px genuine five-stage wallet creation, metadata URI, authority/terms bundle and exact conservation",
+    "1440px token page reload and mobile layout",
+    "1440px real wallet-signed buy reconciled against quote and refreshed balances",
+    "1440px real wallet-signed sell reconciled against quote and refreshed balances",
+    "1440px verified discovery, curve chart and wallet-signed creator fee claim",
+    "1440px browser graduation confirms deposits, LP burn, fee isolation and curve closure",
+    "1440px signed Raydium buy exactly reconciles wallet and pool reserves",
+    "1440px signed Raydium sell exactly reconciles wallet and pool reserves",
+    "1440px migrated route and balances survive reload and wallet reconnection"
+  ],
+  "rejection": [
+    "390px forged image rejected before signing",
+    "injected genesis mismatch blocks storage and signing before minting",
+    "injected server image upload failure cannot prepare a mint or debit SOL",
+    "injected server JSON upload failure cannot prepare a mint or debit SOL",
+    "390px duplicate/conflicting attempt blocked; rejected first signature creates no mint or debit",
+    "390px rejected setup leaves minted supply at zero",
+    "390px rejected buy changes no market or wallet balances",
+    "390px graduation stays unavailable before eligibility",
+    "390px rejected graduation leaves funding, fee custody and liquidity unchanged",
+    "390px rejected AMM signature leaves wallet and reserves unchanged",
+    "1440px forged image rejected before signing",
+    "1440px duplicate/conflicting attempt blocked; rejected first signature creates no mint or debit",
+    "1440px rejected setup leaves minted supply at zero",
+    "1440px rejected buy changes no market or wallet balances",
+    "1440px graduation stays unavailable before eligibility",
+    "1440px rejected graduation leaves funding, fee custody and liquidity unchanged",
+    "1440px rejected AMM signature leaves wallet and reserves unchanged"
+  ],
+  "transactions": [
+    {
+      "width": 390,
+      "mint": "AcXr5br6bRffwGRh72msqXtoiJdP8Ej32T543kuVZGfA",
+      "side": "buy",
+      "signature": "GiKBicKfA5dPXTqFmzELG3uk2v5yEWw1dJ7eAxQiNjE48kPfPTCBrv54Kzo7M7tXifaxfjgfyZbCMUhPt6qxgJt",
+      "quote": {
+        "raw": "966",
+        "platform": "8",
+        "creator": "2",
+        "total": "10",
+        "user": "976",
+        "amount": "22"
+      },
+      "before": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "0",
+          "reserve": "0",
+          "inventory": "594",
+          "rawIn": "0",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "0",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "0",
+        "creator": "0",
+        "tokens": "10",
+        "vault": "594",
+        "migration": "396",
+        "sol": "964844400",
+        "reserveLamports": "2714400",
+        "platformLamports": "1955760",
+        "creatorLamports": "1955760"
+      },
+      "after": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "22",
+          "reserve": "966",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "1",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "8",
+        "creator": "2",
+        "tokens": "32",
+        "vault": "572",
+        "migration": "396",
+        "sol": "963383784",
+        "reserveLamports": "2715366",
+        "platformLamports": "1955768",
+        "creatorLamports": "1955762"
+      },
+      "networkFee": 5000
+    },
+    {
+      "width": 390,
+      "mint": "AcXr5br6bRffwGRh72msqXtoiJdP8Ej32T543kuVZGfA",
+      "side": "sell",
+      "signature": "2N1E1BN4Cbr4tDCmn1JFuAs8TuBZNPWbmUxxyBssiUpTiSxSkJgfJbSyT6rTeWfntzvZUhvEaVW44ZosfSiiYN4Q",
+      "quote": {
+        "raw": "491",
+        "platform": "4",
+        "creator": "1",
+        "total": "5",
+        "user": "486",
+        "amount": "11"
+      },
+      "before": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "22",
+          "reserve": "966",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "1",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "8",
+        "creator": "2",
+        "tokens": "32",
+        "vault": "572",
+        "migration": "396",
+        "sol": "963383784",
+        "reserveLamports": "2715366",
+        "platformLamports": "1955768",
+        "creatorLamports": "1955762"
+      },
+      "after": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "11",
+          "reserve": "475",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "491",
+          "returned": "11",
+          "sequence": "2",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "12",
+        "creator": "3",
+        "tokens": "21",
+        "vault": "583",
+        "migration": "396",
+        "sol": "963379270",
+        "reserveLamports": "2714875",
+        "platformLamports": "1955772",
+        "creatorLamports": "1955763"
+      },
+      "networkFee": 5000
+    },
+    {
+      "width": 390,
+      "mint": "AcXr5br6bRffwGRh72msqXtoiJdP8Ej32T543kuVZGfA",
+      "kind": "creator-claim",
+      "signature": "3vNibVPVeEwNEtAKpsYMT8hHdhNAxZqnXoNavSrJBUbXya8PZGCBTAbgUnCsdsbTzGT6w5dW8HNNvYMVdkGJLMqo",
+      "amount": "3"
+    },
+    {
+      "width": 390,
+      "kind": "graduation",
+      "signature": "DptwwxcVZKtybn7ZDrmYa9qsyGHoNvDorpTa7QkDzavauZa3FB9q2dM6HLsze4taMBAg7HYi1ksFooPR2f1P9Lf",
+      "mint": "AcXr5br6bRffwGRh72msqXtoiJdP8Ej32T543kuVZGfA",
+      "pool": "8Pk8LanmBpd6MYFzCpDzWvUnWX5U5YZR94hrP8jf7kZ7",
+      "program": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+      "terms": {
+        "mint": "AcXr5br6bRffwGRh72msqXtoiJdP8Ej32T543kuVZGfA",
+        "curve": "ArZUWuR7fNTMZyLGfj5bhh83knZtCTKBjZfNVQck5UnY",
+        "ammProgram": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+        "config": "5MxLgy9oPdTC3YgkiePHqr3EoCRD9uLVYRQS2ANAs7wy",
+        "migrator": "B2uVFCDpYMdCF1d52rkZsUMGKKm94XZguZfHb4xRHbXX",
+        "pool": "8Pk8LanmBpd6MYFzCpDzWvUnWX5U5YZR94hrP8jf7kZ7",
+        "solDeposited": "50192",
+        "tokensDeposited": "396",
+        "lpBurned": "4358",
+        "maxPriceGapBps": 60,
+        "createdSlot": "46",
+        "migratedSlot": "66",
+        "sequence": "4",
+        "migrated": true
+      },
+      "setupSpent": "190117440",
+      "computeUnits": 322132,
+      "bytes": 1062,
+      "initialLpSupply": "0"
+    },
+    {
+      "width": 390,
+      "kind": "amm-buy",
+      "signature": "585sV9vSa9dKihXY4NLggFRA9ZDhcjQtsEa7FVd3eWg4J2W5vaKtzeGyX8BHuEztybsgmpwTCrQaPR7cYhTpfPwT",
+      "mint": "AcXr5br6bRffwGRh72msqXtoiJdP8Ej32T543kuVZGfA",
+      "pool": "8Pk8LanmBpd6MYFzCpDzWvUnWX5U5YZR94hrP8jf7kZ7",
+      "before": {
+        "sol": "773196618",
+        "tokens": "604",
+        "poolSol": "50192",
+        "poolTokens": "396"
+      },
+      "after": {
+        "sol": "773185618",
+        "tokens": "611",
+        "poolSol": "51192",
+        "poolTokens": "389"
+      },
+      "quote": {
+        "input": "1000",
+        "output": "7",
+        "fee": "3",
+        "minimum": "7",
+        "rate": "2500"
+      },
+      "networkFee": 10000
+    },
+    {
+      "width": 390,
+      "kind": "amm-sell",
+      "signature": "2GKdrZ5DcQQKHT9zS93chGz3x34pUmmRZ6paRE2aeAZf2Rxe5iiS53doQt56r9WvrdMbjXV4mUTSGgHyWw8qXanh",
+      "mint": "AcXr5br6bRffwGRh72msqXtoiJdP8Ej32T543kuVZGfA",
+      "pool": "8Pk8LanmBpd6MYFzCpDzWvUnWX5U5YZR94hrP8jf7kZ7",
+      "before": {
+        "sol": "773185618",
+        "tokens": "611",
+        "poolSol": "51192",
+        "poolTokens": "389"
+      },
+      "after": {
+        "sol": "773176775",
+        "tokens": "601",
+        "poolSol": "50035",
+        "poolTokens": "399"
+      },
+      "quote": {
+        "input": "10",
+        "output": "1157",
+        "fee": "1",
+        "minimum": "1152",
+        "rate": "2500"
+      },
+      "networkFee": 10000
+    },
+    {
+      "width": 1440,
+      "mint": "5YXhVCXtCyBMTVZ7qz1fJnLcNzGhwegSHjhBSjZ5XZwB",
+      "side": "buy",
+      "signature": "51iQRpxje2xfsMGhrJxvdwjrF5yvakuoi7KwJuwsNtsouL4DC3YWZD47wseTnixL8kxqzz125S49VA729t6Hds7b",
+      "quote": {
+        "raw": "966",
+        "platform": "8",
+        "creator": "2",
+        "total": "10",
+        "user": "976",
+        "amount": "22"
+      },
+      "before": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "0",
+          "reserve": "0",
+          "inventory": "594",
+          "rawIn": "0",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "0",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "0",
+        "creator": "0",
+        "tokens": "10",
+        "vault": "594",
+        "migration": "396",
+        "sol": "964844400",
+        "reserveLamports": "2714400",
+        "platformLamports": "1955760",
+        "creatorLamports": "1955760"
+      },
+      "after": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "22",
+          "reserve": "966",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "1",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "8",
+        "creator": "2",
+        "tokens": "32",
+        "vault": "572",
+        "migration": "396",
+        "sol": "963383784",
+        "reserveLamports": "2715366",
+        "platformLamports": "1955768",
+        "creatorLamports": "1955762"
+      },
+      "networkFee": 5000
+    },
+    {
+      "width": 1440,
+      "mint": "5YXhVCXtCyBMTVZ7qz1fJnLcNzGhwegSHjhBSjZ5XZwB",
+      "side": "sell",
+      "signature": "3yz3gt7SDf8Sr35c3ne4mV9z77TDC9CjBVzucMNHUzFKPNkLFTzmFpyhkuXVeUcWsnCEDn6pV4YMZcRAtriibfeN",
+      "quote": {
+        "raw": "491",
+        "platform": "4",
+        "creator": "1",
+        "total": "5",
+        "user": "486",
+        "amount": "11"
+      },
+      "before": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "22",
+          "reserve": "966",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "1",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "8",
+        "creator": "2",
+        "tokens": "32",
+        "vault": "572",
+        "migration": "396",
+        "sol": "963383784",
+        "reserveLamports": "2715366",
+        "platformLamports": "1955768",
+        "creatorLamports": "1955762"
+      },
+      "after": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "11",
+          "reserve": "475",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "491",
+          "returned": "11",
+          "sequence": "2",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "12",
+        "creator": "3",
+        "tokens": "21",
+        "vault": "583",
+        "migration": "396",
+        "sol": "963379270",
+        "reserveLamports": "2714875",
+        "platformLamports": "1955772",
+        "creatorLamports": "1955763"
+      },
+      "networkFee": 5000
+    },
+    {
+      "width": 1440,
+      "mint": "5YXhVCXtCyBMTVZ7qz1fJnLcNzGhwegSHjhBSjZ5XZwB",
+      "kind": "creator-claim",
+      "signature": "3HQ6N5GRvP1iUUYuRF6xeB4zi25CLLFqWQ6AewtAKRhadwZbS2hFGxxtmcECtWgFpnPk8NBrUseMuoVJZYzJDniT",
+      "amount": "3"
+    },
+    {
+      "width": 1440,
+      "kind": "graduation",
+      "signature": "eZog9nagUHBEtpUKomsP7s1vKzd3ABi1iuf1WXLyKpQmbnFPD1JEKMVJTQWaTnSWUMnB3Tg25CgQDj4shwPFWaj",
+      "mint": "5YXhVCXtCyBMTVZ7qz1fJnLcNzGhwegSHjhBSjZ5XZwB",
+      "pool": "33TSae2R5s6Rar3C212kURJ6cq4sjb9bGGFzW2e6Mpdk",
+      "program": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+      "terms": {
+        "mint": "5YXhVCXtCyBMTVZ7qz1fJnLcNzGhwegSHjhBSjZ5XZwB",
+        "curve": "C4Tq5jqFrjyZRosHQv3PCJEjZwpJDoEwhaVcxvLywKcR",
+        "ammProgram": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+        "config": "5MxLgy9oPdTC3YgkiePHqr3EoCRD9uLVYRQS2ANAs7wy",
+        "migrator": "2YWEisvwsJQA3oHJSnKdXyjFAvus6LWoAWhNh16k2ySk",
+        "pool": "33TSae2R5s6Rar3C212kURJ6cq4sjb9bGGFzW2e6Mpdk",
+        "solDeposited": "50192",
+        "tokensDeposited": "396",
+        "lpBurned": "4358",
+        "maxPriceGapBps": 60,
+        "createdSlot": "118",
+        "migratedSlot": "138",
+        "sequence": "4",
+        "migrated": true
+      },
+      "setupSpent": "190117440",
+      "computeUnits": 317632,
+      "bytes": 1062,
+      "initialLpSupply": "0"
+    },
+    {
+      "width": 1440,
+      "kind": "amm-buy",
+      "signature": "UA8NP3DMjowU6yj859sCF9XkG6G1eB8bSTkNF1vJfWxXsPN8HqSXYrp6kV7EPvQZ1iAvDRgjKvAWhUgDNtCtxLt",
+      "mint": "5YXhVCXtCyBMTVZ7qz1fJnLcNzGhwegSHjhBSjZ5XZwB",
+      "pool": "33TSae2R5s6Rar3C212kURJ6cq4sjb9bGGFzW2e6Mpdk",
+      "before": {
+        "sol": "773196618",
+        "tokens": "604",
+        "poolSol": "50192",
+        "poolTokens": "396"
+      },
+      "after": {
+        "sol": "773185618",
+        "tokens": "611",
+        "poolSol": "51192",
+        "poolTokens": "389"
+      },
+      "quote": {
+        "input": "1000",
+        "output": "7",
+        "fee": "3",
+        "minimum": "7",
+        "rate": "2500"
+      },
+      "networkFee": 10000
+    },
+    {
+      "width": 1440,
+      "kind": "amm-sell",
+      "signature": "32q5bg474ZmbwGkxSQhg8F1hR6Q1CftNbgmhvcmHtKzQrMGxWo8vNdvCENYDWc5rV5EVfsuBBqvYc3qJdL4AUXeE",
+      "mint": "5YXhVCXtCyBMTVZ7qz1fJnLcNzGhwegSHjhBSjZ5XZwB",
+      "pool": "33TSae2R5s6Rar3C212kURJ6cq4sjb9bGGFzW2e6Mpdk",
+      "before": {
+        "sol": "773185618",
+        "tokens": "611",
+        "poolSol": "51192",
+        "poolTokens": "389"
+      },
+      "after": {
+        "sol": "773176775",
+        "tokens": "601",
+        "poolSol": "50035",
+        "poolTokens": "399"
+      },
+      "quote": {
+        "input": "10",
+        "output": "1157",
+        "fee": "1",
+        "minimum": "1152",
+        "rate": "2500"
+      },
+      "networkFee": 10000
+    }
+  ]
+}
