@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import { address, type Signature } from "@solana/kit";
 import { ammHistoryPool, ammTradeEvents } from "@/lib/amm-history";
-import { curveTradeEvents } from "@/lib/curve-history";
+import { curveTradeEvents, feeClaimEvents } from "@/lib/curve-history";
 import { formatUnits } from "@/lib/wallet-environment";
 import type { WalletTransactionExecutor } from "@/lib/wallet-transactions";
 
-type Trade = { id: string; sell: boolean; tokens: bigint; raw: bigint; signature: string; slot: bigint };
+type Receipt = { id: string; signature: string; slot: bigint };
+type Trade = Receipt & { sell: boolean; tokens: bigint; raw: bigint };
+type Claim = Receipt & ReturnType<typeof feeClaimEvents>[number];
 
 export default function CurveHistory({ executor, curve, mint, decimals, revision, pool }: {
   executor: WalletTransactionExecutor;
@@ -17,7 +19,7 @@ export default function CurveHistory({ executor, curve, mint, decimals, revision
   revision: bigint;
   pool?: string;
 }) {
-  const [result, setResult] = useState<{ key: string; trades?: Trade[]; next?: Signature; error?: boolean }>();
+  const [result, setResult] = useState<{ key: string; trades?: Trade[]; claims?: Claim[]; next?: Signature; error?: boolean }>();
   const [retry, setRetry] = useState(0);
   const [cursor, setCursor] = useState<Signature>();
   const key = mint + ":" + revision + ":" + retry + ":" + (cursor ?? "");
@@ -31,7 +33,7 @@ export default function CurveHistory({ executor, curve, mint, decimals, revision
         const signatures = await executor.rpc.getSignaturesForAddress(address(pool ?? curve), {
           limit: 16, commitment: "confirmed", before: cursor,
         }).send(options);
-        const trades: Trade[] = [];
+        const records: (Trade | Claim)[] = [];
         for (let offset = 0; offset < signatures.length; offset += 4) {
           const batch = await Promise.all(signatures.slice(offset, offset + 4).filter(item => !item.err).map(async item => {
             const tx = await executor.rpc.getTransaction(item.signature, {
@@ -43,14 +45,20 @@ export default function CurveHistory({ executor, curve, mint, decimals, revision
             if (verifiedPool) return ammTradeEvents(tx, verifiedPool).reverse().map(event => ({
               ...event, id: item.signature + ":" + event.index, signature: item.signature, slot: tx.slot,
             }));
-            return curveTradeEvents(tx.meta.logMessages ?? [], executor.environment.program, mint).reverse()
-              .map(event => ({ ...event, id: event.sequence.toString(), signature: item.signature, slot: tx.slot }));
+            const logs = tx.meta.logMessages ?? [];
+            const trades = curveTradeEvents(logs, executor.environment.program, mint).reverse()
+              .map(event => ({ ...event, id: "trade:" + event.sequence, signature: item.signature, slot: tx.slot }));
+            const claims = feeClaimEvents(logs, executor.environment.program, mint).reverse()
+              .map((event, index) => ({ ...event, id: item.signature + ":claim:" + index,
+                signature: item.signature, slot: tx.slot }));
+            return [...trades, ...claims];
           }));
-          trades.push(...batch.flat());
+          records.push(...batch.flat());
         }
-        const unique = [...new Map(trades.map(trade => [trade.id, trade])).values()].reverse();
+        const unique = [...new Map(records.map(record => [record.id, record])).values()].reverse();
         if (!controller.signal.aborted) setResult({
-          key, trades: unique, next: signatures.length === 16 ? signatures.at(-1)?.signature : undefined,
+          key, trades: unique.filter(record => "tokens" in record),
+          claims: unique.filter(record => "paid" in record), next: signatures.length === 16 ? signatures.at(-1)?.signature : undefined,
         });
       } catch {
         if (!controller.signal.aborted) setResult({ key, error: true });
@@ -86,6 +94,16 @@ export default function CurveHistory({ executor, curve, mint, decimals, revision
         </li>)}
       </ol>
     </>}
+    {!pool && current?.claims && <div className="space-y-2 border-t border-white/10 pt-3">
+      <h3 className="font-bold">Confirmed fee claims</h3>
+      {current.claims.length === 0 ? <p className="text-sm">No confirmed claims in this transaction window.</p> :
+        <ol className="space-y-2 text-sm">
+          {current.claims.slice().reverse().map(claim => <li key={claim.id}>
+            <p>{claim.platform ? "Platform" : "Creator"} claimed {formatUnits(claim.paid)} SOL</p>
+            <p className="break-all text-xs text-white/60">{claim.beneficiary} · {claim.signature}</p>
+          </li>)}
+        </ol>}
+    </div>}
     <div className="flex flex-wrap gap-3 text-sm">
       {cursor && <button className="min-h-11 text-[#9cff43] underline" onClick={() => setCursor(undefined)}>Latest transactions</button>}
       {current?.next && <button className="min-h-11 text-[#9cff43] underline" onClick={() => setCursor(current.next)}>Older transactions</button>}

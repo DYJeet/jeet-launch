@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { indexPage } from "../src/lib/launch-index.ts";
-import { curveTradeEvents } from "../src/lib/curve-history.ts";
+import { curveTradeEvents, feeClaimEvents } from "../src/lib/curve-history.ts";
 import { getAddressDecoder } from "@solana/kit";
 
 test("launch views filter stages and rank with exact turnover and slot values", () => {
@@ -39,6 +39,13 @@ test("curve activity accepts attributable trade logs and ignores nested substitu
     [{ wallet: mint, sell: false, tokens: 10n, raw: 100n, sequence: 1n }]);
   assert.deepEqual(curveTradeEvents(logs.slice(0, -1), "AAA", mint), []);
   assert.deepEqual(curveTradeEvents(logs, "AAA", "wrong-mint"), []);
+  const claim = (kind, paid, total) => "Program data: " +
+    [Buffer.from("JEET_FEE_CLAIM_V1"), key, key, Buffer.from([kind]), n(paid), n(total)]
+      .map(field => field.toString("base64")).join(" ");
+  assert.deepEqual(feeClaimEvents(["Program AAA invoke [1]", "Program BBB invoke [2]",
+    claim(0, 9, 9), "Program BBB success", claim(1, 3, 3), claim(0, 5, 4), "Program AAA success"], "AAA", mint),
+    [{ beneficiary: mint, platform: false, paid: 3n, withdrawn: 3n }]);
+
 });
 
 test("Raydium history reconciles exact scoped transfers and rejects substituted evidence", async () => {

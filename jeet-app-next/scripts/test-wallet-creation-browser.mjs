@@ -142,7 +142,7 @@ try {
     executablePath: process.env.JEET_CHROMIUM_PATH,
     args: ["--no-sandbox"],
   });
-  for (const width of [390, 1440]) {
+  for (const width of [390, 768, 1440]) {
     const wallet = await generateKeyPairSigner();
     await rpc("requestAirdrop", [wallet.address, 1000000000]);
     await ready(
@@ -546,6 +546,8 @@ try {
       assert.equal(decodeFeeState(Buffer.from(after[1].data[0], "base64")).claimable, 0n);
       assert.equal(BigInt(before[1].lamports) - BigInt(after[1].lamports), amount);
       assert.equal(await balance(), oldBalance + amount - BigInt(tx.meta.fee));
+      await expect(page.getByRole("region", { name: "Confirmed curve activity" })
+        .getByText(sig, { exact: false })).toBeVisible({ timeout: 15000 });
       evidence.transactions.push({ width, mint, kind: "creator-claim", signature: sig, amount });
       pass(width + "px verified discovery, curve chart and wallet-signed creator fee claim");
     }
