@@ -2,6 +2,8 @@ export const launchViews = ["New", "Trending", "Final Stretch", "Migrated"] as c
 export type LaunchView = typeof launchViews[number];
 export type IndexedLaunch = {
   mint: string;
+  creator?: string;
+  pool?: string;
   name: string;
   symbol: string;
   activationSlot: string;
@@ -18,8 +20,10 @@ export function indexPage(rows: IndexedLaunch[], params: URLSearchParams) {
   const offset = Math.min(64, Math.max(0, Number.parseInt(params.get("offset") ?? "0", 10) || 0));
   const limit = Math.min(12, Math.max(1, Number.parseInt(params.get("limit") ?? "12", 10) || 12));
   const cmp = (a: string, b: string) => BigInt(a) < BigInt(b) ? 1 : BigInt(a) > BigInt(b) ? -1 : 0;
+  const creator = params.get("creator");
   const filtered = rows.filter(row =>
-    (!query || [row.name, row.symbol, row.mint].some(value => value.toLowerCase().includes(query))) &&
+    (!creator || row.creator === creator) &&
+    (!query || [row.name, row.symbol, row.mint, row.creator ?? ""].some(value => value.toLowerCase().includes(query))) &&
     (view === "Migrated" ? row.migrated :
       view === "Final Stretch" ? !row.migrated && row.progress >= 90 :
       view === "Trending" ? BigInt(row.volume) > 0n : true));

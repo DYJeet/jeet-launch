@@ -5,6 +5,7 @@ import { readWalletLaunch } from "@/lib/wallet-launch-flow";
 import { WalletTransactionExecutor } from "@/lib/wallet-transactions";
 import { formatUnits } from "@/lib/wallet-environment";
 import { decodeGraduation, GRADUATION_SIZE } from "@/lib/launch-graduation";
+import { marketStore } from "@/lib/market-store";
 import { indexPage } from "@/lib/launch-index";
 
 export const dynamic = "force-dynamic";
@@ -47,7 +48,7 @@ async function readIndex({ url, environment }: Configuration) {
           launch.mint.freezeAuthority || state.migrated !== terms.migrated || !state.inventory) return null;
       const progress = Number(state.sold * 100n / state.inventory);
       return {
-        mint, name: metadata.name, symbol: metadata.symbol, progress, migrated: state.migrated,
+        mint, creator, pool: terms.migrated ? terms.pool : undefined, name: metadata.name, symbol: metadata.symbol, progress, migrated: state.migrated,
         activationSlot: terms.createdSlot.toString(), volume: (state.rawIn + state.rawOut).toString(),
         reserve: formatUnits(state.reserve), eligible: state.eligible,
       };
@@ -64,21 +65,30 @@ export async function GET(request: Request) {
   } catch {
     return Response.json({ error: "Verified index is unavailable outside the configured local validator." }, { status: 404 });
   }
-  const key = config.url + "|" + config.environment.genesis;
+  const key = config.url + "|" + config.environment.genesis + "|" + config.environment.program;
+  const network = config.environment.genesis + ":" + config.environment.program;
+  const params = new URL(request.url).searchParams;
   try {
     if (!cache || cache.key !== key || cache.until < Date.now()) {
-      const pending = readIndex(config);
+      const pending = readIndex(config).then(rows => {
+        marketStore().writeDiscovery(network, { rows, indexedAt: Date.now() });
+        return rows;
+      });
       const entry = { key, pending, indexedAt: 0, until: Infinity };
       cache = entry;
       void pending.then(() => { entry.indexedAt = Date.now(); entry.until = entry.indexedAt + 5000; }, () => {
         if (cache === entry) cache = undefined;
       });
     }
-    const params = new URL(request.url).searchParams;
     const entry = cache;
     const result = indexPage(await entry.pending, params);
     return Response.json({ ...result, indexedAt: entry.indexedAt }, { headers: { "Cache-Control": "no-store" } });
   } catch {
+    try {
+      const saved = marketStore().readDiscovery(network);
+      if (saved) return Response.json({ ...indexPage(saved.rows, params), indexedAt: saved.indexedAt, stale: true },
+        { headers: { "Cache-Control": "no-store" } });
+    } catch { /* Storage can be unavailable alongside RPC. */ }
     return Response.json({ error: "Launch index is temporarily unavailable. Retry shortly." }, { status: 503 });
   }
 }

@@ -47,3 +47,4 @@ next-env.d.ts
 
 # Intentionally secret-free setup template
 !.env.pinata.example
+/.jeet-index/
