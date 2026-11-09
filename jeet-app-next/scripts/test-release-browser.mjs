@@ -33,10 +33,19 @@ try {
     await page.getByRole("button", { name: "Retry", exact: true }).click();
     await expect(page.getByRole("alert").filter({ hasText: "Verified index is unavailable" })).toBeVisible();
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+    await page.goto(origin + "/create");
+    const fees = page.getByRole("region", { name: "Platform fee disclosure" });
+    await expect(fees).toContainText("Token creation platform fee: 0 SOL");
+    await expect(fees).toContainText("0.75% to JeeT Launch and 0.25% to the creator");
+    await expect(fees).toContainText("Public V5 launches and graduation are disabled");
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+    await fees.getByRole("link", { name: "View on-chain fee accounts and claims" }).click();
+    await expect(page.getByRole("heading", { name: "JeeT Launch revenue" })).toBeVisible();
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
     assert.equal((await page.request.get(origin + "/token/11111111111111111111111111111111")).status(), 404);
     assert.equal((await page.request.get(origin + "/local-create")).status(), 404);
     assert.deepEqual(errors, []);
-    console.log(`PASS ${width}px public navigation, responsive Explore, retry and signing gates`);
+    console.log(`PASS ${width}px public navigation, responsive Explore, creation and revenue, retry and signing gates`);
     await page.close();
   }
 } finally {

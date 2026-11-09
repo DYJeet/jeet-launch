@@ -6,6 +6,7 @@ import {
   useConnect,
   useConnectedWallet,
   useDisconnect,
+  useSelectAccount,
   useWallets,
 } from "@solana/kit-plugin-wallet/react";
 import { AccountRole, address } from "@solana/kit";
@@ -30,7 +31,9 @@ function Workspace({ environment }: { environment: WalletEnvironment }) {
     wallets = useWallets(client);
   const connect = useConnect(client),
     disconnect = useDisconnect(client);
+  const selectAccount = useSelectAccount(client);
   const wallet = connected?.account.address ?? null;
+  const accounts = connected?.wallet.accounts.filter(account => account.chains.includes(environment.chain)) ?? [];
   const [balanceError, setBalanceError] = useState("");
   const [notice, setNotice] = useState<TransactionNotice | null>(null),
     [error, setError] = useState("");
@@ -140,6 +143,26 @@ function Workspace({ environment }: { environment: WalletEnvironment }) {
           >
             {wallet}
           </p>
+          {accounts.length > 1 && <label className="block text-sm">
+            Wallet account
+            <select className="mt-1 block w-full max-w-md rounded-xl border border-white/15 bg-black p-3"
+              value={wallet} disabled={running} onChange={event => {
+                const account = accounts.find(item => item.address === event.target.value);
+                if (!account) return;
+                try {
+                  selectAccount(account);
+                  setNotice(null);
+                  setError("");
+                  setBalanceError("");
+                } catch (error) {
+                  setError(error instanceof Error ? error.message : String(error));
+                }
+              }}>
+              {accounts.map(account => <option key={account.address} value={account.address}>
+                {account.label || account.address}
+              </option>)}
+            </select>
+          </label>}
           <p>
             Local SOL:{" "}
             <strong data-testid="local-balance">

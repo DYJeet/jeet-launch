@@ -1,0 +1,65 @@
+{
+  "positive": [
+    "390px discovery, connection and exact local balance",
+    "390px genuine signing, confirmation, duplicate-button protection and exact SOL reconciliation",
+    "390px wallet reconnect and refreshed balance after reload",
+    "390px authorized account selection updates exact local balance",
+    "390px disconnect clears account display",
+    "768px discovery, connection and exact local balance",
+    "768px genuine signing, confirmation, duplicate-button protection and exact SOL reconciliation",
+    "768px wallet reconnect and refreshed balance after reload",
+    "768px authorized account selection updates exact local balance",
+    "768px disconnect clears account display",
+    "1440px discovery, connection and exact local balance",
+    "1440px genuine signing, confirmation, duplicate-button protection and exact SOL reconciliation",
+    "1440px wallet reconnect and refreshed balance after reload",
+    "1440px authorized account selection updates exact local balance",
+    "1440px disconnect clears account display"
+  ],
+  "rejection": [
+    "390px wallet rejection leaves SOL unchanged",
+    "390px injected network mismatch blocks signing and preserves balances",
+    "390px wallet account change during signing blocks broadcast and preserves both balances",
+    "768px wallet rejection leaves SOL unchanged",
+    "768px injected network mismatch blocks signing and preserves balances",
+    "768px wallet account change during signing blocks broadcast and preserves both balances",
+    "1440px wallet rejection leaves SOL unchanged",
+    "1440px injected network mismatch blocks signing and preserves balances",
+    "1440px wallet account change during signing blocks broadcast and preserves both balances",
+    "cross-origin server request rejected"
+  ],
+  "transactions": [
+    {
+      "width": 390,
+      "signature": "2xpfZgNqoGHNWiMvCu93XqHSboj9VbUrnS8Qqto39s1cxJam7i6EbG6ejTf28Z84zsxZVHx6P4p8LSPwSCeVYh2o",
+      "before": "1000000000",
+      "after": "999995000",
+      "networkFee": "5000",
+      "bytes": 185
+    },
+    {
+      "width": 768,
+      "signature": "2bBV5gducku2nzSo2pxCDW9MYqvSGvSckDp4JzPQZEwnaaEgjXjFzadxBz2hAdbg637G7n7kPKmAKA71UjXxiT4Q",
+      "before": "1000000000",
+      "after": "999995000",
+      "networkFee": "5000",
+      "bytes": 185
+    },
+    {
+      "width": 1440,
+      "signature": "4f85GMLQ3JBNWgWBwxsqTTt4EdWfrAwTs31AZK41BPYq4qvmoVGJJha4HQHuAkcm6qf4FHQTEfKLZ2azxJqpFkL",
+      "before": "1000000000",
+      "after": "999995000",
+      "networkFee": "5000",
+      "bytes": 185
+    }
+  ],
+  "limitations": [
+    "Disposable Wallet Standard adapter, not installed Phantom/Solflare or native mobile application acceptance.",
+    "No creation/trading lifecycle is claimed by the infrastructure test."
+  ],
+  "genesis": "7WMhfe5VHekP2zRWaWbESNHBTSGq76K4AP82sd8AAagp",
+  "completed": true,
+  "artifactSha256": "f77d6eac73d0725ee0cb43294e39c6eec4cb5cb51520658e4bcce20db85909f3",
+  "logs": "/tmp/jeet-wallet-browser-WzDgFn"
+}

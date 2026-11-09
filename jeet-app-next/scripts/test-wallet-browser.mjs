@@ -117,9 +117,11 @@ try {
     executablePath: process.env.JEET_CHROMIUM_PATH,
     args: ["--no-sandbox"],
   });
-  for (const width of [390, 1440]) {
+  for (const width of [390, 768, 1440]) {
     const wallet = await generateKeyPairSigner();
+    const alternate = await generateKeyPairSigner();
     await rpc("requestAirdrop", [wallet.address, 1000000000]);
+    await rpc("requestAirdrop", [alternate.address, 250000000]);
     await ready(
       async () =>
         (await rpc("getBalance", [wallet.address, { commitment: "finalized" }]))
@@ -163,7 +165,7 @@ try {
       return Array.from(getTransactionEncoder().encode(signed));
     });
     await page.addInitScript(
-      ({ address, publicKey }) => {
+      ({ address, publicKey, alternateAddress, alternatePublicKey }) => {
         let connected = false;
         const listeners = new Set();
         const account = {
@@ -172,17 +174,20 @@ try {
           chains: ["solana:devnet"],
           features: ["solana:signTransaction"],
         };
-        const notify = () =>
-          listeners.forEach((fn) =>
-            fn({ accounts: connected ? [account] : [] }),
-          );
+        const alternate = { ...account, address: alternateAddress, publicKey: Uint8Array.from(alternatePublicKey) };
+        let accounts = [account, alternate];
+        const notify = () => listeners.forEach(fn => fn({ accounts: connected ? accounts : [] }));
+        window.jeetWalletAccounts = (alternateOnly) => {
+          accounts = alternateOnly ? [alternate] : [account, alternate];
+          notify();
+        };
         const wallet = {
           version: "1.0.0",
           name: "JeeT genuine local signer",
           icon: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciLz4=",
           chains: ["solana:devnet"],
           get accounts() {
-            return connected ? [account] : [];
+            return connected ? accounts : [];
           },
           features: {
             "standard:connect": {
@@ -190,7 +195,7 @@ try {
               connect: async () => {
                 connected = true;
                 notify();
-                return { accounts: [account] };
+                return { accounts };
               },
             },
             "standard:disconnect": {
@@ -234,6 +239,8 @@ try {
       {
         address: wallet.address,
         publicKey: Array.from(getAddressEncoder().encode(wallet.address)),
+        alternateAddress: alternate.address,
+        alternatePublicKey: Array.from(getAddressEncoder().encode(alternate.address)),
       },
     );
     await page.goto(appUrl + "/local-wallet");
@@ -391,6 +398,27 @@ try {
       (Number(after) / 1e9).toString(),
     );
     pass(width + "px wallet reconnect and refreshed balance after reload");
+    const selection = page.getByLabel("Wallet account");
+    await selection.selectOption(alternate.address);
+    await expect(page.getByTestId("wallet-address")).toHaveText(alternate.address);
+    await expect(page.getByTestId("local-balance")).toHaveText("0.25");
+    await selection.selectOption(wallet.address);
+    await expect(page.getByTestId("wallet-address")).toHaveText(wallet.address);
+    pass(width + "px authorized account selection updates exact local balance");
+    hold = true;
+    const beforeSwitch = signCount;
+    await action.click();
+    await ready(async () => signCount === beforeSwitch + 1);
+    await page.evaluate(() => window.jeetWalletAccounts(true));
+    await expect(page.getByTestId("wallet-address")).toHaveText(alternate.address);
+    release();
+    hold = false;
+    await expect(page.getByTestId("transaction-error")).toContainText(/changed or disconnected/);
+    const switched = await rpc("getSignatureStatuses", [[wires.at(-1).signature], { searchTransactionHistory: true }]);
+    assert.equal(switched.value[0], null);
+    assert.equal((await rpc("getBalance", [wallet.address, { commitment: "confirmed" }])).value, Number(after));
+    assert.equal((await rpc("getBalance", [alternate.address, { commitment: "confirmed" }])).value, 250000000);
+    pass(width + "px wallet account change during signing blocks broadcast and preserves both balances", true);
     await page.getByRole("button", { name: "Disconnect wallet" }).click();
     await expect(page.getByTestId("wallet-address")).toHaveCount(0);
     await expect(
