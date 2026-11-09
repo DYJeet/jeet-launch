@@ -10,6 +10,19 @@ The branch resumed from `6c01bb58272f2f0089cc58ba1c9df4d6765d54a8`. The four mar
 - Locked native Rust tests passed with both default (13) and local fee-test (17) features. The production npm dependency audit reported zero vulnerabilities.
 - The read-only Metaplex fixture recovery matched the pinned digest in the repository. The validator harness uses a disposable ledger, test programs, local metadata, and a disposable Wallet Standard signer.
 
+## Financial regressions
+
+All four standalone local-validator runners exited 0 against the recovered program fixtures.
+
+| Runner | Result |
+| --- | --- |
+| `npm run test:local` | Allocation, custody, wallet caps, curve pricing, protected opening, both fee variants, both V4 market variants and final integrity fixtures passed |
+| `npm run test:v5:local` | 25 positive groups, 42 rejection and rollback checks, and seven integrity fixtures passed |
+| `npm run test:graduation:local` | 28 positive and 52 rejection groups passed |
+| `npm run test:amm:cpmm` | Four positive and eight rejection groups passed |
+
+The full legacy log SHA-256 was `fbf3d52fd6ee505c5a94e547d4ec030f24785f90b9f6eaf56c1dd3f3b719f166`. No financial program source changed.
+
 ## Local archive result
 
 The combined browser lifecycle exited 0 with **39 positive and 24 rejection groups** at 390px, 768px and 1440px. The [browser evidence](local-finalized-archive-evidence.json) includes the exact transaction signatures, quotes, and account balances.
