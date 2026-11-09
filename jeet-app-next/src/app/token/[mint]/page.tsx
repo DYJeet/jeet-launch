@@ -6,7 +6,7 @@ import { localReadConfiguration, previewEnabled } from "@/lib/local-wallet-serve
 import PreviewHistory from "@/components/PreviewHistory";
 import SiteHeader from "@/components/SiteHeader";
 
-export default async function TokenPage({ params }: { params: Promise<{ mint: string }> }) {
+export default async function TokenPage({ params, searchParams }: PageProps<"/token/[mint]">) {
   const preview = previewEnabled();
   if (preview) {
     try { localReadConfiguration(new Request("https://" + process.env.JEET_PREVIEW_HOST, { headers: await headers() })); }
@@ -14,8 +14,9 @@ export default async function TokenPage({ params }: { params: Promise<{ mint: st
   } else if (process.env.JEET_LOCAL_WALLET !== "1") notFound();
   const { mint } = await params;
   try { address(mint); } catch { notFound(); }
+  const query = preview ? await searchParams : {};
   return <main className="min-h-screen bg-[#050605] text-white">
     <SiteHeader />
-    {preview ? <PreviewHistory mint={mint} /> : <WalletLaunchReader mint={mint} />}
+    {preview ? <PreviewHistory mint={mint} venue={query.venue === "amm" ? "amm" : "curve"} before={typeof query.before === "string" ? query.before : ""} /> : <WalletLaunchReader mint={mint} />}
   </main>;
 }
