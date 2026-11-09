@@ -68,8 +68,12 @@ test("Raydium history reconciles exact scoped transfers and rejects substituted 
   const key = n => getAddressDecoder().decode(Buffer.alloc(32, n));
   const mint = key(1);
   const pool = await graduationAddresses(mint, 0n);
-  await assert.rejects(ammHistoryPool(mint, key(5)), /Unrecognized/);
-  assert.equal((await ammHistoryPool(mint, pool.pool)).pool, pool.pool);
+  const terms = { ...pool, mint, migrated: true, ammProgram: CPMM_TEST_PROGRAM };
+  await assert.rejects(ammHistoryPool(mint, { ...terms, config: key(5) }), /Unrecognized/);
+  assert.equal((await ammHistoryPool(mint, terms)).pool, pool.pool);
+  const alternate = await graduationAddresses(mint, 1n);
+  assert.notEqual(alternate.pool, pool.pool);
+  assert.deepEqual(await ammHistoryPool(mint, { ...terms, pool: alternate.pool }), alternate);
   const encode = bytes => getBase58Decoder().decode(bytes);
   for (const sell of [false, true]) {
     const mintIn = sell ? mint : NATIVE_MINT;

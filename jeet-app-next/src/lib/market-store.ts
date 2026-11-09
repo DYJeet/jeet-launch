@@ -60,6 +60,11 @@ export class MarketStore {
         signature TEXT NOT NULL, slot_key TEXT NOT NULL, event TEXT NOT NULL,
         PRIMARY KEY (network, stream, id)
       );
+      CREATE TABLE IF NOT EXISTS market_volume (
+        network TEXT NOT NULL, stream TEXT NOT NULL, lamports TEXT NOT NULL,
+        tokens TEXT NOT NULL, trades INTEGER NOT NULL, PRIMARY KEY(network, stream)
+      );
+      CREATE INDEX IF NOT EXISTS market_events_signature ON market_events(network, stream, signature);
       CREATE INDEX IF NOT EXISTS market_events_order
         ON market_events(network, stream, slot_key DESC, id DESC);
     `);
@@ -131,9 +136,19 @@ export class MarketStore {
   }
   commit(network: string, stream: string, previous: Checkpoint, next: Checkpoint, events: MarketEvent[]) {
     return this.commitPage(network, stream, previous, next, () => {
+      const volume = this.marketVolume(network, stream);
       const insert = this.db.prepare("INSERT OR IGNORE INTO market_events VALUES (?,?,?,?,?,?)");
-      for (const event of events)
-        insert.run(network, stream, event.id, event.signature, event.slot.padStart(20, "0"), JSON.stringify(event));
+      for (const event of events) {
+        const result = insert.run(network, stream, event.id, event.signature, event.slot.padStart(20, "0"), JSON.stringify(event));
+        if (result.changes && (event.kind === "buy" || event.kind === "sell")) {
+          volume.lamports += BigInt(event.lamports);
+          volume.tokens += BigInt(event.tokens!);
+          volume.trades++;
+        }
+      }
+      this.db.prepare(`INSERT INTO market_volume VALUES (?,?,?,?,?)
+        ON CONFLICT(network,stream) DO UPDATE SET lamports=excluded.lamports,tokens=excluded.tokens,trades=excluded.trades`)
+        .run(network, stream, String(volume.lamports), String(volume.tokens), volume.trades);
     });
   }
   private commitPage(network: string, stream: string, previous: Checkpoint, next: Checkpoint, write: () => void) {
@@ -153,6 +168,21 @@ export class MarketStore {
       this.db.exec("ROLLBACK");
       throw error;
     }
+  }
+  marketVolume(network: string, stream: string) {
+    const saved = this.db.prepare("SELECT lamports,tokens,trades FROM market_volume WHERE network=? AND stream=?").get(network, stream);
+    if (saved) return { lamports: BigInt(String(saved.lamports)), tokens: BigInt(String(saved.tokens)), trades: Number(saved.trades) };
+    const result = { lamports: 0n, tokens: 0n, trades: 0 };
+    // Upgrade pre-volume archives without rewriting or dropping their receipts.
+    const entries = this.db.prepare("SELECT event FROM market_events WHERE network=? AND stream=?").iterate(network, stream);
+    for (const row of entries) {
+      const event: MarketEvent = JSON.parse(String(row.event));
+      if (event.kind !== "buy" && event.kind !== "sell") continue;
+      result.lamports += BigInt(event.lamports);
+      result.tokens += BigInt(event.tokens!);
+      result.trades++;
+    }
+    return result;
   }
   history(network: string, stream: string, before?: string, signature?: string) {
     const anchor = before && this.db.prepare(`SELECT slot_key,id FROM market_events

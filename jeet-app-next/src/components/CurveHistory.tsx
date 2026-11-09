@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { address, type Signature } from "@solana/kit";
 import { ammHistoryPool, ammTradeEvents } from "@/lib/amm-history";
 import { curveTradeEvents, feeClaimEvents } from "@/lib/curve-history";
+import type { decodeGraduation } from "@/lib/launch-graduation";
 import { formatUnits } from "@/lib/wallet-environment";
 import type { WalletTransactionExecutor } from "@/lib/wallet-transactions";
 
@@ -12,19 +13,20 @@ type Archive = {
   events: import("@/lib/market-store").MarketEvent[];
   next?: string;
   stale: boolean;
+  volume: { lamports: string; trades: number };
   cursorExpired: boolean;
   checkpoint: import("@/lib/market-store").Checkpoint;
 };
 type Trade = Receipt & { sell: boolean; tokens: bigint; raw: bigint };
 type Claim = Receipt & ReturnType<typeof feeClaimEvents>[number];
 
-export default function CurveHistory({ executor, curve, mint, decimals, revision, pool }: {
+export default function CurveHistory({ executor, curve, mint, decimals, revision, terms }: {
   executor: WalletTransactionExecutor;
   curve: string;
   mint: string;
   decimals: number;
   revision: bigint;
-  pool?: string;
+  terms?: ReturnType<typeof decodeGraduation>;
 }) {
   const [result, setResult] = useState<{ key: string; trades?: Trade[]; claims?: Claim[]; next?: string; error?: boolean; archive?: Archive }>();
   const [retry, setRetry] = useState(0);
@@ -33,6 +35,7 @@ export default function CurveHistory({ executor, curve, mint, decimals, revision
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState("");
   const key = [mint, revision, retry, cursor, archived, query].join(":");
+  const pool = terms?.pool;
   const venue = pool ? "Raydium" : "curve";
   useEffect(() => {
     const controller = new AbortController();
@@ -59,7 +62,7 @@ export default function CurveHistory({ executor, curve, mint, decimals, revision
           if (!controller.signal.aborted) setResult({ key, trades, claims, next: archive.next, archive });
           return;
         }
-        const verifiedPool = pool ? await ammHistoryPool(address(mint), address(pool)) : undefined;
+        const verifiedPool = terms ? await ammHistoryPool(address(mint), terms) : undefined;
         const signatures = await executor.rpc.getSignaturesForAddress(address(pool ?? curve), {
           limit: 16, commitment: "confirmed", before: cursor as Signature | undefined,
         }).send(options);
@@ -95,10 +98,11 @@ export default function CurveHistory({ executor, curve, mint, decimals, revision
       }
     })();
     return () => controller.abort();
-  }, [executor, curve, mint, key, pool, cursor, archived, query]);
+  }, [executor, curve, mint, key, pool, terms, cursor, archived, query]);
 
   const current = result?.key === key ? result : undefined;
   const trades = current?.trades ?? [];
+  const pageTurnover = trades.reduce((total, trade) => total + trade.raw, 0n);
   const prices = trades.map(trade => trade.raw * 10n ** BigInt(decimals + 9) / trade.tokens);
   const low = prices.reduce((min, price) => price < min ? price : min, prices[0] ?? 0n);
   const high = prices.reduce((max, price) => price > max ? price : max, low);
@@ -122,6 +126,7 @@ export default function CurveHistory({ executor, curve, mint, decimals, revision
     </form>}
     {current?.archive && <div className="space-y-1 text-xs text-white/70">
       <p>Finalized records · {current.archive.stale ? "saved data; RPC update delayed" : "RPC checked"}</p>
+      <p>{formatUnits(BigInt(current.archive.volume.lamports))} SOL indexed turnover · {current.archive.volume.trades} supported executions</p>
       <p>{current.archive.checkpoint.gap ? "Historical gap detected. Some transactions may be missing." :
         current.archive.checkpoint.backfilled ? "Reached the configured RPC’s available history. Older records may be unavailable." :
           "Backfill incomplete. Refresh to continue indexing."}</p>
@@ -132,6 +137,8 @@ export default function CurveHistory({ executor, curve, mint, decimals, revision
     {current?.error && <p role="alert">{venue} activity is unavailable. <button className="text-[#9cff43] underline" onClick={() => setRetry(n => n + 1)}>Retry</button></p>}
     {current?.trades?.length === 0 && <p>No supported {venue} trades in this transaction window.</p>}
     {trades.length > 0 && <>
+      <p className="text-xs text-white/70">Page turnover: {formatUnits(pageTurnover)} SOL · {trades.length} supported executions</p>
+      <p className="text-xs text-white/70">Execution price range: {formatUnits(low, 18)}–{formatUnits(high, 18)} SOL per token</p>
       {points.length > 1 && <svg viewBox="0 0 600 120" className="h-32 w-full" role="img" aria-label={`Recent ${venue} trade prices`}>
         <polyline points={points.join(" ")} fill="none" stroke="#9cff43" strokeWidth="2" />
       </svg>}
@@ -143,7 +150,7 @@ export default function CurveHistory({ executor, curve, mint, decimals, revision
       </ol>
     </>}
     {!pool && current?.claims && <div className="space-y-2 border-t border-white/10 pt-3">
-      <h3 className="font-bold">Confirmed fee claims</h3>
+      <h3 className="font-bold">{archived ? "Finalized" : "Confirmed"} fee claims</h3>
       {current.claims.length === 0 ? <p className="text-sm">No confirmed claims in this transaction window.</p> :
         <ol className="space-y-2 text-sm">
           {current.claims.slice().reverse().map(claim => <li key={claim.id}>

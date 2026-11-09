@@ -1,0 +1,1122 @@
+{
+  "storage": "local-workspace",
+  "positive": [
+    "390px genuine five-stage wallet creation, metadata URI, authority/terms bundle and exact conservation",
+    "390px token page reload and mobile layout",
+    "390px real wallet-signed buy reconciled against quote and refreshed balances",
+    "390px real wallet-signed sell reconciled against quote and refreshed balances",
+    "390px finalized creator claim reconciled from archive",
+    "390px discovery, curve buy, sell and creator claim verified from independently opened SQLite",
+    "390px verified discovery, curve chart and wallet-signed creator fee claim",
+    "390px browser graduation confirms deposits, LP burn, fee isolation and curve closure",
+    "390px signed Raydium buy exactly reconciles wallet and pool reserves",
+    "390px finalized Raydium buy reconciled from archive",
+    "390px signed Raydium sell exactly reconciles wallet and pool reserves",
+    "390px finalized Raydium sell reconciled from archive",
+    "390px migrated route and balances survive reload and wallet reconnection",
+    "768px genuine five-stage wallet creation, metadata URI, authority/terms bundle and exact conservation",
+    "768px token page reload and mobile layout",
+    "768px real wallet-signed buy reconciled against quote and refreshed balances",
+    "768px real wallet-signed sell reconciled against quote and refreshed balances",
+    "768px finalized creator claim reconciled from archive",
+    "768px discovery, curve buy, sell and creator claim verified from independently opened SQLite",
+    "768px verified discovery, curve chart and wallet-signed creator fee claim",
+    "768px browser graduation confirms deposits, LP burn, fee isolation and curve closure",
+    "768px signed Raydium buy exactly reconciles wallet and pool reserves",
+    "768px finalized Raydium buy reconciled from archive",
+    "768px signed Raydium sell exactly reconciles wallet and pool reserves",
+    "768px finalized Raydium sell reconciled from archive",
+    "768px migrated route and balances survive reload and wallet reconnection",
+    "1440px genuine five-stage wallet creation, metadata URI, authority/terms bundle and exact conservation",
+    "1440px token page reload and mobile layout",
+    "1440px real wallet-signed buy reconciled against quote and refreshed balances",
+    "1440px real wallet-signed sell reconciled against quote and refreshed balances",
+    "1440px finalized creator claim reconciled from archive",
+    "1440px discovery, curve buy, sell and creator claim verified from independently opened SQLite",
+    "1440px verified discovery, curve chart and wallet-signed creator fee claim",
+    "1440px browser graduation confirms deposits, LP burn, fee isolation and curve closure",
+    "1440px signed Raydium buy exactly reconciles wallet and pool reserves",
+    "1440px finalized Raydium buy reconciled from archive",
+    "1440px signed Raydium sell exactly reconciles wallet and pool reserves",
+    "1440px finalized Raydium sell reconciled from archive",
+    "1440px migrated route and balances survive reload and wallet reconnection"
+  ],
+  "rejection": [
+    "390px forged image rejected before signing",
+    "injected genesis mismatch blocks storage and signing before minting",
+    "injected server image upload failure cannot prepare a mint or debit SOL",
+    "injected server JSON upload failure cannot prepare a mint or debit SOL",
+    "390px duplicate/conflicting attempt blocked; rejected first signature creates no mint or debit",
+    "390px rejected setup leaves minted supply at zero",
+    "390px rejected buy changes no market or wallet balances",
+    "390px graduation stays unavailable before eligibility",
+    "390px rejected graduation leaves funding, fee custody and liquidity unchanged",
+    "390px rejected AMM signature leaves wallet and reserves unchanged",
+    "768px forged image rejected before signing",
+    "768px duplicate/conflicting attempt blocked; rejected first signature creates no mint or debit",
+    "768px rejected setup leaves minted supply at zero",
+    "768px rejected buy changes no market or wallet balances",
+    "768px graduation stays unavailable before eligibility",
+    "768px rejected graduation leaves funding, fee custody and liquidity unchanged",
+    "768px rejected AMM signature leaves wallet and reserves unchanged",
+    "1440px forged image rejected before signing",
+    "1440px duplicate/conflicting attempt blocked; rejected first signature creates no mint or debit",
+    "1440px rejected setup leaves minted supply at zero",
+    "1440px rejected buy changes no market or wallet balances",
+    "1440px graduation stays unavailable before eligibility",
+    "1440px rejected graduation leaves funding, fee custody and liquidity unchanged",
+    "1440px rejected AMM signature leaves wallet and reserves unchanged"
+  ],
+  "transactions": [
+    {
+      "width": 390,
+      "mint": "Gt4KjTxQqLkktQeVWA8ZC76iyGmE8odXYLP6XZR4NDDb",
+      "creator": "F2j9MBdasxR83DV8kxsq8xJefw9xURoSV4ZGQjxXLiQn",
+      "metadata": {
+        "updateAuthority": "F2j9MBdasxR83DV8kxsq8xJefw9xURoSV4ZGQjxXLiQn",
+        "mint": "Gt4KjTxQqLkktQeVWA8ZC76iyGmE8odXYLP6XZR4NDDb",
+        "name": "JeeT Browser 390",
+        "symbol": "JB390",
+        "uri": "http://127.0.0.1:3006/api/local-assets/1a365f804aa82f343e5c1feb31292259e88b1917b02df7f183082351d61c9b15.json",
+        "sellerFeeBasisPoints": 0,
+        "primarySaleHappened": false,
+        "mutable": false
+      },
+      "terms": {
+        "mint": "Gt4KjTxQqLkktQeVWA8ZC76iyGmE8odXYLP6XZR4NDDb",
+        "curve": "9CKpGciorf1kNS6TC8A7TYeJi2ppFokN25iRaSDvuW3B",
+        "ammProgram": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+        "config": "5MxLgy9oPdTC3YgkiePHqr3EoCRD9uLVYRQS2ANAs7wy",
+        "migrator": "BpF4LmpS2Kk4k1AK5jvWRSFt63E4iqtREvj2CrPBHrQ",
+        "pool": "11111111111111111111111111111111",
+        "solDeposited": "0",
+        "tokensDeposited": "0",
+        "lpBurned": "0",
+        "maxPriceGapBps": 60,
+        "createdSlot": "45",
+        "migratedSlot": "0",
+        "sequence": "0",
+        "migrated": false
+      },
+      "storage": "local-workspace",
+      "storageEvidence": null,
+      "description": "Genuine local wallet creation test",
+      "curve": {
+        "sold": "0",
+        "reserve": "0"
+      }
+    },
+    {
+      "width": 390,
+      "sol": {
+        "before": "1000000000",
+        "after": "964844400",
+        "accountFunding": "35125600",
+        "networkFees": "30000"
+      }
+    },
+    {
+      "width": 390,
+      "mint": "Gt4KjTxQqLkktQeVWA8ZC76iyGmE8odXYLP6XZR4NDDb",
+      "wires": [
+        {
+          "signature": "3WJVwcG2esr35yUaBqa2tY732f2z2NntAD813TPynBX3VfK2gxpaag6Bz2Zc38DXBMPSgijy8DVGZjP5jgJyYeAJ",
+          "bytes": 464
+        },
+        {
+          "signature": "4aoywrfDxS5S9ihja3WaTkj8CPtNYn2P2k7F4TXDT2pvMzvNDQHw3qRqub86CN39u5piEWyzdLR132a1havhipcr",
+          "bytes": 526
+        },
+        {
+          "signature": "4zYXkE6FeLv54yvUyRdQ3c9iu8zqxdy1A5s3KrN1f1ZxXtQkRRV36zK4wPWkz69uKHoPwSv9C622Q8kYH2eisP6A",
+          "bytes": 713
+        },
+        {
+          "signature": "VATsFLpbRXZ1G4hf7ysNvgNuJ2tkGpagAD3yxrCSVcDmV4QdYZzPBk8itKazKua6o2Y5TmVK1yaJdJYGitvCTfY",
+          "bytes": 513
+        },
+        {
+          "signature": "Cqr2TiEtxHCJJ45hXqbUmn5YMRpfXLWmmf1c3zpREPjCdGQQxmHpyxnwQSUQtbqmpQf16WsVBFnBiNNvRi2RX4q",
+          "bytes": 527
+        },
+        {
+          "signature": "6AsLSvBvF586UmA4SR1jhuxFkAqUyFAtwT1meFqhg4uqBiqM4tWX4HxnhgyHVacvvAjWBtz2pYALxeHSHsgAGds",
+          "bytes": 649
+        },
+        {
+          "signature": "2qo9of54ihuBJ9odKPb8De1uWSuihXUU9JVfgyMMVoFwHfGdYAXBpSRRFGw8Wpz4ma2bHAJbN81bEXBWtRpU5PDB",
+          "bytes": 649
+        },
+        {
+          "signature": "3g4KcvHa4XuRp3yQAmbvr7eZs5VZQsv1hzzj9uNsHLGXH6uz9wPcrf9YdGqQybiGswsxYaGYmcM4tY9t63pnEZLA",
+          "bytes": 314
+        },
+        {
+          "signature": "3uFDxUKz2YxLCuC7NCiQdM3kj8yaExB39fKXaQiaGEegyXTSNPZr7meVmRngzwooSSLdMWDAjTzU6NKyUja57TRb",
+          "bytes": 649
+        },
+        {
+          "signature": "26WvyLYQzpUNU4dvq5fAUSwhWbgtMCacVrZ69wwUkXzDWrg6oLG4mDVd7cYmVytSjkrGmTbenGXPacAu3jV6cfSy",
+          "bytes": 1062
+        },
+        {
+          "signature": "2MfBieVQB8fnhnFp1YWcniPVwCFVGtXvkuVWyV5M7eP51GGS6uFtwB1mXJkLeuGJ1F6kaJ1nUoJaY2cq45qufT47",
+          "bytes": 853
+        },
+        {
+          "signature": "3AUN1fXy7giad7rDgP5cYdEqoGKTZv3AJm9D5AHQHjcLgYDoboNcrLFSYpFUvsGvLKpLocvk7DKkcpfb1AUcnaTp",
+          "bytes": 798
+        }
+      ],
+      "tokenConservation": "10 + 594 + 396 = 1000"
+    },
+    {
+      "width": 390,
+      "mint": "Gt4KjTxQqLkktQeVWA8ZC76iyGmE8odXYLP6XZR4NDDb",
+      "browser": {
+        "walletReconnected": true,
+        "reloaded": true,
+        "image": {
+          "complete": true,
+          "width": 1122,
+          "height": 1402
+        },
+        "successfulProviderResponsesMocked": false
+      }
+    },
+    {
+      "width": 390,
+      "mint": "Gt4KjTxQqLkktQeVWA8ZC76iyGmE8odXYLP6XZR4NDDb",
+      "side": "buy",
+      "signature": "6AsLSvBvF586UmA4SR1jhuxFkAqUyFAtwT1meFqhg4uqBiqM4tWX4HxnhgyHVacvvAjWBtz2pYALxeHSHsgAGds",
+      "quote": {
+        "raw": "966",
+        "platform": "8",
+        "creator": "2",
+        "total": "10",
+        "user": "976",
+        "amount": "22"
+      },
+      "before": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "0",
+          "reserve": "0",
+          "inventory": "594",
+          "rawIn": "0",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "0",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "0",
+        "creator": "0",
+        "tokens": "10",
+        "vault": "594",
+        "migration": "396",
+        "sol": "964844400",
+        "reserveLamports": "2714400",
+        "platformLamports": "1955760",
+        "creatorLamports": "1955760"
+      },
+      "after": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "22",
+          "reserve": "966",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "1",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "8",
+        "creator": "2",
+        "tokens": "32",
+        "vault": "572",
+        "migration": "396",
+        "sol": "963383784",
+        "reserveLamports": "2715366",
+        "platformLamports": "1955768",
+        "creatorLamports": "1955762"
+      },
+      "networkFee": 5000
+    },
+    {
+      "width": 390,
+      "mint": "Gt4KjTxQqLkktQeVWA8ZC76iyGmE8odXYLP6XZR4NDDb",
+      "side": "sell",
+      "signature": "2qo9of54ihuBJ9odKPb8De1uWSuihXUU9JVfgyMMVoFwHfGdYAXBpSRRFGw8Wpz4ma2bHAJbN81bEXBWtRpU5PDB",
+      "quote": {
+        "raw": "491",
+        "platform": "4",
+        "creator": "1",
+        "total": "5",
+        "user": "486",
+        "amount": "11"
+      },
+      "before": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "22",
+          "reserve": "966",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "1",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "8",
+        "creator": "2",
+        "tokens": "32",
+        "vault": "572",
+        "migration": "396",
+        "sol": "963383784",
+        "reserveLamports": "2715366",
+        "platformLamports": "1955768",
+        "creatorLamports": "1955762"
+      },
+      "after": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "11",
+          "reserve": "475",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "491",
+          "returned": "11",
+          "sequence": "2",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "12",
+        "creator": "3",
+        "tokens": "21",
+        "vault": "583",
+        "migration": "396",
+        "sol": "963379270",
+        "reserveLamports": "2714875",
+        "platformLamports": "1955772",
+        "creatorLamports": "1955763"
+      },
+      "networkFee": 5000
+    },
+    {
+      "width": 390,
+      "mint": "Gt4KjTxQqLkktQeVWA8ZC76iyGmE8odXYLP6XZR4NDDb",
+      "kind": "creator-claim",
+      "signature": "3g4KcvHa4XuRp3yQAmbvr7eZs5VZQsv1hzzj9uNsHLGXH6uz9wPcrf9YdGqQybiGswsxYaGYmcM4tY9t63pnEZLA",
+      "amount": "3"
+    },
+    {
+      "width": 390,
+      "kind": "graduation",
+      "signature": "26WvyLYQzpUNU4dvq5fAUSwhWbgtMCacVrZ69wwUkXzDWrg6oLG4mDVd7cYmVytSjkrGmTbenGXPacAu3jV6cfSy",
+      "mint": "Gt4KjTxQqLkktQeVWA8ZC76iyGmE8odXYLP6XZR4NDDb",
+      "pool": "A2ZarszB9cbK4ncaxj6jvqEgCtoawEb1uRxzEbvEhXnR",
+      "program": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+      "terms": {
+        "mint": "Gt4KjTxQqLkktQeVWA8ZC76iyGmE8odXYLP6XZR4NDDb",
+        "curve": "9CKpGciorf1kNS6TC8A7TYeJi2ppFokN25iRaSDvuW3B",
+        "ammProgram": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+        "config": "5MxLgy9oPdTC3YgkiePHqr3EoCRD9uLVYRQS2ANAs7wy",
+        "migrator": "BpF4LmpS2Kk4k1AK5jvWRSFt63E4iqtREvj2CrPBHrQ",
+        "pool": "A2ZarszB9cbK4ncaxj6jvqEgCtoawEb1uRxzEbvEhXnR",
+        "solDeposited": "50192",
+        "tokensDeposited": "396",
+        "lpBurned": "4358",
+        "maxPriceGapBps": 60,
+        "createdSlot": "45",
+        "migratedSlot": "129",
+        "sequence": "4",
+        "migrated": true
+      },
+      "setupSpent": "190117440",
+      "computeUnits": 307132,
+      "bytes": 1062,
+      "initialLpSupply": "0"
+    },
+    {
+      "width": 390,
+      "kind": "amm-buy",
+      "signature": "2MfBieVQB8fnhnFp1YWcniPVwCFVGtXvkuVWyV5M7eP51GGS6uFtwB1mXJkLeuGJ1F6kaJ1nUoJaY2cq45qufT47",
+      "mint": "Gt4KjTxQqLkktQeVWA8ZC76iyGmE8odXYLP6XZR4NDDb",
+      "pool": "A2ZarszB9cbK4ncaxj6jvqEgCtoawEb1uRxzEbvEhXnR",
+      "before": {
+        "sol": "773196618",
+        "tokens": "604",
+        "poolSol": "50192",
+        "poolTokens": "396"
+      },
+      "after": {
+        "sol": "773185618",
+        "tokens": "611",
+        "poolSol": "51192",
+        "poolTokens": "389"
+      },
+      "quote": {
+        "input": "1000",
+        "output": "7",
+        "fee": "3",
+        "minimum": "7",
+        "rate": "2500"
+      },
+      "networkFee": 10000
+    },
+    {
+      "width": 390,
+      "kind": "amm-sell",
+      "signature": "3AUN1fXy7giad7rDgP5cYdEqoGKTZv3AJm9D5AHQHjcLgYDoboNcrLFSYpFUvsGvLKpLocvk7DKkcpfb1AUcnaTp",
+      "mint": "Gt4KjTxQqLkktQeVWA8ZC76iyGmE8odXYLP6XZR4NDDb",
+      "pool": "A2ZarszB9cbK4ncaxj6jvqEgCtoawEb1uRxzEbvEhXnR",
+      "before": {
+        "sol": "773185618",
+        "tokens": "611",
+        "poolSol": "51192",
+        "poolTokens": "389"
+      },
+      "after": {
+        "sol": "773176775",
+        "tokens": "601",
+        "poolSol": "50035",
+        "poolTokens": "399"
+      },
+      "quote": {
+        "input": "10",
+        "output": "1157",
+        "fee": "1",
+        "minimum": "1152",
+        "rate": "2500"
+      },
+      "networkFee": 10000
+    },
+    {
+      "width": 768,
+      "mint": "5whwyPnWK3zrnRvtjsFQBESMzc7RT7ab7FM7FNCeKes6",
+      "creator": "2ZbGjtLmt5AwUvEzJPrK2u2X6DbixkmaqFYKJKxyGQwr",
+      "metadata": {
+        "updateAuthority": "2ZbGjtLmt5AwUvEzJPrK2u2X6DbixkmaqFYKJKxyGQwr",
+        "mint": "5whwyPnWK3zrnRvtjsFQBESMzc7RT7ab7FM7FNCeKes6",
+        "name": "JeeT Browser 768",
+        "symbol": "JB768",
+        "uri": "http://127.0.0.1:3006/api/local-assets/7e4d1388b46fcc77e28bb761063b9f741ae9129fc736eb31ca8960f437cf6401.json",
+        "sellerFeeBasisPoints": 0,
+        "primarySaleHappened": false,
+        "mutable": false
+      },
+      "terms": {
+        "mint": "5whwyPnWK3zrnRvtjsFQBESMzc7RT7ab7FM7FNCeKes6",
+        "curve": "9deBQVdG9Sykeq1uuoCNxEDc8A816htvYsUStsaVoJ2S",
+        "ammProgram": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+        "config": "5MxLgy9oPdTC3YgkiePHqr3EoCRD9uLVYRQS2ANAs7wy",
+        "migrator": "6Bie4S4PAQrNJgbyKzXeochxyasGPzqgjgdHVzykGpaz",
+        "pool": "11111111111111111111111111111111",
+        "solDeposited": "0",
+        "tokensDeposited": "0",
+        "lpBurned": "0",
+        "maxPriceGapBps": 60,
+        "createdSlot": "251",
+        "migratedSlot": "0",
+        "sequence": "0",
+        "migrated": false
+      },
+      "storage": "local-workspace",
+      "storageEvidence": null,
+      "description": "Genuine local wallet creation test",
+      "curve": {
+        "sold": "0",
+        "reserve": "0"
+      }
+    },
+    {
+      "width": 768,
+      "sol": {
+        "before": "1000000000",
+        "after": "964844400",
+        "accountFunding": "35125600",
+        "networkFees": "30000"
+      }
+    },
+    {
+      "width": 768,
+      "mint": "5whwyPnWK3zrnRvtjsFQBESMzc7RT7ab7FM7FNCeKes6",
+      "wires": [
+        {
+          "signature": "44LMydASwDEYSngkGVKtKgTDwvqVsPHjJ5S2XtYmLPJeZAmcuADg4wkiswdgJSqZt4n1EmXEbBNmpgzd5o9YdoRF",
+          "bytes": 464
+        },
+        {
+          "signature": "2kHqxmXb6W31G3MbNZhviPgwPNmVf9o8XHqfiA86hkAHpAN1s2ondKDndN6zNffrsiWDtVJVDmGqkegjC9cfsTyR",
+          "bytes": 526
+        },
+        {
+          "signature": "Bt2c16dPqzMfF9D4aoQwSi9vThExtKN3wnQjLJh1fQDo8shWwhDWMe47qTQR6Yf4XzAWrfMqEc97WUcSHLVhuwS",
+          "bytes": 713
+        },
+        {
+          "signature": "3aPckCtDiWP8WsVFHRCBwVKsCaWYuwBxeAxW7Mu7dYm8fbwjcECVvYZeu94dtTDUYb68wnBJeVjkpGNbDmYuVbw2",
+          "bytes": 513
+        },
+        {
+          "signature": "2EaG4kjk54M7LckcMVTLzm5HWkZE8pyWVxYmonDVtaWBQtkEzSTr6rmbWb8rGycyhRRUhXgmYNmniiwMPuPKmyia",
+          "bytes": 527
+        },
+        {
+          "signature": "3TYqdSEMCVPsWvkdidGyBegCiwcZfdAZNSD5e8h9w5SZJSpM965bjP1UwWA8GaeHPLscjk1CR6fY3v5Su7eLo5GS",
+          "bytes": 649
+        },
+        {
+          "signature": "4pTbtrigmNEkYoBczVe8HNY7ivF2bDfH1A1yUyJXJY9Uo3bL6QqzvB75p4V7XNrij8LSnqpDi8ybX3sbSWQmhUPR",
+          "bytes": 649
+        },
+        {
+          "signature": "5c7iwCvrZ72A72LwcT1Ds8y8rGGY7WAziH4jmgKzeCaTkuNSuhtbpBoaSDJQegfMmoSkzLrdKvqQNEQo27htB2Aa",
+          "bytes": 314
+        },
+        {
+          "signature": "4ECDroom2qxUy8gwZ9R8XEB2VTDCq2Krqsu9sx7kfdwjgef7vwrHU71GkUDHPiZzzeLANbnJfZkCnmnQvJxx4ZeP",
+          "bytes": 649
+        },
+        {
+          "signature": "2PprWZ9Ass2fxmWz61XSrf4kpGFn6WwV5ZuxkwP3PJcA1159cgGNdaFPcoiWWud6XtpirNyYhKHAhPyNvZKWEEaV",
+          "bytes": 1062
+        },
+        {
+          "signature": "GLQdriCwh8Kbki2m8ayvdQhh5A9HHBTxFYCTVj9Eea1yEmm8QuNSrdzrF7PrBZpwqtzP35a3KUoHgrz41942NUe",
+          "bytes": 853
+        },
+        {
+          "signature": "4tkLEwsrHeYTKLh4ac1UfZMc7dv76zH22wQKVC898epkC8goVzVq48kQpJMsiQEa8PqWMf6nFCVWtv3i9ur9wp9G",
+          "bytes": 798
+        }
+      ],
+      "tokenConservation": "10 + 594 + 396 = 1000"
+    },
+    {
+      "width": 768,
+      "mint": "5whwyPnWK3zrnRvtjsFQBESMzc7RT7ab7FM7FNCeKes6",
+      "browser": {
+        "walletReconnected": true,
+        "reloaded": true,
+        "image": {
+          "complete": true,
+          "width": 1122,
+          "height": 1402
+        },
+        "successfulProviderResponsesMocked": false
+      }
+    },
+    {
+      "width": 768,
+      "mint": "5whwyPnWK3zrnRvtjsFQBESMzc7RT7ab7FM7FNCeKes6",
+      "side": "buy",
+      "signature": "3TYqdSEMCVPsWvkdidGyBegCiwcZfdAZNSD5e8h9w5SZJSpM965bjP1UwWA8GaeHPLscjk1CR6fY3v5Su7eLo5GS",
+      "quote": {
+        "raw": "966",
+        "platform": "8",
+        "creator": "2",
+        "total": "10",
+        "user": "976",
+        "amount": "22"
+      },
+      "before": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "0",
+          "reserve": "0",
+          "inventory": "594",
+          "rawIn": "0",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "0",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "0",
+        "creator": "0",
+        "tokens": "10",
+        "vault": "594",
+        "migration": "396",
+        "sol": "964844400",
+        "reserveLamports": "2714400",
+        "platformLamports": "1955760",
+        "creatorLamports": "1955760"
+      },
+      "after": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "22",
+          "reserve": "966",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "1",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "8",
+        "creator": "2",
+        "tokens": "32",
+        "vault": "572",
+        "migration": "396",
+        "sol": "963383784",
+        "reserveLamports": "2715366",
+        "platformLamports": "1955768",
+        "creatorLamports": "1955762"
+      },
+      "networkFee": 5000
+    },
+    {
+      "width": 768,
+      "mint": "5whwyPnWK3zrnRvtjsFQBESMzc7RT7ab7FM7FNCeKes6",
+      "side": "sell",
+      "signature": "4pTbtrigmNEkYoBczVe8HNY7ivF2bDfH1A1yUyJXJY9Uo3bL6QqzvB75p4V7XNrij8LSnqpDi8ybX3sbSWQmhUPR",
+      "quote": {
+        "raw": "491",
+        "platform": "4",
+        "creator": "1",
+        "total": "5",
+        "user": "486",
+        "amount": "11"
+      },
+      "before": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "22",
+          "reserve": "966",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "1",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "8",
+        "creator": "2",
+        "tokens": "32",
+        "vault": "572",
+        "migration": "396",
+        "sol": "963383784",
+        "reserveLamports": "2715366",
+        "platformLamports": "1955768",
+        "creatorLamports": "1955762"
+      },
+      "after": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "11",
+          "reserve": "475",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "491",
+          "returned": "11",
+          "sequence": "2",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "12",
+        "creator": "3",
+        "tokens": "21",
+        "vault": "583",
+        "migration": "396",
+        "sol": "963379270",
+        "reserveLamports": "2714875",
+        "platformLamports": "1955772",
+        "creatorLamports": "1955763"
+      },
+      "networkFee": 5000
+    },
+    {
+      "width": 768,
+      "mint": "5whwyPnWK3zrnRvtjsFQBESMzc7RT7ab7FM7FNCeKes6",
+      "kind": "creator-claim",
+      "signature": "5c7iwCvrZ72A72LwcT1Ds8y8rGGY7WAziH4jmgKzeCaTkuNSuhtbpBoaSDJQegfMmoSkzLrdKvqQNEQo27htB2Aa",
+      "amount": "3"
+    },
+    {
+      "width": 768,
+      "kind": "graduation",
+      "signature": "2PprWZ9Ass2fxmWz61XSrf4kpGFn6WwV5ZuxkwP3PJcA1159cgGNdaFPcoiWWud6XtpirNyYhKHAhPyNvZKWEEaV",
+      "mint": "5whwyPnWK3zrnRvtjsFQBESMzc7RT7ab7FM7FNCeKes6",
+      "pool": "3TgCHzUqpyjok9DFqLR6GkPCT9UtNQzh2Tqg2wmUYDz9",
+      "program": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+      "terms": {
+        "mint": "5whwyPnWK3zrnRvtjsFQBESMzc7RT7ab7FM7FNCeKes6",
+        "curve": "9deBQVdG9Sykeq1uuoCNxEDc8A816htvYsUStsaVoJ2S",
+        "ammProgram": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+        "config": "5MxLgy9oPdTC3YgkiePHqr3EoCRD9uLVYRQS2ANAs7wy",
+        "migrator": "6Bie4S4PAQrNJgbyKzXeochxyasGPzqgjgdHVzykGpaz",
+        "pool": "3TgCHzUqpyjok9DFqLR6GkPCT9UtNQzh2Tqg2wmUYDz9",
+        "solDeposited": "50192",
+        "tokensDeposited": "396",
+        "lpBurned": "4358",
+        "maxPriceGapBps": 60,
+        "createdSlot": "251",
+        "migratedSlot": "331",
+        "sequence": "4",
+        "migrated": true
+      },
+      "setupSpent": "190117440",
+      "computeUnits": 308632,
+      "bytes": 1062,
+      "initialLpSupply": "0"
+    },
+    {
+      "width": 768,
+      "kind": "amm-buy",
+      "signature": "GLQdriCwh8Kbki2m8ayvdQhh5A9HHBTxFYCTVj9Eea1yEmm8QuNSrdzrF7PrBZpwqtzP35a3KUoHgrz41942NUe",
+      "mint": "5whwyPnWK3zrnRvtjsFQBESMzc7RT7ab7FM7FNCeKes6",
+      "pool": "3TgCHzUqpyjok9DFqLR6GkPCT9UtNQzh2Tqg2wmUYDz9",
+      "before": {
+        "sol": "773196618",
+        "tokens": "604",
+        "poolSol": "50192",
+        "poolTokens": "396"
+      },
+      "after": {
+        "sol": "773185618",
+        "tokens": "611",
+        "poolSol": "51192",
+        "poolTokens": "389"
+      },
+      "quote": {
+        "input": "1000",
+        "output": "7",
+        "fee": "3",
+        "minimum": "7",
+        "rate": "2500"
+      },
+      "networkFee": 10000
+    },
+    {
+      "width": 768,
+      "kind": "amm-sell",
+      "signature": "4tkLEwsrHeYTKLh4ac1UfZMc7dv76zH22wQKVC898epkC8goVzVq48kQpJMsiQEa8PqWMf6nFCVWtv3i9ur9wp9G",
+      "mint": "5whwyPnWK3zrnRvtjsFQBESMzc7RT7ab7FM7FNCeKes6",
+      "pool": "3TgCHzUqpyjok9DFqLR6GkPCT9UtNQzh2Tqg2wmUYDz9",
+      "before": {
+        "sol": "773185618",
+        "tokens": "611",
+        "poolSol": "51192",
+        "poolTokens": "389"
+      },
+      "after": {
+        "sol": "773176775",
+        "tokens": "601",
+        "poolSol": "50035",
+        "poolTokens": "399"
+      },
+      "quote": {
+        "input": "10",
+        "output": "1157",
+        "fee": "1",
+        "minimum": "1152",
+        "rate": "2500"
+      },
+      "networkFee": 10000
+    },
+    {
+      "width": 1440,
+      "mint": "CAhRABt9duYbrRZEkkrorqNU12xBdzZaSC7oNLuLfGS1",
+      "creator": "DU8GEGypFKPXthcXZANunJcrMdus73wBWBHY5WYXPvWA",
+      "metadata": {
+        "updateAuthority": "DU8GEGypFKPXthcXZANunJcrMdus73wBWBHY5WYXPvWA",
+        "mint": "CAhRABt9duYbrRZEkkrorqNU12xBdzZaSC7oNLuLfGS1",
+        "name": "JeeT Browser 1440",
+        "symbol": "JB1440",
+        "uri": "http://127.0.0.1:3006/api/local-assets/1e38f24401f70e694d586a0e596eb8e45146cae379c91f82bf59d165a27ad6cb.json",
+        "sellerFeeBasisPoints": 0,
+        "primarySaleHappened": false,
+        "mutable": false
+      },
+      "terms": {
+        "mint": "CAhRABt9duYbrRZEkkrorqNU12xBdzZaSC7oNLuLfGS1",
+        "curve": "41Z6jbG4geY6mzwXHvhfYyCNuVeCNF2udxej6a5Q21PW",
+        "ammProgram": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+        "config": "5MxLgy9oPdTC3YgkiePHqr3EoCRD9uLVYRQS2ANAs7wy",
+        "migrator": "7bX8anQmWCRgnuvqfCX8kNs3hfWjabqaH3fV9ZDywfnr",
+        "pool": "11111111111111111111111111111111",
+        "solDeposited": "0",
+        "tokensDeposited": "0",
+        "lpBurned": "0",
+        "maxPriceGapBps": 60,
+        "createdSlot": "454",
+        "migratedSlot": "0",
+        "sequence": "0",
+        "migrated": false
+      },
+      "storage": "local-workspace",
+      "storageEvidence": null,
+      "description": "Genuine local wallet creation test",
+      "curve": {
+        "sold": "0",
+        "reserve": "0"
+      }
+    },
+    {
+      "width": 1440,
+      "sol": {
+        "before": "1000000000",
+        "after": "964844400",
+        "accountFunding": "35125600",
+        "networkFees": "30000"
+      }
+    },
+    {
+      "width": 1440,
+      "mint": "CAhRABt9duYbrRZEkkrorqNU12xBdzZaSC7oNLuLfGS1",
+      "wires": [
+        {
+          "signature": "3ngXeKtG6Bi3rmQc5pZDF4gKDdFyqx3dtbZ8G3S9vxRHdPeX8sWjATn1RMyTKB3BhQ4Pf8oxQyuksesb4RAbqmYQ",
+          "bytes": 464
+        },
+        {
+          "signature": "58RZt2zi1zpGy7QhvwaLyZT8gYddM8NxNwE3U5zTMk6nXSB9fPhxavKWpp3z3TFdde9GaFtvEpdAmbeqZTffGS7r",
+          "bytes": 526
+        },
+        {
+          "signature": "4Vq9DKBsxzom8v2z5kjxkaUqnS2FLGvawf2oC6qSe8kHjbyHQgMDVQsjBAmDvmrxL8CgMfy5yTKiB7Lixsqeq9i",
+          "bytes": 713
+        },
+        {
+          "signature": "2hubsg3UHXifr8Vhm2GQWNuhN8bE3q9qUt6HcrHg2Tb4GBhPSFBojhCtYLYsbVA6Kephdu6gC3UpprZAhxSGaxDa",
+          "bytes": 515
+        },
+        {
+          "signature": "29r3HuUmP8CY7rR5QmzoFeQM3nuEFNHnPjYPjgRQTa1LuijVG1BHabgfbtJnfaVrSxyv6LaDjM2d7bQKKFnDzp1Y",
+          "bytes": 527
+        },
+        {
+          "signature": "5afZFoqdE6JvQA4AGdJabWi23BGBZD2kgXZrfJw3ucPEW2AX8gzxwcFzkoCtDsy7PouRomYoRfmqaruRe6ZFmV3g",
+          "bytes": 649
+        },
+        {
+          "signature": "aSy6P3q3UxzuEU8sGfLPcB1n8h21NMmCmpBkgGfh8oD15b8QEtiVcCKCLGxzaxeAsh76Bj6hfM6aEDzzhmXxnw8",
+          "bytes": 649
+        },
+        {
+          "signature": "4i6H4kahUyv4ywD8VsPXrdM58oNye5QVe2ScvzsYUBGTxJSDAJLN9RuKSy1CZQnyDnWU53WvpBp83NLbk1W1pQpi",
+          "bytes": 314
+        },
+        {
+          "signature": "7B8DnLM8TpVCGaEu9Ax6qGxQVeS22B1HxKEHj79hvP5emX4jqx33S63GAWnndTevchtUSswD17GJCFZb1SJmzZm",
+          "bytes": 649
+        },
+        {
+          "signature": "3FFSm7YYUXfpcwAFqR1P3gJd67aBch6qdrj1MhgM5Qtr86HkhxcvqJmjnPEBaEqGoxV2cP6cis3EZRmPqzA1KMoX",
+          "bytes": 1062
+        },
+        {
+          "signature": "5recBEtYHsqPUHUzPEHbzeB5YFBnq5VtT762htLAmyKX8RgcmoL4ikHRgE51hpGJqL2apqYKDveMGdmQLnjJhR6t",
+          "bytes": 853
+        },
+        {
+          "signature": "3ppHqVKiL5DowXkVoCRRYRCsNwhTMkVy3grCCLsWZvZzMAy9g4XE55oks9SCJnqLP4jF9GYY4Qyz8oy2DK94AmpU",
+          "bytes": 798
+        }
+      ],
+      "tokenConservation": "10 + 594 + 396 = 1000"
+    },
+    {
+      "width": 1440,
+      "mint": "CAhRABt9duYbrRZEkkrorqNU12xBdzZaSC7oNLuLfGS1",
+      "browser": {
+        "walletReconnected": true,
+        "reloaded": true,
+        "image": {
+          "complete": true,
+          "width": 1122,
+          "height": 1402
+        },
+        "successfulProviderResponsesMocked": false
+      }
+    },
+    {
+      "width": 1440,
+      "mint": "CAhRABt9duYbrRZEkkrorqNU12xBdzZaSC7oNLuLfGS1",
+      "side": "buy",
+      "signature": "5afZFoqdE6JvQA4AGdJabWi23BGBZD2kgXZrfJw3ucPEW2AX8gzxwcFzkoCtDsy7PouRomYoRfmqaruRe6ZFmV3g",
+      "quote": {
+        "raw": "966",
+        "platform": "8",
+        "creator": "2",
+        "total": "10",
+        "user": "976",
+        "amount": "22"
+      },
+      "before": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "0",
+          "reserve": "0",
+          "inventory": "594",
+          "rawIn": "0",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "0",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "0",
+        "creator": "0",
+        "tokens": "10",
+        "vault": "594",
+        "migration": "396",
+        "sol": "964844400",
+        "reserveLamports": "2714400",
+        "platformLamports": "1955760",
+        "creatorLamports": "1955760"
+      },
+      "after": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "22",
+          "reserve": "966",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "1",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "8",
+        "creator": "2",
+        "tokens": "32",
+        "vault": "572",
+        "migration": "396",
+        "sol": "963383784",
+        "reserveLamports": "2715366",
+        "platformLamports": "1955768",
+        "creatorLamports": "1955762"
+      },
+      "networkFee": 5000
+    },
+    {
+      "width": 1440,
+      "mint": "CAhRABt9duYbrRZEkkrorqNU12xBdzZaSC7oNLuLfGS1",
+      "side": "sell",
+      "signature": "aSy6P3q3UxzuEU8sGfLPcB1n8h21NMmCmpBkgGfh8oD15b8QEtiVcCKCLGxzaxeAsh76Bj6hfM6aEDzzhmXxnw8",
+      "quote": {
+        "raw": "491",
+        "platform": "4",
+        "creator": "1",
+        "total": "5",
+        "user": "486",
+        "amount": "11"
+      },
+      "before": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "22",
+          "reserve": "966",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "0",
+          "returned": "0",
+          "sequence": "1",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "8",
+        "creator": "2",
+        "tokens": "32",
+        "vault": "572",
+        "migration": "396",
+        "sol": "963383784",
+        "reserveLamports": "2715366",
+        "platformLamports": "1955768",
+        "creatorLamports": "1955762"
+      },
+      "after": {
+        "state": {
+          "start": "42",
+          "end": "126",
+          "scale": "1",
+          "sold": "11",
+          "reserve": "475",
+          "inventory": "594",
+          "rawIn": "966",
+          "rawOut": "491",
+          "returned": "11",
+          "sequence": "2",
+          "eligible": false,
+          "migrated": false,
+          "migrationSol": "0",
+          "quantum": "1",
+          "migrationInventory": "396"
+        },
+        "platform": "12",
+        "creator": "3",
+        "tokens": "21",
+        "vault": "583",
+        "migration": "396",
+        "sol": "963379270",
+        "reserveLamports": "2714875",
+        "platformLamports": "1955772",
+        "creatorLamports": "1955763"
+      },
+      "networkFee": 5000
+    },
+    {
+      "width": 1440,
+      "mint": "CAhRABt9duYbrRZEkkrorqNU12xBdzZaSC7oNLuLfGS1",
+      "kind": "creator-claim",
+      "signature": "4i6H4kahUyv4ywD8VsPXrdM58oNye5QVe2ScvzsYUBGTxJSDAJLN9RuKSy1CZQnyDnWU53WvpBp83NLbk1W1pQpi",
+      "amount": "3"
+    },
+    {
+      "width": 1440,
+      "kind": "graduation",
+      "signature": "3FFSm7YYUXfpcwAFqR1P3gJd67aBch6qdrj1MhgM5Qtr86HkhxcvqJmjnPEBaEqGoxV2cP6cis3EZRmPqzA1KMoX",
+      "mint": "CAhRABt9duYbrRZEkkrorqNU12xBdzZaSC7oNLuLfGS1",
+      "pool": "HjAVR9KYWp2jR7U5G4e4AEv2bFBNPu1Vt2iZXqshifaD",
+      "program": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+      "terms": {
+        "mint": "CAhRABt9duYbrRZEkkrorqNU12xBdzZaSC7oNLuLfGS1",
+        "curve": "41Z6jbG4geY6mzwXHvhfYyCNuVeCNF2udxej6a5Q21PW",
+        "ammProgram": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+        "config": "5MxLgy9oPdTC3YgkiePHqr3EoCRD9uLVYRQS2ANAs7wy",
+        "migrator": "7bX8anQmWCRgnuvqfCX8kNs3hfWjabqaH3fV9ZDywfnr",
+        "pool": "HjAVR9KYWp2jR7U5G4e4AEv2bFBNPu1Vt2iZXqshifaD",
+        "solDeposited": "50192",
+        "tokensDeposited": "396",
+        "lpBurned": "4358",
+        "maxPriceGapBps": 60,
+        "createdSlot": "454",
+        "migratedSlot": "535",
+        "sequence": "4",
+        "migrated": true
+      },
+      "setupSpent": "190117440",
+      "computeUnits": 308632,
+      "bytes": 1062,
+      "initialLpSupply": "0"
+    },
+    {
+      "width": 1440,
+      "kind": "amm-buy",
+      "signature": "5recBEtYHsqPUHUzPEHbzeB5YFBnq5VtT762htLAmyKX8RgcmoL4ikHRgE51hpGJqL2apqYKDveMGdmQLnjJhR6t",
+      "mint": "CAhRABt9duYbrRZEkkrorqNU12xBdzZaSC7oNLuLfGS1",
+      "pool": "HjAVR9KYWp2jR7U5G4e4AEv2bFBNPu1Vt2iZXqshifaD",
+      "before": {
+        "sol": "773196618",
+        "tokens": "604",
+        "poolSol": "50192",
+        "poolTokens": "396"
+      },
+      "after": {
+        "sol": "773185618",
+        "tokens": "611",
+        "poolSol": "51192",
+        "poolTokens": "389"
+      },
+      "quote": {
+        "input": "1000",
+        "output": "7",
+        "fee": "3",
+        "minimum": "7",
+        "rate": "2500"
+      },
+      "networkFee": 10000
+    },
+    {
+      "width": 1440,
+      "kind": "amm-sell",
+      "signature": "3ppHqVKiL5DowXkVoCRRYRCsNwhTMkVy3grCCLsWZvZzMAy9g4XE55oks9SCJnqLP4jF9GYY4Qyz8oy2DK94AmpU",
+      "mint": "CAhRABt9duYbrRZEkkrorqNU12xBdzZaSC7oNLuLfGS1",
+      "pool": "HjAVR9KYWp2jR7U5G4e4AEv2bFBNPu1Vt2iZXqshifaD",
+      "before": {
+        "sol": "773185618",
+        "tokens": "611",
+        "poolSol": "51192",
+        "poolTokens": "389"
+      },
+      "after": {
+        "sol": "773176775",
+        "tokens": "601",
+        "poolSol": "50035",
+        "poolTokens": "399"
+      },
+      "quote": {
+        "input": "10",
+        "output": "1157",
+        "fee": "1",
+        "minimum": "1152",
+        "rate": "2500"
+      },
+      "networkFee": 10000
+    }
+  ],
+  "limitations": [
+    "Disposable Wallet Standard adapter, not installed Phantom/Solflare or native mobile application acceptance.",
+    "Current provider records/retrieval do not guarantee indefinite pinning. No Devnet or production transaction is claimed.",
+    "Negative HTTP/genesis/gateway probes inject failures explicitly; successful provider responses and Solana execution are genuine."
+  ],
+  "completed": true,
+  "genesis": "GqrTeUpNLz8c3RndJRhYgNcv9Q6qWpNnSYGGE4cZonZy",
+  "program": "8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo",
+  "artifactSha256": "f77d6eac73d0725ee0cb43294e39c6eec4cb5cb51520658e4bcce20db85909f3"
+}

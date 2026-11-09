@@ -9,7 +9,8 @@ declare module "node:sqlite" {
     prepare(sql: string): {
       get(...params: Input[]): Output | undefined;
       all(...params: Input[]): Output[];
-      run(...params: Input[]): unknown;
+      iterate(...params: Input[]): IterableIterator<Output>;
+      run(...params: Input[]): { changes: number | bigint; lastInsertRowid: number | bigint };
     };
   }
 }

@@ -29,7 +29,7 @@ async function observe(executor: WalletTransactionExecutor, mint: ReturnType<typ
   const { state, terms, metadata } = launch;
   if (!state || !terms || !metadata || !launch.custodyData || !launch.openingData || !launch.mint ||
       launch.mint.mintAuthority || launch.mint.freezeAuthority || state.migrated !== terms.migrated || !state.inventory) return;
-  if (terms.migrated) await ammHistoryPool(mint, terms.pool);
+  if (terms.migrated) await ammHistoryPool(mint, terms);
   return {
     slot: launch.slot,
     row: { mint, creator, pool: terms.migrated ? terms.pool : undefined, name: metadata.name, symbol: metadata.symbol,

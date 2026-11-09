@@ -52,9 +52,14 @@ const derive = (program: Address, s: string, ...parts: Uint8Array[]) =>
 export async function graduationAddresses(mint: Address, nonce: bigint) {
   const n = new Uint8Array(8);
   new DataView(n.buffer).setBigUint64(0, u(nonce), true);
+  const [pool] = await derive(V5_PREVIEW_PROGRAM, "amm_pool", b(mint), n);
+  return graduationPoolAccounts(mint, pool);
+}
+
+// The pool comes from the canonical program-owned graduation terms after migration.
+export async function graduationPoolAccounts(mint: Address, pool: Address) {
   const [terms] = await derive(V5_PREVIEW_PROGRAM, "graduation", b(mint)),
-    [migrator] = await derive(V5_PREVIEW_PROGRAM, "migrator", b(mint)),
-    [pool] = await derive(V5_PREVIEW_PROGRAM, "amm_pool", b(mint), n);
+    [migrator] = await derive(V5_PREVIEW_PROGRAM, "migrator", b(mint));
   const [config] = await derive(
       CPMM_TEST_PROGRAM,
       "amm_config",

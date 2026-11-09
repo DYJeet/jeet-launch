@@ -1,7 +1,7 @@
 import { address, createSolanaRpc, getBase64Encoder, signature } from "@solana/kit";
 import { localWalletConfiguration, checkedLocalGenesis } from "@/lib/local-wallet-server";
 import { marketStore, type MarketEvent } from "@/lib/market-store";
-import { historyBatchSize, ingestMarketPage } from "@/lib/market-ingest";
+import { historyBatchSize, readHistoryPage } from "@/lib/market-ingest";
 import { walletLaunchAddresses } from "@/lib/wallet-launch";
 import { decodeGraduation, graduationAddresses } from "@/lib/launch-graduation";
 import { ammHistoryPool, ammTradeEvents } from "@/lib/amm-history";
@@ -17,7 +17,10 @@ export async function GET(request: Request) {
   try { config = localWalletConfiguration(request); }
   catch { return Response.json({ error: "Local history is disabled." }, { status: 404 }); }
   const params = new URL(request.url).searchParams;
-  const amm = params.get("venue") === "amm";
+  const venue = params.get("venue");
+  if (venue && venue !== "amm" && venue !== "curve")
+    return Response.json({ error: "Invalid market history venue." }, { status: 400 });
+  const amm = venue === "amm";
   let mint;
   let search;
   const before = params.get("before") || undefined;
@@ -51,19 +54,23 @@ export async function GET(request: Request) {
         const { curve } = await walletLaunchAddresses(mint, mint);
         if (terms.mint !== mint || terms.curve !== curve || (amm && !terms.migrated))
           throw Error("Finalized market is unavailable.");
-        const pool = amm ? await ammHistoryPool(mint, terms.pool) : undefined;
-        return ingestMarketPage(store, network, stream, {
+        const pool = amm ? await ammHistoryPool(mint, terms) : undefined;
+        const prior = store.checkpoint(network, stream);
+        let missing = false;
+        const { events, next } = await readHistoryPage<MarketEvent>(prior, {
           async signatures(cursor) {
             return (await rpc.getSignaturesForAddress(pool?.pool ?? curve, {
               commitment: "finalized", limit: historyBatchSize, before: cursor ? signature(cursor) : undefined,
             }).send(options)).map(entry => ({ signature: entry.signature, slot: entry.slot, failed: !!entry.err }));
           },
           async events(entry) {
-            const tx = await rpc.getTransaction(signature(entry.signature), {
+            const read = () => rpc.getTransaction(signature(entry.signature), {
               encoding: "json", commitment: "finalized", maxSupportedTransactionVersion: 0,
             }).send(options);
-            if (!tx?.meta || tx.slot !== entry.slot || tx.transaction.signatures[0] !== entry.signature)
-              throw Error("Finalized transaction unavailable.");
+            const tx = await read() ?? await read();
+            if (!tx?.meta) { missing = true; return []; }
+            if (tx.slot !== entry.slot || tx.transaction.signatures[0] !== entry.signature)
+              throw Error("Finalized transaction identity mismatch.");
             if (tx.meta.err) throw Error("Finalized status changed.");
             const base = { signature: entry.signature, slot: tx.slot.toString(),
               time: tx.blockTime === null || tx.blockTime === undefined ? null : Number(tx.blockTime) };
@@ -72,10 +79,10 @@ export async function GET(request: Request) {
               wallet: event.wallet, tokens: event.tokens.toString(), lamports: event.raw.toString(),
             });
             if (pool) {
-              if (!tx.meta.innerInstructions) throw Error("Finalized CPI evidence unavailable.");
+              if (!tx.meta.innerInstructions) { missing = true; return []; }
               return ammTradeEvents(tx, pool).map(event => trade(event, "swap:" + event.index));
             }
-            if (!tx.meta.logMessages) throw Error("Finalized log evidence unavailable.");
+            if (!tx.meta.logMessages || tx.meta.logMessages.includes("Log truncated")) { missing = true; return []; }
             return [
               ...curveTradeEvents(tx.meta.logMessages, config.environment.program, mint)
                 .map(event => trade(event, "trade:" + event.sequence)),
@@ -88,6 +95,10 @@ export async function GET(request: Request) {
             ];
           },
         });
+        const firstAvailable = !prior.backfilled && next.backfilled
+          ? await rpc.getFirstAvailableBlock().send(options) : 0n;
+        if (missing || firstAvailable > 0n) next.gap = true;
+        return store.commit(network, stream, prior, next, events);
       })();
       inflight.set(key, update);
       try { await update; }
@@ -98,6 +109,7 @@ export async function GET(request: Request) {
       } finally { inflight.delete(key); }
     }
   } catch { stale = true; }
+  const volume = store.marketVolume(network, stream);
   return Response.json({ ...store.history(network, stream, before, search),
-    checkpoint: store.checkpoint(network, stream), stale }, { headers: noCache });
+    checkpoint: store.checkpoint(network, stream), volume: { ...volume, lamports: String(volume.lamports), tokens: String(volume.tokens) }, stale }, { headers: noCache });
 }

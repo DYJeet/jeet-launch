@@ -50,6 +50,8 @@ test("finalized backfill resumes after restart, pages without duplicates and ing
     assert.equal(new Set([...first.events, ...next.events].map(row => row.id)).size, 23);
     assert.equal(store.history("chain-a", stream, undefined, "signature-9").events.length, 1);
     assert.equal(store.history("chain-b", stream).events.length, 0);
+    assert.deepEqual(store.marketVolume("chain-a", stream), { lamports: 2300000000n, tokens: 230n, trades: 23 });
+    assert.deepEqual(store.marketVolume("chain-b", stream), { lamports: 0n, tokens: 0n, trades: 0 });
     await ingestMarketPage(store, "chain-a", stream, source([{ signature: "pruned-head", slot: 29n }]));
     assert.equal(store.checkpoint("chain-a", stream).gap, true);
   } finally { store.close(); rmSync(dir, { recursive: true, force: true }); }

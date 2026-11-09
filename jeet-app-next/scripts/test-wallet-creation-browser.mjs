@@ -524,6 +524,8 @@ try {
       const history = page.getByRole("region", { name: "Confirmed curve activity" });
       await expect(history.getByRole("listitem")).toHaveCount(2, { timeout: 15000 });
       await expect(history.getByRole("img")).toBeVisible();
+      await expect(history.getByText("Page turnover:", { exact: false })).toContainText("0.000001457 SOL");
+      await expect(history.getByText("Execution price range:", { exact: false })).toBeVisible();
       await page.goto(appUrl + "/explore");
       await page.getByRole("textbox", { name: "Search verified launches" }).fill(mint);
       await page.getByRole("button", { name: "Trending" }).click();
@@ -557,8 +559,11 @@ try {
         const url = appUrl + "/api/market-history?" + new URLSearchParams({ mint, signature: sig });
         await expect.poll(async () => {
           const result = await (await page.request.get(url)).json();
-          return result.events?.map(event => [event.signature, event.kind, event.lamports]);
-        }, { timeout: 45000, intervals: [2000, 3000] }).toEqual([[sig, "creator-claim", String(amount)]]);
+          return { events: result.events?.map(event => [event.signature, event.kind, event.lamports]), volume: result.volume };
+        }, { timeout: 45000, intervals: [2000, 3000] }).toEqual({
+          events: [[sig, "creator-claim", String(amount)]],
+          volume: { lamports: "1457", tokens: "33", trades: 2 },
+        });
         const history = page.getByRole("region", { name: "Confirmed curve activity" });
         await history.getByRole("button", { name: "Show finalized archive" }).click();
         await history.getByRole("textbox", { name: "Search transaction signature" }).fill(sig);

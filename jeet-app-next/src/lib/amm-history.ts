@@ -1,6 +1,6 @@
 import { getBase58Encoder, type Address } from "@solana/kit";
 import { TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
-import { CPMM_TEST_PROGRAM, NATIVE_MINT, graduationAddresses } from "./launch-graduation.ts";
+import { CPMM_TEST_PROGRAM, NATIVE_MINT, graduationPoolAccounts, type decodeGraduation } from "./launch-graduation.ts";
 
 type Instruction = { programIdIndex: number; accounts: readonly number[]; data: string };
 type Transaction = {
@@ -12,9 +12,14 @@ type Transaction = {
   } | null;
 };
 
-export async function ammHistoryPool(mint: Address, pool: Address) {
-  const canonical = await graduationAddresses(mint, 0n);
-  if (pool !== canonical.pool) throw Error("Unrecognized graduation pool.");
+type Terms = Pick<ReturnType<typeof decodeGraduation>, "mint" | "migrated" | "pool" | "config" | "migrator" | "ammProgram">;
+export async function ammHistoryPool(mint: Address, terms: Terms) {
+  if (!terms.migrated || terms.mint !== mint || terms.ammProgram !== CPMM_TEST_PROGRAM ||
+      terms.pool === "11111111111111111111111111111111")
+    throw Error("Unrecognized graduation pool.");
+  const canonical = await graduationPoolAccounts(mint, terms.pool);
+  if (terms.config !== canonical.config || terms.migrator !== canonical.migrator)
+    throw Error("Unrecognized graduation pool.");
   return canonical;
 }
 

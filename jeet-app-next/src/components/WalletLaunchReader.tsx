@@ -86,7 +86,7 @@ export default function WalletLaunchReader({ mint }: { mint: string }) {
       <WalletGraduationPanel environment={result.environment} launch={s} onRefresh={() => setRefresh(n => n + 1)} />
     </>}
     {s?.mint && s.state && result?.executor && <CurveHistory executor={result.executor} curve={s.addresses.curve} mint={mint} decimals={s.mint.decimals} revision={s.state.sequence} />}
-    {s?.mint && s.state?.migrated && s.terms?.migrated && result?.executor && <CurveHistory executor={result.executor} curve={s.addresses.curve} mint={mint} decimals={s.mint.decimals} revision={s.slot} pool={s.terms.pool} />}
+    {s?.mint && s.state?.migrated && s.terms?.migrated && result?.executor && <CurveHistory executor={result.executor} curve={s.addresses.curve} mint={mint} decimals={s.mint.decimals} revision={s.slot} terms={s.terms} />}
     <p className="text-sm text-white/50">Public explorers cannot inspect this disposable local validator.</p>
   </section>;
 }

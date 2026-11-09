@@ -127,10 +127,11 @@ export async function runBrowserGraduation({ page,width,mint,l,wallet,wires,rpc,
       url.search = new URLSearchParams({ mint, venue: "amm", signature }).toString();
       await expect.poll(async () => {
         const result = await (await page.request.get(url.toString())).json();
-        return result.events?.map(event => [event.signature, event.kind, event.tokens, event.lamports]);
-      }, { timeout: 45000, intervals: [2000, 3000] }).toEqual([
-        [signature, side, String(sell ? input : quote.output), String(sell ? quote.output : input)],
-      ]);
+        return { events: result.events?.map(event => [event.signature, event.kind, event.tokens, event.lamports]), volume: result.volume };
+      }, { timeout: 45000, intervals: [2000, 3000] }).toEqual({
+        events: [[signature, side, String(sell ? input : quote.output), String(sell ? quote.output : input)]],
+        volume: sell ? { lamports: "2157", tokens: "17", trades: 2 } : { lamports: "1000", tokens: "7", trades: 1 },
+      });
       if (sell) {
         await activity.getByRole("button", { name: "Show finalized archive" }).click();
         await activity.getByRole("textbox", { name: "Search transaction signature" }).fill(signature);

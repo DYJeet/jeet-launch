@@ -1,7 +1,7 @@
 /** Local-only adapter for the pinned Raydium CPMM interface. */
 import {
-  AccountRole, address, generateKeyPairSigner, getAddressEncoder, getAddressDecoder,
-  getBase64Encoder, getBase64Decoder, getBase58Encoder, getProgramDerivedAddress, compileTransaction,
+  AccountRole, address, generateKeyPairSigner, getAddressDecoder,
+  getBase64Encoder, getBase64Decoder, getBase58Encoder, compileTransaction,
   createTransactionMessage, appendTransactionMessageInstructions,
   setTransactionMessageFeePayerSigner, setTransactionMessageLifetimeUsingBlockhash,
   getTransactionEncoder, getBase64EncodedWireTransaction,
@@ -14,6 +14,7 @@ import {
 } from "@solana-program/token";
 import { CPMM_TEST_PROGRAM, NATIVE_MINT, graduationAddresses, graduateInstruction } from "./launch-graduation.ts";
 import { readWalletLaunch, type WalletLaunchSnapshot } from "./wallet-launch-flow.ts";
+import { ammHistoryPool } from "./amm-history.ts";
 import { potential } from "./v5-pricing.ts";
 import type { WalletTransactionExecutor } from "./wallet-transactions.ts";
 
@@ -26,7 +27,6 @@ function bounded(n: bigint) {
 }
 export const readU64 = (b: Uint8Array, at: number) => new DataView(b.buffer, b.byteOffset, b.byteLength).getBigUint64(at, true);
 const keyAt = (b: Uint8Array, at: number) => getAddressDecoder().decode(b.subarray(at, at + 32));
-const bytes = (s: Address) => getAddressEncoder().encode(s);
 const discr = (b: Uint8Array, expected: number[]) => expected.every((v, i) => b[i] === v);
 const compute = { programAddress: address("ComputeBudget111111111111111111111111111111"), accounts: [], data: new Uint8Array([2, 64, 66, 15, 0]) };
 export function decodeCpmmConfig(b: Uint8Array) {
@@ -63,23 +63,13 @@ function token(a: Account, mint: Address, owner: Address) {
     throw Error("Token vault identity, authority, or state mismatch.");
   return readU64(b, 64);
 }
-async function poolAddresses(launch: WalletLaunchSnapshot) {
-  const a = await graduationAddresses(launch.addresses.mint, 0n);
-  const pool = launch.terms!.pool;
-  const derive = async (seed: string, ...parts: Address[]) => (await getProgramDerivedAddress({
-    programAddress: CPMM_TEST_PROGRAM, seeds: [seed, ...parts.map(bytes)],
-  }))[0];
-  return { ...a, pool, lpMint: await derive("pool_lp_mint", pool),
-    vault0: await derive("pool_vault", pool, a.mint0), vault1: await derive("pool_vault", pool, a.mint1),
-    observation: await derive("observation", pool) };
-}
 export async function readAmmMarket(executor: WalletTransactionExecutor, mint: Address, creator: Address, wallet: Address) {
   const launch = await readWalletLaunch(executor, mint, creator);
   if (!launch.terms?.migrated || !launch.state?.migrated || !launch.mint || launch.state.reserve !== 0n ||
       launch.terms.sequence !== launch.state.sequence || launch.terms.solDeposited !== launch.state.migrationSol ||
       launch.terms.tokensDeposited !== launch.state.migrationInventory || launch.migrationTokens !== 0n)
     throw Error("Confirmed migration is required for AMM trading.");
-  const a = await poolAddresses(launch);
+  const a = await ammHistoryPool(mint, launch.terms);
   const [destination] = await findAssociatedTokenPda({ mint, owner: wallet, tokenProgram: TOKEN_PROGRAM_ADDRESS });
   const response = await executor.rpc.getMultipleAccounts([
     a.pool, a.config, a.vault0, a.vault1, a.lpMint, a.observation, CPMM_TEST_PROGRAM, destination, wallet,
