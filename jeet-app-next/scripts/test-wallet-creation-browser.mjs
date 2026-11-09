@@ -131,6 +131,7 @@ try {
     "app",
     {
       JEET_LOCAL_WALLET: "1",
+      JEET_MARKET_DB: dir + "/market.sqlite",
       JEET_METADATA_STORAGE: livePinata ? "pinata" : "local-workspace",
       JEET_LOCAL_WALLET_RPC: rpcUrl,
       JEET_LOCAL_WALLET_GENESIS: genesis,
@@ -548,6 +549,19 @@ try {
       assert.equal(await balance(), oldBalance + amount - BigInt(tx.meta.fee));
       await expect(page.getByRole("region", { name: "Confirmed curve activity" })
         .getByText(sig, { exact: false })).toBeVisible({ timeout: 15000 });
+      if (process.env.JEET_BROWSER_ARCHIVE === "1") {
+        const url = appUrl + "/api/market-history?" + new URLSearchParams({ mint, signature: sig });
+        await expect.poll(async () => {
+          const result = await (await page.request.get(url)).json();
+          return result.events?.map(event => [event.signature, event.kind, event.lamports]);
+        }, { timeout: 45000, intervals: [2000, 3000] }).toEqual([[sig, "creator-claim", String(amount)]]);
+        const history = page.getByRole("region", { name: "Confirmed curve activity" });
+        await history.getByRole("button", { name: "Show finalized archive" }).click();
+        await history.getByRole("textbox", { name: "Search transaction signature" }).fill(sig);
+        await history.getByRole("button", { name: "Search archive" }).click();
+        await expect(history.getByText(sig, { exact: false })).toBeVisible();
+        pass(width + "px finalized creator claim reconciled from archive");
+      }
       evidence.transactions.push({ width, mint, kind: "creator-claim", signature: sig, amount });
       pass(width + "px verified discovery, curve chart and wallet-signed creator fee claim");
     }

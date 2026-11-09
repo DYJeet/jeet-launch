@@ -392,3 +392,17 @@ test("reconciliation never clears a newer saved signature", async () => {
   assert.equal(await c.executor.reconcile(wallet.address), old.signature);
   assert.equal(c.data.get(key).signature, newer.signature);
 });
+
+test("a wallet signature for the wrong key cannot broadcast or create a pending receipt", async () => {
+  const c = context();
+  const impostor = await crypto.subtle.generateKey("Ed25519", false, ["sign"]);
+  c.state.connected.signer = {
+    address: wallet.address,
+    signTransactions: async txs => Promise.all(txs.map(async tx => ({
+      [wallet.address]: new Uint8Array(await crypto.subtle.sign("Ed25519", impostor.privateKey, tx.messageBytes)),
+    }))),
+  };
+  await assert.rejects(c.executor.execute(c.ix, 0n), /invalid signature/);
+  assert.ok(!calls.includes("sendTransaction"));
+  assert.equal(c.data.size, 0);
+});

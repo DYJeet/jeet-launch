@@ -53,7 +53,7 @@ export default function CurveHistory({ executor, curve, mint, decimals, revision
             if (event.kind === "buy" || event.kind === "sell") trades.push({
               ...receipt, sell: event.kind === "sell", tokens: BigInt(event.tokens!), raw: BigInt(event.lamports),
             });
-            else claims.push({ ...receipt, beneficiary: event.wallet ?? "", platform: event.kind === "platform-claim",
+            else claims.push({ ...receipt, beneficiary: address(event.wallet ?? ""), platform: event.kind === "platform-claim",
               paid: BigInt(event.lamports), withdrawn: 0n });
           }
           if (!controller.signal.aborted) setResult({ key, trades, claims, next: archive.next, archive });

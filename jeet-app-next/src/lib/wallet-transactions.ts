@@ -8,6 +8,8 @@ import {
   getBase64Decoder,
   getBase64EncodedWireTransaction,
   getSignatureFromTransaction,
+  getPublicKeyFromAddress,
+  verifySignature,
   getTransactionEncoder,
   setTransactionMessageFeePayerSigner,
   setTransactionMessageLifetimeUsingBlockhash,
@@ -380,6 +382,12 @@ export class WalletTransactionExecutor {
         throw Error(
           "Wallet changed the reviewed transaction; nothing submitted.",
         );
+      const validSignatures = await Promise.all(Object.keys(compiled.signatures).map(async key => {
+        const bytes = signed.signatures[address(key)];
+        return bytes && await verifySignature(await getPublicKeyFromAddress(address(key)), bytes, signed.messageBytes);
+      }));
+      if (validSignatures.some(valid => !valid))
+        throw Error("Wallet returned an invalid signature. Nothing submitted.");
       signal?.throwIfAborted();
       this.current(wallet);
       await this.network();
