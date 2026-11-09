@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { launchViews, type IndexedLaunch, type LaunchView } from "@/lib/launch-index";
 import { formatUnits } from "@/lib/wallet-environment";
 
-type Page = { rows: IndexedLaunch[]; total: number; next?: string; cursorExpired: boolean; indexedAt: number };
+type Page = { rows: IndexedLaunch[]; total: number; next?: string; cursorExpired: boolean; indexedAt: number; stale?: boolean };
 
 export default function LaunchDiscovery({ compact = false }: { compact?: boolean }) {
   const [view, setView] = useState<LaunchView>("New");
@@ -52,7 +52,7 @@ export default function LaunchDiscovery({ compact = false }: { compact?: boolean
     {page?.cursorExpired && <p role="status">The listing changed. <button className="min-h-11 text-[#9cff43] underline"
       onClick={() => setCursors([])}>Back to first page</button></p>}
     {page && !page.cursorExpired && <div aria-live="polite">
-      <p className="text-xs text-white/60">Read at {new Date(page.indexedAt).toLocaleTimeString()} · confirmed snapshot
+      <p className="text-xs text-white/60">Read at {new Date(page.indexedAt).toLocaleTimeString()} · {page.stale ? "saved snapshot (RPC unavailable)" : "confirmed snapshot"}
         <button className="ml-2 min-h-11 text-[#9cff43] underline" onClick={() => { setCursors([]); setRetry(n => n + 1); }}>Refresh listings</button>
       </p>
       <p className="mb-4 text-sm text-white/60">{page.total === 0 ? "No verified launches match this view." : `${page.total} verified launches · local validator`}</p>
