@@ -2,6 +2,15 @@
 
 Baseline: main `2eb12a91af071ef23f313a28e864c25a49fbe712`; release `dad808cb8c2dc83d9a33f5964d1a53db10849baa`. Existing browser and financial evidence is in [release readiness](RELEASE-READINESS.md) and [Milestone D](MILESTONE-D-LOCAL-GRADUATION.md).
 
+## Finalized V6 Devnet checkpoint
+
+- Artifact source commit `c5fdfcfd43f9ad7281482f7f52a7a51c3db6cc36`.
+- Program `Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D`, ProgramData `4UHVfUkA2HxHRo11hcN3FH8QjX6ZYznikSvA678cxQVW`, upgrade authority `DQeELacwEfej1r9g5pt4eQQcetxe3TAgVGD9RJSutJNW`.
+- [Finalized deployment transaction](https://explorer.solana.com/tx/3jXxRGg7fF65faChpG34qpsJ7WbdSpkQi1yeZ8FcS3XpeWS2q6vae9msAqshkPNTgSV1SurpBMxskUPCHLtgSN1N?cluster=devnet) at slot 520505880. ProgramData's first 308,776 payload bytes match SHA-256 `fb700c1fd4eb9bafa76887f8d5083649933beda4e55821b9adfd2e9f54d22bfc`.
+- Reproduce the read-only check on the verified Devnet genesis. Inspect the executable and ProgramData loader accounts with finalized `getAccountInfo`. Hash 308,776 bytes starting at byte 45 of ProgramData. Run `simulateTransaction` on a message with an empty instruction to the program, signature verification disabled, and recent blockhash replacement enabled. The runtime invoked JeeT and returned the expected `InvalidInstructionData` at instruction zero. No transaction was broadcast by this smoke test.
+- Live rent quote for mint, three token accounts, custody, opening, curve, two fee vaults and graduation terms totaled 0.014605 SOL. This excludes Metaplex metadata, trade and receipt funding, and fees. The reference CPMM setup account rents plus the live 0.15 SOL pool fee total 0.179281120 SOL, before curve-funded liquidity, fees, and swaps. Recheck account sizes, reserves and fee configuration against the actual test launch.
+- The approved 4.75 SOL was a deployment-only budget. The payer held 1.607658880 SOL after deployment and at the acceptance preflight. Paid lifecycle testing requires its own budget and disposable test signer addresses. Devnet frontend signing remains gated.
+
 ## Read-only preflight
 
 Run from `jeet-app-next` with locked npm dependencies installed.
