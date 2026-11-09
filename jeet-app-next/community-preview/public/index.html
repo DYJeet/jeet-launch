@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b08">
+  <meta name="description" content="Explore real Solana trending pools in the read-only JeeT Launch community preview.">
+  <title>JeeT Launch · Community Preview</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header>
+    <div class="shell top">
+      <a class="brand" href="#home"><span aria-hidden="true">🐱</span> JeeT <b>Launch</b></a>
+      <nav aria-label="Main navigation">
+        <a href="#trending">Explore</a><a href="#launches">JeeT Launches</a><a href="#create">Create</a>
+      </nav>
+    </div>
+    <div class="banner">Early Preview — Live Market Data / Trading Disabled</div>
+  </header>
+
+  <main id="main" class="shell">
+    <section id="home" class="hero">
+      <div>
+        <p class="eyebrow">SOLANA · COMMUNITY PREVIEW</p>
+        <h1>FAIR LAUNCHES.<br><em>NO HIDDEN BUNDLES.</em></h1>
+        <p class="intro">See what’s trending on Solana and take a first look at JeeT Launch.</p>
+        <div class="actions"><a class="primary" href="#trending">Explore Solana Trending →</a><a class="secondary" href="#create">Preview creation</a></div>
+      </div>
+      <img src="/jeet-promo.webp" alt="JeeT the Cat giving a thumbs up" width="512" height="640" fetchpriority="high">
+    </section>
+
+    <section id="trending" aria-labelledby="trending-title">
+      <p class="eyebrow">EXTERNAL MARKETS · SOLANA</p>
+      <h2 id="trending-title">Solana Trending</h2>
+      <p class="intro">Trending pools from <a href="https://www.geckoterminal.com/solana/pools" target="_blank" rel="noopener">GeckoTerminal</a>. One pool per base token, in provider order by default.</p>
+      <div class="controls">
+        <label>Search this snapshot<input id="search" type="search" placeholder="Name, ticker, or mint" autocomplete="off"></label>
+        <label>Sort by<select id="sort"><option value="">Provider order</option><option value="volume">24h volume</option><option value="liquidity">Pool liquidity</option><option value="change24h">24h change</option><option value="marketCap">Market cap</option></select></label>
+        <label>Min. pool liquidity<select id="liquidity"><option value="0">Any liquidity</option><option value="10000">$10,000</option><option value="50000">$50,000</option><option value="100000">$100,000</option></select></label>
+      </div>
+      <p class="status" id="feed-status" role="status">Loading Solana markets…</p>
+      <div id="markets" class="cards"></div>
+    </section>
+
+    <section id="detail" hidden aria-labelledby="detail-title">
+      <a href="#trending">← Solana Trending</a>
+      <p class="eyebrow detail-tag">EXTERNAL SOLANA MARKET · READ ONLY</p>
+      <h2 id="detail-title">Market detail</h2>
+      <div id="detail-market"></div>
+      <article class="panel chart">
+        <h3>Hourly price candles <span class="muted">USD</span></h3>
+        <p class="status" id="chart-status" role="status">Loading hourly OHLCV…</p>
+        <div id="chart"></div>
+      </article>
+    </section>
+
+    <section id="launches" class="panel" hidden>
+      <p class="eyebrow">JEET LAUNCHPAD</p>
+      <h2>Launched on JeeT</h2>
+      <p class="intro">JeeT launch listings are unavailable in this public preview. Solana Trending displays external markets.</p>
+      <a href="#trending">Browse Solana Trending →</a>
+    </section>
+
+    <section id="create" hidden>
+      <p class="eyebrow">READ-ONLY CREATION PREVIEW</p>
+      <h2>Create a token</h2>
+      <p class="intro">Try the launch form. Draft fields stay in this page and reset on reload.</p>
+      <div class="create-grid">
+        <div class="panel draft-fields">
+          <h3>Token details</h3>
+          <label>Token name<input id="draft-name" maxlength="32" placeholder="e.g. JeeT the Cat" autocomplete="off"></label>
+          <label>Ticker<input id="draft-ticker" maxlength="10" placeholder="e.g. JEET" autocomplete="off"></label>
+          <label>Description<textarea id="draft-desc" maxlength="500" rows="4" placeholder="Tell people about your token"></textarea></label>
+          <label>Website (optional)<input type="url" placeholder="https://example.com" autocomplete="off"></label>
+          <label>Token image (optional)<input id="draft-image" type="file" accept="image/png,image/jpeg,image/webp"></label>
+          <p class="status" id="image-status" role="status">PNG, JPEG or WebP up to 5 MB.</p>
+          <button class="primary" disabled>Create token · Disabled</button>
+        </div>
+        <article class="panel draft-card">
+          <p class="eyebrow">YOUR DRAFT</p>
+          <img id="draft-art" alt="Your local token image" width="80" height="80" hidden>
+          <h3 id="preview-name">Your token name</h3>
+          <p id="preview-ticker" class="eyebrow">TICKER</p>
+          <p id="preview-desc" class="muted">Your description appears here.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell"><strong>JeeT Launch</strong><span><a href="https://www.geckoterminal.com/" target="_blank" rel="noopener">Market data from GeckoTerminal</a> · <a href="https://www.coingecko.com/" target="_blank" rel="noopener">Powered by CoinGecko</a></span></footer>
+</body>
+</html>
