@@ -3,6 +3,7 @@ import { DatabaseSync } from "node:sqlite";
 import { mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import type { IndexedLaunch } from "./launch-index.ts";
+import type { BuildingReceipt } from "./still-building.ts";
 
 export type MarketEvent = {
   id: string;
@@ -89,7 +90,7 @@ export class MarketStore {
         row.volume.padStart(21, "0"), row.progress, Number(row.migrated), String(slot).padStart(20, "0"),
         observed, JSON.stringify({ ...row, observedAt: observed, observedSlot: String(slot) }));
   }
-  launchPage(network: string, params: URLSearchParams) {
+  launchPage(network: string, params: URLSearchParams, receipts?: ReadonlyMap<string, BuildingReceipt>) {
     const view = params.get("view");
     const query = (params.get("q") ?? "").trim().slice(0, 100).toLowerCase();
     const creator = params.get("creator") ?? "";
@@ -100,6 +101,10 @@ export class MarketStore {
       view === "Final Stretch" ? "migrated=0 AND progress>=90" : view === "Migrated" ? "migrated=1" : "1";
     const filters = ["network=?", stage];
     const args = [network];
+    if (view === "Still Building") {
+      filters.push("mint IN (SELECT value FROM json_each(?))");
+      args.push(JSON.stringify([...receipts?.keys() ?? []]));
+    }
     if (creator) { filters.push("creator=?"); args.push(creator); }
     if (query) {
       filters.push("(instr(lower(name),?) OR instr(lower(symbol),?) OR instr(lower(mint),?) OR instr(lower(creator),?))");
@@ -109,7 +114,7 @@ export class MarketStore {
     const total = Number(this.db.prepare(`SELECT count(*) AS total FROM launches WHERE ${where}`).get(...args)?.total);
     const cursor = params.get("after");
     const version = rank ? String(this.db.prepare("SELECT version FROM launch_rank_versions WHERE network=?")
-      .get(network)?.version ?? 0) : "0";
+      .get(network)?.version ?? 0) : view === "Still Building" ? "building" : "0";
     const [cursorVersion, mint] = cursor?.split(".") ?? [];
     const anchor = cursorVersion === version && mint && mint.length <= 44
       ? this.db.prepare(`SELECT ${sort} FROM launches WHERE ${where} AND mint=?`).get(...args, mint)
@@ -120,6 +125,9 @@ export class MarketStore {
     const records = this.db.prepare(`SELECT document FROM launches WHERE ${where} ${bounds} ORDER BY ${order} LIMIT ?`)
       .all(...args, ...Object.values(anchor ?? {}), limit + 1);
     const rows: IndexedLaunch[] = records.slice(0, limit).map(record => JSON.parse(String(record.document)));
+    if (view === "Still Building") {
+      for (const row of rows) row.buildingReceipt = receipts?.get(row.mint);
+    }
     return { rows, total, cursorExpired: false, next: records.length > limit ? version + "." + rows.at(-1)!.mint : undefined };
   }
   commitDiscovery(network: string, stream: string, previous: Checkpoint, next: Checkpoint,

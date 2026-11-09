@@ -1,4 +1,6 @@
-export const launchViews = ["New", "Trending", "Final Stretch", "Migrated"] as const;
+import type { BuildingReceipt } from "./still-building.ts";
+
+export const launchViews = ["New", "Trending", "Final Stretch", "Migrated", "Still Building"] as const;
 export type LaunchView = typeof launchViews[number];
 export type IndexedLaunch = {
   mint: string;
@@ -12,6 +14,7 @@ export type IndexedLaunch = {
   reserve: string;
   migrated: boolean;
   eligible: boolean;
+  buildingReceipt?: BuildingReceipt;
   observedAt?: number;
   observedSlot?: string;
 };
