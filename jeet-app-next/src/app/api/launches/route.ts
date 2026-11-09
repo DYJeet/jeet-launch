@@ -1,5 +1,5 @@
 import { address, getAddressDecoder, getBase64Encoder, signature } from "@solana/kit";
-import { localWalletConfiguration } from "@/lib/local-wallet-server";
+import { localReadConfiguration } from "@/lib/local-wallet-server";
 import { walletLaunchAddresses } from "@/lib/wallet-launch";
 import { readWalletLaunch } from "@/lib/wallet-launch-flow";
 import { WalletTransactionExecutor } from "@/lib/wallet-transactions";
@@ -38,7 +38,7 @@ async function observe(executor: WalletTransactionExecutor, mint: ReturnType<typ
   } satisfies LaunchObservation;
 }
 
-async function update(config: ReturnType<typeof localWalletConfiguration>, network: string) {
+async function update(config: ReturnType<typeof localReadConfiguration>, network: string) {
   const store = marketStore();
   const executor = new WalletTransactionExecutor(config.environment, config.url,
     () => ({ status: "disconnected", connected: null }),
@@ -91,7 +91,7 @@ async function update(config: ReturnType<typeof localWalletConfiguration>, netwo
 
 export async function GET(request: Request) {
   let config;
-  try { config = localWalletConfiguration(request); }
+  try { config = localReadConfiguration(request); }
   catch { return Response.json({ error: "Verified index is unavailable outside the configured local validator." }, { status: 404 }); }
   const network = config.environment.genesis + ":" + config.environment.program;
   try {

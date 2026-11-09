@@ -7,17 +7,6 @@ import {
 export function localWalletConfiguration(request: Request) {
   if (process.env.JEET_LOCAL_WALLET !== "1")
     throw Error("Local wallet mode is disabled.");
-  const url = new URL(process.env.JEET_LOCAL_WALLET_RPC ?? "");
-  if (
-    url.protocol !== "http:" ||
-    url.hostname !== "127.0.0.1" ||
-    url.username ||
-    url.password ||
-    url.pathname !== "/" ||
-    url.search ||
-    url.hash
-  )
-    throw Error("Expected an explicit loopback HTTP RPC.");
   const incoming = new URL(request.url);
   if (!["127.0.0.1", "localhost"].includes(incoming.hostname))
     throw Error("Local wallet API requires a loopback host.");
@@ -36,6 +25,38 @@ export function localWalletConfiguration(request: Request) {
     request.headers.get("sec-fetch-site") === "cross-site"
   )
     throw Error("Cross-origin wallet request rejected.");
+  return configuredLoopback();
+}
+
+export function previewEnabled() {
+  return process.env.NODE_ENV === "development" && process.env.JEET_LOCAL_WALLET !== "1" &&
+    /^[a-z0-9-]+-3017\.app\.github\.dev$/.test(process.env.JEET_PREVIEW_HOST ?? "");
+}
+
+export function localReadConfiguration(request: Request) {
+  if (!previewEnabled()) return localWalletConfiguration(request);
+  const host = process.env.JEET_PREVIEW_HOST;
+  const incoming = new URL(request.url);
+  const origin = request.headers.get("origin");
+  if (request.method !== "GET" || request.headers.get("host") !== host ||
+      ![host, "localhost", "127.0.0.1"].includes(incoming.hostname) ||
+      (origin && origin !== "https://" + host) || request.headers.get("sec-fetch-site") === "cross-site")
+    throw Error("Private preview request rejected.");
+  return configuredLoopback();
+}
+
+function configuredLoopback() {
+  const url = new URL(process.env.JEET_LOCAL_WALLET_RPC ?? "");
+  if (
+    url.protocol !== "http:" ||
+    url.hostname !== "127.0.0.1" ||
+    url.username ||
+    url.password ||
+    url.pathname !== "/" ||
+    url.search ||
+    url.hash
+  )
+    throw Error("Expected an explicit loopback HTTP RPC.");
   const environment = validateWalletEnvironment({
     network: "local",
     chain: "solana:devnet",

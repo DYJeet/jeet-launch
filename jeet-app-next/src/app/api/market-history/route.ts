@@ -1,5 +1,5 @@
 import { address, createSolanaRpc, getBase64Encoder, signature } from "@solana/kit";
-import { localWalletConfiguration, checkedLocalGenesis } from "@/lib/local-wallet-server";
+import { localReadConfiguration, checkedLocalGenesis } from "@/lib/local-wallet-server";
 import { marketStore, type MarketEvent } from "@/lib/market-store";
 import { historyBatchSize, readHistoryPage } from "@/lib/market-ingest";
 import { walletLaunchAddresses } from "@/lib/wallet-launch";
@@ -14,7 +14,7 @@ const noCache = { "Cache-Control": "no-store" };
 
 export async function GET(request: Request) {
   let config;
-  try { config = localWalletConfiguration(request); }
+  try { config = localReadConfiguration(request); }
   catch { return Response.json({ error: "Local history is disabled." }, { status: 404 }); }
   const params = new URL(request.url).searchParams;
   const venue = params.get("venue");
