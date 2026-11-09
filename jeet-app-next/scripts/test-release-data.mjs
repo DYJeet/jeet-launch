@@ -136,3 +136,43 @@ test("discovery pages 137 stored launches without duplicates and isolates chains
     store.close();
   }
 });
+
+test("Still Building includes only indexed, recent, reviewed milestones for the requested network", async () => {
+  const { activeBuildingReceipts } = await import("../src/lib/still-building.ts");
+  const mint = n => getAddressDecoder().decode(Buffer.alloc(32, n));
+  const entry = (n, date, extra = {}) => ({
+    network: "chain", mint: mint(n), title: "Community tool " + n, url: "https://example.com/evidence", date, ...extra,
+  });
+  const now = Date.parse("2026-11-09T00:00:00Z");
+  const store = new MarketStore(":memory:");
+  const original = process.env.JEET_STILL_BUILDING_RECEIPTS;
+  try {
+    process.env.JEET_STILL_BUILDING_RECEIPTS = JSON.stringify([
+      entry(1, "2026-10-31"), entry(1, "2026-11-01", { title: "Latest milestone" }),
+      entry(2, "2026-11-02"), entry(3, "2026-10-10"), entry(4, "2026-11-10"),
+      entry(5, "2026-11-03", { url: "javascript:alert(1)" }), entry(6, "2026-11-03", { network: "other" }),
+      entry(7, "2026-11-03"), entry(8, "2026-10-32"),
+    ]);
+    store.writeLaunches("chain", [1, 2, 3, 4, 5, 6, 8].map(n => ({ slot: 10n, row: {
+      mint: mint(n), name: "Launch " + n, symbol: "T" + n, progress: 0, reserve: "0",
+      eligible: false, migrated: false, volume: "0", activationSlot: String(n),
+    } })), now);
+    const receipts = activeBuildingReceipts("chain", now);
+    assert.deepEqual([...receipts.keys()], [mint(1), mint(2), mint(7)]);
+    const page = (query, featured = receipts) =>
+      store.launchPage("chain", new URLSearchParams("view=Still+Building&" + query), featured);
+    const first = page("limit=1");
+    assert.equal(first.total, 2);
+    assert.equal(first.rows[0].mint, mint(2));
+    const second = page("limit=1&after=" + first.next);
+    assert.equal(second.rows[0].buildingReceipt.title, "Latest milestone");
+    assert.equal(page("q=Launch+1").total, 1);
+    assert.equal(page("after=" + first.next, new Map()).cursorExpired, true);
+    assert.equal(page("", new Map()).total, 0);
+    assert.equal(store.launchPage("chain", new URLSearchParams("view=New"), receipts).total, 7);
+  } finally {
+    store.close();
+    if (original === undefined) delete process.env.JEET_STILL_BUILDING_RECEIPTS;
+    else process.env.JEET_STILL_BUILDING_RECEIPTS = original;
+  }
+});

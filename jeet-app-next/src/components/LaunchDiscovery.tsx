@@ -49,10 +49,13 @@ export default function LaunchDiscovery({ compact = false }: { compact?: boolean
       aria-label="Search verified launches" placeholder="Search name, ticker, or mint"
       className="w-full max-w-md rounded-xl border border-white/15 bg-white/5 p-3 text-sm" />}
     <div className="flex flex-wrap gap-2">
-      {launchViews.map(tab => <button key={tab} aria-pressed={view === tab} onClick={() => { setView(tab); setCursors([]); setPoll(0); }}
+      {launchViews.filter(tab => !compact || tab !== "Still Building").map(tab => <button key={tab} aria-pressed={view === tab} onClick={() => { setView(tab); setCursors([]); setPoll(0); }}
         className={`min-h-11 rounded-xl border border-white/15 px-4 py-2 text-sm font-bold ${view === tab ? "bg-[#9cff43] text-black" : "text-white/75"}`}>{tab}</button>)}
     </div>
     {view === "Trending" && <p className="text-xs text-white/60">Ranked by cumulative curve turnover. Raydium swaps are excluded.</p>}
+    {view === "Still Building" && <p className="text-xs text-white/60">
+      Discover launches with reviewed milestones from the past 30 days. Open a launch to see the evidence.
+    </p>}
     {!current && <p role="status">Loading verified launches…</p>}
     {current?.error && <div className="flex flex-wrap items-center gap-3 text-sm"><p role="alert">{current.error}</p>
       <button className="text-[#9cff43] underline" onClick={() => setRetry(n => n + 1)}>Retry</button></div>}
@@ -64,11 +67,14 @@ export default function LaunchDiscovery({ compact = false }: { compact?: boolean
       </p>
       {page.backfilling && <p className="text-xs text-white/65">Indexing older finalized launch activity. Results may be partial.</p>}
       {page.gap && <p className="text-xs text-amber-200">RPC history has a coverage gap. Some launches may be missing.</p>}
-      <p className="mb-4 text-sm text-white/60">{page.total === 0 ? "No verified launches match this view." : `${page.total} verified launches · local validator`}</p>
+      <p className="mb-4 text-sm text-white/60">{page.total > 0
+        ? `${page.total} verified launches · local validator`
+        : view === "Still Building" ? "No launches with recent reviewed milestones match this search." : "No verified launches match this view."}</p>
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {page.rows.map(row => <Link key={row.mint} href={`/token/${row.mint}`}
           className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#9cff43]/50">
           <h3 className="break-words text-lg font-black">{row.name} <span className="text-sm text-[#9cff43]">{row.symbol}</span></h3>
+          {row.buildingReceipt && <p className="mt-2 break-words text-sm text-[#9cff43]">{row.buildingReceipt.title}</p>}
           <p className="mt-2 break-all text-xs text-white/60">{row.mint}</p>
           <p className="mt-3 text-sm">{row.migrated ? "Migrated" : row.eligible ? "Graduation eligible" : `${row.progress}% curve progress`}</p>
           <p className="mt-1 text-xs text-white/60">{formatUnits(BigInt(row.volume))} SOL cumulative curve turnover</p>

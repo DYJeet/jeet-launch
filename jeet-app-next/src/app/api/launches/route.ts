@@ -7,6 +7,7 @@ import { formatUnits } from "@/lib/wallet-environment";
 import { marketStore, type LaunchObservation } from "@/lib/market-store";
 import { historyBatchSize, readHistoryPage } from "@/lib/market-ingest";
 import { activationMints } from "@/lib/launch-discovery-source";
+import { activeBuildingReceipts } from "@/lib/still-building";
 import { ammHistoryPool } from "@/lib/amm-history";
 
 export const dynamic = "force-dynamic";
@@ -115,7 +116,8 @@ export async function GET(request: Request) {
     const indexedAt = store.discoveryUpdatedAt(network);
     if (indexedAt === undefined) return Response.json({ error: "Launch index is temporarily unavailable. Retry shortly." }, { status: 503 });
     const checkpoint = store.checkpoint(network, stream);
-    return Response.json({ ...store.launchPage(network, params), indexedAt,
+    const receipts = params.get("view") === "Still Building" ? activeBuildingReceipts(network) : undefined;
+    return Response.json({ ...store.launchPage(network, params, receipts), indexedAt,
       stale: job.failures > 0, backfilling: !!checkpoint.before || !checkpoint.backfilled, gap: !!checkpoint.gap,
     }, { headers: noCache });
   } catch {
