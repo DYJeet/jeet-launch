@@ -12,30 +12,6 @@ export type IndexedLaunch = {
   reserve: string;
   migrated: boolean;
   eligible: boolean;
+  observedAt?: number;
+  observedSlot?: string;
 };
-
-export function indexPage(rows: IndexedLaunch[], params: URLSearchParams) {
-  const view = params.get("view");
-  const query = (params.get("q") ?? "").trim().slice(0, 100).toLowerCase();
-  const offset = Math.min(64, Math.max(0, Number.parseInt(params.get("offset") ?? "0", 10) || 0));
-  const limit = Math.min(12, Math.max(1, Number.parseInt(params.get("limit") ?? "12", 10) || 12));
-  const cmp = (a: string, b: string) => BigInt(a) < BigInt(b) ? 1 : BigInt(a) > BigInt(b) ? -1 : 0;
-  const creator = params.get("creator");
-  const filtered = rows.filter(row =>
-    (!creator || row.creator === creator) &&
-    (!query || [row.name, row.symbol, row.mint, row.creator ?? ""].some(value => value.toLowerCase().includes(query))) &&
-    (view === "Migrated" ? row.migrated :
-      view === "Final Stretch" ? !row.migrated && row.progress >= 90 :
-      view === "Trending" ? BigInt(row.volume) > 0n : true));
-  filtered.sort((a, b) => (
-    view === "Trending" ? cmp(a.volume, b.volume) :
-    view === "Final Stretch" ? b.progress - a.progress : 0
-  ) || cmp(a.activationSlot, b.activationSlot) || a.mint.localeCompare(b.mint));
-  const after = params.get("after");
-  const anchor = after ? filtered.findIndex(row => row.mint === after) : -1;
-  const cursorExpired = !!after && anchor === -1;
-  const start = after ? anchor + 1 : offset;
-  const page = cursorExpired ? [] : filtered.slice(start, start + limit);
-  return { rows: page, total: filtered.length, offset: start, limit, cursorExpired,
-    next: start + page.length < filtered.length ? page.at(-1)?.mint : undefined };
-}

@@ -5,13 +5,14 @@ import { useEffect, useState } from "react";
 import { launchViews, type IndexedLaunch, type LaunchView } from "@/lib/launch-index";
 import { formatUnits } from "@/lib/wallet-environment";
 
-type Page = { rows: IndexedLaunch[]; total: number; next?: string; cursorExpired: boolean; indexedAt: number; stale?: boolean };
+type Page = { rows: IndexedLaunch[]; total: number; next?: string; cursorExpired: boolean; indexedAt: number; stale?: boolean; backfilling?: boolean; gap?: boolean };
 
 export default function LaunchDiscovery({ compact = false }: { compact?: boolean }) {
   const [view, setView] = useState<LaunchView>("New");
   const [query, setQuery] = useState("");
   const [cursors, setCursors] = useState<string[]>([]);
   const [retry, setRetry] = useState(0);
+  const [poll, setPoll] = useState(0);
   const [result, setResult] = useState<{ key: string; page?: Page; error?: string }>();
   const params = new URLSearchParams({ view, q: query, limit: compact ? "4" : "12" });
   const cursor = cursors.at(-1);
@@ -21,7 +22,7 @@ export default function LaunchDiscovery({ compact = false }: { compact?: boolean
     const controller = new AbortController();
     const timer = setTimeout(async () => {
       try {
-        const response = await fetch("/api/launches?" + key, {
+        const response = await fetch("/api/launches?" + key + "&refresh=" + poll, {
           signal: AbortSignal.any([controller.signal, AbortSignal.timeout(20000)]),
         });
         if (response.status === 404) throw Error("Verified index is unavailable outside the configured local validator.");
@@ -33,9 +34,15 @@ export default function LaunchDiscovery({ compact = false }: { compact?: boolean
       }
     }, 200);
     return () => { clearTimeout(timer); controller.abort(); };
-  }, [key]);
+  }, [key, poll]);
   const current = result?.key === key ? result : null;
   const page = current?.page;
+  const shouldPoll = !cursor && page && (page.backfilling || page.stale || page.total === 0);
+  useEffect(() => {
+    if (!shouldPoll) return;
+    const timer = setTimeout(() => setPoll(n => n + 1), 3500);
+    return () => clearTimeout(timer);
+  }, [shouldPoll, poll]);
 
   return <div className="space-y-4">
     {!compact && <input value={query} maxLength={100} onChange={e => { setQuery(e.target.value); setCursors([]); }}
@@ -52,9 +59,11 @@ export default function LaunchDiscovery({ compact = false }: { compact?: boolean
     {page?.cursorExpired && <p role="status">The listing changed. <button className="min-h-11 text-[#9cff43] underline"
       onClick={() => setCursors([])}>Back to first page</button></p>}
     {page && !page.cursorExpired && <div aria-live="polite">
-      <p className="text-xs text-white/60">Read at {new Date(page.indexedAt).toLocaleTimeString()} · {page.stale ? "saved snapshot (RPC unavailable)" : "confirmed snapshot"}
+      <p className="text-xs text-white/60">Read at {new Date(page.indexedAt).toLocaleTimeString()} · {page.stale ? "saved snapshot (RPC update delayed)" : "confirmed snapshot"}
         <button className="ml-2 min-h-11 text-[#9cff43] underline" onClick={() => { setCursors([]); setRetry(n => n + 1); }}>Refresh listings</button>
       </p>
+      {page.backfilling && <p className="text-xs text-white/65">Indexing older finalized launch activity. Results may be partial.</p>}
+      {page.gap && <p className="text-xs text-amber-200">RPC history has a coverage gap. Some launches may be missing.</p>}
       <p className="mb-4 text-sm text-white/60">{page.total === 0 ? "No verified launches match this view." : `${page.total} verified launches · local validator`}</p>
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {page.rows.map(row => <Link key={row.mint} href={`/token/${row.mint}`}
@@ -63,6 +72,7 @@ export default function LaunchDiscovery({ compact = false }: { compact?: boolean
           <p className="mt-2 break-all text-xs text-white/60">{row.mint}</p>
           <p className="mt-3 text-sm">{row.migrated ? "Migrated" : row.eligible ? "Graduation eligible" : `${row.progress}% curve progress`}</p>
           <p className="mt-1 text-xs text-white/60">{formatUnits(BigInt(row.volume))} SOL cumulative curve turnover</p>
+          {row.observedAt && <p className="mt-1 text-xs text-white/60">Observed {new Date(row.observedAt).toLocaleTimeString()}</p>}
         </Link>)}
       </div>
       {!compact && (cursor || page.next) && <div className="mt-5 flex gap-4">

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { indexPage } from "../src/lib/launch-index.ts";
+import { MarketStore } from "../src/lib/market-store.ts";
 import { curveTradeEvents, feeClaimEvents } from "../src/lib/curve-history.ts";
 import { getAddressDecoder } from "@solana/kit";
 
@@ -10,16 +10,28 @@ test("launch views filter stages and rank with exact turnover and slot values", 
     { mint: "a", name: "Soba", symbol: "S", progress: 100, volume: "9007199254740993", activationSlot: "2", migrated: true },
     { mint: "c", name: "Udon", symbol: "U", progress: 4, volume: "0", activationSlot: "3" },
   ];
-  const mints = query => indexPage(rows, new URLSearchParams(query)).rows.map(row => row.mint);
-  assert.deepEqual(mints("view=New"), ["c", "a", "b"]);
-  assert.deepEqual(mints("view=Trending"), ["a", "b"]);
-  assert.deepEqual(mints("view=Final+Stretch"), ["b"]);
-  assert.deepEqual(mints("view=Migrated&q=SOBA"), ["a"]);
-  assert.deepEqual(mints("view=New&offset=1&limit=1"), ["a"]);
-  const first = indexPage(rows, new URLSearchParams("view=New&limit=1"));
-  assert.equal(first.next, "c");
-  assert.deepEqual(mints("view=New&limit=1&after=c"), ["a"]);
-  assert.equal(indexPage(rows, new URLSearchParams("view=Migrated&after=c")).cursorExpired, true);
+  const store = new MarketStore(":memory:");
+  try {
+    store.writeLaunches("chain", rows.map(row => ({ row: {
+      progress: 0, reserve: "0", eligible: false, migrated: false, ...row,
+    }, slot: 5n })), 100);
+    const page = query => store.launchPage("chain", new URLSearchParams(query));
+    const mints = query => page(query).rows.map(row => row.mint);
+    assert.deepEqual(mints("view=New"), ["c", "a", "b"]);
+    assert.deepEqual(mints("view=Trending"), ["a", "b"]);
+    assert.deepEqual(mints("view=Final+Stretch"), ["b"]);
+    assert.deepEqual(mints("view=Migrated&q=SOBA"), ["a"]);
+    const first = page("view=New&limit=1");
+    assert.equal(first.next, "0.c");
+    assert.deepEqual(mints("view=New&limit=1&after=" + first.next), ["a"]);
+    assert.equal(page("view=Migrated&after=" + first.next).cursorExpired, true);
+    const ranked = page("view=Trending&limit=1");
+    store.writeLaunches("chain", [{ row: { migrated: false, ...rows[0], volume: "9007199254740999" }, slot: 6n }], 200);
+    assert.equal(page("view=Trending&after=" + ranked.next).cursorExpired, true);
+    assert.deepEqual(mints("view=Trending"), ["b", "a"]);
+  } finally {
+    store.close();
+  }
 });
 
 test("curve activity accepts attributable trade logs and ignores nested substitutions", () => {
@@ -96,23 +108,27 @@ test("Raydium history reconciles exact scoped transfers and rejects substituted 
   }
 });
 
-test("discovery pages the full 64-launch local snapshot without duplicate mints", () => {
-  const rows = Array.from({ length: 64 }, (_, i) => ({
-    mint: getAddressDecoder().decode(Buffer.alloc(32, i + 1)), name: "Launch " + i,
-    symbol: "TEST", activationSlot: String(i), volume: "0", progress: 0,
-  }));
-  const seen = new Set();
-  const params = new URLSearchParams("view=New&limit=12");
-  for (let i = 0; i < 6; i++) {
-    const page = indexPage(rows, params);
-    assert.equal(page.cursorExpired, false);
-    for (const row of page.rows) {
-      assert.equal(seen.has(row.mint), false);
-      seen.add(row.mint);
+test("discovery pages 137 stored launches without duplicates and isolates chains", () => {
+  const store = new MarketStore(":memory:");
+  try {
+    const launches = Array.from({ length: 137 }, (_, i) => ({
+      slot: 250n,
+      row: { mint: "mint-" + i, name: "Launch " + i, symbol: "T" + i, activationSlot: String(i),
+        volume: "0", progress: 0, reserve: "0", migrated: false, eligible: false },
+    }));
+    store.writeLaunches("chain", [...launches, ...launches], 100);
+    const params = new URLSearchParams({ limit: "12" });
+    const mints = [];
+    for (;;) {
+      const page = store.launchPage("chain", params);
+      assert.equal(page.total, 137);
+      mints.push(...page.rows.map(row => row.mint));
+      if (!page.next) break;
+      params.set("after", page.next);
     }
-    if (i < 5) assert.ok(page.next);
-    else assert.equal(page.next, undefined);
-    if (page.next) params.set("after", page.next);
+    assert.deepEqual(mints, launches.map(item => item.row.mint).reverse());
+    assert.equal(store.launchPage("other", new URLSearchParams()).total, 0);
+  } finally {
+    store.close();
   }
-  assert.equal(seen.size, 64);
 });

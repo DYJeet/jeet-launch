@@ -568,8 +568,8 @@ try {
         const saved = new MarketStore(dir + "/market.sqlite");
         try {
           const network = genesis + ":" + LOCAL_WALLET_PROGRAM;
-          const snapshot = saved.readDiscovery(network);
-          assert.ok(snapshot?.rows.some(row => row.mint === mint && row.creator === wallet.address));
+          const snapshot = saved.launchPage(network, new URLSearchParams({ q: mint }));
+          assert.ok(snapshot.rows.some(row => row.mint === mint && row.creator === wallet.address));
           for (const trade of evidence.transactions.filter(item => item.mint === mint && item.side)) {
             const { events } = saved.history(network, mint + ":curve", undefined, trade.signature);
             assert.deepEqual(events.map(event => [event.kind, event.tokens, event.lamports]),

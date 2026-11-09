@@ -33,11 +33,11 @@ test("finalized backfill resumes after restart, pages without duplicates and ing
     const original = entries(22);
     await ingestMarketPage(store, "chain-a", stream, source(original));
     assert.equal(store.checkpoint("chain-a", stream).before, "signature-7");
-    store.writeDiscovery("chain-a", { rows: [], indexedAt: 123 });
+    store.commitDiscovery("chain-a", "launches", {}, {}, [], 123);
     store.close();
     store = new MarketStore(path);
-    assert.deepEqual(store.readDiscovery("chain-a"), { rows: [], indexedAt: 123 });
-    assert.equal(store.readDiscovery("chain-b"), undefined);
+    assert.equal(store.discoveryUpdatedAt("chain-a"), 123);
+    assert.equal(store.discoveryUpdatedAt("chain-b"), undefined);
     await assert.rejects(ingestMarketPage(store, "chain-a", stream, source(original, "signature-5")), /Missing/);
     assert.equal(store.checkpoint("chain-a", stream).before, "signature-7");
     assert.equal(store.history("chain-a", stream).events.length, 16);

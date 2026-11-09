@@ -1,6 +1,6 @@
 import { getAddressDecoder, getBase64Encoder } from "@solana/kit";
 
-function programEvents(logs: readonly string[], program: string) {
+export function programEvents(logs: readonly string[], program: string) {
   const stack: string[] = [];
   const events = [];
   for (const log of logs) {
