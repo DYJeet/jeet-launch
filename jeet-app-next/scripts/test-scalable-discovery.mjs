@@ -1,6 +1,7 @@
 // Uses genuine signed transactions and disposable loopback-only accounts.
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
+import { createServer } from "node:http";
 import { once } from "node:events";
 import { mkdtemp, open, writeFile } from "node:fs/promises";
 import { setTimeout as delay } from "node:timers/promises";
@@ -13,6 +14,7 @@ import { initializeLaunchMetadataInstruction, METADATA_PROGRAM } from "../src/li
 import { LOCAL_WALLET_PROGRAM } from "../src/lib/wallet-environment.ts";
 
 const rpcUrl = "http://127.0.0.1:9927";
+const proxyUrl = "http://127.0.0.1:9930";
 const appUrl = "http://127.0.0.1:3027";
 const dir = await mkdtemp("/tmp/jeet-scale-");
 const target = 68;
@@ -79,7 +81,28 @@ async function createLaunch(client, index, rent) {
   const activation = await client.sendTransaction(activateWalletLaunchInstructions(creator, l, p));
   return { mint: mint.address, creator: creator.address, activation: activation.context.signature };
 }
+let rateLimited = false;
+let rateLimitResponses = 0;
+const proxy = createServer(async (request, response) => {
+  try {
+    const chunks = [];
+    for await (const chunk of request) chunks.push(chunk);
+    const body = Buffer.concat(chunks);
+    if (rateLimited && JSON.parse(body).method === "getSignaturesForAddress") {
+      rateLimitResponses++;
+      response.writeHead(429, { "Content-Type": "application/json", "Retry-After": "1" }).end("{}");
+      return;
+    }
+    const upstream = await fetch(rpcUrl, { method: "POST", body, headers: { "Content-Type": "application/json" },
+      signal: AbortSignal.timeout(10000) });
+    response.writeHead(upstream.status, { "Content-Type": "application/json" }).end(await upstream.text());
+  } catch {
+    response.writeHead(502).end();
+  }
+});
 try {
+  proxy.listen(9930, "127.0.0.1");
+  await once(proxy, "listening");
   await start("validator", process.env.JEET_VALIDATOR_BIN ?? "programs/launch-custody/target/toolchain/validator", [
     "--log", "--bind-address", "127.0.0.1", "--rpc-port", "9927", "--faucet-port", "9929",
     "--dynamic-port-range", "14000-14100", "--ledger", dir + "/ledger",
@@ -101,13 +124,17 @@ try {
   console.log("Activated " + launched.length + " real local launches");
   const startApp = () => start("app", process.execPath, [
     "node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "--port", "3027",
-  ], { JEET_LOCAL_WALLET: "1", JEET_LOCAL_WALLET_RPC: rpcUrl, JEET_LOCAL_WALLET_GENESIS: genesis,
+  ], { JEET_LOCAL_WALLET: "1", JEET_LOCAL_WALLET_RPC: proxyUrl, JEET_LOCAL_WALLET_GENESIS: genesis,
     JEET_MARKET_DB: dir + "/market.sqlite" });
   let app = await startApp();
   const partial = await until(list, page => page.total > 0 && page.backfilling, 45000);
   await stop(app);
+  rateLimited = true;
   app = await startApp();
-  const resumed = await until(list, page => page.total >= partial.total, 40000);
+  const resumed = await until(list, page => page.total >= partial.total && page.stale, 40000);
+  assert.ok(rateLimitResponses > 0);
+  assert.equal(resumed.total, partial.total);
+  rateLimited = false;
   const final = await until(list, page => page.total === target && !page.backfilling && !page.stale, 180000);
   assert.equal(final.gap, false);
   const seen = [];
@@ -126,13 +153,14 @@ try {
   const matching = await list(new URLSearchParams({ q: launched.at(-1).mint }));
   assert.equal(matching.total, 1);
   const evidence = { genesis, program: LOCAL_WALLET_PROGRAM, target, partial: partial.total, resumed: resumed.total,
-    discovered: seen.length, coverageGap: final.gap, launched };
+    discovered: seen.length, coverageGap: final.gap, rateLimitResponses, launched };
   await writeFile(dir + "/evidence.json", JSON.stringify(evidence, (_key, value) =>
     typeof value === "bigint" ? String(value) : value, 2) + "\n");
   console.log("PASS real discovery, restart and cursor pagination: " + JSON.stringify({
-    target, partial: partial.total, resumed: resumed.total, discovered: seen.length, gap: final.gap,
+    target, partial: partial.total, resumed: resumed.total, discovered: seen.length, gap: final.gap, rateLimitResponses,
   }));
 } finally {
+  proxy.close();
   for (const child of children.reverse()) await stop(child);
   console.log("Discovery test logs: " + dir);
 }
