@@ -26,14 +26,18 @@ import { address } from "@solana/kit";
 import { walletLaunchAddresses } from "../src/lib/wallet-launch.ts";
 import { parseMintBytes } from "../src/lib/solana-rpc.ts";
 import { LOCAL_WALLET_PROGRAM } from "../src/lib/wallet-environment.ts";
+import { MarketStore } from "../src/lib/market-store.ts";
 const graduation = process.env.JEET_BROWSER_GRADUATION === "1"
   ? await import("./amm/test-wallet-graduation-browser.mjs") : null;
 const trading = !!graduation || process.env.JEET_BROWSER_TRADE === "1";
+const archive = process.env.JEET_BROWSER_ARCHIVE === "1";
 const livePinata = process.env.JEET_CREATION_STORAGE === "pinata";
 if (graduation && !livePinata && process.env.JEET_BROWSER_LOCAL_METADATA !== "1")
   throw Error("Use live Pinata or opt into local-only metadata with JEET_BROWSER_LOCAL_METADATA=1.");
 if (livePinata && !pinataCredentialAvailable(process.env.PINATA_JWT))
   throw Error("Live creation requires an environment-provided PINATA_JWT in this runtime.");
+if (archive && (!trading || process.env.JEET_RELEASE_BROWSER !== "1"))
+  throw Error("Archive verification requires trading and JEET_RELEASE_BROWSER=1.");
 const dir = await mkdtemp("/tmp/jeet-wallet-browser-"),
   children = [],
   evidence = {
@@ -549,7 +553,7 @@ try {
       assert.equal(await balance(), oldBalance + amount - BigInt(tx.meta.fee));
       await expect(page.getByRole("region", { name: "Confirmed curve activity" })
         .getByText(sig, { exact: false })).toBeVisible({ timeout: 15000 });
-      if (process.env.JEET_BROWSER_ARCHIVE === "1") {
+      if (archive) {
         const url = appUrl + "/api/market-history?" + new URLSearchParams({ mint, signature: sig });
         await expect.poll(async () => {
           const result = await (await page.request.get(url)).json();
@@ -561,6 +565,22 @@ try {
         await history.getByRole("button", { name: "Search archive" }).click();
         await expect(history.getByText(sig, { exact: false })).toBeVisible();
         pass(width + "px finalized creator claim reconciled from archive");
+        const saved = new MarketStore(dir + "/market.sqlite");
+        try {
+          const network = genesis + ":" + LOCAL_WALLET_PROGRAM;
+          const snapshot = saved.readDiscovery(network);
+          assert.ok(snapshot?.rows.some(row => row.mint === mint && row.creator === wallet.address));
+          for (const trade of evidence.transactions.filter(item => item.mint === mint && item.side)) {
+            const { events } = saved.history(network, mint + ":curve", undefined, trade.signature);
+            assert.deepEqual(events.map(event => [event.kind, event.tokens, event.lamports]),
+              [[trade.side, String(trade.quote.amount), String(trade.quote.raw)]]);
+          }
+          const { events } = saved.history(network, mint + ":curve", undefined, sig);
+          assert.deepEqual(events.map(event => [event.kind, event.lamports]), [["creator-claim", String(amount)]]);
+        } finally {
+          saved.close();
+        }
+        pass(width + "px discovery, curve buy, sell and creator claim verified from independently opened SQLite");
       }
       evidence.transactions.push({ width, mint, kind: "creator-claim", signature: sig, amount });
       pass(width + "px verified discovery, curve chart and wallet-signed creator fee claim");

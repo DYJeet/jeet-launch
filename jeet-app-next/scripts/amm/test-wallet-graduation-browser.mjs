@@ -122,14 +122,22 @@ export async function runBrowserGraduation({ page,width,mint,l,wallet,wires,rpc,
     pass(`${width}px signed Raydium ${side} exactly reconciles wallet and pool reserves`);
     const activity=page.getByRole("region",{name:"Confirmed Raydium activity"});
     await expect(activity.getByText(signature,{exact:false})).toBeVisible({timeout:15000});
-    if (sell && process.env.JEET_BROWSER_ARCHIVE === "1") {
+    if (process.env.JEET_BROWSER_ARCHIVE === "1") {
       const url = new URL("/api/market-history", page.url());
       url.search = new URLSearchParams({ mint, venue: "amm", signature }).toString();
       await expect.poll(async () => {
         const result = await (await page.request.get(url.toString())).json();
         return result.events?.map(event => [event.signature, event.kind, event.tokens, event.lamports]);
-      }, { timeout: 45000, intervals: [2000, 3000] }).toEqual([[signature, "sell", String(input), String(quote.output)]]);
-      pass(width + "px finalized Raydium sell reconciled from archive");
+      }, { timeout: 45000, intervals: [2000, 3000] }).toEqual([
+        [signature, side, String(sell ? input : quote.output), String(sell ? quote.output : input)],
+      ]);
+      if (sell) {
+        await activity.getByRole("button", { name: "Show finalized archive" }).click();
+        await activity.getByRole("textbox", { name: "Search transaction signature" }).fill(signature);
+        await activity.getByRole("button", { name: "Search archive" }).click();
+        await expect(activity.getByText(signature, { exact: false })).toBeVisible();
+      }
+      pass(width + "px finalized Raydium " + side + " reconciled from archive");
     }
     console.log("Browser AMM swap",width,side,signature);
   }

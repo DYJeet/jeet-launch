@@ -23,6 +23,7 @@ test('Explore truthfully reports index unavailability and accessible search',asy
  const response=await fetch(origin+'/explore');assert.equal(response.status,200);const body=await response.text();
  assert.ok(body.includes('aria-label="Search verified launches"'));assert.ok(body.includes('Loading verified launches'));
  assert.equal((await fetch(origin+'/api/launches')).status,404);
+ assert.equal((await fetch(origin+'/api/market-history')).status,404);
  assert.equal(body.includes('PLACEHOLDER_MINT_'),false);assert.ok(body.includes('aria-pressed='));
 });
 test('demo token cannot appear as a live launch page',async()=>{
