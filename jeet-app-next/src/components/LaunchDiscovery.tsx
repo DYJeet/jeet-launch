@@ -37,7 +37,7 @@ export default function LaunchDiscovery({ compact = false }: { compact?: boolean
   }, [key, poll]);
   const current = result?.key === key ? result : null;
   const page = current?.page;
-  const shouldPoll = !cursor && page && (page.backfilling || page.stale || page.total === 0);
+  const shouldPoll = !cursor && page && (page.backfilling || page.stale || (page.total === 0 && poll < 5));
   useEffect(() => {
     if (!shouldPoll) return;
     const timer = setTimeout(() => setPoll(n => n + 1), 3500);
@@ -45,11 +45,11 @@ export default function LaunchDiscovery({ compact = false }: { compact?: boolean
   }, [shouldPoll, poll]);
 
   return <div className="space-y-4">
-    {!compact && <input value={query} maxLength={100} onChange={e => { setQuery(e.target.value); setCursors([]); }}
+    {!compact && <input value={query} maxLength={100} onChange={e => { setQuery(e.target.value); setCursors([]); setPoll(0); }}
       aria-label="Search verified launches" placeholder="Search name, ticker, or mint"
       className="w-full max-w-md rounded-xl border border-white/15 bg-white/5 p-3 text-sm" />}
     <div className="flex flex-wrap gap-2">
-      {launchViews.map(tab => <button key={tab} aria-pressed={view === tab} onClick={() => { setView(tab); setCursors([]); }}
+      {launchViews.map(tab => <button key={tab} aria-pressed={view === tab} onClick={() => { setView(tab); setCursors([]); setPoll(0); }}
         className={`min-h-11 rounded-xl border border-white/15 px-4 py-2 text-sm font-bold ${view === tab ? "bg-[#9cff43] text-black" : "text-white/75"}`}>{tab}</button>)}
     </div>
     {view === "Trending" && <p className="text-xs text-white/60">Ranked by cumulative curve turnover. Raydium swaps are excluded.</p>}
@@ -60,7 +60,7 @@ export default function LaunchDiscovery({ compact = false }: { compact?: boolean
       onClick={() => setCursors([])}>Back to first page</button></p>}
     {page && !page.cursorExpired && <div aria-live="polite">
       <p className="text-xs text-white/60">Read at {new Date(page.indexedAt).toLocaleTimeString()} · {page.stale ? "saved snapshot (RPC update delayed)" : "confirmed snapshot"}
-        <button className="ml-2 min-h-11 text-[#9cff43] underline" onClick={() => { setCursors([]); setRetry(n => n + 1); }}>Refresh listings</button>
+        <button className="ml-2 min-h-11 text-[#9cff43] underline" onClick={() => { setCursors([]); setPoll(0); setRetry(n => n + 1); }}>Refresh listings</button>
       </p>
       {page.backfilling && <p className="text-xs text-white/65">Indexing older finalized launch activity. Results may be partial.</p>}
       {page.gap && <p className="text-xs text-amber-200">RPC history has a coverage gap. Some launches may be missing.</p>}

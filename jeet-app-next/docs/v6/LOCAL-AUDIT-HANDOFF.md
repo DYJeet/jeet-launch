@@ -1,5 +1,7 @@
 # JeeT Launch local security review handoff
 
+See the [current V6 release candidate](RELEASE-CANDIDATE.md) for scalable discovery, updated market and wallet evidence, and release requirements.
+
 ## Review scope
 
 Review the exact release commit, pinned Rust and npm lockfiles, and locally built SBF digests. The previous public-cluster readiness review is in [Devnet acceptance](DEVNET-ACCEPTANCE.md). This handoff describes the existing local protocol and its latest data-read path. It is an internal review aid.

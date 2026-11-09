@@ -1,5 +1,7 @@
 # V6 market data and wallet verification
 
+See the [current V6 release candidate](RELEASE-CANDIDATE.md) for scalable discovery, updated market and wallet evidence, and release requirements.
+
 The branch resumed from `6c01bb58272f2f0089cc58ba1c9df4d6765d54a8`. The four market data and wallet checkpoints above `4bfbcd6` were preserved. The earlier local financial and browser evidence remains in [the local audit handoff](LOCAL-AUDIT-HANDOFF.md). This continuation changes the acceptance harness and records fresh evidence for the newer branch.
 
 ## Fresh checks
