@@ -4,7 +4,28 @@ import {
   LOCAL_WALLET_PROGRAM,
 } from "./wallet-environment.ts";
 
+import { WALLET_NETWORK, WALLET_PROGRAM_ADDRESS } from "./wallet-program.ts";
+import { DEVNET_GENESIS } from "./wallet-environment.ts";
+
+function devnetWalletConfiguration(request: Request) {
+  if (process.env.JEET_DEVNET_WALLET !== "1" || WALLET_NETWORK !== "devnet")
+    throw Error("Explicit Devnet wallet configuration is required.");
+  const origin = new URL(process.env.JEET_DEVNET_WALLET_ORIGIN ?? "");
+  if (origin.protocol !== "https:" || origin.username || origin.password ||
+      origin.pathname !== "/" || origin.search || origin.hash)
+    throw Error("Expected an explicit HTTPS application origin.");
+  if (request.headers.get("host") !== origin.host ||
+      (request.headers.get("origin") && request.headers.get("origin") !== origin.origin) ||
+      request.headers.get("sec-fetch-site") === "cross-site")
+    throw Error("Cross-origin Devnet wallet request rejected.");
+  return { url: "https://api.devnet.solana.com",
+    environment: validateWalletEnvironment({ network: "devnet", chain: "solana:devnet",
+      genesis: DEVNET_GENESIS, program: WALLET_PROGRAM_ADDRESS, rpcPath: "/api/wallet/rpc" }) };
+}
+
 export function localWalletConfiguration(request: Request) {
+  if (process.env.JEET_DEVNET_WALLET === "1" || WALLET_NETWORK === "devnet")
+    return devnetWalletConfiguration(request);
   if (process.env.JEET_LOCAL_WALLET !== "1")
     throw Error("Local wallet mode is disabled.");
   const incoming = new URL(request.url);
@@ -29,7 +50,7 @@ export function localWalletConfiguration(request: Request) {
 }
 
 export function previewEnabled() {
-  return process.env.NODE_ENV === "development" && process.env.JEET_LOCAL_WALLET !== "1" &&
+  return WALLET_NETWORK === "local" && process.env.NODE_ENV === "development" && process.env.JEET_LOCAL_WALLET !== "1" &&
     /^[a-z0-9-]+-3017\.app\.github\.dev$/.test(process.env.JEET_PREVIEW_HOST ?? "");
 }
 

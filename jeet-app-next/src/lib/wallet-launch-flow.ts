@@ -12,7 +12,7 @@ import {
   V5_PREVIEW_PROGRAM,
 } from "./launch-v5-preview.ts";
 import { decodeGraduation } from "./launch-graduation.ts";
-import { decodeFeeState } from "./launch-fees.ts";
+import { decodeFeeState, PLATFORM_TREASURY } from "./launch-fees.ts";
 import {
   decodeLaunchMetadata,
   findMetadataPda,
@@ -194,7 +194,8 @@ export async function readWalletLaunch(
       f.mint !== mint ||
       f.curve !== l.curve ||
       f.kind !== kind ||
-      (kind === 1 && f.beneficiary !== creator)
+      (kind === 1 && f.beneficiary !== creator) ||
+      (kind === 0 && executor.environment.network === "devnet" && f.beneficiary !== PLATFORM_TREASURY)
     )
       throw Error("Fee entitlement mismatch.");
     return f;
@@ -362,7 +363,7 @@ export async function executeWalletLaunch(
     // Disclosed hard budget. Actual CPI costs are measured/checked by opcode 23;
     // this is a maximum, not a claim that a mutable protocol fee is a guaranteed quote.
     await submit("metadata", 20000000n, async (who) => [
-      await initializeLaunchMetadataInstruction({
+      { ...await initializeLaunchMetadataInstruction({
         creator: who,
         mint,
         custody: l.custody,
@@ -371,8 +372,8 @@ export async function executeWalletLaunch(
         uri: p.uri,
         mutable: false,
         maxCostLamports: 20000000n,
-        allowLocalUri: true,
-      }),
+        allowLocalUri: executor.environment.network === "local",
+      }), programAddress: address(executor.environment.program) },
     ]);
     snapshot = await readWalletLaunch(executor, mint, creator);
   }

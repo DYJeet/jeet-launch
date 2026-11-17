@@ -30,6 +30,7 @@ import {
 import { potential, validateV5 } from "./v5-pricing.ts";
 import { parseUnits } from "./wallet-environment.ts";
 import { validateMetadataFields } from "./launch-metadata.ts";
+import { WALLET_NETWORK } from "./wallet-program.ts";
 
 export type WalletLaunchInput = {
   name: string;
@@ -46,7 +47,7 @@ export type WalletLaunchInput = {
   openingLimitBps: number;
 };
 export function walletLaunchParameters(input: WalletLaunchInput) {
-  validateMetadataFields(input.name, input.symbol, input.uri, true);
+  validateMetadataFields(input.name, input.symbol, input.uri, WALLET_NETWORK === "local");
   if (
     !Number.isInteger(input.decimals) ||
     input.decimals < 0 ||

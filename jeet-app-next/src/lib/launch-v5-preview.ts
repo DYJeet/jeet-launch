@@ -1,14 +1,13 @@
 /** Disposable local-validator execution preview, deliberately unavailable on public clusters. */
 import { TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
-import { AccountRole, address, type Address } from "@solana/kit";
+import { AccountRole, type Address } from "@solana/kit";
 import {
   initializeMarketInstruction,
   marketQuoteInstruction,
   marketTradeInstruction,
 } from "./launch-market.ts";
-export const V5_PREVIEW_PROGRAM = address(
-  "8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo",
-);
+export { WALLET_PROGRAM_ADDRESS as V5_PREVIEW_PROGRAM } from "./wallet-program.ts";
+import { WALLET_PROGRAM_ADDRESS as V5_PREVIEW_PROGRAM } from "./wallet-program.ts";
 export const V5_PREVIEW_SIZE = 262;
 const max = (1n << 64n) - 1n;
 function value(v: bigint) {

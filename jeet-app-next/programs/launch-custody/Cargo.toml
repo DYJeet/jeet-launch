@@ -10,7 +10,7 @@ crate-type = ["cdylib"]
 [features]
 # Only for disposable local-validator fixtures. Never deploy this artifact.
 local-fee-test = []
-# Requires distinct disposable public identities at build time.
+# Requires a distinct Devnet program and the approved treasury at build time.
 devnet = []
 
 [dependencies]

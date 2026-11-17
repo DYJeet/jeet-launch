@@ -33,6 +33,11 @@ fn public_identity(name: &str) -> String {
         (32..=44).contains(&value.len()) && value.bytes().all(|byte| BASE58.contains(&byte)),
         "{name} must be a base58 public address"
     );
+    if name == "JEET_DEVNET_TREASURY" {
+        assert_eq!(value, "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+            "Devnet treasury must match the approved beneficiary");
+        return value;
+    }
     assert!(
         ![
             "11111111111111111111111111111111",

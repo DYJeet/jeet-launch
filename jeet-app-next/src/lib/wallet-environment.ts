@@ -1,28 +1,29 @@
 import { address } from "@solana/kit";
 
 export type WalletEnvironment = {
-  network: "local";
+  network: "local" | "devnet";
   chain: "solana:devnet";
   genesis: string;
   program: string;
   rpcPath: "/api/wallet/rpc";
 };
-export const LOCAL_WALLET_PROGRAM =
-  "8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo";
+export { LOCAL_WALLET_PROGRAM } from "./wallet-program.ts";
+import { LOCAL_WALLET_PROGRAM, DEVNET_WALLET_PROGRAM, WALLET_PROGRAM_ADDRESS } from "./wallet-program.ts";
 export const DEVNET_GENESIS = "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG";
 export const MAINNET_GENESIS = "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp";
 export function validateWalletEnvironment(value: WalletEnvironment) {
   if (
-    value.network !== "local" ||
+    !["local", "devnet"].includes(value.network) ||
     value.chain !== "solana:devnet" ||
-    value.program !== LOCAL_WALLET_PROGRAM ||
+    value.program !== (value.network === "devnet" ? DEVNET_WALLET_PROGRAM : LOCAL_WALLET_PROGRAM) ||
+    value.program !== WALLET_PROGRAM_ADDRESS ||
     value.rpcPath !== "/api/wallet/rpc" ||
     !value.genesis ||
-    value.genesis === DEVNET_GENESIS ||
+    (value.network === "devnet" ? value.genesis !== DEVNET_GENESIS : value.genesis === DEVNET_GENESIS) ||
     value.genesis === MAINNET_GENESIS
   ) {
     throw Error(
-      "Local wallet environment is invalid. Public V5 signing is disabled.",
+      "Wallet environment or pinned program is invalid.",
     );
   }
   address(value.genesis);
