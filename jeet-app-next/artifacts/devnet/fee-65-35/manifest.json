@@ -51,7 +51,10 @@
     "programs/launch-custody/src/fees.rs": "b92a0c45c1a6e42b45d2fff9db111ddcadb3e673d7613349a7c26856a82ccc19",
     "programs/launch-custody/src/metadata.rs": "91407ea240a0bb6421eeb02599338ce7de1634c8a3ef52443a9107cba07af0b1",
     "programs/launch-custody/src/lib.rs": "3f00a824492e086ea75d5a69771a422325ada4622d7f8991059d3263118f53d7",
-    "programs/launch-custody/src/curve.rs": "f8389e36b9201102ae4404f0a81f5b1c693765f14bd02b951956b4d9a17da173"
+    "programs/launch-custody/src/curve.rs": "f8389e36b9201102ae4404f0a81f5b1c693765f14bd02b951956b4d9a17da173",
+    "programs/launch-custody/build.rs": "5fda895f17dcbe28c54ae46b8c811bc5d8aec33291eb9089afa38c63fba8af6f",
+    "programs/launch-custody/Cargo.toml": "b06cfefd805481e510909118a227dfe880511a023aab43d0ad008b81d0ee38d7",
+    "programs/launch-custody/Cargo.lock": "a87cd97249cc0f679a1be6e48263fa6da44c37b456e7170da9ba50ba12882252"
   },
   "tests": {
     "nodeTestsPassed": 86,
@@ -65,5 +68,10 @@
     "local legacy fee claims and reserve suite: validator restart timeout under low disk",
     "production browser checks: no .next production build; build deferred for disk safety"
   ],
-  "deployed": false
+  "deployed": false,
+  "toolchain": {
+    "cargoBuildSbf": "cargo-build-sbf 4.4.0\nplatform-tools v1.57\nrustc 1.95.0",
+    "solana": "solana-cli 4.3.2 (src:4b44ad97; feat:c9ad34d2, client:Agave)",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)"
+  }
 }

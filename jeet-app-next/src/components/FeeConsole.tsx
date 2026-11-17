@@ -777,8 +777,8 @@ function Console({
             <p>JeeT 0.65%: {sol(quote.platform)}</p>
             <p>Creator 0.35%: {sol(quote.creator)}</p>
             <p>
-              Total trading fee: {sol(quote.platform + quote.creator)}. Each
-              component rounds up to one lamport; effective dust-trade
+              Total trading fee: {sol(quote.platform + quote.creator)}. The
+              total fee rounds up once, then splits 65/35; effective dust-trade
               percentages can exceed 1%.
             </p>
             <p>Total consideration: {sol(quote.total)}</p>

@@ -826,7 +826,7 @@ export async function runMarketTests({ local = false } = {}) {
   assert.equal(dp.accrued, 3n);
   assert.equal(dc.accrued, 1n);
   pass(
-    "four one-lamport buys charge exactly four fee lamports and allocate exactly 13:7",
+    "four one-lamport buys charge four fee lamports; ceil(4 * 13 / 20) allocates 3 platform and 1 creator",
   );
   await denied(
     ix(marketQuoteInstruction({ ...dust, amount: 1n, sell: true })),
