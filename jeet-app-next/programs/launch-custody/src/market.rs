@@ -23,7 +23,7 @@ pub struct Market {
     pub sequence: u64,
     pub completed: bool,
 }
-/// Independent total-fee rounding; a shared per-launch carry preserves 3:1 lifetime allocation.
+/// Independent total-fee rounding; a shared per-launch carry preserves 13:7 lifetime allocation.
 pub fn fee_parts(raw: u64, p: u64, c: u64) -> Result<(u64, u64), ProgramError> {
     if raw == 0 {
         return Err(err(1403));
@@ -32,10 +32,10 @@ pub fn fee_parts(raw: u64, p: u64, c: u64) -> Result<(u64, u64), ProgramError> {
     let target = |f: u64| -> Result<u64, ProgramError> {
         u64::try_from(
             u128::from(f)
-                .checked_mul(3)
-                .and_then(|v| v.checked_add(3))
+                .checked_mul(13)
+                .and_then(|v| v.checked_add(19))
                 .ok_or(err(1407))?
-                / 4,
+                / 20,
         )
         .map_err(|_| err(1407))
     };
@@ -599,8 +599,8 @@ mod tests {
             p += dp;
             c += dc;
         }
-        assert_eq!((p, c), (300, 100));
-        assert_eq!(fee_parts(10001, 0, 0).unwrap(), (76, 25));
+        assert_eq!((p, c), (260, 140));
+        assert_eq!(fee_parts(10001, 0, 0).unwrap(), (66, 35));
         assert!(fee_parts(1, 0, 1).is_err());
     }
     #[test]
@@ -623,7 +623,7 @@ mod tests {
         assert!(redemption(&curve(10, 1), 0).is_err());
         assert!(redemption(&curve(10, 1), 11).is_err());
         assert!(fee_parts(u64::MAX, u64::MAX, 0).is_err());
-        let platform = ((u128::from(u64::MAX) * 3 + 3) / 4) as u64;
+        let platform = ((u128::from(u64::MAX) * 13 + 19) / 20) as u64;
         assert_eq!(
             fee_parts(1, platform, u64::MAX - platform).err(),
             Some(err(1407))

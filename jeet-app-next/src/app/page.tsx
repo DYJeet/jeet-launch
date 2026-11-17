@@ -56,7 +56,7 @@ export default function Home() {
           <div className="rounded-[24px] border border-white/[0.08] bg-[#0a0d0a] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.25)]">
             <h3 className="text-2xl font-black leading-tight">KNOW YOUR<br />LAUNCH FEES</h3>
             <p className="mt-3 leading-6 text-white/45">Transparent curve fees.<br />Review platform and creator entitlements.</p>
-            <div className="mt-5 rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white/25">0.75% platform + 0.25% creator</div>
+            <div className="mt-5 rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white/25">0.65% platform + 0.35% creator</div>
             <Link href="/revenue" className="mt-4 block w-full rounded-xl bg-[#9cff43] py-3.5 text-center font-black text-black">VIEW REVENUE & FEES →</Link>
             <p className="mt-4 text-xs text-white/30">Viewing requires no signature. Claims require the entitled signer.</p>
           </div>
@@ -65,7 +65,7 @@ export default function Home() {
 
       <section className="mx-auto max-w-[1500px] px-5 lg:px-8">
         <div className="grid grid-cols-2 overflow-hidden rounded-[24px] border border-white/[0.07] bg-[#090b09] md:grid-cols-4">
-          {[["0.75%", "Platform curve fee"], ["0.25%", "Creator curve reward"], ["0 SOL", "Creation platform fee"], ["Test", "Wallet environment"]].map(([value, label], index) => (
+          {[["0.65%", "Platform curve fee"], ["0.35%", "Creator curve reward"], ["0 SOL", "Creation platform fee"], ["Test", "Wallet environment"]].map(([value, label], index) => (
             <div key={label} className={`px-6 py-5 ${index !== 3 ? "md:border-r md:border-white/[0.06]" : ""}`}>
               <p className="text-3xl font-black text-[#9cff43]">{value}</p><p className="mt-1 text-sm text-white/40">{label}</p>
             </div>

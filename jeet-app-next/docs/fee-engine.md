@@ -12,38 +12,36 @@ The verified curve formula is unchanged:
 
 Here `n` and `s` are token base units and `q = 10^decimals`.
 
-- `platform = ceil(raw * 75 / 10_000)`
-- `creator = ceil(raw * 25 / 10_000)`
-- `tradingFee = platform + creator`
+- `tradingFee = ceil(raw / 100)` (round the total 1% once)
+- `platform = ceil(tradingFee * 65 / 100)`
+- `creator = tradingFee - platform`
 - `fullConsideration = raw + tradingFee`
 
-Each entitlement independently rounds **up** to a lamport. The nominal rates are
-75 bps / 25 bps / 100 bps total. Rounding is disclosed separately: actual fees on
-dust trades can exceed 1% and the total is the sum of the two rounded components,
-not a separately rounded 100-bps amount. No rounding remainder exists. Repeated
-microtrades cannot reduce either rounded fee below its aggregate-trade amount.
+V3 legacy quotes allocate rounding within each transaction. V4/V5 buys and sells instead share a lifetime carry: `platformAccrued = ceil(totalAccrued * 13 / 20)`; each trade accrues the difference from the prior target. Creator entitlement is the remainder. This preserves the 65/35 split within less than one lamport over the launch lifetime and never double-counts a fee. Splitting a trade cannot reduce its rounded total fee.
+
+The nominal trading fee remains 1%; integer rounding can make dust trades exceed that percentage. Microtrades cannot reduce the rounded total fee below the aggregate-trade amount. V3 rounds the platform share up per transaction; V4/V5 carry the lifetime remainder as described above.
 All financial intermediates use checked u128/u64 arithmetic. Zero consideration
 and full-spend overflow are rejected. No floating-point financial math is used.
 
 | Raw | Platform | Creator | Total fee | Full consideration |
 |---:|---:|---:|---:|---:|
-| 1 | 1 | 1 | 2 | 3 |
+| 1 | 1 | 0 | 1 | 2 |
 | 399 | 3 | 1 | 4 | 403 |
 | 400 | 3 | 1 | 4 | 404 |
-| 9,999 | 75 | 25 | 100 | 10,099 |
-| 10,000 | 75 | 25 | 100 | 10,100 |
-| 10,001 | 76 | 26 | 102 | 10,103 |
+| 9,999 | 65 | 35 | 100 | 10,099 |
+| 10,000 | 65 | 35 | 100 | 10,100 |
+| 10,001 | 66 | 35 | 101 | 10,102 |
 
 Creation platform fee is **0 SOL**. Account rent and network transaction fees are
 separate. Ordinary SPL transfers collect no platform or creator trading fee.
-No migration fee or post-migration DEX fee exists. Selling is not implemented.
+No migration fee or post-migration DEX fee exists. V3 does not implement selling; V4/V5 implement reserve-backed redemption.
 `futureSellFees` provides arithmetic for future net proceeds (`raw - fees`),
 rejecting proceeds below fees; it neither moves reserves nor implements selling.
 Any future redemption must independently establish available, funded reserves.
 
 ## Versioning and authorization
 
-Production program ID remains `7QhXSnj7igy9HX6n1i3bnuc2SUbMTRWZEouGZKcy9d31`.
+Legacy local program ID remains `7QhXSnj7igy9HX6n1i3bnuc2SUbMTRWZEouGZKcy9d31`.
 
 - JEETCRV1 and JEETCRV2 layouts and economics remain unchanged.
 - Original opcode 3 retains its 33-byte paid-buy ABI and raw quote semantics.

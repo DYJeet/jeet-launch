@@ -368,7 +368,7 @@ function Creation({ environment }: { environment: WalletEnvironment }) {
                 whole token.
               </p>
               <p>
-                Platform 0.75% + creator 0.25% trading fees. JeeT creation fee:
+                Platform 0.65% + creator 0.35% trading fees. JeeT creation fee:
                 0 SOL.
               </p>
               <p>

@@ -48,3 +48,6 @@ next-env.d.ts
 # Intentionally secret-free setup template
 !.env.pinata.example
 /.jeet-index/
+
+# Local fee migration evidence; includes unused build keypairs.
+.fee-migration/

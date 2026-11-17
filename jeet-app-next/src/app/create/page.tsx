@@ -16,7 +16,7 @@ function FeeDisclosure() {
 <section aria-label="Platform fee disclosure" className="rounded-[22px] border border-[#9cff43]/20 bg-[#9cff43]/[0.04] p-5">
               <h2 className="text-sm font-black">Know the cost before signing</h2>
               <p className="mt-3 text-xs leading-5 text-white/60">Token creation platform fee: 0 SOL. Solana network costs and account rent are separate.</p>
-              <p className="mt-2 text-xs leading-5 text-white/60">Supported curve trades charge 0.75% to JeeT Launch and 0.25% to the creator (1% nominal total). Integer rounding can increase the effective rate on small trades. Review the executable quote before signing.</p>
+              <p className="mt-2 text-xs leading-5 text-white/60">Supported curve trades charge 0.65% to JeeT Launch and 0.35% to the creator (1% nominal total). Integer rounding can increase the effective rate on small trades. Review the executable quote before signing.</p>
               <p className="mt-2 text-xs leading-5 text-white/45">V5 trading is available only in disposable local tests. Public V5 launches and graduation are disabled. Liquidity settings below are planning inputs; no migration charge or funding policy has been activated.</p>
               <Link href="/revenue" className="mt-3 inline-block text-xs font-bold text-[#9cff43] underline underline-offset-4">View on-chain fee accounts and claims</Link>
             </section>

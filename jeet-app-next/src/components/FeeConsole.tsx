@@ -679,7 +679,7 @@ function Console({
         Intended platform beneficiary: {PLATFORM_TREASURY}
       </p>
       <p>
-        Platform 0.75% · Creator 0.25% · Total nominal trading fee 1.00%.
+        Platform 0.65% · Creator 0.35% · Total nominal trading fee 1.00%.
         Creation platform fee: 0 SOL. No fees on ordinary SPL transfers. No
         migration or post-migration DEX fee is implemented.
       </p>
@@ -711,8 +711,8 @@ function Console({
           Transaction: {signature}
         </a>
       ) : null}
-      {table("Platform treasury · 75 bps", platform)}
-      {table("Creator rewards · 25 bps", creator)}
+      {table("Platform treasury · 65 bps", platform)}
+      {table("Creator rewards · 35 bps", creator)}
       <section className="space-y-3 rounded-2xl border border-white/10 p-5">
         <h2 className="text-xl font-black">Verified claim history</h2>
         <p>
@@ -774,8 +774,8 @@ function Console({
         {quote ? (
           <div className="space-y-2">
             <p>Raw curve: {sol(quote.raw)}</p>
-            <p>JeeT 0.75%: {sol(quote.platform)}</p>
-            <p>Creator 0.25%: {sol(quote.creator)}</p>
+            <p>JeeT 0.65%: {sol(quote.platform)}</p>
+            <p>Creator 0.35%: {sol(quote.creator)}</p>
             <p>
               Total trading fee: {sol(quote.platform + quote.creator)}. Each
               component rounds up to one lamport; effective dust-trade
@@ -823,7 +823,7 @@ function Console({
           custody; cumulative wallet cap 20 for 1,000,000 slots; stricter
           opening limit 10 for 100,000 slots; start at initialization slot.
           Curve base 10,000 lamports, slope 10. Both mint authorities revoked.
-          Fees fixed at 75 / 25 bps. Your signing wallet is the immutable
+          Fees fixed at 65 / 35 bps. Your signing wallet is the immutable
           creator and reward beneficiary. Creation requires several transactions
           and rent; partial failures must be inspected before retrying.
         </p>

@@ -72,7 +72,7 @@ export default function WalletLaunchReader({ mint }: { mint: string }) {
       {row("Curve state", s.state.migrated ? "Migrated; curve trading closed" : s.state.eligible ? "Graduation eligible; redemption remains available" : "Active curve")}
       {row("Net sold / trading inventory (base units)", `${s.state.sold} / ${s.state.inventory}`)}
       {row("Curve redemption reserve (lamports)", s.state.reserve.toString())}
-      {row("Trading fees", "75 bps platform + 25 bps creator; integer rounding applies")}
+      {row("Trading fees", "65 bps platform + 35 bps creator; integer rounding applies")}
       {row("Opening wallet cap", s.openingData ? `${s.openingData[96] ? "Enabled" : "Disabled"}; limit ${new DataView(s.openingData.buffer,s.openingData.byteOffset).getUint16(106,true)} bps; slots ${u64(s.openingData, 80)} through ${u64(s.openingData, 88)} (expiry exclusive)` : "Unavailable")}
       {row("Protected opening", s.curveData ? `Starts slot ${u64(s.curveData, 162)}; duration ${u64(s.curveData, 170)} slots; cumulative protected limit ${new DataView(s.curveData.buffer,s.curveData.byteOffset).getUint16(202,true)} bps` : "Unavailable")}
       {row("Graduation terms", s.terms ? `Registered; maximum price gap ${s.terms.maxPriceGapBps} bps; ${s.terms.migrated ? "migrated" : "not migrated"}` : "Not registered; activation incomplete")}

@@ -10,18 +10,10 @@ import {
 } from "../src/lib/launch-fees.ts";
 test("approved rates, exact integer/dust/wide fee fixtures", () => {
   for (const [raw, p, c, total] of [
-    [1n, 1n, 1n, 3n],
-    [399n, 3n, 1n, 403n],
-    [400n, 3n, 1n, 404n],
-    [9999n, 75n, 25n, 10099n],
-    [10000n, 75n, 25n, 10100n],
-    [10001n, 76n, 26n, 10103n],
-    [
-      1000000000000000000n,
-      7500000000000000n,
-      2500000000000000n,
-      1010000000000000000n,
-    ],
+    [1n, 1n, 0n, 2n], [399n, 3n, 1n, 403n], [400n, 3n, 1n, 404n],
+    [9999n, 65n, 35n, 10099n], [10000n, 65n, 35n, 10100n],
+    [10001n, 66n, 35n, 10102n],
+    [10000000000000000n, 65000000000000n, 35000000000000n, 10100000000000000n],
   ])
     assert.deepEqual(feeAmounts(raw), {
       raw,
@@ -38,7 +30,7 @@ test("zero, negative-equivalent and full-spend overflow fail closed", () => {
 test("fee quote decode rejects substituted components and malformed return data", () => {
   const d = new Uint8Array(56),
     v = new DataView(d.buffer);
-  [10000n, 75n, 25n, 10100n, 7n, 70000n, 1n].forEach((x, i) =>
+  [10000n, 65n, 35n, 10100n, 7n, 70000n, 1n].forEach((x, i) =>
     v.setBigUint64(i * 8, x, true),
   );
   assert.equal(decodeFeeQuote(d).total, 10100n);
@@ -77,7 +69,7 @@ test("future sell net interface rejects dust deficit and exposes no executable s
     fees: 4n,
     net: 396n,
   });
-  assert.throws(() => futureSellFees(1n));
+  assert.throws(() => futureSellFees(0n));
 });
 test("approved treasury is exactly 32 bytes and remains pinned", () => {
   assert.equal(
@@ -103,8 +95,8 @@ test("verified binary events exclude spoofed nested-program logs", async () => {
       enc.encode(PLATFORM_TREASURY),
       enc.encode(PLATFORM_TREASURY),
       n(10000n),
-      n(75n),
-      n(25n),
+      n(65n),
+      n(35n),
       n(10100n),
     ]
       .map((v) => Buffer.from(v).toString("base64"))
@@ -127,8 +119,8 @@ test("verified binary events exclude spoofed nested-program logs", async () => {
     `Program ${program} success`,
   ]);
   assert.equal(event.total, 10100n);
-  assert.equal(event.platform, 75n);
-  assert.equal(event.creator, 25n);
+  assert.equal(event.platform, 65n);
+  assert.equal(event.creator, 35n);
 });
 
 test("wallet rejection survives SDK error wrapping without showing encoded decoder commands", async () => {

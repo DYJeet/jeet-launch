@@ -1,3 +1,5 @@
+> Current fee policy: platform 0.65% (65 bps), creator 0.35% (35 bps), total 1%. See `docs/fee-engine.md` and `docs/FEE-65-35-MIGRATION.md`. Historical test receipts and prior decisions below describe their original checkpoint; they do not authorize the superseded 75/25 policy.
+
 # OWNER APPROVAL REQUIRED — rising V5 proposal
 
 Parent: 3905603fdfd294385ba06d111c6ff8e00bbc9c12. The prior flat-price

@@ -85,7 +85,7 @@ export function v5Fees(
 ) {
   for (const n of [raw, platformAccrued, creatorAccrued]) bounded(n);
   const prior = bounded(platformAccrued + creatorAccrued),
-    target = (n: bigint) => (n * 3n + 3n) / 4n;
+    target = (n: bigint) => (n * 13n + 19n) / 20n;
   if (!raw || platformAccrued !== target(prior))
     throw new Error("V5 fee state");
   const total = (raw + 99n) / 100n,

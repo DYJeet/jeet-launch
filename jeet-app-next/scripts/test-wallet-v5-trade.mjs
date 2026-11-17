@@ -16,7 +16,7 @@ function market() {
       slot: 11n,
       curveData,
       openingData,
-      fees: [{ accrued: 7n }, { accrued: 2n }],
+      fees: [{ accrued: 6n }, { accrued: 3n }],
     },
     purchased: 25n,
     tokens: 20n,
@@ -30,7 +30,7 @@ test("V5 wallet budget chooses exact executable quanta within fee-inclusive spen
   assert.equal(q.sequence, 9n);
   assert.equal(q.setup, 5000n);
   assert.ok(q.user <= q.bound && q.bound <= 1000n);
-  assert.ok(v5Quote(s, s.sold, q.amount + 1n, 7n, 2n).user > 1000n);
+  assert.ok(v5Quote(s, s.sold, q.amount + 1n, 6n, 3n).user > 1000n);
   assert.equal(q.raw + q.platform + q.creator, q.user);
 });
 

@@ -22,17 +22,10 @@ pub fn amounts(raw: u64) -> Result<(u64, u64, u64), ProgramError> {
     if raw == 0 {
         return Err(err(1301));
     }
-    let part = |bps: u128| -> Result<u64, ProgramError> {
-        let n = u128::from(raw).checked_mul(bps).ok_or(err(1308))?;
-        u64::try_from(
-            (n / 10000)
-                .checked_add(u128::from(n % 10000 != 0))
-                .ok_or(err(1308))?,
-        )
-        .map_err(|_| err(1308))
-    };
-    let p = part(75)?;
-    let c = part(25)?;
+    // Round the 1% total once; split that total without creating extra fees.
+    let fee = u64::try_from((u128::from(raw) + 99) / 100).map_err(|_| err(1308))?;
+    let p = u64::try_from((u128::from(fee) * 65 + 99) / 100).map_err(|_| err(1308))?;
+    let c = fee.checked_sub(p).ok_or(err(1308))?;
     let total = raw
         .checked_add(p)
         .and_then(|n| n.checked_add(c))
@@ -297,10 +290,10 @@ mod tests {
     use super::*;
     #[test]
     fn fixtures() {
-        assert_eq!(amounts(1).unwrap(), (1, 1, 3));
+        assert_eq!(amounts(1).unwrap(), (1, 0, 2));
         assert_eq!(amounts(400).unwrap(), (3, 1, 404));
-        assert_eq!(amounts(10000).unwrap(), (75, 25, 10100));
-        assert_eq!(amounts(10001).unwrap(), (76, 26, 10103));
+        assert_eq!(amounts(10000).unwrap(), (65, 35, 10100));
+        assert_eq!(amounts(10001).unwrap(), (66, 35, 10102));
         assert!(amounts(0).is_err());
         assert!(amounts(u64::MAX).is_err());
     }
@@ -311,7 +304,9 @@ mod tests {
                 let (x, y, _) = amounts(a).unwrap();
                 let (p, c, _) = amounts(b).unwrap();
                 let (q, r, _) = amounts(a + b).unwrap();
-                assert!(x + p >= q && y + c >= r);
+                assert!(x + y + p + c >= q + r);
+                assert_eq!(x + y, (a + 99) / 100);
+                assert_eq!(p + c, (b + 99) / 100);
             }
         }
     }

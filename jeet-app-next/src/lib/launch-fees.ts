@@ -16,8 +16,8 @@ import {
 export const PLATFORM_TREASURY = address(
   "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
 );
-export const PLATFORM_BPS = 75;
-export const CREATOR_BPS = 25;
+export const PLATFORM_BPS = 65;
+export const CREATOR_BPS = 35;
 export const FEE_SIZE = 153;
 const max64 = (1n << 64n) - 1n;
 function u64(n: bigint) {
@@ -27,8 +27,9 @@ function u64(n: bigint) {
 export function feeAmounts(raw: bigint) {
   u64(raw);
   if (raw === 0n) throw new Error("Zero consideration.");
-  const platform = (raw * 75n + 9999n) / 10000n,
-    creator = (raw * 25n + 9999n) / 10000n;
+  const fees = (raw + 99n) / 100n;
+  const platform = (fees * 65n + 99n) / 100n,
+    creator = fees - platform;
   return {
     raw,
     platform,

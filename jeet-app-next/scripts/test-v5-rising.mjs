@@ -57,7 +57,7 @@ test('adversarial mixed buy/sell ordering telescopes without surplus or fee reus
  const c=curve(1000000n,42n);let s=0n,r=0n,buys=0n,netSells=0n,pa=0n,ca=0n;
  for(let i=1n;i<=20000n;i++){
   const n=i*17n%31n+1n,isSell=i%3n===0n&&n<=s;
-  const raw=isSell?c.sell(s,n):c.buy(s,n),f=(raw+99n)/100n,total=u(pa+ca+f),np=(total*3n+3n)/4n;
+  const raw=isSell?c.sell(s,n):c.buy(s,n),f=(raw+99n)/100n,total=u(pa+ca+f),np=(total*13n+19n)/20n;
   if(isSell){assert.ok(raw>f);s-=n;r-=raw;netSells+=raw-f;}else{s+=n;r+=raw;buys+=raw+f;}
   pa=np;ca=total-np;assert.equal(r,c.potential(s));assert.equal(buys,netSells+r+pa+ca);
  }

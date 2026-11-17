@@ -36,7 +36,7 @@ try {
     await page.goto(origin + "/create");
     const fees = page.getByRole("region", { name: "Platform fee disclosure" });
     await expect(fees).toContainText("Token creation platform fee: 0 SOL");
-    await expect(fees).toContainText("0.75% to JeeT Launch and 0.25% to the creator");
+    await expect(fees).toContainText("0.65% to JeeT Launch and 0.35% to the creator");
     await expect(fees).toContainText("Public V5 launches and graduation are disabled");
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
     await fees.getByRole("link", { name: "View on-chain fee accounts and claims" }).click();

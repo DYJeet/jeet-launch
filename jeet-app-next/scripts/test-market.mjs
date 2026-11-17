@@ -826,7 +826,7 @@ export async function runMarketTests({ local = false } = {}) {
   assert.equal(dp.accrued, 3n);
   assert.equal(dc.accrued, 1n);
   pass(
-    "four one-lamport buys charge exactly four fee lamports and allocate exactly 3:1",
+    "four one-lamport buys charge exactly four fee lamports and allocate exactly 13:7",
   );
   await denied(
     ix(marketQuoteInstruction({ ...dust, amount: 1n, sell: true })),
@@ -1027,7 +1027,7 @@ export async function runMarketTests({ local = false } = {}) {
     );
     assert.equal(p.accrued, p.withdrawn + p.claimable);
     assert.equal(c.accrued, c.withdrawn + c.claimable);
-    assert.equal(p.accrued, (3n * (p.accrued + c.accrued) + 3n) / 4n);
+    assert.equal(p.accrued, (13n * (p.accrued + c.accrued) + 19n) / 20n);
     const rent = BigInt(await rpc("getMinimumBalanceForRentExemption", [245])),
       feeRent = BigInt(await rpc("getMinimumBalanceForRentExemption", [153]));
     assert.equal(await balance(l.curve), rent + s.reserve);

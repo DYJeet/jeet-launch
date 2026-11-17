@@ -1,3 +1,5 @@
+> Current fee policy: platform 0.65% (65 bps), creator 0.35% (35 bps), total 1%. See `docs/fee-engine.md` and `docs/FEE-65-35-MIGRATION.md`. Historical test receipts and prior decisions below describe their original checkpoint; they do not authorize the superseded 75/25 policy.
+
 # JeeT Launch V6 local release candidate
 
 This is an internal engineering handoff for an independent Solana security review. The sprint started from `29865503501e67a1fd7f1ce1be26d8a07cb37077`. The V6 branch preserves the frozen Milestone D main baseline `2eb12a91af071ef23f313a28e864c25a49fbe712`. Review the release branch commit and the binary digests in its evidence together.

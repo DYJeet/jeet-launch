@@ -297,7 +297,7 @@ try {
     page.getByText("Total consideration:", { exact: false }),
   ).toContainText("10100 lamports");
   pass(
-    "displayed 10000 + 75 + 25 = 10100 quote comes from actual SBF simulation",
+    "displayed 10000 + 65 + 35 = 10100 quote comes from actual SBF simulation",
   );
   const [curve] = await findCurvePda(mint),
     [platformVault] = await findFeePda(mint, 0),
@@ -354,8 +354,8 @@ try {
         "base64",
       ),
     );
-  assert.equal((await readFee(platformVault)).claimable, 75n);
-  assert.equal((await readFee(creatorVault)).claimable, 25n);
+  assert.equal((await readFee(platformVault)).claimable, 65n);
+  assert.equal((await readFee(creatorVault)).claimable, 35n);
   pass(
     "browser signs actual atomic buy; confirmed event and both real fee dashboards agree",
   );
@@ -363,7 +363,7 @@ try {
     .locator("section")
     .filter({
       has: page.getByRole("heading", {
-        name: "Creator rewards · 25 bps",
+        name: "Creator rewards · 35 bps",
         exact: true,
       }),
     });
@@ -378,11 +378,11 @@ try {
     page.getByRole("heading", { name: "Verified claim history" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: /Creator · .*25 lamports/ }),
+    page.getByRole("link", { name: /Creator · .*35 lamports/ }),
   ).toBeVisible();
   assert.equal((await readFee(creatorVault)).claimable, 0n);
-  assert.equal((await readFee(creatorVault)).withdrawn, 25n);
-  assert.equal((await readFee(platformVault)).claimable, 75n);
+  assert.equal((await readFee(creatorVault)).withdrawn, 35n);
+  assert.equal((await readFee(platformVault)).claimable, 65n);
   pass(
     "browser creator claim, zero claimable and verified transaction history; treasury remains isolated",
   );

@@ -13,10 +13,10 @@ test("V3 and V4 worst-case dust rates and strict absolute rounding bounds", () =
     if (old * oldMax[1] > oldMax[0] * raw) oldMax = [old, raw];
     if (next * nextMax[1] > nextMax[0] * raw) nextMax = [next, raw];
   }
-  assert.deepEqual(oldMax, [2n, 1n]);
+  assert.deepEqual(oldMax, [1n, 1n]);
   assert.deepEqual(nextMax, [1n, 1n]);
 });
-test("repeat microtrades never evade total fees; carry allocations conserve 3:1", () => {
+test("repeat microtrades never evade total fees; carry allocations conserve 13:7", () => {
   let p = 0n,
     c = 0n;
   for (let i = 0; i < 10000; i++) {
@@ -25,9 +25,9 @@ test("repeat microtrades never evade total fees; carry allocations conserve 3:1"
     p += q.platform;
     c += q.creator;
     assert.equal(p + c, BigInt(i + 1));
-    assert.equal(p, (3n * (p + c) + 3n) / 4n);
+    assert.equal(p, (13n * (p + c) + 19n) / 20n);
   }
-  assert.deepEqual([p, c], [7500n, 2500n]);
+  assert.deepEqual([p, c], [6500n, 3500n]);
 });
 test("splitting cannot reduce rounded total fee", () => {
   for (let a = 1n; a < 300n; a++)

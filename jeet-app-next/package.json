@@ -35,7 +35,8 @@
     "test:wallet:creation:browser": "node scripts/test-wallet-creation-browser.mjs",
     "test:metadata:storage": "node --test scripts/test-metadata-storage.mjs scripts/test-pinata-pipeline.mjs",
     "metadata:pinata:environment": "node scripts/check-pinata-environment.mjs",
-    "metadata:pinata:verify": "node scripts/verify-pinata-live.mjs"
+    "metadata:pinata:verify": "node scripts/verify-pinata-live.mjs",
+    "test:fees:65-35": "node --test scripts/test-fee-65-35.mjs"
   },
   "dependencies": {
     "@solana-program/token": "0.18.0",
@@ -50,7 +51,9 @@
     "sharp": "0.35.5"
   },
   "overrides": {
-    "@typescript-eslint/typescript-estree": { "minimatch": "11.0.1" }
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "11.0.1"
+    }
   },
   "devDependencies": {
     "@playwright/test": "1.64.1",

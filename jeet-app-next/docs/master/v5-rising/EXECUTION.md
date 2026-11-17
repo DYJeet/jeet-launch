@@ -1,3 +1,5 @@
+> Current fee policy: platform 0.65% (65 bps), creator 0.35% (35 bps), total 1%. See `docs/fee-engine.md` and `docs/FEE-65-35-MIGRATION.md`. Historical test receipts and prior decisions below describe their original checkpoint; they do not authorize the superseded 75/25 policy.
+
 > Current integrated local graduation: see [GRADUATION-EXECUTION.md](GRADUATION-EXECUTION.md). The original checkpoint record below remains historical.
 
 # V5 local execution checkpoint (not activation approval)

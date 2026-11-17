@@ -1,3 +1,5 @@
+> Current fee policy: platform 0.65% (65 bps), creator 0.35% (35 bps), total 1%. See `docs/fee-engine.md` and `docs/FEE-65-35-MIGRATION.md`. Historical test receipts and prior decisions below describe their original checkpoint; they do not authorize the superseded 75/25 policy.
+
 # JeeT Launch UX implementation specification
 
 Status: specification plus limited safe improvements; not a completed trading UI.

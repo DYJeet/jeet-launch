@@ -141,11 +141,11 @@ export function marketFeeOracle(
   checked(creatorAccrued);
   if (!raw) throw new Error("Zero base.");
   const before = checked(platformAccrued + creatorAccrued);
-  if (platformAccrued !== (before * 3n + 3n) / 4n)
+  if (platformAccrued !== (before * 13n + 19n) / 20n)
     throw new Error("Inconsistent fee carry.");
   const total = (raw + 99n) / 100n,
     next = checked(before + total),
-    target = (next * 3n + 3n) / 4n;
+    target = (next * 13n + 19n) / 20n;
   return {
     platform: target - platformAccrued,
     creator: next - target - creatorAccrued,
