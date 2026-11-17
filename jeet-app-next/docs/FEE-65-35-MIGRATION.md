@@ -30,12 +30,7 @@ Existing ProgramData capacity: 617552 bytes; no extension required. Existing exe
 
 ## Validation
 
-- 86 Node tests/module checks passed, zero failures in the final combined run. Includes dedicated 65/35 boundary/large-amount, lifetime carry, conservation, immutable treasury, and incompatible old-state checks.
-- 13 native Rust tests passed.
-- TypeScript noEmit passed. ESLint passed with zero errors; two warnings are confined to untracked local helper scripts.
-- Local SBF V5 suite passed: 25 positive checks and 42 rejection/rollback checks. Covers allocation/partition, custody, exact buy/sell pricing and fees, reserve and supply conservation, protected opening, gross wallet caps, revoked authorities, substituted accounts, missing signer, stale sequence, and rollback.
-- The separate legacy fee-claim/reserve suite did NOT complete: restarting the local validator timed out under severe disk pressure. Actual creator/platform claim execution and browser claim flows remain unverified for this artifact.
-- Production browser tests did NOT pass: next start had no .next production build. Browser creation tests also lacked their expected fixture log. A production build and browser/claim regression run are deferred until disk space is recovered. Early local tests used an incorrect harness fixture; the final corrected V5 run passed. No product guard was weakened to make a test pass.
+Final automated validation is complete and passed. See [FEE-65-35-VALIDATION.md](FEE-65-35-VALIDATION.md) for exact counts, runtime-error checks, limitations, preserved evidence and the separate Devnet upgrade approval request. The program binary is unchanged.
 
 ## Metadata
 
@@ -68,21 +63,9 @@ One token only, 1% creator allocation, 1% wallet cap, protected opening enabled 
 
 ## Remaining blockers and owner action
 
-Not yet fully validated for deployment: remaining fee-claim and production browser checks require disk recovery. No deployment approval is requested until those checks pass. No files were deleted.
+No automated migration validation failures remain. The approved five-directory cleanup is complete; ledger credentials/config/logs were preserved privately, and no additional directories were deleted. Subsequent market, claim and production browser tests passed. The sole source fix creates the generated wallet test-report directory before writing evidence. See the final validation report for historical environment failures and the successful affected-suite rerun.
 
-Approval requested only for these newly generated, regenerable directories within this repair worktree (preserve all source, logs outside ledgers, manifests, binaries in artifacts/, existing recovery archive and old artifact):
-
-| Directory relative to jeet-app-next | Allocated bytes |
-|---|---:|
-| .fee-migration/local-ledger | 107708416 |
-| .fee-migration/local-ledger2 | 108437504 |
-| .fee-migration/local-ledger3 | 243355648 |
-| programs/launch-custody/target/debug | 289275904 |
-| programs/launch-custody/target/sbpfv3-solana-solana | 96419840 |
-
-Total candidate allocation: 845197312 bytes. Sizes are a stopped-process snapshot and must be rechecked before deletion. This should provide about 1 GiB free for remaining checks; no deletion or additional spending has been authorized or performed. A fresh disk check must gate subsequent build/validator work.
-
-After remaining validations pass, request separate approval for one in-place Devnet upgrade of the exact checkpointed artifact and fresh quoted limits. The owner has not authorized any upgrade or lifecycle transaction for this migration.
+GO for a separately authorized in-place Devnet upgrade, subject to fresh hash, account, authority, fee and rent checks. No upgrade or Devnet lifecycle transaction has been executed. Installed Phantom/native mobile acceptance and the genuine Devnet lifecycle remain later release gates.
 
 ## Changed files
 
@@ -124,3 +107,7 @@ After remaining validations pass, request separate approval for one in-place Dev
 - `jeet-app-next/src/lib/launch-fees.ts`
 - `jeet-app-next/src/lib/launch-market.ts`
 - `jeet-app-next/src/lib/v5-pricing.ts`
+- `jeet-app-next/docs/FEE-65-35-VALIDATION.md`
+- `jeet-app-next/artifacts/devnet/fee-65-35/validation-summary.json`
+- `jeet-app-next/artifacts/devnet/fee-65-35/validation-checks.json`
+- `jeet-app-next/scripts/test-wallet-browser.mjs`

@@ -62,16 +62,79 @@
     "localV5PositiveChecks": 25,
     "localV5RejectionRollbackChecks": 42,
     "typescript": 0,
-    "lint": 0
+    "lint": 0,
+    "finalSuiteResults": {
+      "fees-production": {
+        "positive": 22,
+        "expectedRejections": 52,
+        "failed": 0
+      },
+      "fees-local": {
+        "positive": 24,
+        "expectedRejections": 52,
+        "failed": 0
+      },
+      "market-production": {
+        "positive": 62,
+        "expectedRejections": 37,
+        "failed": 0
+      },
+      "market-local": {
+        "positive": 63,
+        "expectedRejections": 37,
+        "failed": 0
+      },
+      "v5-local": {
+        "positive": 25,
+        "expectedRejections": 42,
+        "failed": 0
+      },
+      "fee-dashboard-browser": {
+        "positive": 7,
+        "expectedRejections": 4,
+        "failed": 0
+      },
+      "wallet-connection-browser": {
+        "positive": 15,
+        "expectedRejections": 10,
+        "failed": 0
+      },
+      "creation-trade-browser": {
+        "positive": 15,
+        "expectedRejections": 15,
+        "failed": 0
+      },
+      "node": {
+        "passed": 86,
+        "failed": 0
+      },
+      "native-rust": {
+        "passed": 13,
+        "failed": 0
+      },
+      "production-routes": {
+        "passed": 6,
+        "failed": 0
+      },
+      "responsive-release-browser": {
+        "acceptanceGroups": 3,
+        "failed": 0
+      },
+      "creation-input-browser": {
+        "acceptanceGroups": 4,
+        "failed": 0
+      }
+    },
+    "productionBuildPassed": true,
+    "productionBrowserPassed": true,
+    "unexpectedBrowserPageErrors": 0
   },
-  "remainingValidation": [
-    "local legacy fee claims and reserve suite: validator restart timeout under low disk",
-    "production browser checks: no .next production build; build deferred for disk safety"
-  ],
+  "remainingValidation": [],
   "deployed": false,
   "toolchain": {
     "cargoBuildSbf": "cargo-build-sbf 4.4.0\nplatform-tools v1.57\nrustc 1.95.0",
     "solana": "solana-cli 4.3.2 (src:4b44ad97; feat:c9ad34d2, client:Agave)",
     "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)"
-  }
+  },
+  "validationSummary": "validation-summary.json"
 }

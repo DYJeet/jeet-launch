@@ -1,0 +1,170 @@
+{
+  "date": "2026-11-17",
+  "branch": "repair/fees-65-35",
+  "applicationBuildCommit": "ad258113b047cbcaed14d13fce644868849a34c3",
+  "productionBuildId": "n5yQtPbX6qoJC6cniKtpc",
+  "applicationSourceChangedSinceBuild": false,
+  "artifactSha256": "13e0a87c97ba5b670bc2fd358a145618bff4be7fda5460b533e2dc1e3ac424fa",
+  "artifactRebuildRequired": false,
+  "suiteResults": {
+    "fees-production": {
+      "positive": 22,
+      "expectedRejections": 52,
+      "failed": 0
+    },
+    "fees-local": {
+      "positive": 24,
+      "expectedRejections": 52,
+      "failed": 0
+    },
+    "market-production": {
+      "positive": 62,
+      "expectedRejections": 37,
+      "failed": 0
+    },
+    "market-local": {
+      "positive": 63,
+      "expectedRejections": 37,
+      "failed": 0
+    },
+    "v5-local": {
+      "positive": 25,
+      "expectedRejections": 42,
+      "failed": 0
+    },
+    "fee-dashboard-browser": {
+      "positive": 7,
+      "expectedRejections": 4,
+      "failed": 0
+    },
+    "wallet-connection-browser": {
+      "positive": 15,
+      "expectedRejections": 10,
+      "failed": 0
+    },
+    "creation-trade-browser": {
+      "positive": 15,
+      "expectedRejections": 15,
+      "failed": 0
+    },
+    "node": {
+      "passed": 86,
+      "failed": 0
+    },
+    "native-rust": {
+      "passed": 13,
+      "failed": 0
+    },
+    "production-routes": {
+      "passed": 6,
+      "failed": 0
+    },
+    "responsive-release-browser": {
+      "acceptanceGroups": 3,
+      "failed": 0
+    },
+    "creation-input-browser": {
+      "acceptanceGroups": 4,
+      "failed": 0
+    }
+  },
+  "typescriptPassed": true,
+  "lintPassed": true,
+  "unexpectedBrowserPageErrors": 0,
+  "regressionFixed": "Wallet connection test now creates its generated evidence directory before saving JSON. No application or program change.",
+  "historicalInfrastructureFailures": [
+    "Concurrent local validators collided on gossip port 8000; fee-dashboard suite passed when run alone.",
+    "Workspace disk guard interrupted the first market run; both market suites passed using a new /tmp ledger."
+  ],
+  "completedRecovery": {
+    "approvedDirectoryCount": 5,
+    "recoveredFreeBytes": 840503296,
+    "ledgerCredentialsConfigsLogsPrivatelyPreserved": true,
+    "additionalDeletions": false
+  },
+  "readOnlyDevnetVerification": {
+    "slot": 523416823,
+    "program": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+    "executable": true,
+    "programdataBytes": 617597,
+    "capacity": 617552,
+    "oldArtifactBytes": 262448,
+    "oldArtifactHash": "375f197107960226523b08030b22196a2ebdc49a1bc839247fa5a901de05cb41",
+    "deployedMatchesOldArtifact": true,
+    "treasuryEmbedded": true,
+    "authority": "DQeELacwEfej1r9g5pt4eQQcetxe3TAgVGD9RJSutJNW",
+    "authorityUnchanged": true,
+    "payer": "BAZK4s9BBN3x4XGhjG3tj4P6jGky8cnNHBUdMsoHGFyg",
+    "payerLamports": 1606113880,
+    "bufferClosed": true,
+    "ownedAccounts": 0,
+    "feeAccounts": 0,
+    "nonzeroFeeAccounts": [],
+    "lifecycleSpentLamports": 0,
+    "lifecycleBudgetLamports": 50000000
+  },
+  "upgradeQuote": {
+    "artifactBytes": 261840,
+    "sha256": "13e0a87c97ba5b670bc2fd358a145618bff4be7fda5460b533e2dc1e3ac424fa",
+    "reproducible": true,
+    "program": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+    "treasury": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+    "treasuryByteOccurrences": 1,
+    "chunks": 273,
+    "quotes": {
+      "create": {
+        "lamports": 10000,
+        "wireBytes": 412,
+        "signers": 2
+      },
+      "write": {
+        "lamports": 5000,
+        "wireBytes": 1232,
+        "signers": 1
+      },
+      "handoff": {
+        "lamports": 5000,
+        "wireBytes": 292,
+        "signers": 1
+      },
+      "upgrade": {
+        "lamports": 10000,
+        "wireBytes": 488,
+        "signers": 2
+      }
+    },
+    "refundableBufferRentLamports": 1330985400,
+    "expectedNewFeesLamports": 1390000,
+    "previousDeploymentFeesLamports": 1545000,
+    "expectedCumulativeFeesLamports": 2935000,
+    "capacity": 617552,
+    "transactionsSigned": 0,
+    "transactionsBroadcast": 0
+  },
+  "metadata": {
+    "status": 200,
+    "bytes": 413,
+    "sha256": "52c5c5938983a47408df9c14cf431d74eaa73b9c3fd63e5119f990baa03f466f",
+    "name": "JeeT Devnet Test",
+    "symbol": "JEETTEST"
+  },
+  "walletLimitations": [
+    "Disposable Wallet Standard adapter, not installed Phantom/Solflare or native mobile application acceptance.",
+    "No creation/trading lifecycle is claimed by the infrastructure test."
+  ],
+  "creationLimitations": [
+    "Disposable Wallet Standard adapter, not installed Phantom/Solflare or native mobile application acceptance.",
+    "Current provider records/retrieval do not guarantee indefinite pinning. No Devnet or production transaction is claimed.",
+    "Negative HTTP/genesis/gateway probes inject failures explicitly; successful provider responses and Solana execution are genuine."
+  ],
+  "remainingAutomaticValidationFailures": 0,
+  "goForSeparatelyAuthorizedDevnetUpgrade": true,
+  "devnetTransactionsSubmitted": 0,
+  "mainnetTransactionsSubmitted": 0,
+  "lifecycleSpentLamports": 0,
+  "lifecycleReservedLamports": 50000000,
+  "finalDiskFreeBytes": {
+    "/workspaces": 195432448,
+    "/tmp": 40246484992
+  }
+}

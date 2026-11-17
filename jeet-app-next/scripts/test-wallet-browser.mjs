@@ -3,7 +3,7 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { once } from "node:events";
-import { mkdtemp, open, writeFile, readFile } from "node:fs/promises";
+import { mkdir, mkdtemp, open, writeFile, readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { chromium, expect } from "@playwright/test";
 import {
@@ -462,6 +462,7 @@ try {
     )
     .digest("hex");
   evidence.logs = dir;
+  await mkdir("programs/launch-custody/target/v6-wallet", { recursive: true });
   await writeFile(
     "programs/launch-custody/target/v6-wallet/browser-evidence.json",
     JSON.stringify(evidence, null, 2),
