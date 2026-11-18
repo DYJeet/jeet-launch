@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-11-18T11:28:22.744Z",
+  "authentication": false,
+  "checks": [
+    {
+      "kind": "metadata",
+      "url": "https://gateway.pinata.cloud/ipfs/bafkreicsyxczhcmdur2arx44cthughlu5kttxhb72y7fcgpzsc5kap2gn4",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 413,
+      "sha256": "52c5c5938983a47408df9c14cf431d74eaa73b9c3fd63e5119f990baa03f466f"
+    },
+    {
+      "kind": "image",
+      "url": "https://gateway.pinata.cloud/ipfs/bafybeieafk7f66b244czbfajlfteaxlojxsnxpxyotl2wggctw45kous24",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 1378636,
+      "sha256": "f747bfa0ed9014400ddd92ec60bba50f1c809853460d58b9f6481d99fa9736ef"
+    }
+  ]
+}

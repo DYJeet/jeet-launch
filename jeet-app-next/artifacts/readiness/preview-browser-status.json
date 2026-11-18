@@ -1,0 +1,10 @@
+{
+  "previewUrl": "https://symmetrical-adventure-544vrwjwxppcv7wx-3019.app.github.dev/",
+  "privateForwardingObserved": true,
+  "runningProcess": "next-server (v16.4.6)",
+  "serverPid": 19201,
+  "cloudHttpsBrowserAcceptance": "blocked: initial HTTP response failure; observing the resulting browser error page was rejected by URL security policy",
+  "installedDesktopPhantomAcceptance": "not tested",
+  "nativeIPhonePhantomAcceptance": "not tested",
+  "blockedPageNotBypassed": true
+}

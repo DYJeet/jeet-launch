@@ -1,0 +1,42 @@
+{
+  "production": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "dependencies": {
+      "prod": 94,
+      "dev": 384,
+      "optional": 85,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 512
+    }
+  },
+  "includingDevelopmentTools": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 14,
+      "critical": 0,
+      "total": 14
+    },
+    "dependencies": {
+      "prod": 94,
+      "dev": 384,
+      "optional": 85,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 512
+    }
+  },
+  "nextVersion": "16.4.6",
+  "eslintConfigNextVersion": "16.4.6",
+  "remainingAdvisory": "https://github.com/advisories/GHSA-fc5q-39xc-vjpf",
+  "remainingRisk": "Development-tool picomatch ReDoS findings; no forced framework downgrade or broad dependency rewrite applied."
+}

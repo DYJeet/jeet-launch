@@ -1,0 +1,14 @@
+{
+  "scope": "New Git objects between preserved lifecycle checkpoint and recovered validation checkpoint; high-confidence static scan, not a guarantee about unrelated historical commits",
+  "inspectedBase": "ff8d7174498935ab3fb1a181da0a5ddc4c17fd31",
+  "inspectedHead": "51360fc31adfd2355768378eca005e0d34fcb845",
+  "newBlobsInspected": 52,
+  "credentialOrPrivateKeyFindings": [],
+  "keyFilesAdded": [],
+  "sourcePathsWithinAuthorizedDirectory": true,
+  "approvedLiveArtifactFileUnchanged": true,
+  "candidateBinaryHashMatchesManifest": true,
+  "candidateSourcesMatchManifest": true,
+  "oldActiveFeeDisclosures": [],
+  "secretsReadOrPrinted": false
+}

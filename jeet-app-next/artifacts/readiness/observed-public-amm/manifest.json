@@ -1,0 +1,13 @@
+{
+  "source": "Finalized Solana Devnet ProgramData account",
+  "program": "DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb",
+  "programdata": "3KvTa2fYhMxMZNfHho5oX34yLQLwRauoU2JScBkugvXF",
+  "slot": 523619533,
+  "elfSha256": "7422c293a9fd2ae516382a0e09a49ba0501b2d935f752f4ed4819ffe56d35fac",
+  "elfBytes": 749784,
+  "gzipSha256": "7769c7ca83ca6c7c11c3369d3b486380a85e7d02ad2e566d14fad401c13b2857",
+  "locallyReplayed": false,
+  "testedPinnedFixtureSha256": "4a04a78dbe3c643acdb1a4c20166c18b2e1391522a794f670a77bd305a0d4433",
+  "byteEquivalentToTestedFixture": false,
+  "limitation": "Different binary hashes do not prove incompatible source or behavior; current-snapshot local replay remains outstanding."
+}

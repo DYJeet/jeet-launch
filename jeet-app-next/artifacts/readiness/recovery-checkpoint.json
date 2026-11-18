@@ -1,5 +1,5 @@
 {
-  "status": "recovered-source-checkpoint; final HTTPS browser verification pending",
+  "status": "validated source, reproducible undeployed candidate, and raw local evidence preserved; real Phantom/external HTTPS acceptance pending",
   "baseLifecycleCommit": "ff8d7174498935ab3fb1a181da0a5ddc4c17fd31",
   "sourceScope": "jeet-app-next only",
   "approvedDeployedArtifactSha256": "13e0a87c97ba5b670bc2fd358a145618bff4be7fda5460b533e2dc1e3ac424fa",
@@ -18,7 +18,10 @@
     "correctedLocalGraduationPositive": 28,
     "correctedLocalGraduationRejection": 52
   },
-  "remaining": "Recover raw Codespace reports; complete final frontend build/browser checks; actual installed Phantom desktop and iPhone acceptance remains untested.",
+  "remaining": "Owner desktop/iPhone Phantom connection UAT; external HTTPS validation; current public AMM snapshot replay before public migration; separate spending/upgrade authorization.",
   "newPublicNetworkTransactions": 0,
-  "newDevnetSpendingLamports": 0
+  "newDevnetSpendingLamports": 0,
+  "latestValidatedEvidenceCommit": "51360fc31adfd2355768378eca005e0d34fcb845",
+  "newDevnetCandidateSha256": "e4516444814532383d1dce55dd84f0b88dacbb35435f738596b1c7fb725e2e2c",
+  "missingRawGraduationEvidenceRecreated": true
 }

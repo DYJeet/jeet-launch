@@ -1,0 +1,138 @@
+{
+  "reportedAtEastern": "2026-11-18T06:51:08.001507-05:00",
+  "status": "READY_FOR_OWNER_CONNECTION_UAT; NOT_CLEARED_FOR_PUBLIC_RELEASE",
+  "branch": "repair/devnet-readiness",
+  "preservedLifecycleCommit": "ff8d7174498935ab3fb1a181da0a5ddc4c17fd31",
+  "recoveredSourceCheckpoint": "81ea39b4302d4ea5c7dfa2c775ef96e8e5d877a0",
+  "validatedCandidateEvidenceCheckpoint": "51360fc31adfd2355768378eca005e0d34fcb845",
+  "newPublicTransactions": 0,
+  "newDevnetSpendingLamports": 0,
+  "mainnetActivity": false,
+  "deployedArtifactUnchanged": true,
+  "approvedLiveSha256": "13e0a87c97ba5b670bc2fd358a145618bff4be7fda5460b533e2dc1e3ac424fa",
+  "undeployedCandidateSha256": "e4516444814532383d1dce55dd84f0b88dacbb35435f738596b1c7fb725e2e2c",
+  "candidateDeployed": false,
+  "feeBps": {
+    "platform": 65,
+    "creator": 35,
+    "total": 100
+  },
+  "treasury": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+  "upgradeAuthority": "DQeELacwEfej1r9g5pt4eQQcetxe3TAgVGD9RJSutJNW",
+  "carriedForwardNodeCases": 111,
+  "carriedForwardNodeFailures": 0,
+  "carriedForwardRustUnitCases": 13,
+  "carriedForwardRustFailures": 0,
+  "freshRecoveryCommands": [
+    {
+      "name": "npm-install",
+      "exit": 0
+    },
+    {
+      "name": "build-local-candidate",
+      "exit": 0
+    },
+    {
+      "name": "build-devnet-candidate",
+      "exit": 0
+    },
+    {
+      "name": "reproduce-devnet-candidate",
+      "exit": 0
+    },
+    {
+      "name": "graduation-local",
+      "exit": 0
+    },
+    {
+      "name": "build-local-production",
+      "exit": 0
+    },
+    {
+      "name": "public-browser",
+      "exit": 0
+    },
+    {
+      "name": "graduation-browser",
+      "exit": 0
+    },
+    {
+      "name": "build-devnet-production",
+      "exit": 0
+    },
+    {
+      "name": "devnet-page-regression",
+      "exit": 0
+    },
+    {
+      "name": "lint",
+      "exit": 0
+    }
+  ],
+  "freshLocalGraduation": {
+    "positive": 28,
+    "expectedRejectionAndRollback": 52,
+    "unexpectedFailures": 0
+  },
+  "freshLocalBrowserIncludingGraduation": {
+    "positiveGroups": 24,
+    "rejectionGroups": 24,
+    "transactions": 27,
+    "viewportWidths": [
+      390,
+      768,
+      1440
+    ],
+    "unexpectedFailures": 0,
+    "installedPhantom": false
+  },
+  "productionBrowserViewportGroups": 3,
+  "devnetPageOriginGroups": 3,
+  "productionDependencyVulnerabilities": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "developmentToolVulnerabilities": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 14,
+    "critical": 0,
+    "total": 14
+  },
+  "preview": {
+    "previewUrl": "https://symmetrical-adventure-544vrwjwxppcv7wx-3019.app.github.dev/",
+    "privateForwardingObserved": true,
+    "runningProcess": "next-server (v16.4.6)",
+    "serverPid": 19201,
+    "cloudHttpsBrowserAcceptance": "blocked: initial HTTP response failure; observing the resulting browser error page was rejected by URL security policy",
+    "installedDesktopPhantomAcceptance": "not tested",
+    "nativeIPhonePhantomAcceptance": "not tested",
+    "blockedPageNotBypassed": true,
+    "temporaryWorkspace": "/tmp/jeet-readiness-resume-81ea39b/jeet-app-next",
+    "productionBuildValidated": true,
+    "providerSecretAvailable": true,
+    "providerSecretExposed": false,
+    "currentLiveHttpsUiVerified": false,
+    "serverProcessObservedRunning": true,
+    "noFurtherPublicTransactionsAuthorized": true
+  },
+  "remainingLifecycleBudgetLamports": 19049698,
+  "unallocatedFundingAllowanceLamports": 4585000,
+  "blockingOrUntested": [
+    "Actual desktop Phantom acceptance not executed",
+    "Actual native iPhone Phantom acceptance not executed",
+    "External HTTPS navigation failed in cloud browser; error-page inspection blocked by browser URL policy; no bypass attempted",
+    "Current public Raydium ELF snapshot differs from tested pinned fixture; current-snapshot local replay not completed",
+    "Corrected migration candidate is undeployed; public migration is not authorized",
+    "Old upgrade buffer and cumulative fee limits cannot accommodate the new candidate",
+    "14 high development-tool vulnerability records remain",
+    "Codespace preview uses temporary storage and has no production availability guarantee"
+  ],
+  "publicMigrationGuardScope": "The application hides/blocks public migration. Existing on-chain Devnet instructions are not paused by frontend guards.",
+  "platformClaimStatus": "Read-only prepared; no signature/submission. Treasury is unfunded on Devnet; claimable 1342 lamports is below quoted 5000-lamport fee."
+}
