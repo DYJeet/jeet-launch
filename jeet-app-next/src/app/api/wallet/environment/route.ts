@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     return Response.json(
       {
         error:
-          "Explicit local wallet configuration and matching validator are required.",
+          "Explicit test-wallet configuration and a matching network are required.",
       },
       { status: 503 },
     );

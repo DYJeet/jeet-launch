@@ -140,6 +140,8 @@ export async function ammInstructions(m: AmmMarket, q: AmmPreview, payer: Transa
   return ix;
 }
 export async function graduationPreview(executor: WalletTransactionExecutor, launch: WalletLaunchSnapshot, wallet: Address) {
+  if (executor.environment.network !== "local")
+    throw Error("Public-network liquidity migration is disabled; local-validator verification only.");
   const s = launch.state;
   if (!s || !launch.terms || launch.terms.migrated || s.migrated || !s.eligible || s.sold !== s.inventory ||
       !launch.curveData || !launch.openingData || launch.mint?.mintAuthority || launch.mint?.freezeAuthority)

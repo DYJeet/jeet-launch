@@ -38,10 +38,13 @@ export async function POST(request: Request) {
         at += chunk.length;
       }
       const host = request.headers.get("host") ?? new URL(request.url).host;
-      const origin = `http://${host}`;
+      const origin = config.environment.network === "devnet"
+        ? new URL(process.env.JEET_DEVNET_WALLET_ORIGIN!).origin
+        : `http://${host}`;
       const result = await createLocalLaunchAssets(
         JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)),
         origin,
+        config.environment.network,
       );
       return Response.json(result, {
         headers: { "cache-control": "no-store" },

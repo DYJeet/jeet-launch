@@ -105,6 +105,7 @@ export class WalletTransactionExecutor {
     store: PendingStore,
     notice: (value: TransactionNotice) => void = () => {},
     confirmationTimeoutMs = 45000,
+    rpc = createSolanaRpc(rpcUrl),
   ) {
     this.environment = environment;
     this.connection = connection;
@@ -112,7 +113,7 @@ export class WalletTransactionExecutor {
     this.notice = notice;
     this.confirmationTimeoutMs = confirmationTimeoutMs;
     validateWalletEnvironment(environment);
-    this.rpc = createSolanaRpc(rpcUrl);
+    this.rpc = rpc;
   }
   private key(wallet: string) {
     return `${this.environment.genesis}:${wallet}`;
@@ -148,7 +149,7 @@ export class WalletTransactionExecutor {
       })
       .send({ abortSignal: AbortSignal.timeout(8000) });
     if (!program.value?.executable)
-      throw Error("Expected local JeeT program is unavailable.");
+      throw Error("Expected configured JeeT program is unavailable.");
   }
   async reconcile(wallet: string) {
     const key = this.key(wallet);
@@ -344,7 +345,9 @@ export class WalletTransactionExecutor {
         .send({ abortSignal: AbortSignal.timeout(15000) });
       if (simulation.value.err)
         throw Error(
-          "Simulation rejected: " + describeRpcError(simulation.value.err),
+          "Simulation rejected: " + (describeRpcError(simulation.value.err).includes("InsufficientFundsForRent")
+            ? "Keep enough SOL for the wallet's rent-exempt minimum, account setup and network fee. Nothing was signed."
+            : describeRpcError(simulation.value.err)),
         );
       const fee = (
         await this.rpc

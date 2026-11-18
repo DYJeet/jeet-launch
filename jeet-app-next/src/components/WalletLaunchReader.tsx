@@ -32,7 +32,7 @@ export default function WalletLaunchReader({ mint }: { mint: string }) {
           { encoding: "base64", commitment: "confirmed" }).send({ abortSignal: controller.signal });
         const account = response.value;
         if (!account || account.owner !== environment.program || account.executable)
-          throw Error("No verified JeeT local custody account found for this mint.");
+          throw Error("No verified JeeT custody account found on the configured test network.");
         const data = new Uint8Array(getBase64Encoder().encode(account.data[0]));
         if (data.length !== 89 || new TextDecoder().decode(data.subarray(0, 8)) !== "JEETCST1")
           throw Error("Invalid custody state.");
@@ -51,7 +51,7 @@ export default function WalletLaunchReader({ mint }: { mint: string }) {
   const row = (label: string, value: string) => <div className="border-b border-white/10 py-3"><dt className="text-xs text-white/50">{label}</dt><dd className="break-all text-sm">{value}</dd></div>;
   return <section className="mx-auto max-w-4xl space-y-5 px-5 py-8" data-testid="launch-reader">
     <h1 className="text-2xl font-black">{s?.metadata?.name ?? "On-chain launch details"}</h1>
-    <p className="text-sm text-yellow-200">Local validator only. On-chain facts are checked against canonical accounts. Off-chain images, descriptions and links are not independently verified. No safety guarantee.</p>
+    <p className="text-sm text-yellow-200">{result?.environment?.network === "devnet" ? "Solana Devnet; test tokens and test SOL only." : "Local validator only."} On-chain facts are checked against canonical accounts. Off-chain images, descriptions and links are not independently verified. No safety guarantee.</p>
     <button className="rounded-xl border border-[#9cff43]/30 px-5 py-3 text-[#9cff43]" onClick={() => setRefresh(n => n + 1)}>Refresh on-chain state</button>
     {!result && <p role="status">Loading launch accounts…</p>}
     {result?.error && <p role="alert">{result.error}</p>}
@@ -83,10 +83,10 @@ export default function WalletLaunchReader({ mint }: { mint: string }) {
     {s && result?.environment && <>
       {!s.state?.migrated && !s.terms?.migrated && <WalletTradePanel environment={result.environment} launch={s} onRefresh={() => setRefresh(n => n + 1)} />}
       <LaunchFeeClaims launch={s} environment={result.environment} refresh={() => setRefresh(n => n + 1)} />
-      <WalletGraduationPanel environment={result.environment} launch={s} onRefresh={() => setRefresh(n => n + 1)} />
+      {result.environment.network === "local" ? <WalletGraduationPanel environment={result.environment} launch={s} onRefresh={() => setRefresh(n => n + 1)} /> : <p>Public-network liquidity migration is disabled. Graduation is currently verified only on a local validator.</p>}
     </>}
     {s?.mint && s.state && result?.executor && <CurveHistory executor={result.executor} curve={s.addresses.curve} mint={mint} decimals={s.mint.decimals} revision={s.state.sequence} />}
     {s?.mint && s.state?.migrated && s.terms?.migrated && result?.executor && <CurveHistory executor={result.executor} curve={s.addresses.curve} mint={mint} decimals={s.mint.decimals} revision={s.slot} terms={s.terms} />}
-    <p className="text-sm text-white/50">Public explorers cannot inspect this disposable local validator.</p>
+    <p className="text-sm text-white/50">{result?.environment?.network === "devnet" ? <a className="underline" href={`https://explorer.solana.com/address/${mint}?cluster=devnet`} target="_blank" rel="noreferrer">Inspect this mint on Solana Explorer (Devnet)</a> : "Public explorers cannot inspect this disposable local validator."}</p>
   </section>;
 }

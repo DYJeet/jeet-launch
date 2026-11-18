@@ -8,6 +8,7 @@ import { marketStore, type LaunchObservation } from "@/lib/market-store";
 import { historyBatchSize, readHistoryPage } from "@/lib/market-ingest";
 import { activationMints } from "@/lib/launch-discovery-source";
 import { ammHistoryPool } from "@/lib/amm-history";
+import { createServerWalletRpc } from "@/lib/wallet-rpc-server";
 
 export const dynamic = "force-dynamic";
 
@@ -42,7 +43,7 @@ async function update(config: ReturnType<typeof localReadConfiguration>, network
   const store = marketStore();
   const executor = new WalletTransactionExecutor(config.environment, config.url,
     () => ({ status: "disconnected", connected: null }),
-    { get: () => null, put: () => { throw Error("Read-only index"); }, remove: () => {} });
+    { get: () => null, put: () => { throw Error("Read-only index"); }, remove: () => {} }, undefined, undefined, createServerWalletRpc(config.url));
   await executor.network();
   const prior = store.checkpoint(network, stream);
   const options = { abortSignal: AbortSignal.timeout(12000) };
@@ -92,7 +93,7 @@ async function update(config: ReturnType<typeof localReadConfiguration>, network
 export async function GET(request: Request) {
   let config;
   try { config = localReadConfiguration(request); }
-  catch { return Response.json({ error: "Verified index is unavailable outside the configured local validator." }, { status: 404 }); }
+  catch { return Response.json({ error: "Verified index is unavailable outside the configured test network." }, { status: 404 }); }
   const network = config.environment.genesis + ":" + config.environment.program;
   try {
     const store = marketStore();

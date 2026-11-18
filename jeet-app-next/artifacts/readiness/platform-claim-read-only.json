@@ -1,0 +1,38 @@
+{
+  "readOnly": true,
+  "signed": false,
+  "submitted": false,
+  "beneficiary": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+  "program": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+  "claimableLamports": 1342,
+  "requiredSigner": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+  "signatureSlots": 1,
+  "feeQuoteLamports": 5000,
+  "quoteSlot": 523465745,
+  "treasuryAccountExists": false,
+  "treasuryDataBytes": 0,
+  "instructionAccounts": [
+    {
+      "address": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+      "role": 3
+    },
+    {
+      "address": "7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM",
+      "role": 0
+    },
+    {
+      "address": "8hQGCgA4AQLdSu8QsdtpDv61FZ5Uh89qLcALNjxKiAmv",
+      "role": 0
+    },
+    {
+      "address": "AQj7FVkwCUg7ddgRARmsRYLAP5R9PJGj1ZLz2euJWg37",
+      "role": 0
+    },
+    {
+      "address": "71nUnrR6vpRPgd1YqYsTTBJ4vgkY3PQae5F7Q1CRQpV9",
+      "role": 1
+    }
+  ],
+  "instructionDataBase64": "CgA+BQAAAAAAAA==",
+  "warning": "No signed transaction prepared. Fresh state, blockhash, rent/balance checks and explicit owner approval are required before any treasury signature. Current claim is smaller than the network fee."
+}

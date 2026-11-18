@@ -325,10 +325,13 @@ pub fn process(program: &Pubkey, a: &[AccountInfo], input: &[u8]) -> ProgramResu
                 curve.lamports().checked_sub(raw).ok_or(e(1607))?;
             **a[15].try_borrow_mut_lamports()? =
                 a[15].lamports().checked_add(raw).ok_or(e(1607))?;
-            // Synchronize both sides of the direct lamport movement into the CPI runtime.
+            // SyncNative now accepts Rent as its optional second account. Keep
+            // the curve after Rent so both lamport changes reach the CPI runtime
+            // without treating the curve account as a rent sysvar.
             let mut sync = spl_token::instruction::sync_native(&spl_token::id(), a[15].key)?;
+            sync.accounts.push(AccountMeta::new_readonly(*a[24].key, false));
             sync.accounts.push(AccountMeta::new(*curve.key, false));
-            invoke(&sync, &[a[15].clone(), curve.clone(), a[21].clone()])?;
+            invoke(&sync, &[a[15].clone(), a[24].clone(), curve.clone(), a[21].clone()])?;
             let (_, cbump) = Pubkey::find_program_address(&[b"curve", mint.key.as_ref()], program);
             let cseeds: &[&[u8]] = &[b"curve", mint.key.as_ref(), &[cbump]];
             let mseeds: &[&[u8]] = &[b"migrator", mint.key.as_ref(), &[mbump]];

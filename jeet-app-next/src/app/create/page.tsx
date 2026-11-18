@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import LocalTokenCreator from "@/components/LocalTokenCreator";
 import WalletConnectButton from "@/components/WalletConnectButton";
+import WalletLaunchCreator from "@/components/WalletLaunchCreator";
+import { WALLET_NETWORK } from "@/lib/wallet-program";
 import { toTokenBaseUnits } from "@/lib/token-amount";
 import { validateImageUpload } from "@/lib/launch-image";
 import type { ChangeEvent, ReactNode } from "react";
@@ -153,6 +155,10 @@ function isValidOptionalUrl(value: string) {
 }
 
 export default function CreatePage() {
+  return WALLET_NETWORK === "devnet" ? <WalletLaunchCreator /> : <PlanningCreatePage />;
+}
+
+function PlanningCreatePage() {
   const [tokenName, setTokenName] = useState("JeeT Cat");
   const [ticker, setTicker] = useState("JEET");
 

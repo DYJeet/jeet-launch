@@ -1,0 +1,19 @@
+{
+  "uri": "ipfs://bafkreicsyxczhcmdur2arx44cthughlu5kttxhb72y7fcgpzsc5kap2gn4",
+  "publicHttpsUrl": "https://gateway.pinata.cloud/ipfs/bafkreicsyxczhcmdur2arx44cthughlu5kttxhb72y7fcgpzsc5kap2gn4",
+  "authentication": false,
+  "checks": [
+    {
+      "status": 200,
+      "bytes": 413,
+      "sha256": "52c5c5938983a47408df9c14cf431d74eaa73b9c3fd63e5119f990baa03f466f",
+      "matches": true
+    },
+    {
+      "status": 200,
+      "bytes": 413,
+      "sha256": "52c5c5938983a47408df9c14cf431d74eaa73b9c3fd63e5119f990baa03f466f",
+      "matches": true
+    }
+  ]
+}

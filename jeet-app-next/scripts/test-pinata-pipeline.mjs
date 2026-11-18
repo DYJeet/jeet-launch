@@ -33,6 +33,7 @@ test('validated image → public IPFS image → matching JSON → IPFS metadata;
   assert.equal(result.storageEvidence.image.accountStatus,'public-file-record-confirmed');assert.equal(result.storageEvidence.metadata.accountStatus,'public-file-record-confirmed');
   validateMetadataFields(input.name,input.symbol,result.uri);
   assert.deepEqual(await createLocalLaunchAssets(input,'http://127.0.0.1:3006'),result);assert.equal(uploads,2);
+  assert.deepEqual(await createLocalLaunchAssets(input,'https://jeet-devnet.invalid','devnet'),result);assert.equal(uploads,2);
   await assert.rejects(createLocalLaunchAssets({...input,website:'javascript:alert(1)'},'http://127.0.0.1:3006'));
   await assert.rejects(createLocalLaunchAssets({...input,imageBase64:Buffer.from('<svg/>').toString('base64')},'http://127.0.0.1:3006'));
   assert.equal(uploads,2);

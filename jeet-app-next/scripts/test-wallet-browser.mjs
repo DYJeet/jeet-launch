@@ -132,7 +132,9 @@ try {
     page.on("pageerror", (e) => errors.push(String(e)));
     page.on("response", async (r) => {
       if (r.url().includes("/api/wallet/")) {
-        const t = await r.text();
+        // Navigation can release a diagnostic response body; assertions below
+        // still verify the transaction and balances independently.
+        const t = await r.text().catch(() => "");
         if (r.status() >= 400 || t.includes('\"error\"'))
           console.log(
             "RPC DIAGNOSTIC",

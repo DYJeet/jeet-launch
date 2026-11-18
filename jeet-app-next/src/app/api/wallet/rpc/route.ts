@@ -3,6 +3,7 @@ import {
   localWalletConfiguration,
   validateWalletRpc,
 } from "@/lib/local-wallet-server";
+import { walletUpstreamFetch } from "@/lib/wallet-rpc-server";
 export const dynamic = "force-dynamic";
 let active = 0;
 export async function POST(request: Request) {
@@ -37,33 +38,25 @@ export async function POST(request: Request) {
       const raw = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
       validateWalletRpc(JSON.parse(raw));
       await checkedLocalGenesis(url, environment.genesis);
-      const result = await fetch(url, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: raw,
-        signal: AbortSignal.timeout(15000),
-        cache: "no-store",
-      });
+      const result = await walletUpstreamFetch(url, raw, request.signal);
       // Preserve raw JSON integer lexemes. Kit's RPC parser handles u64 as bigint.
       return new Response(result.body, {
         status: result.status,
         headers: {
           "content-type": "application/json",
           "cache-control": "no-store",
+          ...(result.status === 429 ? { "retry-after": /^\d+$/.test(result.headers.get("retry-after") ?? "") ? result.headers.get("retry-after")! : "2" } : {}),
         },
       });
     } finally {
       active--;
     }
-  } catch (error) {
-    console.warn(
-      "Local wallet RPC rejected:",
-      error instanceof Error ? error.message : String(error),
-    );
+  } catch {
+    // Provider errors can contain credential-bearing URLs. Never log their messages/bodies.
     return Response.json(
       {
         error:
-          "Wallet RPC rejected or unavailable. Check local network/configuration.",
+          "Wallet RPC rejected or unavailable. Check the configured test network and retry shortly.",
       },
       { status: 503 },
     );

@@ -1,4 +1,5 @@
-import { address, createSolanaRpc, getBase64Encoder, signature } from "@solana/kit";
+import { address, getBase64Encoder, signature } from "@solana/kit";
+import { createServerWalletRpc } from "@/lib/wallet-rpc-server";
 import { localReadConfiguration, checkedLocalGenesis } from "@/lib/local-wallet-server";
 import { marketStore, type MarketEvent } from "@/lib/market-store";
 import { historyBatchSize, readHistoryPage } from "@/lib/market-ingest";
@@ -43,7 +44,7 @@ export async function GET(request: Request) {
     else {
       const update = (async () => {
         await checkedLocalGenesis(config.url, config.environment.genesis);
-        const rpc = createSolanaRpc(config.url);
+        const rpc = createServerWalletRpc(config.url);
         const options = { abortSignal: AbortSignal.timeout(12000) };
         const canonical = await graduationAddresses(mint, 0n);
         const termsAccount = (await rpc.getAccountInfo(canonical.terms,

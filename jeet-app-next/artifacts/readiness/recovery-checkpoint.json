@@ -1,0 +1,24 @@
+{
+  "status": "recovered-source-checkpoint; final HTTPS browser verification pending",
+  "baseLifecycleCommit": "ff8d7174498935ab3fb1a181da0a5ddc4c17fd31",
+  "sourceScope": "jeet-app-next only",
+  "approvedDeployedArtifactSha256": "13e0a87c97ba5b670bc2fd358a145618bff4be7fda5460b533e2dc1e3ac424fa",
+  "localCorrectionCandidateSha256": "a0517db22d618b092e1bd52b6b0e4c0e61bafa035a60abddd7ca3a9f649d87fa",
+  "candidateDeployed": false,
+  "capturedPriorResults": {
+    "focusedNodeTests": 58,
+    "additionalRegressionTests": 50,
+    "additionalIndexTests": 2,
+    "newForwardingRegressionTests": 1,
+    "rustUnitPassed": 13,
+    "localWalletPositive": 15,
+    "localWalletRejection": 10,
+    "localCreationPositive": 12,
+    "localCreationRejection": 15,
+    "correctedLocalGraduationPositive": 28,
+    "correctedLocalGraduationRejection": 52
+  },
+  "remaining": "Recover raw Codespace reports; complete final frontend build/browser checks; actual installed Phantom desktop and iPhone acceptance remains untested.",
+  "newPublicNetworkTransactions": 0,
+  "newDevnetSpendingLamports": 0
+}

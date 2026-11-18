@@ -60,7 +60,7 @@ function link(value: unknown) {
     throw Error("Social and website links must use HTTPS without credentials.");
   return url.toString();
 }
-export async function createLocalLaunchAssets(value: unknown, origin: string) {
+export async function createLocalLaunchAssets(value: unknown, origin: string, network: "local" | "devnet" = "local") {
   if (!value || typeof value !== "object")
     throw Error("Metadata object required.");
   const v = value as Record<string, unknown>;
@@ -82,12 +82,12 @@ export async function createLocalLaunchAssets(value: unknown, origin: string) {
     "https://example.invalid/metadata.json",
   );
   const parsed = new URL(origin);
-  if (
-    parsed.protocol !== "http:" ||
-    parsed.hostname !== "127.0.0.1" ||
-    parsed.origin !== origin
-  )
-    throw Error("Local metadata requires a loopback HTTP origin.");
+  if (parsed.origin !== origin || parsed.username || parsed.password ||
+      (network === "local" ? parsed.protocol !== "http:" || parsed.hostname !== "127.0.0.1" : parsed.protocol !== "https:"))
+    throw Error("Metadata requires the configured test-network application origin.");
+  const provider = process.env.JEET_METADATA_STORAGE ?? "local-workspace";
+  if (network === "devnet" && provider !== "pinata")
+    throw Error("Devnet creation requires public IPFS metadata storage; local workspace URLs are not usable.");
   if (
     v.imageBase64.length > Math.ceil(MAX_LOGO_BYTES / 3) * 4 ||
     !/^[A-Za-z0-9+/]+={0,2}$/.test(v.imageBase64)
@@ -115,7 +115,6 @@ export async function createLocalLaunchAssets(value: unknown, origin: string) {
   const website = link(v.website),
     twitter = link(v.twitter),
     telegram = link(v.telegram);
-  const provider = process.env.JEET_METADATA_STORAGE ?? "local-workspace";
   if (provider !== "local-workspace" && provider !== "pinata") throw Error("Unknown metadata storage provider.");
   const jwt = process.env.PINATA_JWT ?? "";
   if (provider === "pinata" && !jwt) throw Error("Pinata storage requires server PINATA_JWT; no mint was created.");

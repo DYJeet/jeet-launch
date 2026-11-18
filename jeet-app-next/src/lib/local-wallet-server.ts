@@ -6,6 +6,11 @@ import {
 
 import { WALLET_NETWORK, WALLET_PROGRAM_ADDRESS } from "./wallet-program.ts";
 import { DEVNET_GENESIS } from "./wallet-environment.ts";
+import { walletUpstreamFetch } from "./wallet-rpc-server.ts";
+
+export function walletModeEnabled() {
+  return WALLET_NETWORK === "devnet" ? process.env.JEET_DEVNET_WALLET === "1" : process.env.JEET_LOCAL_WALLET === "1";
+}
 
 function devnetWalletConfiguration(request: Request) {
   if (process.env.JEET_DEVNET_WALLET !== "1" || WALLET_NETWORK !== "devnet")
@@ -14,13 +19,31 @@ function devnetWalletConfiguration(request: Request) {
   if (origin.protocol !== "https:" || origin.username || origin.password ||
       origin.pathname !== "/" || origin.search || origin.hash)
     throw Error("Expected an explicit HTTPS application origin.");
-  if (request.headers.get("host") !== origin.host ||
+  if (!devnetApplicationHost(request, origin) ||
       (request.headers.get("origin") && request.headers.get("origin") !== origin.origin) ||
       request.headers.get("sec-fetch-site") === "cross-site")
     throw Error("Cross-origin Devnet wallet request rejected.");
-  return { url: "https://api.devnet.solana.com",
+  const rpc = new URL(process.env.JEET_DEVNET_WALLET_RPC ?? "https://api.devnet.solana.com");
+  if (rpc.protocol !== "https:" || rpc.username || rpc.password || rpc.hash || /mainnet/i.test(rpc.href))
+    throw Error("Expected an explicit HTTPS Devnet RPC endpoint.");
+  return { url: rpc.toString(),
     environment: validateWalletEnvironment({ network: "devnet", chain: "solana:devnet",
       genesis: DEVNET_GENESIS, program: WALLET_PROGRAM_ADDRESS, rpcPath: "/api/wallet/rpc" }) };
+}
+
+function devnetApplicationHost(request: Request, origin: URL) {
+  const host = request.headers.get("host");
+  if (host === origin.host) return true;
+  // Codespaces terminates HTTPS and replaces Host with localhost:<port>.
+  // Trust forwarding only in that named workspace, for its exact private
+  // forwarding hostname and matching loopback port. Origin/site checks above
+  // remain mandatory; generic forwarded headers are never sufficient.
+  if (process.env.CODESPACES !== "true" || !process.env.CODESPACE_NAME || !host)
+    return false;
+  const local = new URL("http://" + host);
+  return ["localhost", "127.0.0.1"].includes(local.hostname) && !!local.port &&
+    local.host === host && origin.hostname === `${process.env.CODESPACE_NAME}-${local.port}.app.github.dev` &&
+    request.headers.get("x-forwarded-host") === origin.host;
 }
 
 export function localWalletConfiguration(request: Request) {
@@ -167,19 +190,21 @@ export function validateWalletRpc(body: unknown) {
   }
   return b;
 }
+const genesisChecks = new Map<string, Promise<void>>();
 export async function checkedLocalGenesis(url: string, expected: string) {
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({
+  const key = url + ":" + expected;
+  const existing = genesisChecks.get(key);
+  if (existing) return existing;
+  const check = (async () => {
+    const response = await walletUpstreamFetch(url, JSON.stringify({
       jsonrpc: "2.0",
       id: 1,
       method: "getGenesisHash",
       params: [],
-    }),
-    signal: AbortSignal.timeout(5000),
-    cache: "no-store",
-  });
-  if (!response.ok || (await response.json()).result !== expected)
-    throw Error("RPC genesis mismatch; request not forwarded.");
+    }), AbortSignal.timeout(8000));
+    if (!response.ok || (await response.json()).result !== expected)
+      throw Error("RPC genesis mismatch or unavailable; request not forwarded.");
+  })();
+  genesisChecks.set(key, check);
+  try { await check; } finally { if (genesisChecks.get(key) === check) genesisChecks.delete(key); }
 }

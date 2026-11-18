@@ -30,6 +30,8 @@ import { MarketStore } from "../src/lib/market-store.ts";
 const graduation = process.env.JEET_BROWSER_GRADUATION === "1"
   ? await import("./amm/test-wallet-graduation-browser.mjs") : null;
 const trading = !!graduation || process.env.JEET_BROWSER_TRADE === "1";
+// Test fixture override preserves the previously verified local/Devnet binaries.
+const localSbf = process.env.JEET_BROWSER_SBF ?? "programs/launch-custody/target/local-fee-test/jeet_launch_custody.so";
 const archive = process.env.JEET_BROWSER_ARCHIVE === "1";
 const livePinata = process.env.JEET_CREATION_STORAGE === "pinata";
 if (graduation && !livePinata && process.env.JEET_BROWSER_LOCAL_METADATA !== "1")
@@ -115,7 +117,7 @@ try {
       "programs/launch-custody/target/metadata-research/mpl_token_metadata.so",
       "--bpf-program",
       LOCAL_WALLET_PROGRAM,
-      "programs/launch-custody/target/local-fee-test/jeet_launch_custody.so",
+      localSbf,
       ...(graduation ? await graduation.graduationGenesis(dir) : []),
     ],
     "validator",
@@ -597,7 +599,7 @@ try {
   evidence.completed = true;
   evidence.genesis = genesis;
   evidence.program = LOCAL_WALLET_PROGRAM;
-  evidence.artifactSha256 = createHash("sha256").update(await readFile("programs/launch-custody/target/local-fee-test/jeet_launch_custody.so")).digest("hex");
+  evidence.artifactSha256 = createHash("sha256").update(await readFile(localSbf)).digest("hex");
   await mkdir("programs/launch-custody/target/v6-wallet",{recursive:true});
   await writeFile("programs/launch-custody/target/v6-wallet/creation-browser-evidence.json",JSON.stringify(evidence,(_key,v)=>typeof v==="bigint"?v.toString():v,2));
   console.log("PASS creation browser suite",JSON.stringify(evidence,(_key,v)=>typeof v==="bigint"?v.toString():v));

@@ -1,0 +1,110 @@
+{
+  "requestMethod": "GET only",
+  "transport": "Internal HTTP with exact HTTPS reverse-proxy Host/Origin; not browser/TLS acceptance",
+  "transactionsSubmitted": 0,
+  "checks": [
+    {
+      "path": "/api/wallet/environment",
+      "status": 200,
+      "elapsedMs": 6205,
+      "response": {
+        "network": "devnet",
+        "chain": "solana:devnet",
+        "genesis": "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG",
+        "program": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+        "rpcPath": "/api/wallet/rpc"
+      }
+    },
+    {
+      "path": "/create",
+      "status": 200,
+      "elapsedMs": 23,
+      "response": "HTML accepted"
+    },
+    {
+      "path": "/token/7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM",
+      "status": 200,
+      "elapsedMs": 104,
+      "response": "HTML accepted"
+    },
+    {
+      "path": "/api/launches",
+      "status": 200,
+      "elapsedMs": 12,
+      "response": {
+        "rows": [
+          {
+            "mint": "7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM",
+            "creator": "13TckZDu8H8VAXSmkfGqVKMwbeWoJsrsBSk5i1KkA1Uf",
+            "name": "JeeT Devnet Test",
+            "symbol": "JEETTEST",
+            "progress": 0,
+            "migrated": false,
+            "activationSlot": "523448418",
+            "volume": "206398",
+            "reserve": "0",
+            "eligible": false,
+            "observedAt": 1794964503523,
+            "observedSlot": "523461159"
+          }
+        ],
+        "total": 1,
+        "cursorExpired": false,
+        "indexedAt": 1794964503523,
+        "stale": false,
+        "backfilling": false,
+        "gap": true
+      }
+    },
+    {
+      "path": "/api/market-history?mint=7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM",
+      "status": 200,
+      "elapsedMs": 6806,
+      "response": {
+        "events": [
+          {
+            "signature": "2ukDH2WkwejbkSvSFbs8Rg3pwQAvWEvXxiDHqLBr3B7zTKRjreEY5NeHWjzH4F6GHgyBbpeHG3z5PL7ekNEwa2oJ",
+            "slot": "523451291",
+            "time": 1794962141,
+            "id": "2ukDH2WkwejbkSvSFbs8Rg3pwQAvWEvXxiDHqLBr3B7zTKRjreEY5NeHWjzH4F6GHgyBbpeHG3z5PL7ekNEwa2oJ:claim:0",
+            "kind": "creator-claim",
+            "wallet": "13TckZDu8H8VAXSmkfGqVKMwbeWoJsrsBSk5i1KkA1Uf",
+            "lamports": "722"
+          },
+          {
+            "signature": "5zJQCav4hB83YhgugryyjZpv3F1c3ETNTcE5yKBS7Xvx5sBSH8JbU69MGRaAdkvyVXFCic3pu4RJWKcHEf5ou4Eg",
+            "slot": "523451228",
+            "time": 1794962126,
+            "id": "5zJQCav4hB83YhgugryyjZpv3F1c3ETNTcE5yKBS7Xvx5sBSH8JbU69MGRaAdkvyVXFCic3pu4RJWKcHEf5ou4Eg:trade:2",
+            "kind": "sell",
+            "wallet": "9m9k7oUP2EpVhgPXtrAsFTYE6WY6kaq8w67QvkWKjx9b",
+            "tokens": "2400000000000",
+            "lamports": "103199"
+          },
+          {
+            "signature": "3v7Gc9RCRjrgiCw7yBbc65HPT25ndZUXG5s1sMuuwX7FT4AoMLYVjXjBHr2zv9PRSGmh5rdnUhuAtZyz2HyjxobZ",
+            "slot": "523451140",
+            "time": 1794962105,
+            "id": "3v7Gc9RCRjrgiCw7yBbc65HPT25ndZUXG5s1sMuuwX7FT4AoMLYVjXjBHr2zv9PRSGmh5rdnUhuAtZyz2HyjxobZ:trade:1",
+            "kind": "buy",
+            "wallet": "9m9k7oUP2EpVhgPXtrAsFTYE6WY6kaq8w67QvkWKjx9b",
+            "tokens": "2400000000000",
+            "lamports": "103199"
+          }
+        ],
+        "cursorExpired": false,
+        "checkpoint": {
+          "anchor": "2ukDH2WkwejbkSvSFbs8Rg3pwQAvWEvXxiDHqLBr3B7zTKRjreEY5NeHWjzH4F6GHgyBbpeHG3z5PL7ekNEwa2oJ",
+          "backfilled": true,
+          "gap": true
+        },
+        "volume": {
+          "lamports": "206398",
+          "tokens": "4800000000000",
+          "trades": 2
+        },
+        "stale": false
+      }
+    }
+  ]
+}

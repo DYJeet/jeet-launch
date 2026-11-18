@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { address } from "@solana/kit";
 import WalletLaunchReader from "@/components/WalletLaunchReader";
 import { headers } from "next/headers";
-import { localReadConfiguration, previewEnabled } from "@/lib/local-wallet-server";
+import { localReadConfiguration, previewEnabled, walletModeEnabled } from "@/lib/local-wallet-server";
 import PreviewHistory from "@/components/PreviewHistory";
 import SiteHeader from "@/components/SiteHeader";
 
@@ -11,7 +11,7 @@ export default async function TokenPage({ params, searchParams }: PageProps<"/to
   if (preview) {
     try { localReadConfiguration(new Request("https://" + process.env.JEET_PREVIEW_HOST, { headers: await headers() })); }
     catch { notFound(); }
-  } else if (process.env.JEET_LOCAL_WALLET !== "1") notFound();
+  } else if (!walletModeEnabled()) notFound();
   const { mint } = await params;
   try { address(mint); } catch { notFound(); }
   const query = preview ? await searchParams : {};

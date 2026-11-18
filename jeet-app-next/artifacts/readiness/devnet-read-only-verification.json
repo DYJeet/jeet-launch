@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-11-18T01:11:57.575Z",
+  "slot": 523460371,
+  "readOnly": true,
+  "transactionsSubmitted": 0,
+  "program": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+  "executable": true,
+  "programdata": "4UHVfUkA2HxHRo11hcN3FH8QjX6ZYznikSvA678cxQVW",
+  "artifactSha256": "13e0a87c97ba5b670bc2fd358a145618bff4be7fda5460b533e2dc1e3ac424fa",
+  "deployedBinaryMatches": true,
+  "treasury": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+  "treasuryEmbedded": true,
+  "upgradeAuthority": "DQeELacwEfej1r9g5pt4eQQcetxe3TAgVGD9RJSutJNW",
+  "bufferClosed": true,
+  "feeBps": {
+    "platform": 65,
+    "creator": 35,
+    "total": 100
+  },
+  "mint": "7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM",
+  "priorLifecycleTransactionsFinalized": 10,
+  "balancesUnchanged": true,
+  "balancesLamports": {
+    "payer": 1559308880,
+    "creator": 13626922,
+    "trader": 837776
+  },
+  "platform": {
+    "beneficiary": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+    "accruedLamports": 1342,
+    "withdrawnLamports": 0,
+    "claimableLamports": 1342
+  },
+  "creator": {
+    "beneficiary": "13TckZDu8H8VAXSmkfGqVKMwbeWoJsrsBSk5i1KkA1Uf",
+    "accruedLamports": 722,
+    "withdrawnLamports": 722,
+    "claimableLamports": 0
+  },
+  "remainingLifecycleBudgetLamports": 19049698
+}

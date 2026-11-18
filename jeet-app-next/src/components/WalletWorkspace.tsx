@@ -128,9 +128,9 @@ function Workspace({ environment }: { environment: WalletEnvironment }) {
   return (
     <div className="space-y-5">
       <p className="rounded-xl border border-yellow-300/20 p-4 text-sm text-yellow-100">
-        Local validator only. Wallet Standard requests use its Devnet-compatible
-        chain label; the exact local genesis is independently checked before
-        signing and sending. This does not switch your wallet network.
+        {environment.network === "devnet"
+          ? "Solana Devnet only; test SOL and disposable wallets. The exact Devnet genesis is checked before signing and sending. Select Devnet in your wallet."
+          : "Local validator only. Wallet Standard requests use its Devnet-compatible chain label; the exact local genesis is independently checked before signing and sending. This does not switch your wallet network."}
       </p>
       <p className="break-all text-xs text-white/50">
         Verified configured genesis: {environment.genesis}
@@ -164,7 +164,7 @@ function Workspace({ environment }: { environment: WalletEnvironment }) {
             </select>
           </label>}
           <p>
-            Local SOL:{" "}
+            {environment.network === "devnet" ? "Devnet SOL:" : "Local SOL:"}{" "}
             <strong data-testid="local-balance">
               {balance?.wallet === wallet
                 ? formatUnits(balance.raw)
@@ -184,7 +184,7 @@ function Workspace({ environment }: { environment: WalletEnvironment }) {
               disabled={running}
               onClick={() => void check()}
             >
-              Sign local connection check
+              {environment.network === "devnet" ? "Sign Devnet connection check" : "Sign local connection check"}
             </button>
             <button
               className={button}
@@ -280,7 +280,7 @@ export default function WalletWorkspace() {
         <Link href="/" className="text-[#9cff43]">
           ← JeeT Launch
         </Link>
-        <h1 className="text-3xl font-black">Local wallet workspace</h1>
+        <h1 className="text-3xl font-black">{environment?.network === "devnet" ? "Devnet wallet workspace" : "Local wallet workspace"}</h1>
         <p className="text-white/50">
           Development verification, disposable wallets and test SOL only.
         </p>

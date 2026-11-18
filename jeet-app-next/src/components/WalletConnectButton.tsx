@@ -120,8 +120,7 @@ function WalletButtonInner({ client }: { client: AppClient }) {
             <div className="space-y-2">
               {wallets.length === 0 ? (
                 <div className="rounded-xl border border-white/[0.08] bg-white/[0.035] p-3 text-xs text-white/45">
-                  No Wallet Standard wallet detected. Install or open Phantom,
-                  Solflare, Backpack, or another compatible wallet.
+                  No Wallet Standard wallet detected. On desktop, install and unlock Phantom or another compatible wallet. On mobile, open this site inside Phantom’s in-app browser.
                 </div>
               ) : (
                 wallets.map((wallet) => (

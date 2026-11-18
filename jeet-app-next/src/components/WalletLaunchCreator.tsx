@@ -267,10 +267,10 @@ function Creation({ environment }: { environment: WalletEnvironment }) {
   return (
     <div className="space-y-6">
       <p className="rounded-xl border border-yellow-300/20 p-4 text-sm text-yellow-100">
-        Local validator and disposable wallets only. Default image/JSON storage is
-        temporary workspace storage. If the operator explicitly configures Pinata,
-        uploads are public IPFS files dependent on continued provider pinning.
-        Do not upload private information. No mainnet or Devnet launch is enabled.
+        {environment.network === "devnet"
+          ? "Solana Devnet and disposable test wallets only. Devnet requires public IPFS metadata, dependent on continued provider pinning. "
+          : "Local validator and disposable wallets only. Default image/JSON storage is temporary workspace storage. If the operator explicitly configures Pinata, uploads are public IPFS files dependent on continued provider pinning. "}
+        Do not upload private information. {environment.network === "devnet" ? "Mainnet launches and public-network liquidity migration are disabled." : "No mainnet or Devnet launch is enabled."}
       </p>
       {!wallet ? (
         <div className="flex flex-wrap gap-3">
@@ -285,7 +285,7 @@ function Creation({ environment }: { environment: WalletEnvironment }) {
             </button>
           ))}
           {!wallets.length && (
-            <p>Open a supported Wallet Standard wallet browser.</p>
+            <p>On desktop, install and unlock Phantom or another Wallet Standard wallet. On mobile, open this site inside Phantom’s in-app browser.</p>
           )}
         </div>
       ) : (
@@ -456,7 +456,7 @@ function Creation({ environment }: { environment: WalletEnvironment }) {
               <dl>{Object.entries(current.signatures).map(([name, signature]) => (
                 <div key={name} className="mt-3 break-all"><dt className="font-bold">{name}</dt><dd>{signature}</dd></div>
               ))}</dl>
-              <p className="mt-3 text-white/50">These signatures belong to the configured local validator. Public explorers cannot resolve this disposable local chain.</p>
+              <p className="mt-3 text-white/50">{environment.network === "devnet" ? "These signatures belong to Solana Devnet. Inspect them with the Devnet cluster selected in Solana Explorer." : "These signatures belong to the configured local validator. Public explorers cannot resolve this disposable local chain."}</p>
             </details>
           )}
           {stage === "confirmed" && current && (
@@ -504,7 +504,7 @@ export default function WalletLaunchCreator() {
         <Link href="/" className="text-[#9cff43]">
           ← JeeT Launch
         </Link>
-        <h1 className="text-3xl font-black">Create a local coin</h1>
+        <h1 className="text-3xl font-black">{environment?.network === "devnet" ? "Create a Devnet coin" : "Create a local coin"}</h1>
         <p className="text-white/50">
           Your wallet signs. JeeT never receives its private keys.
         </p>
@@ -518,7 +518,7 @@ export default function WalletLaunchCreator() {
             <Creation environment={environment} />
           </WalletHydrationGate>
         ) : (
-          <p>Verifying local validator…</p>
+          <p>Verifying configured test network…</p>
         )}
       </div>
     </main>
