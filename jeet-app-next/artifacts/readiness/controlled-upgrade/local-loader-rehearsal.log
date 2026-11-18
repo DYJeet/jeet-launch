@@ -1,0 +1,84 @@
+LOCAL_UPLOAD_PROGRESS 1
+LOCAL_UPLOAD_PROGRESS 33
+LOCAL_UPLOAD_PROGRESS 65
+LOCAL_UPLOAD_PROGRESS 97
+LOCAL_UPLOAD_PROGRESS 129
+LOCAL_UPLOAD_PROGRESS 161
+LOCAL_UPLOAD_PROGRESS 193
+LOCAL_UPLOAD_PROGRESS 225
+LOCAL_UPLOAD_PROGRESS 257
+LOCAL_REHEARSAL_LOGS /tmp/jeet-loader-rehearsal-CPaebU
+file:///workspaces/jeet-devnet-readiness/jeet-app-next/node_modules/@solana/instruction-plans/dist/index.node.mjs:683
+  return new SolanaError(
+         ^
+
+SolanaError: Failed to send transaction (preflight): Invalid account data for instruction (instruction #2)
+
+Logs:
+  > Program ComputeBudget111111111111111111111111111111 invoke [1]
+  > Program ComputeBudget111111111111111111111111111111 success
+  > Program BPFLoaderUpgradeab1e11111111111111111111111 invoke [1]
+  > Detected sbpf_version required by the executable which are not enabled
+  > Program BPFLoaderUpgradeab1e11111111111111111111111 failed: invalid account data for instruction
+
+    at Object.createFailedToSendTransactionError [as createTransactionError] (file:///workspaces/jeet-devnet-readiness/jeet-app-next/node_modules/@solana/instruction-plans/dist/index.node.mjs:683:10)
+    at Object.executeTransaction [as sendTransaction] (file:///workspaces/jeet-devnet-readiness/jeet-app-next/node_modules/@solana/kit-plugin-instruction-plan/dist/index.node.mjs:114:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async send (file:///workspaces/jeet-devnet-readiness/jeet-app-next/scripts/readiness/rehearse-upgrade-local.mjs:31:52)
+    at async file:///workspaces/jeet-devnet-readiness/jeet-app-next/scripts/readiness/rehearse-upgrade-local.mjs:40:2 {
+  cause: SolanaError: Invalid account data for instruction (instruction #2)
+      at getSolanaErrorFromTransactionError (file:///workspaces/jeet-devnet-readiness/jeet-app-next/node_modules/@solana/errors/dist/index.node.mjs:1004:12)
+      at getSolanaErrorFromJsonRpcError (file:///workspaces/jeet-devnet-readiness/jeet-app-next/node_modules/@solana/errors/dist/index.node.mjs:1042:42)
+      at file:///workspaces/jeet-devnet-readiness/jeet-app-next/node_modules/@solana/rpc-transformers/dist/index.node.mjs:325:15
+      at file:///workspaces/jeet-devnet-readiness/jeet-app-next/node_modules/@solana/rpc-transformers/dist/index.node.mjs:340:54
+      at file:///workspaces/jeet-devnet-readiness/jeet-app-next/node_modules/@solana/functional/dist/index.node.mjs:3:34
+      at Array.reduce (<anonymous>)
+      at pipe (file:///workspaces/jeet-devnet-readiness/jeet-app-next/node_modules/@solana/functional/dist/index.node.mjs:3:14)
+      at Object.responseTransformer (file:///workspaces/jeet-devnet-readiness/jeet-app-next/node_modules/@solana/rpc-transformers/dist/index.node.mjs:338:12)
+      at Object.execute (file:///workspaces/jeet-devnet-readiness/jeet-app-next/node_modules/@solana/rpc-spec/dist/index.node.mjs:70:27)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+    cause: undefined,
+    context: { __code: 4615004, index: 1 }
+  },
+  context: {
+    __code: 11,
+    causeMessage: ' (preflight): Invalid account data for instruction (instruction #2)\n' +
+      '\n' +
+      'Logs:\n' +
+      '  > Program ComputeBudget111111111111111111111111111111 invoke [1]\n' +
+      '  > Program ComputeBudget111111111111111111111111111111 success\n' +
+      '  > Program BPFLoaderUpgradeab1e11111111111111111111111 invoke [1]\n' +
+      '  > Detected sbpf_version required by the executable which are not enabled\n' +
+      '  > Program BPFLoaderUpgradeab1e11111111111111111111111 failed: invalid account data for instruction\n',
+    logs: [
+      'Program ComputeBudget111111111111111111111111111111 invoke [1]',
+      'Program ComputeBudget111111111111111111111111111111 success',
+      'Program BPFLoaderUpgradeab1e11111111111111111111111 invoke [1]',
+      'Detected sbpf_version required by the executable which are not enabled',
+      'Program BPFLoaderUpgradeab1e11111111111111111111111 failed: invalid account data for instruction'
+    ],
+    preflightData: {
+      accounts: null,
+      fee: 10000n,
+      innerInstructions: null,
+      loadedAccountsDataSize: 892794,
+      loadedAddresses: null,
+      logs: [
+        'Program ComputeBudget111111111111111111111111111111 invoke [1]',
+        'Program ComputeBudget111111111111111111111111111111 success',
+        'Program BPFLoaderUpgradeab1e11111111111111111111111 invoke [1]',
+        'Detected sbpf_version required by the executable which are not enabled',
+        'Program BPFLoaderUpgradeab1e11111111111111111111111 failed: invalid account data for instruction'
+      ],
+      postBalances: null,
+      postTokenBalances: null,
+      preBalances: null,
+      preTokenBalances: null,
+      replacementBlockhash: null,
+      returnData: null,
+      unitsConsumed: 2520n
+    }
+  }
+}
+
+Node.js v24.21.0

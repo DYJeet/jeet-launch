@@ -1,0 +1,18 @@
+{
+  "originalMain": {
+    "head": "c9b2d9b962c6c79428f652adf733a892a8a3f766",
+    "statusSha256": "a68769984ce1bb15f15a448d12d54dc1801de21050c9af6f0f15b0940d739881",
+    "diffSha256": "9125e12db0083ad31e8df0055f61b0fbc549d7ff9427571c306ec9050411c6a7"
+  },
+  "originalRepair": {
+    "head": "9fc4bcb60317d65a580e039fc53a452698e7ae78",
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "diffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "frozenRelease": {
+    "head": "712f5b93e77f243ff8d0c35b98694abab56214c8",
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "diffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "note": "All HEAD and tracked-diff hashes match historical recovery checkpoint. Main untracked status fingerprint differs; reason not proven. Current inventory retained; no existing files deleted."
+}

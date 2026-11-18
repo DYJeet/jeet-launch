@@ -1,0 +1,7 @@
+{
+  "cleanTarget": true,
+  "sha256": "e4516444814532383d1dce55dd84f0b88dacbb35435f738596b1c7fb725e2e2c",
+  "matchesPreservedCandidate": true,
+  "programSourceUnchanged": true,
+  "compiler": "platform-tools v1.57; SBPF v0"
+}

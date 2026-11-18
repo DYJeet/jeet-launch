@@ -1,0 +1,22 @@
+{
+  "payer": {
+    "publicAddress": "BAZK4s9BBN3x4XGhjG3tj4P6jGky8cnNHBUdMsoHGFyg",
+    "existingSignerAvailable": true,
+    "permissions": "0o600"
+  },
+  "upgrade-authority": {
+    "publicAddress": "DQeELacwEfej1r9g5pt4eQQcetxe3TAgVGD9RJSutJNW",
+    "existingSignerAvailable": true,
+    "permissions": "0o600"
+  },
+  "phase1-creator": {
+    "publicAddress": "13TckZDu8H8VAXSmkfGqVKMwbeWoJsrsBSk5i1KkA1Uf",
+    "existingSignerAvailable": true,
+    "permissions": "0o600"
+  },
+  "phase1-trader": {
+    "publicAddress": "9m9k7oUP2EpVhgPXtrAsFTYE6WY6kaq8w67QvkWKjx9b",
+    "existingSignerAvailable": true,
+    "permissions": "0o600"
+  }
+}

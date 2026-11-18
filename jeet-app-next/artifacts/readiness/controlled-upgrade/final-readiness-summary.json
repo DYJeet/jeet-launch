@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-11-18T14:27:38.868745+00:00",
+  "preview": "https://symmetrical-adventure-544vrwjwxppcv7wx-3019.app.github.dev/",
+  "httpsLoaded": true,
+  "createRoute": true,
+  "exploreDiscoveredJEETTEST": true,
+  "revenueRoute": true,
+  "tokenMetadataImageChartTwoTradesAndCreatorClaim": true,
+  "platformClaimableLamports": 1342,
+  "creatorClaimedLamports": 722,
+  "discoveryWarning": "RPC history coverage gap; not complete indexed history",
+  "appRuntimeExceptionsObserved": 0,
+  "browserExtensionMetadataErrors": true,
+  "realPhantomDesktopConnection": "owner reported passed",
+  "realPhantomSigningRejectionReconnectionIPhone": "unverified",
+  "publicTransactionsThisSession": 0,
+  "solSpentThisSession": 0,
+  "lintExit": 0,
+  "productionBuildExit": 0,
+  "workspaceAvailableMB": 815,
+  "tmpAvailableGB": 38
+}
