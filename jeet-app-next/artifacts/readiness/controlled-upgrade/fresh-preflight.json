@@ -1,0 +1,92 @@
+{
+  "checkedAt": "2026-11-18T13:50:15.113Z",
+  "network": "devnet",
+  "readOnly": true,
+  "signed": false,
+  "broadcast": false,
+  "slot": 523650504,
+  "program": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+  "programdata": "4UHVfUkA2HxHRo11hcN3FH8QjX6ZYznikSvA678cxQVW",
+  "programExecutable": true,
+  "currentHash": "13e0a87c97ba5b670bc2fd358a145618bff4be7fda5460b533e2dc1e3ac424fa",
+  "candidateHash": "e4516444814532383d1dce55dd84f0b88dacbb35435f738596b1c7fb725e2e2c",
+  "candidateBytes": 274496,
+  "currentProgramDataCapacity": 617552,
+  "authority": "DQeELacwEfej1r9g5pt4eQQcetxe3TAgVGD9RJSutJNW",
+  "payer": "BAZK4s9BBN3x4XGhjG3tj4P6jGky8cnNHBUdMsoHGFyg",
+  "payerBalanceLamports": 1559308880,
+  "upgradeAuthorityAccountExists": false,
+  "treasury": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+  "sourceManifestMatches": true,
+  "storedAccountLayoutsChanged": false,
+  "outerInstructionFormatsChanged": false,
+  "existingLifecycleAccountsUnchanged": true,
+  "previousBufferClosed": true,
+  "quoteBufferPlaceholder": "Ew2tMgmQhkJcKkpWoMHVwJ7vbKzYdW9ThNMi7W9UBgm3",
+  "placeholderIsNotAnActiveBuffer": true,
+  "freshBufferRequiredAfterApproval": true,
+  "bufferRentLamports": 1395277880,
+  "rollbackBufferRentLamports": 1330985400,
+  "chunkBytes": 960,
+  "writeTransactions": 286,
+  "plannedTransactions": 289,
+  "transactions": [
+    {
+      "name": "create-buffer",
+      "signatures": 2,
+      "wireBytes": 360,
+      "baseFeeLamports": 10000,
+      "messageSha256": "ebab21c241acd273cb36380c5eb7fc3ceb28ce5b3930b667093b47d878db015e"
+    },
+    {
+      "name": "write-full",
+      "signatures": 1,
+      "wireBytes": 1180,
+      "baseFeeLamports": 5000,
+      "messageSha256": "e7996268870c899e60090705f33c4f07771073d729cbbf25fefd051c6c8c6cdf"
+    },
+    {
+      "name": "write-final",
+      "signatures": 1,
+      "wireBytes": 1116,
+      "baseFeeLamports": 5000,
+      "messageSha256": "44f840326e3a163d79aec97964d4bdb6c0afce30924c4d3fd3cf7d8a98ef9a9a"
+    },
+    {
+      "name": "handoff",
+      "signatures": 1,
+      "wireBytes": 240,
+      "baseFeeLamports": 5000,
+      "messageSha256": "3d1c471adb9f7948bba135dff3aa7c1a3f0b425759dcba2de18e797401d5fef3"
+    },
+    {
+      "name": "upgrade",
+      "signatures": 2,
+      "wireBytes": 436,
+      "baseFeeLamports": 10000,
+      "messageSha256": "9ccf06104546ccf376ee7b6724b5a5d53c404e5f23cc285732aded7bdb18bf81"
+    },
+    {
+      "name": "failure-close-after-handoff",
+      "signatures": 2,
+      "wireBytes": 304,
+      "baseFeeLamports": 10000,
+      "messageSha256": "9d0fe433619b058e463a2f3ccc88f8b5e0c15ea96fb357589593c6de421e9dd5"
+    }
+  ],
+  "newBaseFeesLamports": 1455000,
+  "preservedLatestDeploymentReceiptCount": 276,
+  "preservedLatestDeploymentFeesLamports": 1390000,
+  "priorCumulativeFeesLamports": 2935000,
+  "estimatedCumulativeFeesLamports": 4390000,
+  "oldLimitsPass": false,
+  "proposedBufferRentCapLamports": 1400000000,
+  "proposedCumulativeFeeCapLamports": 4600000,
+  "proposedNewFeeAllowanceLamports": 1665000,
+  "lifecycleAllowanceReservedLamports": 19049698,
+  "availableAfterBufferBaseFeesAndLifecycleReserveLamports": 143526302,
+  "signerFileAvailability": "pending authenticated Codespace inspection; no secret files read",
+  "reproducibility": "unchanged source/artifact matched preserved repeat-build manifest and logs; no redundant rebuild",
+  "upgradeSimulation": "deferred until approved upload exists; no invalid missing-buffer simulation presented as success",
+  "authorizedToSubmit": false
+}

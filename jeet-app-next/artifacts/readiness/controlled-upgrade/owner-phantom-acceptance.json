@@ -1,0 +1,13 @@
+{
+  "source": "explicit owner update in current conversation",
+  "date": "2026-11-18",
+  "device": "owner Chromebook",
+  "wallet": "installed Phantom Chrome extension",
+  "connection": "passed",
+  "displayedWalletAddress": "owner confirmed correct; address not supplied in this update",
+  "signing": "unverified",
+  "rejection": "unverified",
+  "reconnection": "unverified",
+  "onChainTradingThroughOwnerWallet": "unverified",
+  "iPhone": "unverified"
+}

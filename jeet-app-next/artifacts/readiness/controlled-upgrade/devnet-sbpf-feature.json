@@ -1,0 +1,11 @@
+{
+  "checkedAt": "2026-11-18T14:17:34.546Z",
+  "network": "devnet",
+  "slot": 523657397,
+  "feature": "B8JJXCy5amZyWG9r7EnUYLwzXSXTxG7GZ1qZ1qggo83g",
+  "accountExists": false,
+  "active": false,
+  "activationSlot": null,
+  "localDefaultProfileUpgradeRejected": true,
+  "meaning": "Local validator activates features by default; public Devnet feature state must drive the compatibility rehearsal."
+}
