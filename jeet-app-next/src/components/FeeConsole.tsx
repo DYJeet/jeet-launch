@@ -1,4 +1,5 @@
 "use client";
+import { PUBLIC_BETA_READ_ONLY, PUBLIC_BETA_MESSAGE } from "@/lib/public-beta";
 import WalletReadyGate from "./WalletHydrationGate";
 import { useMemo, useRef, useState } from "react";
 import { useClient } from "@solana/react";
@@ -844,6 +845,7 @@ export default function FeeConsole({
   initialMint?: string;
 }) {
   const client = useClient<AppClient>();
+  if (PUBLIC_BETA_READ_ONLY) return <p role="status">{PUBLIC_BETA_MESSAGE}</p>;
   return (
     <WalletReadyGate client={client} fallback={<p>Loading wallet support…</p>}>
       <Console client={client} initialMint={initialMint} />

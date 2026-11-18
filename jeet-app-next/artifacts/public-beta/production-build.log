@@ -4,23 +4,18 @@ npm warn Unknown env config "http-proxy". This will stop working in the next maj
 > next build --webpack
 
 ▲ Next.js 16.4.6 (webpack)
-✓ Running next.config.ts took 88ms
-Attention: Next.js now collects completely anonymous telemetry regarding usage.
-This information is used to shape Next.js' roadmap and prioritize features.
-You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-https://nextjs.org/telemetry
-
+✓ Running next.config.ts took 64ms
 
   Creating an optimized production build ...
-✓ Compiled successfully in 28.4s
+✓ Compiled successfully in 6.7s
   Running TypeScript ...
-  Finished TypeScript in 7.8s ...
+  Finished TypeScript in 5.1s ...
   Collecting page data using 8 workers ...
   Generating static pages using 8 workers (0/9) ...
   Generating static pages using 8 workers (2/9) 
   Generating static pages using 8 workers (4/9) 
   Generating static pages using 8 workers (6/9) 
-✓ Generating static pages using 8 workers (9/9) in 438ms
+✓ Generating static pages using 8 workers (9/9) in 535ms
   Finalizing page optimization ...
   Collecting build traces ...
 

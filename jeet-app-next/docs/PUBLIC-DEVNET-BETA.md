@@ -15,7 +15,7 @@ SQLite under `/tmp` is a regenerable per-instance read cache, not durable cross-
 - Five new public-beta policy/origin/limiter tests passed.
 - 29 affected wallet/RPC regressions passed.
 - Eight affected Devnet configuration/index regressions passed.
-- Nine production HTTP checks passed, including 403 write denials and real JEETTEST discovery.
+- Ten final production HTTP checks passed, including 403 write denials, real JEETTEST discovery and the legacy-console fallback guard.
 - Production build and lint passed.
 - Fresh npm production and full dependency audits each reported zero vulnerabilities. This updates the earlier development-tool advisory snapshot; it is not an independent security audit.
 - Preserved local graduation evidence: 28 positive / 52 rejection-and-rollback checks, plus the complete local browser migration/swap flow. No program source changed; no redundant SBF build or local economic regression rerun was required.
@@ -52,3 +52,9 @@ Before Mainnet: independently review program economics/permissions and external 
 ## Announcement draft
 
 JeeT Launch is entering Solana Devnet beta 🐱 Explore real test launches, connect Phantom and inspect transparent on-chain activity. Devnet tokens and test SOL have no monetary value. Creation and trading remain gated while final post-upgrade acceptance is completed. No Mainnet launch or token sale is live.
+
+## Publication approval boundary
+
+Production publication was attempted through the Vercel connector and rejected by automatic approval review because it interpreted the owner directive as requiring a separate deployment authorization. No new deployment was created. Do not use another interface, preview target, alias or file-upload deployment to bypass that rejection. Existing production remains the older community preview, not this candidate.
+
+Owner approval required: publish the exact final guarded source commit to `jeet-launch-community-preview`, team `DYJeet`, production environment and existing Vercel HTTPS aliases, Node 24.x and root `jeet-app-next`; retain the recorded rollback deployment. Only the five nonsecret Devnet/read-only/cache variables listed in the deployment record are configured. No API credential, wallet key, DNS edit, paid service, public transaction action, DidYouJeeT change or on-chain operation is included. External unauthenticated desktop/mobile browser acceptance must run after that authorized deployment is READY.

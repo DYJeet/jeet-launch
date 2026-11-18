@@ -52,5 +52,11 @@
     "status": 200,
     "pass": true,
     "snippet": "{\"rows\":[{\"mint\":\"7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM\",\"creator\":\"13TckZDu8H8VAXSmkfGqVKMwbeWoJsrsBSk5i1KkA1Uf\",\"name\":\"JeeT Devnet Test\",\"symbol\":\"JEE"
+  },
+  {
+    "path": "/revenue with wallet runtime disabled",
+    "status": 200,
+    "pass": true,
+    "legacySignerConsoleBlocked": true
   }
 ]
