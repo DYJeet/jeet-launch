@@ -1,0 +1,12 @@
+[
+  {
+    "method": "sendTransaction",
+    "status": 403,
+    "body": "{\"error\":\"Public beta transaction operations are disabled.\"}"
+  },
+  {
+    "method": "simulateTransaction",
+    "status": 403,
+    "body": "{\"error\":\"Public beta transaction operations are disabled.\"}"
+  }
+]

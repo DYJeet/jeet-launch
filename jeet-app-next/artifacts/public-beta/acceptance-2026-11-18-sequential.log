@@ -1,0 +1,27 @@
+(node:6) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-public-beta/jeet-app-next/src/lib/wallet-transactions.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-public-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+file:///workspace/scratch/c539518fcd47/jeet-launch-review/jeet-app-next/node_modules/@solana/rpc-transformers/dist/index.node.mjs:327
+      throw getSolanaErrorFromJsonRpcError(jsonRpcResponse.error);
+            ^
+
+SolanaError: JSON-RPC error: Invalid method parameter(s) (invalid transaction: Transaction contains a duplicate instruction (2) that is not allowed)
+    at file:///workspace/scratch/c539518fcd47/jeet-launch-review/jeet-app-next/node_modules/@solana/rpc-transformers/dist/index.node.mjs:327:13
+    at file:///workspace/scratch/c539518fcd47/jeet-launch-review/jeet-app-next/node_modules/@solana/rpc-transformers/dist/index.node.mjs:340:54
+    at file:///workspace/scratch/c539518fcd47/jeet-launch-review/jeet-app-next/node_modules/@solana/functional/dist/index.node.mjs:3:34
+    at Array.reduce (<anonymous>)
+    at pipe (file:///workspace/scratch/c539518fcd47/jeet-launch-review/jeet-app-next/node_modules/@solana/functional/dist/index.node.mjs:3:14)
+    at Object.responseTransformer (file:///workspace/scratch/c539518fcd47/jeet-launch-review/jeet-app-next/node_modules/@solana/rpc-transformers/dist/index.node.mjs:338:12)
+    at Object.execute (file:///workspace/scratch/c539518fcd47/jeet-launch-review/jeet-app-next/node_modules/@solana/rpc-spec/dist/index.node.mjs:70:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.send (file:///workspace/scratch/c539518fcd47/jeet-launch-review/jeet-app-next/node_modules/@solana/rpc-spec/dist/index.node.mjs:42:14)
+    at async file:///workspace/scratch/c539518fcd47/jeet-public-beta/jeet-app-next/scripts/readiness/acceptance-sequential-2026-11-18.mjs:27:530 {
+  cause: undefined,
+  context: {
+    __code: -32602,
+    __serverMessage: 'invalid transaction: Transaction contains a duplicate instruction (2) that is not allowed'
+  }
+}
+
+Node.js v24.22.3
