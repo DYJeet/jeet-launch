@@ -1,3 +1,5 @@
+import { publicBetaServerReadOnly } from "@/lib/public-beta";
+import { admitPublicRead } from "@/lib/public-read-limit";
 import { address, getBase64Encoder, signature } from "@solana/kit";
 import { createServerWalletRpc } from "@/lib/wallet-rpc-server";
 import { localReadConfiguration, checkedLocalGenesis } from "@/lib/local-wallet-server";
@@ -9,11 +11,14 @@ import { ammHistoryPool, ammTradeEvents } from "@/lib/amm-history";
 import { curveTradeEvents, feeClaimEvents } from "@/lib/curve-history";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 const inflight = new Map<string, Promise<boolean>>();
 const cooldown = new Map<string, number>();
 const noCache = { "Cache-Control": "no-store" };
 
 export async function GET(request: Request) {
+  if (publicBetaServerReadOnly() && !admitPublicRead(request.headers.get("x-real-ip") ?? "unknown"))
+    return Response.json({ error: "Beta request limit reached. Retry shortly." }, { status: 429, headers: { "retry-after": "60" } });
   let config;
   try { config = localReadConfiguration(request); }
   catch { return Response.json({ error: "Local history is disabled." }, { status: 404 }); }

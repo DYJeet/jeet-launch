@@ -1,3 +1,4 @@
+import { assertTransactionsEnabled } from "./public-beta.ts";
 /** Signing-only Wallet Standard execution. Never delegates broadcasting to a wallet. */
 import {
   address,
@@ -259,6 +260,7 @@ export class WalletTransactionExecutor {
     maximumDebitLamports: bigint,
     signal?: AbortSignal,
   ) {
+    assertTransactionsEnabled();
     const wallet = this.current().account.address;
     if (typeof window !== "undefined") {
       if (!navigator.locks)

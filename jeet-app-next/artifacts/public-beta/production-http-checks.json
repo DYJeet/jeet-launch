@@ -1,0 +1,56 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "pass": true,
+    "snippet": "page rendered"
+  },
+  {
+    "path": "/create",
+    "status": 200,
+    "pass": true,
+    "snippet": "page rendered"
+  },
+  {
+    "path": "/explore",
+    "status": 200,
+    "pass": true,
+    "snippet": "page rendered"
+  },
+  {
+    "path": "/revenue",
+    "status": 200,
+    "pass": true,
+    "snippet": "page rendered"
+  },
+  {
+    "path": "/api/local-assets",
+    "status": 403,
+    "pass": true,
+    "snippet": "{\"error\":\"Public beta writes are disabled.\"}"
+  },
+  {
+    "path": "/api/local-test/create",
+    "status": 403,
+    "pass": true,
+    "snippet": "{\"error\":\"Public beta writes are disabled.\"}"
+  },
+  {
+    "path": "/api/wallet/rpc",
+    "status": 403,
+    "pass": true,
+    "snippet": "{\"error\":\"Public beta transaction operations are disabled.\"}"
+  },
+  {
+    "path": "/api/wallet/environment",
+    "status": 200,
+    "pass": true,
+    "snippet": "{\"network\":\"devnet\",\"chain\":\"solana:devnet\",\"genesis\":\"EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG\",\"program\":\"Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D\",\"r"
+  },
+  {
+    "path": "/api/launches?view=New",
+    "status": 200,
+    "pass": true,
+    "snippet": "{\"rows\":[{\"mint\":\"7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM\",\"creator\":\"13TckZDu8H8VAXSmkfGqVKMwbeWoJsrsBSk5i1KkA1Uf\",\"name\":\"JeeT Devnet Test\",\"symbol\":\"JEE"
+  }
+]

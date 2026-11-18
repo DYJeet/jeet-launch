@@ -1,12 +1,16 @@
+import { admitPublicRead } from "@/lib/public-read-limit";
 import {
   checkedLocalGenesis,
   localWalletConfiguration,
   validateWalletRpc,
 } from "@/lib/local-wallet-server";
+import { publicBetaServerReadOnly } from "@/lib/public-beta";
 import { walletUpstreamFetch } from "@/lib/wallet-rpc-server";
 export const dynamic = "force-dynamic";
 let active = 0;
 export async function POST(request: Request) {
+  if (publicBetaServerReadOnly() && !admitPublicRead(request.headers.get("x-real-ip") ?? "unknown"))
+    return Response.json({ error: "Beta request limit reached. Retry shortly." }, { status: 429, headers: { "retry-after": "60" } });
   try {
     const { url, environment } = localWalletConfiguration(request);
     if (!request.headers.get("content-type")?.startsWith("application/json"))
@@ -36,7 +40,9 @@ export async function POST(request: Request) {
         at += chunk.length;
       }
       const raw = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
-      validateWalletRpc(JSON.parse(raw));
+      const body = validateWalletRpc(JSON.parse(raw));
+      if (publicBetaServerReadOnly() && ["sendTransaction", "simulateTransaction"].includes(String(body.method)))
+        return Response.json({ error: "Public beta transaction operations are disabled." }, { status: 403 });
       await checkedLocalGenesis(url, environment.genesis);
       const result = await walletUpstreamFetch(url, raw, request.signal);
       // Preserve raw JSON integer lexemes. Kit's RPC parser handles u64 as bigint.

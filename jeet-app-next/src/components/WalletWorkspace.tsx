@@ -1,4 +1,5 @@
 "use client";
+import { PUBLIC_BETA_READ_ONLY, PUBLIC_BETA_MESSAGE } from "@/lib/public-beta";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useClient } from "@solana/react";
@@ -284,7 +285,7 @@ export default function WalletWorkspace() {
         <p className="text-white/50">
           Development verification, disposable wallets and test SOL only.
         </p>
-        {error ? (
+        {PUBLIC_BETA_READ_ONLY ? (<p role="status">{PUBLIC_BETA_MESSAGE}</p>) : error ? (
           <p role="alert">{error}</p>
         ) : environment ? (
           <WalletHydrationGate

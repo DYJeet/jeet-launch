@@ -1,4 +1,5 @@
 "use client";
+import { PUBLIC_BETA_READ_ONLY } from "@/lib/public-beta";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { address } from "@solana/kit";
@@ -62,6 +63,7 @@ export default function LaunchFeeClaims({ launch, environment, refresh }: {
 
   return <section id="fee-accounts" className="space-y-3 rounded-2xl border border-white/15 p-4">
     <h2 className="text-lg font-bold">Creator and platform fees</h2>
+    {PUBLIC_BETA_READ_ONLY && <p>Fee accounting is available to inspect. Claim signing is disabled in this public beta.</p>}
     <p className="text-sm text-white/65">Claims go to the beneficiary recorded on-chain. The signing wallet pays the network fee.</p>
     {([0, 1] as const).map(kind => {
       const fee = launch.fees[kind];
@@ -72,7 +74,7 @@ export default function LaunchFeeClaims({ launch, environment, refresh }: {
           <p className="text-sm">{formatUnits(fee.accrued)} SOL accrued · {formatUnits(fee.withdrawn)} SOL claimed</p>
           <p className="text-sm">{formatUnits(fee.claimable)} SOL claimable</p>
           {fee.claimable > 0n && fee.beneficiary === wallet && <button
-            disabled={busy || !!pending} onClick={() => void submit(kind)}
+            disabled={PUBLIC_BETA_READ_ONLY || busy || !!pending} onClick={() => void submit(kind)}
             className="rounded-xl border border-[#9cff43]/30 px-3 py-2 text-sm text-[#9cff43] disabled:opacity-40">
             Claim {formatUnits(fee.claimable)} SOL
           </button>}

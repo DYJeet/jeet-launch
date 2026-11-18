@@ -1,0 +1,10 @@
+node_modules
+.next
+.env*
+artifacts
+programs
+scripts
+docs
+*.log
+*.zip
+*.patch

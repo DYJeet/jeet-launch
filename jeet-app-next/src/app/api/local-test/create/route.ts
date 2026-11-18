@@ -1,3 +1,4 @@
+import { publicBetaServerReadOnly } from "@/lib/public-beta";
 import { createClient, generateKeyPairSigner, isNone, lamports, address, assertAccountExists, createSolanaRpc, fetchEncodedAccount, getAddressEncoder } from "@solana/kit";
 import { rpcAirdrop, solanaRpc } from "@solana/kit-plugin-rpc";
 import { airdropPayer, generatedPayer } from "@solana/kit-plugin-signer";
@@ -116,6 +117,7 @@ function describeError(error: unknown) {
 }
 
 export async function POST(request: Request) {
+  if (publicBetaServerReadOnly()) return Response.json({ error: "Public beta writes are disabled." }, { status: 403 });
   let phase = "validation";
   let createdMint: string | null = null;
   try {

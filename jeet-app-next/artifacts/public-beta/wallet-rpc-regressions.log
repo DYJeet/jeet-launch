@@ -1,0 +1,45 @@
+(node:13) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-public-beta/jeet-app-next/src/lib/wallet-transactions.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-public-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ exact decimal amounts reject precision loss, exponents, signs and overflow (2.728799ms)
+✔ local config rejects public genesis, disabled mode, remote RPC and cross-origin (4.835613ms)
+✔ RPC rejects arbitrary methods, batches, unsafe preflight and unbounded scans (0.63421ms)
+✔ signed execution confirms once and clears saved signature (166.943756ms)
+✔ wrong genesis never broadcasts (4.316844ms)
+✔ missing program never broadcasts (6.302534ms)
+✔ simulation rejection never broadcasts (13.214491ms)
+✔ insufficient SOL never broadcasts (12.272414ms)
+✔ no network fee never broadcasts (10.255532ms)
+✔ expired signing never broadcasts (26.279079ms)
+✔ rejection is explicit; duplicate calls are blocked while wallet signing is pending (17.918522ms)
+✔ disconnect or changed chain after signature cannot broadcast (25.373457ms)
+✔ wallet message substitution cannot broadcast (16.811388ms)
+✔ save failure blocks broadcasting (44.427028ms)
+✔ lost send response reconciles known signature without resending (54.416993ms)
+✔ unknown result remains saved and blocks new submissions, even with a new executor (539.507187ms)
+✔ confirmed failure clears liability to retry without reporting success (34.443263ms)
+✔ finalized expiration clears only after history is checked again (502.282196ms)
+✔ abort after wallet signature prevents submission (13.495284ms)
+✔ read-only and send-only wallets cannot silently broadcast (1.583587ms)
+✔ network change after wallet signature prevents broadcast (12.150218ms)
+✔ reconciliation never clears a newer saved signature (487.463481ms)
+✔ a wallet signature for the wrong key cannot broadcast or create a pending receipt (11.550613ms)
+(node:14) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-public-beta/jeet-app-next/src/lib/wallet-rpc-server.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-public-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ concurrent public RPC calls serialize, pace and do not reorder (4.141606ms)
+✔ bounded queue rejects overload and aborted queued work cannot reach the provider (1.737516ms)
+✔ 429 retries have exponential backoff and preserve the identical signed-wire body (4.116038ms)
+✔ long Retry-After stops retries rather than violating provider cooldown (1.01482ms)
+✔ persistent 429 is bounded and ambiguous send transport failures are never resent (0.755564ms)
+✔ SDK discovery transport retains exact u64 integers (73.35226ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2758.702296

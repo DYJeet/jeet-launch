@@ -1,0 +1,74 @@
+{
+  "checkedAt": "2026-11-18T19:13:19.169Z",
+  "readOnly": true,
+  "signed": false,
+  "broadcast": false,
+  "existingMint": "7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM",
+  "wallets": [
+    {
+      "address": "13TckZDu8H8VAXSmkfGqVKMwbeWoJsrsBSk5i1KkA1Uf",
+      "balanceLamports": "13626922"
+    },
+    {
+      "address": "9m9k7oUP2EpVhgPXtrAsFTYE6WY6kaq8w67QvkWKjx9b",
+      "balanceLamports": "837776"
+    }
+  ],
+  "quotes": [
+    {
+      "name": "buy",
+      "signatures": 1,
+      "wireBytes": 647,
+      "feeLamports": "5000"
+    },
+    {
+      "name": "sell-after-buy",
+      "signatures": 1,
+      "wireBytes": 647,
+      "feeLamports": "5000"
+    },
+    {
+      "name": "creator-claim-after-roundtrip",
+      "signatures": 1,
+      "wireBytes": 312,
+      "feeLamports": "5000"
+    }
+  ],
+  "buy": {
+    "raw": "103199",
+    "platform": "671",
+    "creator": "361",
+    "total": "1032",
+    "user": "104231",
+    "amount": "2400000000000",
+    "sell": false,
+    "sequence": "2",
+    "sold": "0",
+    "bound": "104231",
+    "setup": "0"
+  },
+  "sell": {
+    "raw": "103199",
+    "platform": "671",
+    "creator": "361",
+    "total": "1032",
+    "user": "102167",
+    "amount": "2400000000000",
+    "sell": true,
+    "sequence": "3",
+    "sold": "2400000000000",
+    "bound": "102167",
+    "setup": "0"
+  },
+  "additionalRentLamports": "0",
+  "roundTripCreatorFeeLamports": "722",
+  "roundTripPlatformFeeLamports": "1342",
+  "grossDebitIncludingNetworkLamports": "119231",
+  "conservativeRequestedCapLamports": 200000,
+  "request": "One existing JEETTEST buy, sell and disposable creator claim; no funding, new token or platform claim.",
+  "historicalRemainingLifecycleAllowanceLamports": 19049698,
+  "existingTokenGraduationReserveLamports": "50192999999",
+  "ammPoolCreationFeeLamports": "150000000",
+  "newTokenCreation": "Requires separately approved new token and fresh metadata CPI simulation; no exact cost claimed while metadata protocol fees and predecessor state are unverified.",
+  "publicMigration": "NOT authorized or ready for execution; requires separate budget for AMM fee, account rent, curve completion, post-migration swaps and owner-controlled claims. Local regression evidence is preserved."
+}

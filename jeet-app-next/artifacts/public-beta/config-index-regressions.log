@@ -1,0 +1,20 @@
+✔ Devnet requires paired flags, exact HTTPS origin and a server-only HTTPS endpoint (310.376408ms)
+✔ concurrent genesis checks coalesce; fresh checks fail closed on a changed network (245.917387ms)
+✔ Devnet graduation planning rejects before any RPC or signing (348.751424ms)
+✔ Devnet metadata refuses temporary workspace storage before uploads (496.585244ms)
+✔ Codespaces forwarding requires the named workspace, exact loopback port and unchanged origin protections (250.98019ms)
+✔ rewritten Codespaces POST origins require exact forwarding and same-origin Fetch Metadata (245.057744ms)
+(node:13) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-public-beta/jeet-app-next/src/lib/market-store.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-public-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ finalized backfill resumes after restart, pages without duplicates and ingests new head (21.107606ms)
+✔ rejects duplicate RPC pages and commits only one concurrent checkpoint (1.42824ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2091.119795

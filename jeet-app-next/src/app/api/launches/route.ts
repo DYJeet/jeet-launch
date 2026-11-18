@@ -1,3 +1,5 @@
+import { publicBetaServerReadOnly } from "@/lib/public-beta";
+import { admitPublicRead } from "@/lib/public-read-limit";
 import { address, getAddressDecoder, getBase64Encoder, signature } from "@solana/kit";
 import { localReadConfiguration } from "@/lib/local-wallet-server";
 import { walletLaunchAddresses } from "@/lib/wallet-launch";
@@ -11,6 +13,7 @@ import { ammHistoryPool } from "@/lib/amm-history";
 import { createServerWalletRpc } from "@/lib/wallet-rpc-server";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 const stream = "launch-activations-v1";
 const noCache = { "Cache-Control": "no-store" };
@@ -91,6 +94,8 @@ async function update(config: ReturnType<typeof localReadConfiguration>, network
 }
 
 export async function GET(request: Request) {
+  if (publicBetaServerReadOnly() && !admitPublicRead(request.headers.get("x-real-ip") ?? "unknown"))
+    return Response.json({ error: "Beta request limit reached. Retry shortly." }, { status: 429, headers: { "retry-after": "60" } });
   let config;
   try { config = localReadConfiguration(request); }
   catch { return Response.json({ error: "Verified index is unavailable outside the configured test network." }, { status: 404 }); }

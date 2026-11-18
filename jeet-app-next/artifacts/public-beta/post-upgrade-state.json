@@ -1,0 +1,85 @@
+{
+  "checkedAt": "2026-11-18T19:06:48.597Z",
+  "readOnly": true,
+  "network": "devnet",
+  "finalizedSlot": 523729979,
+  "program": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+  "programdata": "4UHVfUkA2HxHRo11hcN3FH8QjX6ZYznikSvA678cxQVW",
+  "executable": true,
+  "artifactSha256": "e4516444814532383d1dce55dd84f0b88dacbb35435f738596b1c7fb725e2e2c",
+  "treasury": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+  "upgradeAuthority": "DQeELacwEfej1r9g5pt4eQQcetxe3TAgVGD9RJSutJNW",
+  "upgradeAuthorityUnchanged": true,
+  "existingFeeMintCurveAccountsUnchanged": true,
+  "feeConfiguration": "65 bps platform / 35 bps creator / 100 bps total; unchanged approved reproducible candidate",
+  "buffer": "BbZogFHxBmRWGet9BJDdZvwTgumBuamNzMhEAHZfqRio",
+  "bufferClosed": true,
+  "previousBufferClosed": true,
+  "payer": "BAZK4s9BBN3x4XGhjG3tj4P6jGky8cnNHBUdMsoHGFyg",
+  "payerBalanceLamports": 1557853880,
+  "programDataBalanceLamports": 3138043000,
+  "feesThisUpgradeLamports": 1455000,
+  "cumulativeDeploymentFeesLamports": 4390000,
+  "conservationVerified": true,
+  "accountSnapshots": [
+    {
+      "pubkey": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+      "exists": true,
+      "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+      "lamports": 833120,
+      "dataSha256": "895306eb9993455a5a88119670933dd93a6770718f63a2594123ddc5d37072ef"
+    },
+    {
+      "pubkey": "4UHVfUkA2HxHRo11hcN3FH8QjX6ZYznikSvA678cxQVW",
+      "exists": true,
+      "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+      "lamports": 3138043000,
+      "dataSha256": "358969facd9e2d6e54f81925595d7c52c09438ef1ca3d0ffaf4fe19b0b2ac1ea"
+    },
+    {
+      "pubkey": "BAZK4s9BBN3x4XGhjG3tj4P6jGky8cnNHBUdMsoHGFyg",
+      "exists": true,
+      "owner": "11111111111111111111111111111111",
+      "lamports": 1557853880,
+      "dataSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "pubkey": "BbZogFHxBmRWGet9BJDdZvwTgumBuamNzMhEAHZfqRio",
+      "exists": false,
+      "dataSha256": null
+    },
+    {
+      "pubkey": "71nUnrR6vpRPgd1YqYsTTBJ4vgkY3PQae5F7Q1CRQpV9",
+      "exists": true,
+      "owner": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+      "lamports": 1428822,
+      "dataSha256": "3a4ffdf28f1799543026be1f85bfeddfcd128a0d86b72a34b573cf47f649e092"
+    },
+    {
+      "pubkey": "5KDxGjUxzRLz1DYNk2Yxdm3VDYcFugJYkFtDw3Xwn1HP",
+      "exists": true,
+      "owner": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+      "lamports": 1427480,
+      "dataSha256": "ce5ec79187940dad96ced6e034869cc032bb6950c717ac8b0457179f0dc2baec"
+    },
+    {
+      "pubkey": "7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM",
+      "exists": true,
+      "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "lamports": 1066800,
+      "dataSha256": "f3741fbf3183a4fb8d52161fe66ecf09112f0caf9954f2cd0cfefb5c65746543"
+    },
+    {
+      "pubkey": "AQj7FVkwCUg7ddgRARmsRYLAP5R9PJGj1ZLz2euJWg37",
+      "exists": true,
+      "owner": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+      "lamports": 1981200,
+      "dataSha256": "bc2e9ed17d80604f33be36671c920652f971ad2f5a39782a95a8265f0506198e"
+    },
+    {
+      "pubkey": "Ew2tMgmQhkJcKkpWoMHVwJ7vbKzYdW9ThNMi7W9UBgm3",
+      "exists": false,
+      "dataSha256": null
+    }
+  ]
+}

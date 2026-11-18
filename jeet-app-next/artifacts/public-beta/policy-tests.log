@@ -1,0 +1,17 @@
+(node:13) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-public-beta/jeet-app-next/src/lib/wallet-transactions.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-public-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ public beta stops before accessing wallet, building instructions, RPC or signing (4.844789ms)
+✔ public server remains read-only on Vercel (0.428088ms)
+✔ canonical and exact deployment origins work; foreign and spoofed forwarded hosts fail (4.224394ms)
+✔ per-client admission is bounded and resets only after its window (0.439956ms)
+✔ per-instance global ceiling limits rotating client identifiers (0.644215ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 410.208236

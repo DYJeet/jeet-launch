@@ -15,7 +15,10 @@ export function walletModeEnabled() {
 function devnetWalletConfiguration(request: Request) {
   if (process.env.JEET_DEVNET_WALLET !== "1" || WALLET_NETWORK !== "devnet")
     throw Error("Explicit Devnet wallet configuration is required.");
-  const origin = new URL(process.env.JEET_DEVNET_WALLET_ORIGIN ?? "");
+  const configured = process.env.JEET_DEVNET_WALLET_ORIGIN ?? "";
+  const host = request.headers.get("host");
+  const deployment = process.env.VERCEL === "1" ? process.env.VERCEL_URL : undefined;
+  const origin = new URL(deployment && host === deployment ? "https://" + deployment : configured);
   if (origin.protocol !== "https:" || origin.username || origin.password ||
       origin.pathname !== "/" || origin.search || origin.hash)
     throw Error("Expected an explicit HTTPS application origin.");

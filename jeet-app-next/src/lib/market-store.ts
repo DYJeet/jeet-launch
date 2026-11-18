@@ -199,5 +199,5 @@ export class MarketStore {
 
 let instance: MarketStore | undefined;
 export function marketStore() {
-  return instance ??= new MarketStore(process.env.JEET_MARKET_DB || resolve(".jeet-index", "market.sqlite"));
+  return instance ??= new MarketStore(process.env.JEET_MARKET_DB || (process.env.VERCEL === "1" ? "/tmp/jeet-beta-market.sqlite" : resolve(".jeet-index", "market.sqlite")));
 }

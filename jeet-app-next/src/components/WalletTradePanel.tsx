@@ -1,4 +1,5 @@
 "use client";
+import { PUBLIC_BETA_READ_ONLY, PUBLIC_BETA_MESSAGE } from "@/lib/public-beta";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useClient } from "@solana/react";
 import { useConnectedWallet, useConnect, useDisconnect, useWallets } from "@solana/kit-plugin-wallet/react";
@@ -26,6 +27,7 @@ export default function WalletTradePanel(props: {
   onRefresh: () => void;
 }) {
   const client = useClient<AppClient>();
+  if (PUBLIC_BETA_READ_ONLY) return <p role="status">{PUBLIC_BETA_MESSAGE}</p>;
   return <WalletHydrationGate client={client} fallback={<p>Loading trading wallet…</p>}>
     <Trading {...props} />
   </WalletHydrationGate>;
