@@ -1,0 +1,199 @@
+{
+  "status": "passed",
+  "verification": "independent finalized public Devnet RPC",
+  "verifiedSlot": 523452309,
+  "program": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+  "mint": "7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM",
+  "mintExplorer": "https://explorer.solana.com/address/7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM?cluster=devnet",
+  "artifactSha256": "13e0a87c97ba5b670bc2fd358a145618bff4be7fda5460b533e2dc1e3ac424fa",
+  "treasury": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+  "upgradeAuthority": "DQeELacwEfej1r9g5pt4eQQcetxe3TAgVGD9RJSutJNW",
+  "authorityUnchanged": true,
+  "feeBps": {
+    "platform": 65,
+    "creator": 35,
+    "total": 100
+  },
+  "supplyRaw": "1000000000000000000",
+  "decimals": 9,
+  "creatorAllocationRaw": "10000000000000000",
+  "creatorAllocationPercent": 1,
+  "walletCapPercent": 1,
+  "protectedOpeningLimitBps": 50,
+  "mintAuthorityRevoked": true,
+  "freezeAuthorityRevoked": true,
+  "metadata": {
+    "name": "JeeT Devnet Test",
+    "symbol": "JEETTEST",
+    "uri": "ipfs://bafkreicsyxczhcmdur2arx44cthughlu5kttxhb72y7fcgpzsc5kap2gn4",
+    "publicHttpsStatusObserved": 200,
+    "sha256": "52c5c5938983a47408df9c14cf431d74eaa73b9c3fd63e5119f990baa03f466f"
+  },
+  "trades": {
+    "buy": {
+      "amountRaw": 2400000000000,
+      "rawLamports": 103199,
+      "platformLamports": 671,
+      "creatorLamports": 361,
+      "userLamports": 104231
+    },
+    "sell": {
+      "amountRaw": 2400000000000,
+      "rawLamports": 103199,
+      "platformLamports": 671,
+      "creatorLamports": 361,
+      "userLamports": 102167
+    }
+  },
+  "platform": {
+    "accruedLamports": 1342,
+    "withdrawnLamports": 0,
+    "claimableLamports": 1342
+  },
+  "creator": {
+    "accruedLamports": 722,
+    "withdrawnLamports": 722,
+    "claimableLamports": 0
+  },
+  "reserveLamports": 0,
+  "traderTokensRaw": "0",
+  "balancesLamports": {
+    "payer": 1559308880,
+    "creator": 13626922,
+    "trader": 837776
+  },
+  "initialPayerLamports": 1604723880,
+  "internalFundingLamports": 45400000,
+  "payerDebitLamports": 45415000,
+  "networkFeesLamports": 60000,
+  "lockedAccountLamports": 30890302,
+  "actualExternalSpendingLamports": 30950302,
+  "remainingLifecycleBudgetLamports": 19049698,
+  "remainingUnallocatedFundingAllowanceLamports": 4585000,
+  "unexplainedDifferenceLamports": 0,
+  "finalizedTransactions": 10,
+  "failedOnChainTransactions": 0,
+  "platformClaimSubmitted": false,
+  "migrated": false,
+  "mainnetActivity": false,
+  "addresses": {
+    "trader": "9m9k7oUP2EpVhgPXtrAsFTYE6WY6kaq8w67QvkWKjx9b",
+    "mint": "7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM",
+    "custody": "8hQGCgA4AQLdSu8QsdtpDv61FZ5Uh89qLcALNjxKiAmv",
+    "vault": "3MVCar9D4CjNn3Ys9ZzcAodfbjSUFLaNYHXydxN8ms8t",
+    "traderDestination": "Ani4hmVJCUZJVEk9aahdHwkyPox8k5CXb32YMaTrkS86",
+    "opening": "3pP8r9Mn6hudLKDtsU1WbbtrXhCoUewf8Ppx5jDwDKkf",
+    "buyerReceipt": "HrbrB6HQqDDxfBZLwJVcQk8728FhGhKZzuHfy9K8JDtu",
+    "system": "11111111111111111111111111111111",
+    "token": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+    "curve": "AQj7FVkwCUg7ddgRARmsRYLAP5R9PJGj1ZLz2euJWg37",
+    "platformVault": "71nUnrR6vpRPgd1YqYsTTBJ4vgkY3PQae5F7Q1CRQpV9",
+    "creatorVault": "5KDxGjUxzRLz1DYNk2Yxdm3VDYcFugJYkFtDw3Xwn1HP",
+    "migrationVault": "GCNrG6koLDwhAL8L2ZFS7enzh4yo2X1PoH77fxYnNSoq",
+    "terms": "H47j2uLDecwLActqADHmfSjPpGkd5T6WErY3176NRUYN",
+    "metadata": "BhvqtMpZQc1wruaM13KQ1XQTWRaSFf6uCbgdXa8sudo6",
+    "creatorAta": "tqXShUSwmPMExJkALBjYChfD9GPWsBsr93LH8Uruj2r"
+  },
+  "receipts": [
+    {
+      "label": "funding",
+      "signature": "3gh5kBuXBwrjL5JvDVre6N7VduE8rVZXL7LMFnk1AiDasjxRUFA3UJ4C1d1zu7efuVy1vf51h6NHhxbDwTrCiSrm",
+      "slot": 523448156,
+      "feeLamports": 5000,
+      "finalized": true,
+      "error": null,
+      "explorer": "https://explorer.solana.com/tx/3gh5kBuXBwrjL5JvDVre6N7VduE8rVZXL7LMFnk1AiDasjxRUFA3UJ4C1d1zu7efuVy1vf51h6NHhxbDwTrCiSrm?cluster=devnet"
+    },
+    {
+      "label": "mint",
+      "signature": "4tRmXyHyiV978va3YDJqTn6DF47X7kgpi8nBbVmgxDn8A6tijcbJqm2CC19HLLi7E8R3v5Mb1io1WzEURaGvBkaA",
+      "slot": 523448218,
+      "feeLamports": 10000,
+      "finalized": true,
+      "error": null,
+      "explorer": "https://explorer.solana.com/tx/4tRmXyHyiV978va3YDJqTn6DF47X7kgpi8nBbVmgxDn8A6tijcbJqm2CC19HLLi7E8R3v5Mb1io1WzEURaGvBkaA?cluster=devnet"
+    },
+    {
+      "label": "supply",
+      "signature": "2Pa3M53LAhfPuQSVZoCu8KYp7t1vvkPkePgHtZXqXpygpeSv6nNVzTCc2LKPez38yrn3zKwcBA8SWhR4ZExyLzNn",
+      "slot": 523448268,
+      "feeLamports": 5000,
+      "finalized": true,
+      "error": null,
+      "explorer": "https://explorer.solana.com/tx/2Pa3M53LAhfPuQSVZoCu8KYp7t1vvkPkePgHtZXqXpygpeSv6nNVzTCc2LKPez38yrn3zKwcBA8SWhR4ZExyLzNn?cluster=devnet"
+    },
+    {
+      "label": "custody",
+      "signature": "3BfXvfTFKG3pDGijUJEbCbhFjj5eHWsSpN2ervBUqeh9EjgnPMkF1mM76wrZrFev38J8HtswjvDBfXeiQNBLibH9",
+      "slot": 523448318,
+      "feeLamports": 5000,
+      "finalized": true,
+      "error": null,
+      "explorer": "https://explorer.solana.com/tx/3BfXvfTFKG3pDGijUJEbCbhFjj5eHWsSpN2ervBUqeh9EjgnPMkF1mM76wrZrFev38J8HtswjvDBfXeiQNBLibH9?cluster=devnet"
+    },
+    {
+      "label": "metadata",
+      "signature": "5YBKfda7HVfbpwt3T4ymFnpxXyeyQV2JJ6yLNWzH65EwkVq4rtb9boo8WsYiAWg4vJcYrpBAUV1Vca8MKJQUFCP5",
+      "slot": 523448368,
+      "feeLamports": 5000,
+      "finalized": true,
+      "error": null,
+      "explorer": "https://explorer.solana.com/tx/5YBKfda7HVfbpwt3T4ymFnpxXyeyQV2JJ6yLNWzH65EwkVq4rtb9boo8WsYiAWg4vJcYrpBAUV1Vca8MKJQUFCP5?cluster=devnet"
+    },
+    {
+      "label": "activation",
+      "signature": "5RRumiRobaePtNFh8TEP6RG1KyhrjQhbC8SyCveR6Z6BGzykGzUmNtLPkzma6ME79t4ENsrHuFMwT26H21pa28uj",
+      "slot": 523448418,
+      "feeLamports": 5000,
+      "finalized": true,
+      "error": null,
+      "explorer": "https://explorer.solana.com/tx/5RRumiRobaePtNFh8TEP6RG1KyhrjQhbC8SyCveR6Z6BGzykGzUmNtLPkzma6ME79t4ENsrHuFMwT26H21pa28uj?cluster=devnet"
+    },
+    {
+      "label": "trader-ata",
+      "signature": "4J4xpj5ZorztEKMcStqZawXWzUpXdG1joayUYuLP6ZZAgddMCCmsqQwSkuaQwrEEZR57far2Dde9mHjRRRkhzhr1",
+      "slot": 523448475,
+      "feeLamports": 5000,
+      "finalized": true,
+      "error": null,
+      "explorer": "https://explorer.solana.com/tx/4J4xpj5ZorztEKMcStqZawXWzUpXdG1joayUYuLP6ZZAgddMCCmsqQwSkuaQwrEEZR57far2Dde9mHjRRRkhzhr1?cluster=devnet"
+    },
+    {
+      "label": "buy",
+      "signature": "3v7Gc9RCRjrgiCw7yBbc65HPT25ndZUXG5s1sMuuwX7FT4AoMLYVjXjBHr2zv9PRSGmh5rdnUhuAtZyz2HyjxobZ",
+      "slot": 523451140,
+      "feeLamports": 10000,
+      "finalized": true,
+      "error": null,
+      "explorer": "https://explorer.solana.com/tx/3v7Gc9RCRjrgiCw7yBbc65HPT25ndZUXG5s1sMuuwX7FT4AoMLYVjXjBHr2zv9PRSGmh5rdnUhuAtZyz2HyjxobZ?cluster=devnet"
+    },
+    {
+      "label": "sell",
+      "signature": "5zJQCav4hB83YhgugryyjZpv3F1c3ETNTcE5yKBS7Xvx5sBSH8JbU69MGRaAdkvyVXFCic3pu4RJWKcHEf5ou4Eg",
+      "slot": 523451228,
+      "feeLamports": 5000,
+      "finalized": true,
+      "error": null,
+      "explorer": "https://explorer.solana.com/tx/5zJQCav4hB83YhgugryyjZpv3F1c3ETNTcE5yKBS7Xvx5sBSH8JbU69MGRaAdkvyVXFCic3pu4RJWKcHEf5ou4Eg?cluster=devnet"
+    },
+    {
+      "label": "creator-claim",
+      "signature": "2ukDH2WkwejbkSvSFbs8Rg3pwQAvWEvXxiDHqLBr3B7zTKRjreEY5NeHWjzH4F6GHgyBbpeHG3z5PL7ekNEwa2oJ",
+      "slot": 523451291,
+      "feeLamports": 5000,
+      "finalized": true,
+      "error": null,
+      "explorer": "https://explorer.solana.com/tx/2ukDH2WkwejbkSvSFbs8Rg3pwQAvWEvXxiDHqLBr3B7zTKRjreEY5NeHWjzH4F6GHgyBbpeHG3z5PL7ekNEwa2oJ?cluster=devnet"
+    }
+  ],
+  "readOnlyRejectionsObserved": {
+    "beforeOpening": 1200,
+    "protectedLimit": 1201,
+    "onePercentWalletCap": 1005
+  },
+  "resolvedPreBroadcastStops": [
+    "Public RPC HTTP 429; paced 1.5 seconds with bounded exponential backoff",
+    "Initial buy would leave trader below wallet rent minimum; atomic 400000-lamport top-up plus buy simulated and finalized"
+  ],
+  "preservedDeploymentCheckpoint": "559468d2d46643026f5d6776d5449c64ad642347"
+}
