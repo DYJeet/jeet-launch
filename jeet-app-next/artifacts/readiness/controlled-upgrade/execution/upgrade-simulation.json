@@ -1,0 +1,45 @@
+{
+  "accounts": null,
+  "err": null,
+  "fee": 10000,
+  "innerInstructions": null,
+  "loadedAccountsDataSize": 892794,
+  "loadedAddresses": {
+    "readonly": [],
+    "writable": []
+  },
+  "logs": [
+    "Program ComputeBudget111111111111111111111111111111 invoke [1]",
+    "Program ComputeBudget111111111111111111111111111111 success",
+    "Program BPFLoaderUpgradeab1e11111111111111111111111 invoke [1]",
+    "Upgraded program Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+    "Program BPFLoaderUpgradeab1e11111111111111111111111 success"
+  ],
+  "postBalances": [
+    1557853880,
+    0,
+    3138043000,
+    0,
+    833120,
+    1,
+    1,
+    1169280,
+    1009200
+  ],
+  "postTokenBalances": [],
+  "preBalances": [
+    162586000,
+    0,
+    3138043000,
+    1395277880,
+    833120,
+    1,
+    1,
+    1169280,
+    1009200
+  ],
+  "preTokenBalances": [],
+  "replacementBlockhash": null,
+  "returnData": null,
+  "unitsConsumed": 2520
+}
