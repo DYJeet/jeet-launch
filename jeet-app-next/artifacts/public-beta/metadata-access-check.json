@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-11-18T19:24:34Z",
+  "uri": "ipfs://bafkreicsyxczhcmdur2arx44cthughlu5kttxhb72y7fcgpzsc5kap2gn4",
+  "expectedSha256": "52c5c5938983a47408df9c14cf431d74eaa73b9c3fd63e5119f990baa03f466f",
+  "publicPinataGateway": {
+    "httpStatus": 403,
+    "body": "error code: 1010",
+    "interpretation": "Cloudflare refused this automated HTTP client; ordinary visitor accessibility not established by this response"
+  },
+  "independentIpfsIoGateway": {
+    "httpStatus": 403
+  },
+  "freshMetadataAcceptance": "BLOCKED; not claimed passed",
+  "priorEvidence": "Earlier real browser rendered JEETTEST JSON/image; preserved as historical browser evidence only",
+  "credentialsUsed": false,
+  "bypassAttempted": false,
+  "gatewayConfigurationChanged": false,
+  "nextStep": "After explicitly authorized hosting publication, perform genuine browser metadata/image acceptance; if blocked for visitors, resolve public pin/gateway availability before enabling creation."
+}
