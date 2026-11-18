@@ -1,0 +1,70 @@
+{
+  "status": "PASS",
+  "verification": "independent finalized public Devnet RPC; no signing keys",
+  "verifiedSlot": 523750160,
+  "program": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+  "artifactSha256": "e4516444814532383d1dce55dd84f0b88dacbb35435f738596b1c7fb725e2e2c",
+  "upgradeAuthority": "DQeELacwEfej1r9g5pt4eQQcetxe3TAgVGD9RJSutJNW",
+  "treasury": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+  "mint": "7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM",
+  "feeBps": {
+    "platform": 65,
+    "creator": 35,
+    "total": 100
+  },
+  "receipts": [
+    {
+      "label": "buy",
+      "signature": "2xnBhZTAZmSvq1nDfYdWSGR61xMHuq8NMaZJzU35ZeEmhDkCM4qVNEDN8G1Vy5vhqTsiFwn8AgYCTfR4CKQYEYZD",
+      "slot": 523749220,
+      "feeLamports": 5000,
+      "finalized": true,
+      "error": null,
+      "explorer": "https://explorer.solana.com/tx/2xnBhZTAZmSvq1nDfYdWSGR61xMHuq8NMaZJzU35ZeEmhDkCM4qVNEDN8G1Vy5vhqTsiFwn8AgYCTfR4CKQYEYZD?cluster=devnet"
+    },
+    {
+      "label": "sell",
+      "signature": "4pysWS3aMGXskDizCP1TkQqTfMYttJVQc4qqwd2HsCQkSXHGHUzTZNBDmbZrmEDAxbnHtmnddTSJ7RXuKavnkchi",
+      "slot": 523749440,
+      "feeLamports": 5000,
+      "finalized": true,
+      "error": null,
+      "explorer": "https://explorer.solana.com/tx/4pysWS3aMGXskDizCP1TkQqTfMYttJVQc4qqwd2HsCQkSXHGHUzTZNBDmbZrmEDAxbnHtmnddTSJ7RXuKavnkchi?cluster=devnet"
+    },
+    {
+      "label": "claim",
+      "signature": "2eLQazZvEHVu5EG3zTahQpUL7PU7hKW133Dgo1YBk44j5Zx3DnrpqddtLcX2U8zu76HwrbrWWokJ2HbzKGCUHCMd",
+      "slot": 523749686,
+      "feeLamports": 5000,
+      "finalized": true,
+      "error": null,
+      "explorer": "https://explorer.solana.com/tx/2eLQazZvEHVu5EG3zTahQpUL7PU7hKW133Dgo1YBk44j5Zx3DnrpqddtLcX2U8zu76HwrbrWWokJ2HbzKGCUHCMd?cluster=devnet"
+    }
+  ],
+  "finalBalancesLamports": {
+    "creator": 13622644,
+    "trader": 825712
+  },
+  "grossDebitLamports": 119231,
+  "networkFeesLamports": 15000,
+  "creatorClaimReceivedLamports": 722,
+  "netWalletDecreaseLamports": 16342,
+  "remainingAdditionalGrossCapLamports": 80769,
+  "remainingHistoricalExternalSpendingAllowanceLamports": 19033356,
+  "conservativeAllowanceAfterGrossReservationLamports": 18930467,
+  "newPlatformFeesLamports": 1342,
+  "newCreatorFeesLamports": 722,
+  "finalPlatformAccruedLamports": 2684,
+  "finalCreatorAccruedLamports": 1444,
+  "finalCreatorClaimedLamports": 1444,
+  "finalReserveLamports": 0,
+  "finalTraderTokensRaw": 0,
+  "supplyConserved": true,
+  "authoritiesUnchanged": true,
+  "newToken": false,
+  "migration": false,
+  "platformClaim": false,
+  "mainnetActivity": false,
+  "productionChange": false,
+  "failedOnChainTransactions": 0
+}
