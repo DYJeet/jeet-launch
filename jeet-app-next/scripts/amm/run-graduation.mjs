@@ -5,6 +5,8 @@ import { once } from "node:events";
 import { createHash } from "node:crypto";
 import { getProgramDerivedAddress } from "@solana/kit";
 import { CPMM, WSOL, TOKEN, FEE, SYSTEM, bytes } from "./cpmm.mjs";
+const ammSbf = process.env.JEET_AMM_SBF ??
+  "programs/launch-custody/target/amm-research/devnet-v0/raydium_cp_swap.so";
 const dir = await mkdtemp("/tmp/jeet-graduation-");
 const config = Buffer.alloc(236);
 createHash("sha256").update("account:AmmConfig").digest().copy(config, 0, 0, 8);
@@ -72,7 +74,7 @@ const validator = spawn(
     dir + "/ledger",
     "--bpf-program",
     CPMM,
-    "programs/launch-custody/target/amm-research/devnet-v0/raydium_cp_swap.so",
+    ammSbf,
     "--bpf-program",
     "8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo",
     process.env.JEET_GRADUATION_SBF ??
@@ -93,6 +95,7 @@ try {
       const r = await (
         await fetch("http://127.0.0.1:9917", {
           method: "POST",
+          signal: AbortSignal.timeout(3000),
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "getHealth" }),
         })
@@ -128,11 +131,12 @@ try {
     )
     .digest("hex");
   result.ledger = dir;
-  result.sourceCommit = "f4b9b26342afe9122d5ff67cd7a4f19ded4ac0a5";
+  result.sourceCommit = process.env.JEET_AMM_SBF ? null : "f4b9b26342afe9122d5ff67cd7a4f19ded4ac0a5";
+  result.ammFixture = ammSbf;
   result.sbfSha256 = createHash("sha256")
     .update(
       await readFile(
-        "programs/launch-custody/target/amm-research/devnet-v0/raydium_cp_swap.so",
+        ammSbf,
       ),
     )
     .digest("hex");

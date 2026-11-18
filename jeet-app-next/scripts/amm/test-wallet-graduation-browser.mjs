@@ -18,7 +18,7 @@ export async function graduationGenesis(dir) {
   fee.set(bytes.encode(WSOL),0);fee.set(bytes.encode(SYSTEM),32);
   fee[108]=1;fee.writeUInt32LE(1,109);fee.writeBigUInt64LE(10000000n,113);
   native[44]=9;native[45]=1;
-  const args=["--bpf-program",CPMM,"programs/launch-custody/target/amm-research/devnet-v0/raydium_cp_swap.so"];
+  const args=["--bpf-program",CPMM,process.env.JEET_AMM_SBF ?? "programs/launch-custody/target/amm-research/devnet-v0/raydium_cp_swap.so"];
   for(const [i,[pubkey,owner,data]] of [[configKey,CPMM,config],[FEE,TOKEN,fee],[WSOL,TOKEN,native]].entries()) {
     const file=`${dir}/cpmm-browser-genesis-${i}.json`;
     await writeFile(file,JSON.stringify({pubkey,account:{lamports:10000000,data:[data.toString("base64"),"base64"],owner,executable:false,rentEpoch:0}}));
