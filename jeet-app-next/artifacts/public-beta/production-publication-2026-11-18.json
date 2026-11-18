@@ -1,0 +1,34 @@
+{
+  "publishedAt": "2026-11-18",
+  "project": "jeet-launch-community-preview",
+  "environment": "production",
+  "url": "https://jeet-launch-community-preview.vercel.app/",
+  "sourceBranch": "repair/devnet-readiness",
+  "sourceCommit": "5f7a07900f7c9a516fbfe0616452f5c6c0617bfe",
+  "deploymentId": "dpl_CShXrKvWLxMBUdziNnU7gjtPuzhT",
+  "state": "READY",
+  "rollbackDeployment": "dpl_Cm8WDG7Be9f3C6VqsrnAB5SXYc5C",
+  "hostingCorrection": "First build failed NEXT_OUTPUT_DIR_MISSING because inherited outputDirectory=dist. Old production stayed current. Cleared outputDirectory and rebuilt unchanged approved source.",
+  "environmentVariables": {
+    "NEXT_PUBLIC_JEET_PUBLIC_BETA": "1",
+    "NEXT_PUBLIC_JEET_WALLET_NETWORK": "devnet",
+    "JEET_DEVNET_WALLET": "1",
+    "JEET_DEVNET_WALLET_ORIGIN": "https://jeet-launch-community-preview.vercel.app",
+    "JEET_MARKET_DB": "/tmp/jeet-beta-market.sqlite"
+  },
+  "checks": {
+    "unauthenticatedHttp": "11/11 passed: five public pages, four POST transaction/write blocks 403, Devnet environment 200, New discovery 200",
+    "discovery": "Trending 200 with JEETTEST; Final Stretch and Migrated 200 empty as expected. Saved snapshot, stale=true and history gap=true disclosed.",
+    "browser": "Home, disabled Create, Explore, token details, creator-supplied description/image, curve-price chart, two confirmed historical trades, creator claim history, earnings and immutable beneficiary displayed. Image natural size 1122x1402.",
+    "metadataLimitation": "Browser rendered metadata and image successfully. Prior unauthenticated automated metadata-gateway request returned Cloudflare 403/error 1010; independent automated gateway accessibility not passed.",
+    "runtimeLogs": "No error/fatal Vercel runtime logs in sampled last 10 minutes. Sampled browser errors were extension content-script errors.",
+    "gates": "UI signing/trading/claim controls disabled; public server creation/local asset routes403; RPC sendTransaction and simulateTransaction403.",
+    "fees": "65 bps platform / 35 bps creator / 100 total",
+    "treasury": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+    "platformAccruedLamports": 1342,
+    "creatorAccruedLamports": 722,
+    "creatorClaimedLamports": 722
+  },
+  "restrictions": "No Solana transactions created/signed/submitted. No DNS changes, paid purchases or DidYouJeeT modifications.",
+  "remaining": "RPC snapshot freshness/history completeness; independently consistent metadata gateway availability; real Phantom signing and post-upgrade writable acceptance remain unverified and disabled."
+}
