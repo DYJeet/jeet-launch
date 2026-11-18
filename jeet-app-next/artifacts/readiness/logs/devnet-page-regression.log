@@ -1,0 +1,8 @@
+▲ Next.js 16.4.6
+- Local:         http://127.0.0.1:3028
+- Network:       http://127.0.0.1:3028
+✓ Ready in 144ms
+✓ Running next.config.ts took 42ms
+PASS Devnet reverse-proxy page and three origin rejections: /create
+PASS Devnet reverse-proxy page and three origin rejections: /local-create
+PASS Devnet reverse-proxy page and three origin rejections: /token/7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM

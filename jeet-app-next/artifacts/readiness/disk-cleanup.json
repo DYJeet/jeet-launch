@@ -1,0 +1,41 @@
+{
+  "authorization": "Owner approved verified disposable cache cleanup",
+  "deletedGeneratedCacheFiles": [
+    {
+      "path": "/workspaces/jeet-launch-devnet-repair/jeet-app-next/.next/cache/webpack/client-production/0.pack",
+      "bytes": 52099275,
+      "format": "webpack wpc1 pack"
+    },
+    {
+      "path": "/workspaces/jeet-launch-devnet-repair/jeet-app-next/.next/cache/webpack/client-production/index.pack",
+      "bytes": 4687733,
+      "format": "webpack wpc1 pack"
+    },
+    {
+      "path": "/workspaces/jeet-launch-devnet-repair/jeet-app-next/.next/cache/webpack/edge-server-production/0.pack",
+      "bytes": 276,
+      "format": "webpack wpc1 pack"
+    },
+    {
+      "path": "/workspaces/jeet-launch-devnet-repair/jeet-app-next/.next/cache/webpack/edge-server-production/index.pack",
+      "bytes": 2476,
+      "format": "webpack wpc1 pack"
+    },
+    {
+      "path": "/workspaces/jeet-launch-devnet-repair/jeet-app-next/.next/cache/webpack/server-production/0.pack",
+      "bytes": 83722388,
+      "format": "webpack wpc1 pack"
+    },
+    {
+      "path": "/workspaces/jeet-launch-devnet-repair/jeet-app-next/.next/cache/webpack/server-production/index.pack",
+      "bytes": 12482196,
+      "format": "webpack wpc1 pack"
+    }
+  ],
+  "openCacheHandlesDetected": [],
+  "gitStatusUnchanged": true,
+  "workspaceFreeBeforeBytes": 181731328,
+  "workspaceFreeAfterBytes": 334749696,
+  "recoveredBytes": 153018368,
+  "temporaryFilesystemFreeBytes": 39172034560
+}

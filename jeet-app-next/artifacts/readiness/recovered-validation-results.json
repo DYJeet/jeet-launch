@@ -1,0 +1,46 @@
+[
+  {
+    "name": "npm-install",
+    "exit": 0
+  },
+  {
+    "name": "build-local-candidate",
+    "exit": 0
+  },
+  {
+    "name": "build-devnet-candidate",
+    "exit": 0
+  },
+  {
+    "name": "reproduce-devnet-candidate",
+    "exit": 0
+  },
+  {
+    "name": "graduation-local",
+    "exit": 0
+  },
+  {
+    "name": "build-local-production",
+    "exit": 0
+  },
+  {
+    "name": "public-browser",
+    "exit": 0
+  },
+  {
+    "name": "graduation-browser",
+    "exit": 0
+  },
+  {
+    "name": "build-devnet-production",
+    "exit": 0
+  },
+  {
+    "name": "devnet-page-regression",
+    "exit": 0
+  },
+  {
+    "name": "lint",
+    "exit": 0
+  }
+]

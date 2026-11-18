@@ -1,0 +1,38 @@
+{
+  "status": "undeployed candidate; requires separate owner authorization",
+  "baseSourceCheckpoint": "81ea39b4302d4ea5c7dfa2c775ef96e8e5d877a0",
+  "program": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+  "treasury": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+  "artifactSha256": "e4516444814532383d1dce55dd84f0b88dacbb35435f738596b1c7fb725e2e2c",
+  "artifactBytes": 274496,
+  "reproducedIdentically": true,
+  "localFixtureSha256": "a0517db22d618b092e1bd52b6b0e4c0e61bafa035a60abddd7ca3a9f649d87fa",
+  "previousCapturedLocalFixtureSha256": "a0517db22d618b092e1bd52b6b0e4c0e61bafa035a60abddd7ca3a9f649d87fa",
+  "approvedDeployedArtifactUnchanged": "13e0a87c97ba5b670bc2fd358a145618bff4be7fda5460b533e2dc1e3ac424fa",
+  "feeBps": {
+    "platform": 65,
+    "creator": 35,
+    "total": 100
+  },
+  "rustFeature": "devnet",
+  "sbfArch": "v0",
+  "platformTools": "v1.57",
+  "validator": "solana-test-validator 4.3.2 (src:4b44ad97; feat:c9ad34d2, client:Agave)",
+  "raydiumSha256": "4a04a78dbe3c643acdb1a4c20166c18b2e1391522a794f670a77bd305a0d4433",
+  "raydiumSourceCommit": "f4b9b26342afe9122d5ff67cd7a4f19ded4ac0a5",
+  "sourceSha256": {
+    "programs/launch-custody/src/market.rs": "2164a44e74b9da9ef175f7089ae7bdcd942b6e93b954fce392b086afdd78d95c",
+    "programs/launch-custody/src/protected.rs": "2639c5b96a8b366724644ebf253aeaf5d6238d0b503dad1f61b1b11e533628e2",
+    "programs/launch-custody/src/graduation.rs": "a89349dd39089bce36bb34b7665869438ba3cd809726f66191494b4b81484e20",
+    "programs/launch-custody/src/fees.rs": "b92a0c45c1a6e42b45d2fff9db111ddcadb3e673d7613349a7c26856a82ccc19",
+    "programs/launch-custody/src/metadata.rs": "91407ea240a0bb6421eeb02599338ce7de1634c8a3ef52443a9107cba07af0b1",
+    "programs/launch-custody/src/caps.rs": "bc36f7b2ec7f4561f41e477e4c17146421dd26dc1c9338f8b26b946911bf12a8",
+    "programs/launch-custody/src/lib.rs": "3f00a824492e086ea75d5a69771a422325ada4622d7f8991059d3263118f53d7",
+    "programs/launch-custody/src/v5.rs": "b7abc19b16dec77fc3f492c028503ff009c7a574218baecf7a00768b7587cd97",
+    "programs/launch-custody/src/v5_math.rs": "c2429f2a2c34519d45a0c9ad7a61c8ef833a903462159ef123d759350c36ece8",
+    "programs/launch-custody/src/curve.rs": "f8389e36b9201102ae4404f0a81f5b1c693765f14bd02b951956b4d9a17da173"
+  },
+  "accountLayoutsChanged": false,
+  "outerInstructionFormatsChanged": false,
+  "deployed": false
+}

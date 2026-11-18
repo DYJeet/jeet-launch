@@ -1,0 +1,63 @@
+
+> jeet-app@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.4.6 (webpack)
+✓ Running next.config.ts took 40ms
+
+  Creating an optimized production build ...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+✓ Compiled successfully in 22.0s
+  Running TypeScript ...
+  Finished TypeScript in 3.6s ...
+  Collecting page data using 1 worker ...
+  Generating static pages using 1 worker (0/9) ...
+  Generating static pages using 1 worker (2/9) 
+  Generating static pages using 1 worker (4/9) 
+  Generating static pages using 1 worker (6/9) 
+✓ Generating static pages using 1 worker (9/9) in 620ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/launches
+├ ƒ /api/local-assets
+├ ƒ /api/local-assets/[name]
+├ ƒ /api/local-test/create
+├ ƒ /api/local-test/health
+├ ƒ /api/market-history
+├ ƒ /api/wallet/environment
+├ ƒ /api/wallet/rpc
+├ ○ /create
+├ ○ /explore
+├ ○ /local-create
+├ ƒ /local-metadata
+├ ○ /local-wallet
+├ ƒ /revenue
+└ ƒ /token/[mint]
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

@@ -1,0 +1,85 @@
+(node:12399) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///tmp/jeet-readiness-resume-81ea39b/jeet-app-next/src/lib/launch-custody.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /tmp/jeet-readiness-resume-81ea39b/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS V5 rejection: initialization zero quantum (1503); rollback exact
+PASS V5 rejection: initialization zero starting price (1503); rollback exact
+PASS V5 rejection: initialization falling curve (1503); rollback exact
+PASS V5 rejection: initialization inventory partition mismatch (1503); rollback exact
+PASS V5 rejection: initialization zero migration inventory (1503); rollback exact
+PASS V5 rejection: initialization zero protected duration (1202); rollback exact
+PASS V5 rejection: initialization reserve overflow (1507); rollback exact
+PASS V5 rejection: trading requires revoked mint/freeze authorities (1501); rollback exact
+PASS V5: init: exact 1/59.4/39.6 partition and curve-PDA migration custody
+PASS V5 rejection: default artifact rejects graduation activation (1514); rollback exact
+PASS V5 rejection: default artifact rejects live migration (1514); rollback exact
+PASS V5 rejection: only immutable creator can accept prospective terms (1602); rollback exact
+PASS V5 rejection: price continuity outside disclosed tolerance (1605); rollback exact
+PASS V5: prospective graduation terms recorded before first trade
+PASS V5 rejection: not completed (1603); rollback exact
+PASS V5 rejection: malformed graduation encoding (1600); rollback exact
+PASS V5 rejection: missing graduation caller signer (1602); rollback exact
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: sell: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5 rejection: terms cannot be replaced after trading (1604); rollback exact
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5 rejection: stale completion state (1604); rollback exact
+PASS V5 rejection: inadequate compute budget cannot partially graduate (compute); rollback exact
+PASS V5 rejection: insufficient setup budget rolls back account creation (1606); rollback exact
+PASS V5 rejection: failed AMM setup CPI preserves backing and custody (1); rollback exact
+PASS V5: sell: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5 rejection: substituted graduation account 7 (1601); rollback exact
+PASS V5 rejection: substituted graduation account 8 (1601); rollback exact
+PASS V5 rejection: substituted graduation account 9 (1601); rollback exact
+PASS V5 rejection: substituted graduation account 10 (1601); rollback exact
+PASS V5 rejection: substituted graduation account 11 (1601); rollback exact
+PASS V5 rejection: substituted graduation account 13 (1601); rollback exact
+PASS V5 rejection: substituted graduation account 14 (1601); rollback exact
+PASS V5 rejection: substituted graduation account 15 (1601); rollback exact
+PASS V5 rejection: substituted graduation account 16 (1601); rollback exact
+PASS V5 rejection: substituted graduation account 17 (1601); rollback exact
+PASS V5 rejection: substituted graduation account 18 (1601); rollback exact
+PASS V5 rejection: substituted graduation account 19 (1601); rollback exact
+PASS V5 rejection: substituted graduation account 20 (1601); rollback exact
+PASS V5 rejection: substituted graduation account 25 (1601); rollback exact
+PASS V5 rejection: second migration in same transaction rolls back first migration (1609); rollback exact
+PASS V5: concurrent permissionless graduation permits exactly one pool deposit and burn
+PASS V5: real atomic custody migration, exact pool reserves, entire initial LP burn and source cleanup
+PASS V5 rejection: duplicate migration (1609); rollback exact
+PASS V5 rejection: post migration buy quote (1609); rollback exact
+PASS V5 rejection: post migration redemption quote (1609); rollback exact
+PASS V5 rejection: post migration buy (1609); rollback exact
+PASS V5 rejection: post migration sell (1609); rollback exact
+PASS V5 rejection: unauthorized post migration fee claim 0 (1304); rollback exact
+PASS V5 rejection: duplicate post migration fee claim 0 (1307); rollback exact
+PASS V5: post migration fee beneficiary claim 0
+PASS V5 rejection: unauthorized post migration fee claim 1 (1304); rollback exact
+PASS V5 rejection: duplicate post migration fee claim 1 (1307); rollback exact
+PASS V5: post migration fee beneficiary claim 1
+PASS V5: exact SOL and token conservation across buys, sells, migration and fee withdrawals
+PASS V5: actual post graduation AMM buy/sell preserve supply and burned LP
+PASS V5 rejection: trading requires revoked mint/freeze authorities (1501); rollback exact
+PASS V5: init: exact 1/59.4/39.6 partition and curve-PDA migration custody
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5 rejection: graduation cannot bypass active protected opening (1610); rollback exact
+PASS V5: sell: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: opening-phase rejection leaves redemption funded and executable
+PASS V5 rejection: trading requires revoked mint/freeze authorities (1501); rollback exact
+PASS V5 rejection: failed activation rolls back mint/freeze revocation (1605); rollback exact
+PASS V5: one transaction revokes both authorities and records prospective terms before trading
+PASS V5: init: exact 1/59.4/39.6 partition and curve-PDA migration custody
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5 rejection: graduation cannot bypass active cumulative wallet-cap phase (1610); rollback exact
+PASS V5: sell: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: enabled ordinary cap window cannot be bypassed through graduation
+PASS V5 rejection: trading requires revoked mint/freeze authorities (1501); rollback exact
+PASS V5: init: exact 1/59.4/39.6 partition and curve-PDA migration custody
+PASS V5: buy: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5: sell: exact quote/payment/fees, gross receipts, reserve and supply
+PASS V5 rejection: no retroactive redemption cutoff after a complete round trip (1604); rollback exact
+PASS V5: unopted older V5 redemption rights remain unchanged
+GRADUATION VERIFIED {"positive":28,"rejection":52,"transactions":[{"signature":"2RpZYf3nWiFQViEGQ41ToEpZoMqTdyXm2CYnbvUJKKw6Zg2eu9vp7untfpty6sChZ9jKMx9v2Mep1wcU94ohggz","computeUnits":199414,"transactionBytes":1158,"setupSpent":"190117440","proof":{"mint":"G5VfCj8GDZQ7ThjjfHYZGHhnRaqd532fDBopS3WkncVY","curve":"6aMbGBoZNjtEG7sDihEzzgZXN1sJULy4TRGAz5TmztD1","ammProgram":"DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb","config":"5MxLgy9oPdTC3YgkiePHqr3EoCRD9uLVYRQS2ANAs7wy","migrator":"7szKVs3XWwpFMi6fnstDNDVeR1TxhintpTYbGFU7YnHm","pool":"DgJBWrg9mecYrsF9nD3sLEdqCTafHfJ2DVMjUNcPzCF4","solDeposited":"50192","tokensDeposited":"396","lpBurned":"4358","maxPriceGapBps":60,"createdSlot":"57","migratedSlot":"92","sequence":"6","migrated":true}}]}
+CPMM logs: /tmp/jeet-graduation-mrqCXE
