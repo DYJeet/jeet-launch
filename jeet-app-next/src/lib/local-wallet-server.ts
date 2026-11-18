@@ -19,8 +19,14 @@ function devnetWalletConfiguration(request: Request) {
   if (origin.protocol !== "https:" || origin.username || origin.password ||
       origin.pathname !== "/" || origin.search || origin.hash)
     throw Error("Expected an explicit HTTPS application origin.");
+  const suppliedOrigin = request.headers.get("origin");
+  // The Codespaces tunnel rewrites same-origin POST Origin to https://localhost:port.
+  // Accept that alias only with exact named-workspace forwarding and same-origin Fetch Metadata.
+  const tunnelOrigin = codespacesForwardedHost(request, origin) &&
+    request.headers.get("sec-fetch-site") === "same-origin" &&
+    suppliedOrigin === `https://${request.headers.get("host")}`;
   if (!devnetApplicationHost(request, origin) ||
-      (request.headers.get("origin") && request.headers.get("origin") !== origin.origin) ||
+      (suppliedOrigin && suppliedOrigin !== origin.origin && !tunnelOrigin) ||
       request.headers.get("sec-fetch-site") === "cross-site")
     throw Error("Cross-origin Devnet wallet request rejected.");
   const rpc = new URL(process.env.JEET_DEVNET_WALLET_RPC ?? "https://api.devnet.solana.com");
@@ -32,8 +38,11 @@ function devnetWalletConfiguration(request: Request) {
 }
 
 function devnetApplicationHost(request: Request, origin: URL) {
+  return request.headers.get("host") === origin.host || codespacesForwardedHost(request, origin);
+}
+
+function codespacesForwardedHost(request: Request, origin: URL) {
   const host = request.headers.get("host");
-  if (host === origin.host) return true;
   // Codespaces terminates HTTPS and replaces Host with localhost:<port>.
   // Trust forwarding only in that named workspace, for its exact private
   // forwarding hostname and matching loopback port. Origin/site checks above

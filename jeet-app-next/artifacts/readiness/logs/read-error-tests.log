@@ -1,0 +1,15 @@
+(node:14893) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///tmp/jeet-final-eef0815/jeet-app-next/src/lib/wallet-read-error.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /tmp/jeet-final-eef0815/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ rate limits and unavailable reads show recovery instructions without SDK diagnostics (1.785704ms)
+✔ rejected transport requests retain a configuration action without leaking diagnostics (0.261628ms)
+✔ account-integrity failures remain visible rather than being labelled transient (0.205334ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 212.966445

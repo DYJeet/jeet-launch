@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { launchViews, type IndexedLaunch, type LaunchView } from "@/lib/launch-index";
+import { WALLET_NETWORK } from "@/lib/wallet-program";
 import { formatUnits } from "@/lib/wallet-environment";
 
 type Page = { rows: IndexedLaunch[]; total: number; next?: string; cursorExpired: boolean; indexedAt: number; stale?: boolean; backfilling?: boolean; gap?: boolean };
@@ -25,7 +26,7 @@ export default function LaunchDiscovery({ compact = false }: { compact?: boolean
         const response = await fetch("/api/launches?" + key + "&refresh=" + poll, {
           signal: AbortSignal.any([controller.signal, AbortSignal.timeout(20000)]),
         });
-        if (response.status === 404) throw Error("Verified index is unavailable outside the configured local validator.");
+        if (response.status === 404) throw Error("Verified index is unavailable outside the configured test network.");
         if (!response.ok) throw Error("Launch index is temporarily unavailable.");
         const page = await response.json() as Page;
         if (!controller.signal.aborted) setResult({ key, page });
@@ -64,7 +65,7 @@ export default function LaunchDiscovery({ compact = false }: { compact?: boolean
       </p>
       {page.backfilling && <p className="text-xs text-white/65">Indexing older finalized launch activity. Results may be partial.</p>}
       {page.gap && <p className="text-xs text-amber-200">RPC history has a coverage gap. Some launches may be missing.</p>}
-      <p className="mb-4 text-sm text-white/60">{page.total === 0 ? "No verified launches match this view." : `${page.total} verified launches · local validator`}</p>
+      <p className="mb-4 text-sm text-white/60">{page.total === 0 ? "No verified launches match this view." : `${page.total} verified launches · ${WALLET_NETWORK === "devnet" ? "Solana Devnet" : "local validator"}`}</p>
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {page.rows.map(row => <Link key={row.mint} href={`/token/${row.mint}`}
           className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#9cff43]/50">

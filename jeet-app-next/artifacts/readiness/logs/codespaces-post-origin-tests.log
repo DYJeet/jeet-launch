@@ -1,0 +1,14 @@
+✔ Devnet requires paired flags, exact HTTPS origin and a server-only HTTPS endpoint (213.345848ms)
+✔ concurrent genesis checks coalesce; fresh checks fail closed on a changed network (207.992448ms)
+✔ Devnet graduation planning rejects before any RPC or signing (297.40112ms)
+✔ Devnet metadata refuses temporary workspace storage before uploads (346.740573ms)
+✔ Codespaces forwarding requires the named workspace, exact loopback port and unchanged origin protections (247.566604ms)
+✔ rewritten Codespaces POST origins require exact forwarding and same-origin Fetch Metadata (212.496891ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1595.915262

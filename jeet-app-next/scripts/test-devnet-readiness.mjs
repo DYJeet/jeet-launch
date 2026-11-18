@@ -36,3 +36,16 @@ test('Codespaces forwarding requires the named workspace, exact loopback port an
  for(const change of [{host:'localhost:3020'},{host:'attacker.invalid'},{'x-forwarded-host':'other-space-3019.app.github.dev'},{origin:'https://attacker.invalid'},{'sec-fetch-site':'cross-site'}])assert.throws(()=>localWalletConfiguration(new Request(url,{headers:{...headers,...change}})));
  delete process.env.CODESPACES;assert.throws(()=>localWalletConfiguration(new Request(url,{headers})));
  `));
+
+test('rewritten Codespaces POST origins require exact forwarding and same-origin Fetch Metadata',()=>run(`
+ import assert from 'node:assert/strict';import {localWalletConfiguration} from './src/lib/local-wallet-server.ts';
+ process.env.JEET_DEVNET_WALLET_ORIGIN='https://verified-space-3019.app.github.dev';
+ process.env.CODESPACES='true';process.env.CODESPACE_NAME='verified-space';
+ const url=process.env.JEET_DEVNET_WALLET_ORIGIN+'/api/wallet/rpc';
+ const headers={host:'localhost:3019','x-forwarded-host':'verified-space-3019.app.github.dev',origin:'https://localhost:3019','sec-fetch-site':'same-origin'};
+ const request=h=>new Request(url,{method:'POST',headers:h});
+ assert.equal(localWalletConfiguration(request(headers)).environment.network,'devnet');
+ assert.equal(localWalletConfiguration(request({...headers,host:'127.0.0.1:3019',origin:'https://127.0.0.1:3019'})).environment.network,'devnet');
+ for(const change of [{origin:'http://localhost:3019'},{origin:'https://localhost:3020'},{origin:'https://attacker.invalid'},{host:'localhost:3020'},{'x-forwarded-host':'other-space-3019.app.github.dev'},{'sec-fetch-site':'cross-site'},{'sec-fetch-site':'same-site'},{'sec-fetch-site':''}])assert.throws(()=>localWalletConfiguration(request({...headers,...change})));
+ delete process.env.CODESPACES;assert.throws(()=>localWalletConfiguration(request(headers)));
+ `));
