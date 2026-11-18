@@ -1,0 +1,44 @@
+{
+  "checkedAt": "2026-11-18T12:20:59.233Z",
+  "precedingValidatedCheckpoint": "5f62db8449281ddf8727bb4efc085183a1aa0bf4",
+  "savedAmmInspection": {
+    "status": "completed and committed",
+    "programDataSlot": 523619533,
+    "elfSha256": "7422c293a9fd2ae516382a0e09a49ba0501b2d935f752f4ed4819ffe56d35fac",
+    "snapshot": "observed-public-amm/raydium_cp_swap.so.gz",
+    "currentSnapshotLocalReplay": "not tested"
+  },
+  "knownLocalAmmInspectorProcesses": [],
+  "liveCodespaceProcessInspection": {
+    "status": "blocked",
+    "reason": "Browser control timed out in Emulation.setFocusEmulationEnabled; no successful live process inspection",
+    "attempts": 1,
+    "furtherRetries": false
+  },
+  "disk": {
+    "currentExecutionWorkspaceFree": "58 GiB",
+    "currentExecutionTmpFree": "4.9 GiB",
+    "liveCodespaceRecheck": "blocked by browser-control timeout",
+    "lastVerifiedCodespaceWorkspaceFree": "approximately 320 MiB",
+    "lastVerifiedCodespaceTmpFree": "approximately 37 GiB",
+    "cleanupThisFollowup": false,
+    "reason": "No deletion without a fresh, verifiable cache/use inspection"
+  },
+  "priorValidationCommands": "All 11 recorded recovery commands exited 0; no completed tests repeated",
+  "changes": "Status record only; validated source and artifacts preserved",
+  "newBuilds": 0,
+  "newDeployments": 0,
+  "newPublicTransactions": 0,
+  "newSolSpending": 0,
+  "preview": {
+    "url": "https://symmetrical-adventure-544vrwjwxppcv7wx-3019.app.github.dev/",
+    "status": "last verified private running server; current reachability not verified"
+  },
+  "remainingBlockers": [
+    "Live Codespace process/disk/preview verification blocked by browser-control timeout",
+    "Actual installed desktop/iPhone Phantom acceptance not tested",
+    "Current public Raydium snapshot needs local replay before public migration",
+    "Candidate upgrade remains unauthorized and exceeds old buffer/cumulative fee limits",
+    "14 high development-tool dependency findings remain"
+  ]
+}
