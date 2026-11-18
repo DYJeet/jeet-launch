@@ -1,0 +1,34 @@
+{
+  "slot": "523749229",
+  "creatorSol": 13626922,
+  "traderSol": 728545,
+  "tokens": "2400000000000",
+  "sold": "2400000000000",
+  "reserve": "103199",
+  "sequence": "3",
+  "platform": {
+    "mint": "7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM",
+    "curve": "AQj7FVkwCUg7ddgRARmsRYLAP5R9PJGj1ZLz2euJWg37",
+    "beneficiary": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+    "kind": 0,
+    "accrued": "2013",
+    "withdrawn": "0",
+    "claimable": "2013",
+    "bump": 250
+  },
+  "creator": {
+    "mint": "7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM",
+    "curve": "AQj7FVkwCUg7ddgRARmsRYLAP5R9PJGj1ZLz2euJWg37",
+    "beneficiary": "13TckZDu8H8VAXSmkfGqVKMwbeWoJsrsBSk5i1KkA1Uf",
+    "kind": 1,
+    "accrued": "1083",
+    "withdrawn": "722",
+    "claimable": "361",
+    "bump": 255
+  },
+  "curveLamports": 2084399,
+  "platformVaultLamports": 1429493,
+  "creatorVaultLamports": 1427841,
+  "vaultTokens": "593997600000000000",
+  "migrationTokens": "396000000000000000"
+}

@@ -1,0 +1,38 @@
+{
+  "accounts": null,
+  "err": null,
+  "fee": "5000",
+  "innerInstructions": null,
+  "loadedAccountsDataSize": 618667,
+  "loadedAddresses": {
+    "readonly": [],
+    "writable": []
+  },
+  "logs": [
+    "Program Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D invoke [1]",
+    "Program data: SkVFVF9GRUVfQ0xBSU1fVjE= XsTTrdjQRhuXDwdZ196nzna8bK/xKTupXyf2OB5uyaQ= AKFBwmtii3AsXZa00yOlMUXd05L1cJDWNdeb3haOTRw= AQ== 0gIAAAAAAAA= pAUAAAAAAAA=",
+    "Program Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D consumed 8944 of 200000 compute units",
+    "Program Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D success"
+  ],
+  "postBalances": [
+    "13622644",
+    "1427480",
+    "1066800",
+    "1102360",
+    "1981200",
+    "833120"
+  ],
+  "postTokenBalances": [],
+  "preBalances": [
+    "13626922",
+    "1428202",
+    "1066800",
+    "1102360",
+    "1981200",
+    "833120"
+  ],
+  "preTokenBalances": [],
+  "replacementBlockhash": null,
+  "returnData": null,
+  "unitsConsumed": "8944"
+}
