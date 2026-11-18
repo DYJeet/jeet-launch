@@ -4,6 +4,19 @@
 
 The final report is on `repair/devnet-readiness`. Source recovery checkpoint: `81ea39b4302d4ea5c7dfa2c775ef96e8e5d877a0`. Validated candidate/evidence checkpoint: `51360fc31adfd2355768378eca005e0d34fcb845`. The report commit is the branch HEAD that contains this file; the original `repair/fees-65-35` branch remains at lifecycle checkpoint `ff8d7174498935ab3fb1a181da0a5ddc4c17fd31`.
 
+
+## Accelerated completion update
+
+Current public Raydium snapshot `7422c293a9fd2ae516382a0e09a49ba0501b2d935f752f4ed4819ffe56d35fac` now passed **28 positive / 52 rejection-and-rollback checks**, followed by **24 positive / 24 rejection browser groups and 27 genuine local transactions** across 390/768/1440 px. This closes the outstanding current-binary replay check. The local fixture rebuilt after `/tmp` loss has hash `cb2d3c7443f6f15f9d99073b5ee4071f7f43f7247620bdb04c3dd2b3a458627c`; its program sources match the preserved candidate manifest. It is test-only and does not replace either approved artifact.
+
+The private HTTPS preview now loads in the actual cloud browser. JEETTEST metadata/image, supply, revoked authorities, reserves, fee beneficiaries, both real Devnet trade records, chart and creator claim history were observed. Codespaces POST requests rewrote `Origin` to `https://localhost:3019`, causing valid wallet reads to fail with 503. The fix recognizes that exact alias only with the configured named Codespace, exact loopback port/forwarded host, and `Sec-Fetch-Site: same-origin`. Foreign origins, wrong ports, cross-site/same-site and untrusted forwarding remain rejected. This was a proven routing/configuration failure, not a proven public RPC outage.
+
+Devnet discovery/trading labels and token-reader loading/error labels were corrected. RPC transport errors show bounded recovery instructions rather than SDK command strings. **Three new error cases and one new forwarding case passed; all six affected Devnet configuration cases passed.** Including valid preserved evidence, there are **115 distinct Node cases, zero failures**. Final production build/TypeScript and targeted lint passed. Previously completed unaffected suites were reused.
+
+Verified obsolete vendor package caches recovered 1,674,915,840 bytes total (about 1.56 GiB), leaving about 1.7 GiB root and 37 GiB `/tmp` free. No project source, unique worktree, wallet, recovery evidence or program artifact was deleted. Original checkout hashes still match. Existing Pinata credentials remain server-only; no new upload, public transaction, program upgrade or SOL spending occurred.
+
+**Installed Phantom remains untested:** this browser detected no installed Wallet Standard wallet. Open the preview in the owner's desktop Phantom browser and iPhone Phantom in-app browser for connection/reconnection-only UAT. Public migration, treasury signing, further Devnet spending and any upgrade remain separately authorized steps. See `artifacts/readiness/accelerated-final-readiness.json` and the new raw logs for current evidence.
+
 ## A. Recovery, preservation and disk
 
 The Codespace restarted and its old `/tmp` validation copy was absent. The recovered source was preserved on GitHub before recreating only missing validation evidence. The original main checkout, its uncommitted changes, the original repair checkout at `9fc4bcb`, frozen release at `712f5b93e77f243ff8d0c35b98694abab56214c8`, recovery archives and approved artifacts were not overwritten. Worktree HEAD/status/tracked-diff hashes were checked before and after validation. No reset, force-push, branch deletion, wallet deletion or archive deletion was used.
@@ -54,11 +67,11 @@ The confirmed SyncNative error was caused by putting the curve account in the op
 | Corrected Devnet candidate | `e4516444814532383d1dce55dd84f0b88dacbb35435f738596b1c7fb725e2e2c` | 274,496 bytes; **not deployed** |
 | Corrected local signer fixture | `a0517db22d618b092e1bd52b6b0e4c0e61bafa035a60abddd7ca3a9f649d87fa` | Local tests only; never deploy this fixture |
 | Pinned Raydium local SBF | `4a04a78dbe3c643acdb1a4c20166c18b2e1391522a794f670a77bd305a0d4433` | Tested fixture; pinned source `f4b9b26342afe9122d5ff67cd7a4f19ded4ac0a5` |
-| Current observed public Raydium ELF | `7422c293a9fd2ae516382a0e09a49ba0501b2d935f752f4ed4819ffe56d35fac` | Finalized read-only snapshot; different hash; not locally replayed |
+| Current observed public Raydium ELF | `7422c293a9fd2ae516382a0e09a49ba0501b2d935f752f4ed4819ffe56d35fac` | Finalized read-only snapshot; different hash; current snapshot replay and browser flow now passed |
 
 The fresh local graduation suite passed **28 positive and 52 rejection/rollback checks**. It verifies full inventory completion, phase/cap restrictions, caller and creator boundaries, token/SOL conservation, exact reserve deposits, initial LP burn, fee-vault isolation, malformed/substituted accounts, inadequate compute/funding, duplicate and concurrent execution, post-migration curve rejection and redemption rights. The fresh browser also completed migration and both AMM swap directions with the corrected local fixture. Initial LP burn proves that initial position was burned; it is not a guarantee against later LP issuance or external program controls.
 
-Read-only public Devnet inspection confirmed executable Raydium `DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb`, canonical 236-byte config, 2,500-millionths trade fee and a **150,000,000-lamport pool-creation fee**. The current public ELF hash differs from the tested pinned build. This does **not** by itself prove incompatible behavior, but current-snapshot local replay is still **UNTESTED**. Its exact compressed snapshot and provenance are preserved for that next check.
+Read-only public Devnet inspection confirmed executable Raydium `DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb`, canonical 236-byte config, 2,500-millionths trade fee and a **150,000,000-lamport pool-creation fee**. The current public ELF hash differs from the tested pinned build. This does **not** by itself prove incompatible behavior, but current-snapshot local replay and browser verification now **PASS**. Its exact compressed snapshot, provenance and completed replay evidence are preserved.
 
 **Public migration is not cleared.** The application hides migration and rejects public-network graduation planning before RPC/signing. That frontend guard is not an on-chain pause: existing deployed Devnet instructions remain callable by external clients when their conditions are met. No public migration was submitted here. Raydium AMM swap fees are separate from JeeT's 65/35 curve fees; the current integration does not automatically collect that JeeT split on external swaps.
 
@@ -78,20 +91,20 @@ The new candidate fits the current **617,552-byte ProgramData capacity** and nee
 
 ## H. Actual Phantom and external HTTPS status
 
-**NOT TESTED:** installed desktop Phantom and native iPhone Phantom signing/connection acceptance. **BLOCKED in this cloud browser:** the private HTTPS navigation returned `net::ERR_HTTP_RESPONSE_CODE_FAILURE`; inspection of its browser-generated error page was then denied by URL security policy. The cause of the HTTPS response error is not proven. No browser protection was bypassed, no alternative browser surface was used to evade it, and an unexecuted test is not reported as passed.
+**PASSED:** actual private HTTPS navigation and JEETTEST token rendering after the scoped POST-Origin correction. **NOT TESTED:** installed desktop Phantom and native iPhone Phantom signing/connection acceptance; no Wallet Standard wallet was installed in this browser. Automated genuine local signing is reported separately. The earlier browser error is historical and has been superseded by successful live navigation; no browser protection was bypassed.
 
 ## I. Preview and owner instructions
 
 Private preview URL: **https://symmetrical-adventure-544vrwjwxppcv7wx-3019.app.github.dev/**
 
-Codespaces Ports showed a running Next.js 16.4.6 process on private port 3019. The screenshot is [private-preview-ports.jpg](../artifacts/readiness/private-preview-ports.jpg). This verifies the running private endpoint, not external browser or Phantom acceptance. Keep the Codespace running; `/tmp` storage and the server process can be lost when it restarts. Source, candidate and validation reports are now preserved in GitHub. This is not persistent production hosting.
+Codespaces Ports showed a running Next.js 16.4.6 process on private port 3019. The screenshot is [private-preview-ports.jpg](../artifacts/readiness/private-preview-ports.jpg). The later successful live HTTPS/token-page checks supersede that earlier port-only observation; genuine Phantom acceptance remains outstanding. Keep the Codespace running; `/tmp` storage and the server process can be lost when it restarts. Source, candidate and validation reports are now preserved in GitHub. This is not persistent production hosting.
 
 Open the exact URL in your own authenticated desktop browser with Phantom installed, then inside the iPhone Phantom in-app browser. Use an existing wallet, select **Solana Devnet**, connect, verify public address/balance, disconnect and reconnect. Sign in to GitHub normally if the private port asks. If the direct link fails, open the authorized Codespace's Ports panel and use **Open in Browser** for private port 3019; do not weaken browser protections or make the port public as a workaround. Do not create another token, fund a wallet, trade or claim under this readiness instruction.
 
 ## J. Remaining steps
 
 1. Complete external HTTPS and real installed-Phantom desktop/iPhone connection UAT. Then obtain a concrete, separately authorized minimal signing/spending plan before any new Devnet transaction. Reuse JEETTEST where possible; no additional token is currently authorized.
-2. Replay the preserved current public Raydium ELF on a local validator and review its integration/version/fee policy before public graduation is enabled.
+2. Current public Raydium replay is complete. Review its source-build provenance and external swap fee policy before public graduation is enabled.
 3. Review the corrected JeeT candidate; any in-place Devnet upgrade requires separate owner authorization and revised refundable-rent/cumulative-fee limits. Do not substitute it for the approved live artifact without that approval.
 4. Before public release, address development-tool security risk, choose reliable existing authorized Devnet RPC infrastructure and durable index/hosting storage, and complete the security review appropriate to public funds. No new paid service was purchased or provisioned.
 

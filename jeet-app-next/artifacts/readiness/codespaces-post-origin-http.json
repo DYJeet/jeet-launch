@@ -1,0 +1,17 @@
+[
+  {
+    "case": "exact-rewritten-origin",
+    "status": 200,
+    "correctDevnetGenesis": true
+  },
+  {
+    "case": "cross-site-rejected",
+    "status": 503,
+    "correctDevnetGenesis": false
+  },
+  {
+    "case": "foreign-forwarding-rejected",
+    "status": 503,
+    "correctDevnetGenesis": false
+  }
+]

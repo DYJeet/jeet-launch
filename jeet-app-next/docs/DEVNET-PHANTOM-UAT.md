@@ -16,7 +16,7 @@ The launch and market-history indexes use server-side RPC pacing. For a persiste
 
 ## Owner acceptance checklist
 
-Use `https://symmetrical-adventure-544vrwjwxppcv7wx-3019.app.github.dev/` while the Codespace is running. Cloud-browser external HTTPS acceptance is blocked and must be checked in the owner's browser. A private forwarded port may require GitHub sign-in. Do not make the port public merely to bypass authentication.
+Use `https://symmetrical-adventure-544vrwjwxppcv7wx-3019.app.github.dev/` while the Codespace is running. Cloud-browser HTTPS/token rendering passed; actual installed Phantom acceptance must still be checked by the owner. A private forwarded port may require GitHub sign-in. Do not make the port public merely to bypass authentication.
 
 1. Desktop: open the URL in a browser with the actual installed and unlocked Phantom extension. Select Devnet in Phantom. Connect your existing wallet, verify the displayed public address and balance, disconnect, reload and reconnect.
 2. iPhone: open the same HTTPS URL inside Phantom's in-app browser, using its existing wallet. Repeat connection, address, balance, disconnect and reconnect checks. Responsive desktop emulation is not native iPhone acceptance.
@@ -43,3 +43,5 @@ The SyncNative correction is a separate undeployed candidate. It places the exis
 The Devnet application hides migration controls and rejects public-network graduation planning before RPC/signing. This application guard is not an on-chain pause: the already deployed Devnet program includes creator opt-in graduation terms and permissionless completion once its conditions are met. External clients can invoke supported instructions. We cannot assert that public migration is cryptographically disabled by a frontend guard.
 
 No public migration was executed or authorized in this phase. Do not enable it until the corrected candidate has completed review, the owner separately authorizes any required program upgrade and costs, and public-network integration has been explicitly approved. Existing curve trading and redemption remain available under the unchanged deployed program. After migration, Raydium's configured swap fees are separate from JeeT's 65/35 bonding-curve fees; do not advertise automatic 65/35 collection on external AMM swaps.
+
+Codespaces also rewrites same-origin POST Origin to `https://localhost:<port>`. This alias is accepted only in the exact configured named workspace and loopback port, with the exact forwarded host and `Sec-Fetch-Site: same-origin`. Foreign/cross-site origins and generic forwarded headers remain insufficient.

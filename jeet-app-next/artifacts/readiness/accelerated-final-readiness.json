@@ -1,0 +1,91 @@
+{
+  "checkedAtEastern": "2026-11-18T08:11:03.144804-05:00",
+  "resumedFrom": "eef0815741d367c889f40730cf31b10a4fde9672",
+  "migrationCoreCheckpoint": "05fa4767b3eb6353270df1b2a8a2abbcf44ec9be",
+  "originCorrectionCheckpoint": "cf687397f9850176555e848d15be938d17ad8af2",
+  "program": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+  "approvedDeployedArtifactSha256": "13e0a87c97ba5b670bc2fd358a145618bff4be7fda5460b533e2dc1e3ac424fa",
+  "undeployedCandidateSha256": "e4516444814532383d1dce55dd84f0b88dacbb35435f738596b1c7fb725e2e2c",
+  "treasury": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+  "upgradeAuthority": "DQeELacwEfej1r9g5pt4eQQcetxe3TAgVGD9RJSutJNW",
+  "feesBps": {
+    "platform": 65,
+    "creator": 35,
+    "total": 100
+  },
+  "currentPublicRaydiumSha256": "7422c293a9fd2ae516382a0e09a49ba0501b2d935f752f4ed4819ffe56d35fac",
+  "currentPublicRaydiumLocalReplay": {
+    "positive": 28,
+    "expectedRejectionsAndRollback": 52,
+    "unexpectedFailures": 0
+  },
+  "currentPublicRaydiumBrowser": {
+    "positive": 24,
+    "rejectionGroups": 24,
+    "localTransactions": 27,
+    "unexpectedFailures": 0,
+    "viewports": [
+      390,
+      768,
+      1440
+    ]
+  },
+  "nodeRegressions": {
+    "preservedDistinctCases": 111,
+    "newReadErrorCases": 3,
+    "newOriginRegressionCase": 1,
+    "distinctCasesIncludingPreserved": 115,
+    "affectedDevnetConfigurationRerun": 6,
+    "failures": 0
+  },
+  "productionBuild": "passed; TypeScript included; final-devnet-production-build.log",
+  "lint": "all changed source/test files passed targeted ESLint; previous complete lint retained",
+  "actualHttps": {
+    "status": "passed",
+    "url": "https://symmetrical-adventure-544vrwjwxppcv7wx-3019.app.github.dev/",
+    "tokenPage": "https://symmetrical-adventure-544vrwjwxppcv7wx-3019.app.github.dev/token/7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM",
+    "verified": [
+      "JEETTEST discovery",
+      "on-chain supply and revoked authorities",
+      "metadata description and image",
+      "curve reserves and 65/35 fees",
+      "both actual Devnet trades and price chart",
+      "creator/platform accrual and creator claim history",
+      "Create route and installed-wallet guidance",
+      "New and Trending show JEETTEST",
+      "Final Stretch and Migrated show expected empty views",
+      "Revenue route points to JEETTEST"
+    ],
+    "knownLimitation": "Index warns of RPC historical coverage gap; not advertised as complete archival discovery"
+  },
+  "confirmedDefectsFixed": [
+    "Hardcoded local-validator discovery/trading labels on Devnet",
+    "Token-reader error fallback showed local network and raw SDK diagnostics",
+    "Codespaces rewrites POST Origin to https://localhost:3019; exact named-tunnel same-origin alias now recognized"
+  ],
+  "originSecurity": "Foreign origins, wrong ports, untrusted forwarding and cross-site/same-site/missing Fetch Metadata aliases rejected; no change to Mainnet or signer checks",
+  "installedPhantomAcceptance": "not tested; no installed Wallet Standard wallet detected; owner desktop/iPhone connection UAT required",
+  "metadataCredential": "existing PINATA_JWT retained only in runtime server environment; no new live uploads",
+  "newPublicTransactions": 0,
+  "newSolSpending": 0,
+  "programUpgrades": 0,
+  "historicalLifecycleSpentSol": "0.030950302",
+  "historicalLifecycleAllowanceRemainingSol": "0.019049698",
+  "newSpendingAuthorized": false,
+  "preservation": "original main/repair/release HEAD, status and tracked-diff hashes match preserved evidence; artifacts unchanged",
+  "securityAudit": {
+    "productionVulnerabilities": 0,
+    "developmentToolHighRecords": 14,
+    "advisory": "https://github.com/advisories/GHSA-fc5q-39xc-vjpf",
+    "patchedVersionChecked": "none listed; npm latest 4.0.7 remains affected",
+    "forcedDowngrade": false
+  },
+  "remainingBlockers": [
+    "Installed desktop/iPhone Phantom connection and separately authorized signing acceptance",
+    "SyncNative Devnet candidate upgrade requires owner authorization and revised rent/fee caps",
+    "External AMM fee policy and current binary source-build equivalence review before public migration",
+    "Development-tool advisory remains unpatched; persistent hosting/index/RPC operations and independent security review before public release"
+  ],
+  "decision": "GO for connection-only Devnet Phantom UAT; NO-GO for Mainnet/unrestricted public funds",
+  "hostingReview": "Existing jeet-launch-community-preview has no Git link or framework configured; preserved. Durable wallet-enabled hosting and persistent index/RPC configuration remain necessary."
+}

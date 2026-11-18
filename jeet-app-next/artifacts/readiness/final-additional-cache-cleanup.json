@@ -1,0 +1,38 @@
+{
+  "items": [
+    {
+      "path": "/home/codespace/.cache/copilot/pkg/linux-x64/1.0.103",
+      "bytes": 246110347,
+      "openProcessReferences": []
+    },
+    {
+      "path": "/home/codespace/.cache/copilot/pkg/linux-x64/1.0.104",
+      "bytes": 246253137,
+      "openProcessReferences": []
+    },
+    {
+      "path": "/home/codespace/.cache/copilot/pkg/linux-x64/1.0.105",
+      "bytes": 246285355,
+      "openProcessReferences": []
+    },
+    {
+      "path": "/home/codespace/.cache/copilot/pkg/linux-x64/1.0.106",
+      "bytes": 256067995,
+      "openProcessReferences": []
+    },
+    {
+      "path": "/home/codespace/.cache/copilot/pkg/linux-x64/1.0.107",
+      "bytes": 256067995,
+      "openProcessReferences": []
+    },
+    {
+      "path": "/home/codespace/.cache/copilot/pkg/linux-x64/1.0.108",
+      "bytes": 269008245,
+      "openProcessReferences": []
+    }
+  ],
+  "freeBefore": 196280320,
+  "freeAfter": 1721397248,
+  "recoveredBytes": 1525116928,
+  "type": "obsolete extracted vendor package caches; no project source or credentials"
+}

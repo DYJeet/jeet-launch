@@ -1,0 +1,8 @@
+{
+  "existingProject": "jeet-launch-community-preview",
+  "projectId": "prj_Ofzewl9sXN4fBIPuixCEgVuYCocw",
+  "gitLink": null,
+  "framework": null,
+  "changed": false,
+  "decision": "Preserve existing community preview. Durable wallet-enabled application hosting, persistent SQLite index and production RPC must be chosen before public release."
+}
