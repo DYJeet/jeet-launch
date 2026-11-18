@@ -1,0 +1,69 @@
+{
+  "checkedAt": "2026-11-18T18:38:28.808Z",
+  "readOnly": true,
+  "recoveryTransactionsSubmitted": 0,
+  "uploader": "original uploader completed during interruption; not restarted",
+  "approvedCheckpoint": "a3eb77a2ad629e5142bde5db92a4e4adb8a008fc",
+  "program": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+  "candidateHash": "e4516444814532383d1dce55dd84f0b88dacbb35435f738596b1c7fb725e2e2c",
+  "oldExecutablePreservedSha256": "13e0a87c97ba5b670bc2fd358a145618bff4be7fda5460b533e2dc1e3ac424fa",
+  "uploadChunksVerified": 286,
+  "receiptsReverifiedFinalized": 289,
+  "onChainFailedTransactions": 0,
+  "expiredAttempts": 0,
+  "pendingTransactions": 0,
+  "applicationAccountsReverifiedUnchanged": 14,
+  "accountSnapshotSlot": 523722873,
+  "upgradeCompleted": true,
+  "upgradeSignature": "3x5wBLamaV3USF4GZMGKuJVAU51bi12CocRs1jxeR51e6ghR8wa1513TR2Kzkupr6FyVELuyjF2a4mAXnRzPeVDN",
+  "completedAt": "2026-11-18T15:34:06.826Z",
+  "buffer": "BbZogFHxBmRWGet9BJDdZvwTgumBuamNzMhEAHZfqRio",
+  "bufferClosed": true,
+  "bufferRentRecoveredLamports": 1395277880,
+  "bufferRentOutstandingLamports": 0,
+  "feesThisUpgradeLamports": 1455000,
+  "priorDeploymentFeesLamports": 2935000,
+  "cumulativeFeesLamports": 4390000,
+  "approvedCumulativeFeeCapLamports": 4600000,
+  "feeHeadroomLamports": 210000,
+  "payerFinalLamports": 1557853880,
+  "treasury": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+  "upgradeAuthority": "DQeELacwEfej1r9g5pt4eQQcetxe3TAgVGD9RJSutJNW",
+  "feesBps": {
+    "platform": 65,
+    "creator": 35,
+    "total": 100
+  },
+  "keyReceipts": [
+    {
+      "label": "create-buffer",
+      "signature": "2iXR3qCPCYA5KPFSnVq1GCFUASSpc8cWyQrF9LvFUAQBsw4qeyDLkAu8KfHtbngpXt6GUDQwBJQmz1hHiYhfNa36",
+      "slot": 523671574,
+      "feeLamports": 10000,
+      "computeUnits": 2520,
+      "explorer": "https://explorer.solana.com/tx/2iXR3qCPCYA5KPFSnVq1GCFUASSpc8cWyQrF9LvFUAQBsw4qeyDLkAu8KfHtbngpXt6GUDQwBJQmz1hHiYhfNa36?cluster=devnet",
+      "confirmedSignerCount": 2,
+      "finalized": true
+    },
+    {
+      "label": "handoff",
+      "signature": "mMExawLsB9uxt2VqBo7fxa7geTmpDzXsKiBrvWVs4EoN8KJDTdZ82SUfmbLy1VRUx2ZKF2qtp2Li8po4CyyNLs8",
+      "slot": 523676555,
+      "feeLamports": 5000,
+      "computeUnits": 2370,
+      "explorer": "https://explorer.solana.com/tx/mMExawLsB9uxt2VqBo7fxa7geTmpDzXsKiBrvWVs4EoN8KJDTdZ82SUfmbLy1VRUx2ZKF2qtp2Li8po4CyyNLs8?cluster=devnet",
+      "confirmedSignerCount": 1,
+      "finalized": true
+    },
+    {
+      "label": "upgrade",
+      "signature": "3x5wBLamaV3USF4GZMGKuJVAU51bi12CocRs1jxeR51e6ghR8wa1513TR2Kzkupr6FyVELuyjF2a4mAXnRzPeVDN",
+      "slot": 523676575,
+      "feeLamports": 10000,
+      "computeUnits": 2520,
+      "explorer": "https://explorer.solana.com/tx/3x5wBLamaV3USF4GZMGKuJVAU51bi12CocRs1jxeR51e6ghR8wa1513TR2Kzkupr6FyVELuyjF2a4mAXnRzPeVDN?cluster=devnet",
+      "confirmedSignerCount": 2,
+      "finalized": true
+    }
+  ]
+}
