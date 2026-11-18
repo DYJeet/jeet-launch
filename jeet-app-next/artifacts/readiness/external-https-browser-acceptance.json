@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-11-18T13:16:06.933Z",
+  "url": "https://symmetrical-adventure-544vrwjwxppcv7wx-3019.app.github.dev/token/7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM",
+  "httpsNavigation": "passed",
+  "create": "Devnet route and installed-wallet guidance rendered",
+  "discovery": {
+    "New": "JEETTEST",
+    "Trending": "JEETTEST",
+    "FinalStretch": "expected empty",
+    "Migrated": "expected empty",
+    "limitation": "Historical RPC coverage gap disclosed"
+  },
+  "token": "actual on-chain supply, revoked authorities, reserves, fee vaults and history rendered",
+  "metadataImage": {
+    "loaded": true,
+    "width": 1122,
+    "height": 1402
+  },
+  "chart": "actual two Devnet trade executions rendered",
+  "creatorClaimHistory": "722 lamports",
+  "platformAccrual": "1342 lamports",
+  "treasury": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+  "tradingNetworkLabel": "Solana Devnet",
+  "installedPhantom": "not tested; no Wallet Standard wallet installed",
+  "last10ConsoleErrors": "browser-extension metadata errors; no application error in sampled entries",
+  "publicTransactionsSubmitted": 0,
+  "screenshot": "external-devnet-preview.jpg"
+}
