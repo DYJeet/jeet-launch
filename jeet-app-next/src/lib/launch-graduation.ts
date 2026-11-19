@@ -14,6 +14,7 @@ import {
   findAssociatedTokenPda,
   TOKEN_PROGRAM_ADDRESS,
 } from "@solana-program/token";
+import { WALLET_NETWORK } from "./wallet-program.ts";
 import { V5_PREVIEW_PROGRAM } from "./launch-v5-preview.ts";
 export const GRADUATION_SIZE = 253;
 export const CPMM_TEST_PROGRAM = address(
@@ -52,17 +53,17 @@ const derive = (program: Address, s: string, ...parts: Uint8Array[]) =>
     seeds: [seed(s), ...parts],
   });
 export type GraduationProfile = { program: Address; amm: Address; feeRecipient: Address };
-const defaultProfile: GraduationProfile = {
+export const defaultGraduationProfile: GraduationProfile = {
   program: V5_PREVIEW_PROGRAM,
-  amm: CPMM_TEST_PROGRAM,
-  feeRecipient: CP_FEE,
+  amm: WALLET_NETWORK === "mainnet" ? CPMM_MAINNET_PROGRAM : CPMM_TEST_PROGRAM,
+  feeRecipient: WALLET_NETWORK === "mainnet" ? CPMM_MAINNET_FEE_RECIPIENT : CP_FEE,
 };
 
 export function mainnetGraduationProfile(program: Address): GraduationProfile {
   return { program, amm: CPMM_MAINNET_PROGRAM, feeRecipient: CPMM_MAINNET_FEE_RECIPIENT };
 }
 
-export async function graduationAddresses(mint: Address, nonce: bigint, profile = defaultProfile) {
+export async function graduationAddresses(mint: Address, nonce: bigint, profile = defaultGraduationProfile) {
   const n = new Uint8Array(8);
   new DataView(n.buffer).setBigUint64(0, u(nonce), true);
   const [pool] = await derive(profile.program, "amm_pool", b(mint), n);
@@ -70,7 +71,7 @@ export async function graduationAddresses(mint: Address, nonce: bigint, profile 
 }
 
 // The pool comes from the canonical program-owned graduation terms after migration.
-export async function graduationPoolAccounts(mint: Address, pool: Address, profile = defaultProfile) {
+export async function graduationPoolAccounts(mint: Address, pool: Address, profile = defaultGraduationProfile) {
   const [terms] = await derive(profile.program, "graduation", b(mint)),
     [migrator] = await derive(profile.program, "migrator", b(mint));
   const [config] = await derive(
@@ -144,7 +145,7 @@ export function initializeGraduationInstruction(
     terms: Address;
     maxPriceGapBps: number;
   },
-  profile = defaultProfile,
+  profile = defaultGraduationProfile,
 ) {
   if (
     !Number.isInteger(l.maxPriceGapBps) ||
@@ -176,7 +177,7 @@ export function initializeGraduationInstruction(
  */
 export function activateGraduationInstructions(
   l: Parameters<typeof initializeGraduationInstruction>[0],
-  profile = defaultProfile,
+  profile = defaultGraduationProfile,
 ) {
   return [
     getSetAuthorityInstruction({
@@ -202,7 +203,7 @@ export function graduateInstruction(
       nonce: bigint;
       maxSetupLamports: bigint;
     },
-  profile = defaultProfile,
+  profile = defaultGraduationProfile,
 ) {
   const data = new Uint8Array(25);
   data[0] = 22;
@@ -243,7 +244,7 @@ export function graduateInstruction(
     ],
   };
 }
-export function decodeGraduation(data: Uint8Array, profile = defaultProfile) {
+export function decodeGraduation(data: Uint8Array, profile = defaultGraduationProfile) {
   if (
     data.length !== GRADUATION_SIZE ||
     new TextDecoder().decode(data.subarray(0, 8)) !== "JEETGRD1"

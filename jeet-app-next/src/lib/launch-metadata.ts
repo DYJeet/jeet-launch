@@ -1,3 +1,5 @@
+import { WALLET_NETWORK } from "./wallet-program.ts";
+import { withMainnetReleaseControl } from "./mainnet-release-control.ts";
 /** Local/test metadata extension. Metaplex protocol fees are separate from JeeT's zero creation fee. */
 import {
   AccountRole,
@@ -84,13 +86,13 @@ export async function initializeLaunchMetadataInstruction(p: {
       address: a,
       role: w ? AccountRole.WRITABLE : AccountRole.READONLY,
     });
-  return {
+  const instruction = {
     programAddress: V5_PREVIEW_PROGRAM,
     data,
     accounts: [
       {
         address: p.creator.address,
-        role: AccountRole.WRITABLE_SIGNER,
+        role: AccountRole.WRITABLE_SIGNER as const,
         signer: p.creator,
       },
       meta(p.mint),
@@ -101,6 +103,7 @@ export async function initializeLaunchMetadataInstruction(p: {
       meta(METADATA_PROGRAM),
     ],
   };
+  return WALLET_NETWORK === "mainnet" ? withMainnetReleaseControl(V5_PREVIEW_PROGRAM, instruction) : instruction;
 }
 /** Owner and canonical PDA must be checked by the caller before trusting these fields. */
 export function decodeLaunchMetadata(d: Uint8Array) {

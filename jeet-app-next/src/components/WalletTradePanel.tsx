@@ -119,7 +119,7 @@ function Trading({ environment, launch, onRefresh }: Parameters<typeof WalletTra
   const controlsDisabled = busy || !!pending;
   return <section data-testid="curve-trade" className="space-y-4 rounded-2xl border border-white/15 bg-black/40 p-4 sm:p-6">
     <h2 className="text-xl font-black">Trade on the bonding curve</h2>
-    <p className="text-sm text-white/60">{environment.network === "devnet" ? "Solana Devnet" : "Local validator"} · test SOL only</p>
+    <p className="text-sm text-white/60">{environment.network === "mainnet" ? "Solana Mainnet" : environment.network === "devnet" ? "Solana Devnet" : "Local validator"} · {environment.network === "mainnet" ? "transactions disabled" : "test SOL only"}</p>
     <p data-testid="curve-trade-status">{status === "migrated" ? "Migrated · curve closed" :
       status === "eligible" ? "Graduation eligible · redemption open" :
       status === "waiting" ? "Waiting for the opening slot" :

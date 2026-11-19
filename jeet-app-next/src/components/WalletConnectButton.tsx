@@ -1,4 +1,5 @@
 "use client";
+import { WALLET_NETWORK_LABEL } from "@/lib/wallet-program";
 import WalletReadyGate from "./WalletHydrationGate";
 
 import { useEffect, useRef, useState } from "react";
@@ -74,7 +75,7 @@ function WalletButtonInner({ client }: { client: AppClient }) {
               <p className="text-[10px] font-black uppercase tracking-[0.18em] text-white/35">
                 Solana wallet
               </p>
-              <p className="mt-1 text-xs font-bold text-[#9cff43]">Devnet</p>
+              <p className="mt-1 text-xs font-bold text-[#9cff43]">{WALLET_NETWORK_LABEL}</p>
             </div>
             <span className="rounded-full border border-[#9cff43]/20 bg-[#9cff43]/10 px-2 py-1 text-[9px] font-black uppercase text-[#9cff43]">
               Safe test mode
@@ -94,7 +95,7 @@ function WalletButtonInner({ client }: { client: AppClient }) {
                   {address ? truncate(address) : ""}
                 </p>
                 <div className="mt-2 flex items-center justify-between gap-3 rounded-lg bg-white/[0.03] px-2.5 py-2">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-white/30">Devnet balance</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-white/30">{WALLET_NETWORK_LABEL} balance</span>
                   <span className="text-xs font-black text-[#9cff43]">
                     {balanceLoading ? "Loading…" : balance !== null ? `${balance.toFixed(4)} SOL` : "—"}
                   </span>

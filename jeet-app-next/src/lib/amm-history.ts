@@ -1,6 +1,6 @@
 import { getBase58Encoder, type Address } from "@solana/kit";
 import { TOKEN_PROGRAM_ADDRESS } from "@solana-program/token";
-import { CPMM_TEST_PROGRAM, NATIVE_MINT, graduationPoolAccounts, type decodeGraduation } from "./launch-graduation.ts";
+import { defaultGraduationProfile, NATIVE_MINT, graduationPoolAccounts, type decodeGraduation } from "./launch-graduation.ts";
 
 type Instruction = { programIdIndex: number; accounts: readonly number[]; data: string };
 type Transaction = {
@@ -14,7 +14,7 @@ type Transaction = {
 
 type Terms = Pick<ReturnType<typeof decodeGraduation>, "mint" | "migrated" | "pool" | "config" | "migrator" | "ammProgram">;
 export async function ammHistoryPool(mint: Address, terms: Terms) {
-  if (!terms.migrated || terms.mint !== mint || terms.ammProgram !== CPMM_TEST_PROGRAM ||
+  if (!terms.migrated || terms.mint !== mint || terms.ammProgram !== defaultGraduationProfile.amm ||
       terms.pool === "11111111111111111111111111111111")
     throw Error("Unrecognized graduation pool.");
   const canonical = await graduationPoolAccounts(mint, terms.pool);
@@ -42,7 +42,7 @@ export function ammTradeEvents(tx: Transaction, pool: Pool) {
   const keys = [...message.accountKeys, ...tx.meta.loadedAddresses?.writable ?? [],
     ...tx.meta.loadedAddresses?.readonly ?? []];
   return message.instructions.flatMap((ix, index) => {
-    if (keys[ix.programIdIndex] !== CPMM_TEST_PROGRAM || ix.accounts.length !== 13) return [];
+    if (keys[ix.programIdIndex] !== defaultGraduationProfile.amm || ix.accounts.length !== 13) return [];
     try {
       const [wallet, authority, config, poolKey, userIn, userOut, vaultIn, vaultOut, tokenIn, tokenOut,
         mintIn, mintOut, observation] = ix.accounts.map(key => keys[key]);

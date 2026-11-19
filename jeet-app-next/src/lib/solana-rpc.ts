@@ -1,9 +1,9 @@
 import { address as solanaAddress, getAddressEncoder } from "@solana/kit";
 import { WALLET_NETWORK } from "./wallet-program.ts";
 
-export const SOLANA_CLUSTER = "devnet" as const;
+export const SOLANA_CLUSTER = WALLET_NETWORK === "mainnet" ? "mainnet-beta" : "devnet";
 
-export const SOLANA_RPC_URL = "https://api.devnet.solana.com";
+export const SOLANA_RPC_URL = WALLET_NETWORK === "mainnet" ? "https://api.mainnet-beta.solana.com" : "https://api.devnet.solana.com";
 
 const LAMPORTS_PER_SOL = 1_000_000_000;
 
@@ -55,7 +55,7 @@ async function rpcRequest<T>(method: string, params: unknown[], signal?: AbortSi
   for (let attempt = 0; attempt < 3; attempt++) {
     signal?.throwIfAborted();
     try {
-      const response = await fetch(typeof window !== "undefined" && WALLET_NETWORK === "devnet" ? "/api/wallet/rpc" : SOLANA_RPC_URL, {
+      const response = await fetch(typeof window !== "undefined" && WALLET_NETWORK !== "local" ? "/api/wallet/rpc" : SOLANA_RPC_URL, {
         method: "POST", headers: { "content-type": "application/json" },
         body: JSON.stringify({ jsonrpc: "2.0", id: rpcId++, method, params }),
         signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(8000)]) : AbortSignal.timeout(8000),

@@ -1,0 +1,14 @@
+{
+  "status": "PASS_HTTP_BROWSER_PENDING",
+  "browserAcceptance": "deferred: this run covers HTTP only",
+  "evidence": "local HTTPS application with synthetic Mainnet RPC and real local SQLite backend",
+  "realSolanaRequests": 0,
+  "transactionsSubmitted": 0,
+  "viewportSizes": [],
+  "checks": [
+    "built environment endpoint returns the compiled Mainnet program and genesis",
+    "transaction forwarding, simulation and uploads stay closed while read-only RPC works",
+    "foreign origins and local diagnostics are rejected",
+    "built Create, Explore and Revenue pages serve the Mainnet read-only release notice"
+  ]
+}

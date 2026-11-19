@@ -14,6 +14,7 @@ export async function POST(request: Request) {
   if (!(await admitPublicRequest(request, 'upload'))) return Response.json({ error: 'Upload quota unavailable or exhausted.' }, { status: 429, headers: { 'retry-after': '3600' } });
   try {
     const config = localWalletConfiguration(request);
+    if (config.environment.network === "mainnet") return Response.json({ error: "Mainnet asset writes are disabled." }, { status: 403 });
     if (active >= 2) return Response.json({error:"Upload busy; retry after the current operation finishes."}, { status: 429 });
     if (!request.headers.get("content-type")?.startsWith("application/json"))
       return Response.json({error:"JSON required"}, { status: 415 });

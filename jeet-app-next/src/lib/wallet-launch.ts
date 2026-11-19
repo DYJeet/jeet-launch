@@ -30,6 +30,7 @@ import {
 import { potential, validateV5 } from "./v5-pricing.ts";
 import { parseUnits } from "./wallet-environment.ts";
 import { validateMetadataFields } from "./launch-metadata.ts";
+import { guardMainnetInstructions, mainnetReleaseControl } from "./mainnet-release-control.ts";
 import { WALLET_NETWORK } from "./wallet-program.ts";
 
 export type WalletLaunchInput = {
@@ -147,6 +148,7 @@ export async function walletLaunchAddresses(mint: Address, creator: Address) {
   return {
     mint,
     creator,
+    releaseControl: await mainnetReleaseControl(V5_PREVIEW_PROGRAM),
     custody,
     opening,
     curve,
@@ -256,7 +258,7 @@ export function initializeWalletLaunchInstructions(
     ...ix,
     programAddress: V5_PREVIEW_PROGRAM,
   });
-  return [
+  const instructions = [
     launchComputeLimit(),
     local(
       initializeCustodyInstruction({
@@ -292,6 +294,7 @@ export function initializeWalletLaunchInstructions(
       },
     }),
   ];
+  return WALLET_NETWORK === "mainnet" ? guardMainnetInstructions(V5_PREVIEW_PROGRAM, l.releaseControl, instructions) : instructions;
 }
 export function activateWalletLaunchInstructions(
   creator: TransactionSigner,
@@ -301,7 +304,7 @@ export function activateWalletLaunchInstructions(
   if (creator.address !== l.creator) throw Error("Creator signer changed.");
   // Metadata must be created and read back successfully before the UI calls this
   // exact atomic authority-revocation / immutable-graduation-terms bundle.
-  return [
+  const instructions = [
     launchComputeLimit(),
     ...activateGraduationInstructions({
       ...l,
@@ -309,4 +312,5 @@ export function activateWalletLaunchInstructions(
       maxPriceGapBps: p.maxPriceGapBps,
     }),
   ];
+  return WALLET_NETWORK === "mainnet" ? guardMainnetInstructions(V5_PREVIEW_PROGRAM, l.releaseControl, instructions) : instructions;
 }

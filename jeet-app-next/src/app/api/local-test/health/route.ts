@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 const LOCAL_RPC_URL = "http://127.0.0.1:8899";
 
 export async function GET() {
-  if (process.env.VERCEL === "1" || process.env.NEXT_PUBLIC_JEET_WALLET_NETWORK === "devnet") return NextResponse.json({ error: "Local validator diagnostics are unavailable on public networks." }, { status: 404 });
+  if (process.env.VERCEL === "1" || ["devnet", "mainnet"].includes(process.env.NEXT_PUBLIC_JEET_WALLET_NETWORK ?? "")) return NextResponse.json({ error: "Local validator diagnostics are unavailable on public networks." }, { status: 404 });
   try {
     const response = await fetch(LOCAL_RPC_URL, {
       method: "POST",

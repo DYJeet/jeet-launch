@@ -1,4 +1,5 @@
 "use client";
+import { WALLET_NETWORK } from "@/lib/wallet-program";
 import { PUBLIC_BETA_READ_ONLY, PUBLIC_BETA_MESSAGE } from "@/lib/public-beta";
 import Link from "next/link";
 import { resolveMetadataUri } from "@/lib/metadata-storage-uri";
@@ -505,7 +506,7 @@ export default function WalletLaunchCreator() {
         <Link href="/" className="text-[#9cff43]">
           ← JeeT Launch
         </Link>
-        <h1 className="text-3xl font-black">{PUBLIC_BETA_READ_ONLY || environment?.network === "devnet" ? "Create a Devnet coin" : "Create a local coin"}</h1>
+        <h1 className="text-3xl font-black">{WALLET_NETWORK === "mainnet" ? "Mainnet creation preview" : PUBLIC_BETA_READ_ONLY || environment?.network === "devnet" ? "Create a Devnet coin" : "Create a local coin"}</h1>
         <p className="text-white/50">
           Your wallet signs. JeeT never receives its private keys.
         </p>

@@ -5,10 +5,11 @@ import {
 } from "./wallet-environment.ts";
 
 import { WALLET_NETWORK, WALLET_PROGRAM_ADDRESS } from "./wallet-program.ts";
-import { DEVNET_GENESIS } from "./wallet-environment.ts";
+import { DEVNET_GENESIS, MAINNET_GENESIS } from "./wallet-environment.ts";
 import { walletUpstreamFetch } from "./wallet-rpc-server.ts";
 
 export function walletModeEnabled() {
+  if (WALLET_NETWORK === "mainnet") return process.env.JEET_MAINNET_READ_PREVIEW === "1";
   return WALLET_NETWORK === "devnet" ? process.env.JEET_DEVNET_WALLET === "1" : process.env.JEET_LOCAL_WALLET === "1";
 }
 
@@ -64,7 +65,35 @@ function codespacesForwardedHost(request: Request, origin: URL) {
     request.headers.get("x-forwarded-host") === origin.host;
 }
 
+function mainnetReadConfiguration(request: Request, pageNavigation: boolean) {
+  if (process.env.JEET_MAINNET_READ_PREVIEW !== "1" ||
+      process.env.JEET_MAINNET_PROGRAM_ID !== WALLET_PROGRAM_ADDRESS ||
+      process.env.JEET_DEVNET_WALLET === "1" || process.env.JEET_LOCAL_WALLET === "1" ||
+      (process.env.VERCEL === "1" && process.env.VERCEL_ENV !== "preview"))
+    throw Error("Isolated Mainnet read preview configuration is required.");
+  const origin = new URL(process.env.JEET_MAINNET_PREVIEW_ORIGIN ?? "");
+  const previewNavigation = pageNavigation && request.method === "GET" && !request.headers.has("origin") &&
+    request.headers.get("sec-fetch-mode") === "navigate" && request.headers.get("sec-fetch-dest") === "document";
+  if (origin.protocol !== "https:" || origin.username || origin.password || origin.pathname !== "/" ||
+      origin.search || origin.hash || request.headers.get("host") !== origin.host ||
+      (request.headers.has("origin") && request.headers.get("origin") !== origin.origin) ||
+      (request.headers.get("sec-fetch-site") === "cross-site" && !previewNavigation) ||
+      (process.env.VERCEL === "1" && process.env.VERCEL_URL !== origin.host))
+    throw Error("Mainnet preview origin differs from the configured HTTPS deployment.");
+  const rpc = new URL(process.env.JEET_MAINNET_READ_RPC ?? "");
+  if (rpc.protocol !== "https:" || rpc.username || rpc.password || rpc.hash)
+    throw Error("An approved HTTPS Mainnet read RPC is required.");
+  return {
+    url: rpc.href,
+    environment: validateWalletEnvironment({
+      network: "mainnet", chain: "solana:mainnet", genesis: MAINNET_GENESIS,
+      program: WALLET_PROGRAM_ADDRESS, rpcPath: "/api/wallet/rpc",
+    }),
+  };
+}
+
 export function localWalletConfiguration(request: Request, { pageNavigation = false } = {}) {
+  if (WALLET_NETWORK === "mainnet") return mainnetReadConfiguration(request, pageNavigation);
   if (process.env.JEET_DEVNET_WALLET === "1" || WALLET_NETWORK === "devnet")
     return devnetWalletConfiguration(request, pageNavigation);
   if (process.env.JEET_LOCAL_WALLET !== "1")

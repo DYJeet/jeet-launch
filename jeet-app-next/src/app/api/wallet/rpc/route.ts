@@ -51,7 +51,7 @@ export async function POST(request: Request) {
         await result.body?.cancel();
         const retryAfter = result.headers.get("retry-after") ?? "";
         const rateLimited = result.status === 429;
-        return Response.json({ error: rateLimited ? "Devnet RPC rate limited. Retry after the provider cooldown." : "Devnet RPC rejected the request." }, {
+        return Response.json({ error: rateLimited ? "Solana RPC rate limited. Retry after the provider cooldown." : "Solana RPC rejected the request." }, {
           status: rateLimited ? 429 : 503,
           headers: rateLimited ? { "retry-after": /^\d+$/.test(retryAfter) ? retryAfter : "5" } : {},
         });

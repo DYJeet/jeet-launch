@@ -1,17 +1,23 @@
 import { address } from "@solana/kit";
 
 export type WalletEnvironment = {
-  network: "local" | "devnet";
-  chain: "solana:devnet";
+  network: "local" | "devnet" | "mainnet";
+  chain: "solana:devnet" | "solana:mainnet";
   genesis: string;
   program: string;
   rpcPath: "/api/wallet/rpc";
 };
 export { LOCAL_WALLET_PROGRAM } from "./wallet-program.ts";
-import { LOCAL_WALLET_PROGRAM, DEVNET_WALLET_PROGRAM, WALLET_PROGRAM_ADDRESS } from "./wallet-program.ts";
+import { LOCAL_WALLET_PROGRAM, DEVNET_WALLET_PROGRAM, WALLET_PROGRAM_ADDRESS, WALLET_NETWORK } from "./wallet-program.ts";
 export const DEVNET_GENESIS = "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG";
 export const MAINNET_GENESIS = "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d";
 export function validateWalletEnvironment(value: WalletEnvironment) {
+  if (value.network === "mainnet") {
+    if (WALLET_NETWORK !== "mainnet" || value.chain !== "solana:mainnet" ||
+        value.genesis !== MAINNET_GENESIS || value.program !== WALLET_PROGRAM_ADDRESS ||
+        value.rpcPath !== "/api/wallet/rpc") throw Error("Mainnet wallet environment differs from the compiled release.");
+    return value;
+  }
   if (
     !["local", "devnet"].includes(value.network) ||
     value.chain !== "solana:devnet" ||

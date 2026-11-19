@@ -1,4 +1,4 @@
-/** Local-only adapter for the pinned Raydium CPMM interface. */
+/** Network-pinned Raydium CPMM adapter. Public migration stays gated. */
 import {
   AccountRole, address, generateKeyPairSigner, getAddressDecoder,
   getBase64Encoder, getBase64Decoder, getBase58Encoder, compileTransaction,
@@ -12,7 +12,7 @@ import {
   TOKEN_PROGRAM_ADDRESS, findAssociatedTokenPda, getCreateAssociatedTokenIdempotentInstructionAsync,
   getInitializeAccount3Instruction, getSyncNativeInstruction, getCloseAccountInstruction,
 } from "@solana-program/token";
-import { CPMM_TEST_PROGRAM, NATIVE_MINT, graduationAddresses, graduateInstruction } from "./launch-graduation.ts";
+import { defaultGraduationProfile, NATIVE_MINT, graduationAddresses, graduateInstruction } from "./launch-graduation.ts";
 import { readWalletLaunch, type WalletLaunchSnapshot } from "./wallet-launch-flow.ts";
 import { ammHistoryPool } from "./amm-history.ts";
 import { potential } from "./v5-pricing.ts";
@@ -72,19 +72,19 @@ export async function readAmmMarket(executor: WalletTransactionExecutor, mint: A
   const a = await ammHistoryPool(mint, launch.terms);
   const [destination] = await findAssociatedTokenPda({ mint, owner: wallet, tokenProgram: TOKEN_PROGRAM_ADDRESS });
   const response = await executor.rpc.getMultipleAccounts([
-    a.pool, a.config, a.vault0, a.vault1, a.lpMint, a.observation, CPMM_TEST_PROGRAM, destination, wallet,
+    a.pool, a.config, a.vault0, a.vault1, a.lpMint, a.observation, defaultGraduationProfile.amm, destination, wallet,
     address("SysvarC1ock11111111111111111111111111111111"),
   ], { encoding: "base64", commitment: "confirmed", minContextSlot: launch.slot }).send(timeout());
   const [pool, config, v0, v1, lp, observation, program, user, owner, clock] = response.value;
   if (!program?.executable) throw Error("Raydium program is unavailable.");
-  const b = owned(pool, CPMM_TEST_PROGRAM, 637);
-  const cfg = decodeCpmmConfig(owned(config, CPMM_TEST_PROGRAM, 236));
+  const b = owned(pool, defaultGraduationProfile.amm, 637);
+  const cfg = decodeCpmmConfig(owned(config, defaultGraduationProfile.amm, 236));
   for (const [at, key] of [[8,a.config],[40,a.migrator],[72,a.vault0],[104,a.vault1],[136,a.lpMint],
     [168,a.mint0],[200,a.mint1],[232,TOKEN_PROGRAM_ADDRESS],[264,TOKEN_PROGRAM_ADDRESS],[296,a.observation]] as const)
     if (keyAt(b, at) !== key) throw Error("Substituted Raydium pool identity.");
   if (!discr(b,[247,237,227,245,215,195,222,70]) || b[390] !== 0 || b[389] > 2)
     throw Error("Unsupported pool or creator fee model.");
-  const oracle = owned(observation, CPMM_TEST_PROGRAM, 4075);
+  const oracle = owned(observation, defaultGraduationProfile.amm, 4075);
   if (!discr(oracle,[122,174,197,53,129,9,165,132]) || keyAt(oracle, 11) !== a.pool)
     throw Error("Pool observation identity mismatch.");
   const balance0 = token(v0, a.mint0, a.authority), balance1 = token(v1, a.mint1, a.authority);
@@ -132,7 +132,7 @@ export async function ammInstructions(m: AmmMarket, q: AmmPreview, payer: Transa
   new DataView(data.buffer).setBigUint64(8,bounded(q.input),true);
   new DataView(data.buffer).setBigUint64(16,bounded(q.minimum),true);
   const signedPayer = {address:payer.address,role:AccountRole.READONLY_SIGNER as const,signer:payer};
-  ix.push({programAddress:CPMM_TEST_PROGRAM,data,accounts:[signedPayer,
+  ix.push({programAddress:defaultGraduationProfile.amm,data,accounts:[signedPayer,
     meta(a.authority),meta(a.config),meta(a.pool,true),meta(input,true),meta(output,true),
     meta(q.zeroForOne?a.vault0:a.vault1,true),meta(q.zeroForOne?a.vault1:a.vault0,true),meta(TOKEN_PROGRAM_ADDRESS),meta(TOKEN_PROGRAM_ADDRESS),
     meta(q.zeroForOne?a.mint0:a.mint1),meta(q.zeroForOne?a.mint1:a.mint0),meta(a.observation,true)]},
@@ -151,9 +151,9 @@ export async function graduationPreview(executor: WalletTransactionExecutor, lau
   if (potential(s,s.sold) !== s.reserve || launch.vaultTokens !== 0n || launch.migrationTokens !== s.migrationInventory)
     throw Error("Graduation inventory or redemption backing is inconsistent.");
   const a = await graduationAddresses(launch.addresses.mint,0n);
-  const r = await executor.rpc.getMultipleAccounts([a.config,CPMM_TEST_PROGRAM,a.pool,a.migratorToken,a.migratorSol,a.migratorLp,launch.addresses.curve],
+  const r = await executor.rpc.getMultipleAccounts([a.config,defaultGraduationProfile.amm,a.pool,a.migratorToken,a.migratorSol,a.migratorLp,launch.addresses.curve],
     {encoding:"base64",commitment:"confirmed",minContextSlot:launch.slot}).send(timeout());
-  const cfg = decodeCpmmConfig(owned(r.value[0],CPMM_TEST_PROGRAM,236));
+  const cfg = decodeCpmmConfig(owned(r.value[0],defaultGraduationProfile.amm,236));
   const [,program,pool,migratorToken,migratorSol,migratorLp,curve] = r.value;
   if (cfg.disabled || cfg.trade !== 2500n || !program?.executable || (pool && (pool.owner!==SYSTEM || pool.data[0])) || migratorLp)
     throw Error("Unsupported setup configuration or destination accounts already exist. Refresh the launch.");

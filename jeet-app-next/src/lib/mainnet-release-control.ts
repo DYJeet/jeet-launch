@@ -41,11 +41,19 @@ export async function releaseControlInstruction(
   };
 }
 
+function appendControl(instruction: Instruction, control: Address): Instruction {
+  if (instruction.accounts?.some(account => account.address === control))
+    throw Error('Release-control account already present.');
+  return { ...instruction, accounts: [...instruction.accounts ?? [], { address: control, role: AccountRole.READONLY }] };
+}
+
+export function guardMainnetInstructions(program: Address, control: Address, instructions: Instruction[]): Instruction[] {
+  return instructions.map(instruction => instruction.programAddress === program && guarded.has(instruction.data?.[0] ?? -1)
+    ? appendControl(instruction, control) : instruction);
+}
+
 export async function withMainnetReleaseControl(program: Address, instruction: Instruction): Promise<Instruction> {
   if (instruction.programAddress !== program || !instruction.accounts?.length || !guarded.has(instruction.data?.[0] ?? -1))
     throw Error('Expected a guarded instruction already derived for this Mainnet candidate.');
-  const control = await mainnetReleaseControl(program);
-  if (instruction.accounts.some(account => account.address === control))
-    throw Error('Release-control account already present.');
-  return { ...instruction, accounts: [...instruction.accounts, { address: control, role: AccountRole.READONLY }] };
+  return appendControl(instruction, await mainnetReleaseControl(program));
 }

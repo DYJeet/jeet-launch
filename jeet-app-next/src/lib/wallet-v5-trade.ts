@@ -12,6 +12,8 @@ import {
   type TransactionSigner,
 } from "@solana/kit";
 import { v5PreviewTradeInstruction, V5_PREVIEW_PROGRAM } from "./launch-v5-preview.ts";
+import { WALLET_NETWORK } from "./wallet-program.ts";
+import { withMainnetReleaseControl } from "./mainnet-release-control.ts";
 import { v5Budget, v5Quote } from "./v5-pricing.ts";
 import { launchComputeLimit } from "./wallet-launch.ts";
 import { readWalletLaunch, type WalletLaunchSnapshot } from "./wallet-launch-flow.ts";
@@ -113,10 +115,12 @@ export async function tradeInstructions(market: TradeMarket, q: TradePreview, bu
   const instructions = [launchComputeLimit()];
   if (!q.sell && market.needsAta)
     instructions.push(await getCreateAssociatedTokenIdempotentInstructionAsync({ payer: buyer, mint: l.mint, owner: buyer.address }));
-  instructions.push(v5PreviewTradeInstruction({
+  const trade = v5PreviewTradeInstruction({
     ...l, buyer, destination: market.destination, receipt: market.receipt,
     amount: q.amount, expectedSold: q.sold, quotedCost: q.raw,
     maxCost: q.bound, sequence: q.sequence, sell: q.sell,
-  }));
+  });
+  instructions.push(WALLET_NETWORK === "mainnet" && !q.sell
+    ? await withMainnetReleaseControl(V5_PREVIEW_PROGRAM, trade) : trade);
   return instructions;
 }

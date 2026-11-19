@@ -155,7 +155,7 @@ function isValidOptionalUrl(value: string) {
 }
 
 export default function CreatePage() {
-  return WALLET_NETWORK === "devnet" ? <WalletLaunchCreator /> : <PlanningCreatePage />;
+  return WALLET_NETWORK !== "local" ? <WalletLaunchCreator /> : <PlanningCreatePage />;
 }
 
 function PlanningCreatePage() {

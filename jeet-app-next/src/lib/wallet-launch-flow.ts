@@ -11,7 +11,7 @@ import {
   decodeV5PreviewState,
   V5_PREVIEW_PROGRAM,
 } from "./launch-v5-preview.ts";
-import { decodeGraduation } from "./launch-graduation.ts";
+import { decodeGraduation, defaultGraduationProfile } from "./launch-graduation.ts";
 import { decodeFeeState, PLATFORM_TREASURY } from "./launch-fees.ts";
 import {
   decodeLaunchMetadata,
@@ -179,6 +179,7 @@ export async function readWalletLaunch(
     (terms.mint !== mint ||
       terms.curve !== l.curve ||
       (!terms.migrated && terms.pool !== address("11111111111111111111111111111111")) ||
+      terms.ammProgram !== defaultGraduationProfile.amm ||
       terms.config !== l.config ||
       terms.migrator !== l.migrator)
   )
@@ -195,7 +196,7 @@ export async function readWalletLaunch(
       f.curve !== l.curve ||
       f.kind !== kind ||
       (kind === 1 && f.beneficiary !== creator) ||
-      (kind === 0 && executor.environment.network === "devnet" && f.beneficiary !== PLATFORM_TREASURY)
+      (kind === 0 && executor.environment.network !== "local" && f.beneficiary !== PLATFORM_TREASURY)
     )
       throw Error("Fee entitlement mismatch.");
     return f;

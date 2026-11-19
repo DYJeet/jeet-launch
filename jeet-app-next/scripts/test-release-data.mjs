@@ -63,12 +63,12 @@ test("curve activity accepts attributable trade logs and ignores nested substitu
 test("Raydium history reconciles exact scoped transfers and rejects substituted evidence", async () => {
   const { getBase58Decoder } = await import("@solana/kit");
   const { TOKEN_PROGRAM_ADDRESS } = await import("@solana-program/token");
-  const { CPMM_TEST_PROGRAM, NATIVE_MINT, graduationAddresses } = await import("../src/lib/launch-graduation.ts");
+  const { defaultGraduationProfile, NATIVE_MINT, graduationAddresses } = await import("../src/lib/launch-graduation.ts");
   const { ammHistoryPool, ammTradeEvents } = await import("../src/lib/amm-history.ts");
   const key = n => getAddressDecoder().decode(Buffer.alloc(32, n));
   const mint = key(1);
   const pool = await graduationAddresses(mint, 0n);
-  const terms = { ...pool, mint, migrated: true, ammProgram: CPMM_TEST_PROGRAM };
+  const terms = { ...pool, mint, migrated: true, ammProgram: defaultGraduationProfile.amm };
   await assert.rejects(ammHistoryPool(mint, { ...terms, config: key(5) }), /Unrecognized/);
   assert.equal((await ammHistoryPool(mint, terms)).pool, pool.pool);
   const alternate = await graduationAddresses(mint, 1n);
@@ -82,7 +82,7 @@ test("Raydium history reconciles exact scoped transfers and rejects substituted 
     const wallet = key(2);
     const keys = [wallet, pool.authority, pool.config, pool.pool, key(3), key(4),
       forward ? pool.vault0 : pool.vault1, forward ? pool.vault1 : pool.vault0,
-      TOKEN_PROGRAM_ADDRESS, mintIn, mintOut, pool.observation, CPMM_TEST_PROGRAM];
+      TOKEN_PROGRAM_ADDRESS, mintIn, mintOut, pool.observation, defaultGraduationProfile.amm];
     const data = Buffer.alloc(24);
     data.set([143, 190, 90, 218, 196, 30, 51, 222]);
     const input = sell ? 10n : 1000n;

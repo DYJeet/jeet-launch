@@ -1,4 +1,5 @@
 // Server-side durable adapter. The index is derived data and holds no signing material.
+import { WALLET_NETWORK } from "./wallet-program.ts";
 import { DatabaseSync } from "node:sqlite";
 import { mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -220,7 +221,7 @@ let instance: MarketStore | RemoteMarketStore | undefined;
 export function marketStore() {
   const remote = sharedBackendConfiguration();
   if (remote) return instance ??= new RemoteMarketStore(new SharedBackendClient(remote));
-  if (process.env.VERCEL === '1' && process.env.NEXT_PUBLIC_JEET_PUBLIC_BETA === '0')
+  if (WALLET_NETWORK === 'mainnet' || (process.env.VERCEL === '1' && process.env.NEXT_PUBLIC_JEET_PUBLIC_BETA === '0'))
     throw Error('Public writes require a durable shared index; temporary storage is not permitted.');
   return instance ??= new MarketStore(process.env.JEET_MARKET_DB || (process.env.VERCEL === "1" ? "/tmp/jeet-beta-market.sqlite" : resolve(".jeet-index", "market.sqlite")));
 }
