@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import {
   createClient,
   generateKeyPairSigner,
   getAddressEncoder,
   getProgramDerivedAddress,
-  createKeyPairSignerFromPrivateKeyBytes,
+  createKeyPairSignerFromBytes,
   lamports,
 } from "@solana/kit";
 import { solanaRpc, rpcAirdrop } from "@solana/kit-plugin-rpc";
@@ -844,28 +845,21 @@ export async function testGraduation(profile) {
     1609,
     "post migration sell",
   );
-  const treasury = await createKeyPairSignerFromPrivateKeyBytes(
-    new Uint8Array(32).fill(42),
-  );
-  await submit(sponsor, [
-    systemTransfer(sponsor.payer, treasury.address, 1000000n),
-  ]);
-  keys.add(treasury.address);
+  let treasury;
+  const localTreasuryKey = process.env.JEET_LOCAL_GRADUATION_TREASURY_KEY;
+  if (!profile && localTreasuryKey) {
+    treasury = await createKeyPairSignerFromBytes(
+      Uint8Array.from(JSON.parse(await readFile(localTreasuryKey, "utf8"))),
+    );
+    assert.equal(treasury.address, "2iXtA8oeZqUU5pofxK971TCEvFGfems2AcDRaZHKD2pQ");
+    await submit(sponsor, [systemTransfer(sponsor.payer, treasury.address, 1000000n)]);
+    keys.add(treasury.address);
+  }
   for (const [kind, who, k] of [
     [0, treasury, l.platformVault],
     [1, creator.payer, l.creatorVault],
   ]) {
-    const f = await fee(k),
-      old = await sol(who.address),
-      claim = local(
-        claimFeeInstruction({
-          ...l,
-          beneficiary: who,
-          feeVault: k,
-          kind,
-          amount: f.claimable,
-        }),
-      );
+    const f = await fee(k);
     await denied(
       local(
         claimFeeInstruction({
@@ -879,7 +873,18 @@ export async function testGraduation(profile) {
       1304,
       "unauthorized post migration fee claim " + kind,
     );
-    if (profile && kind === 0) continue; // The owner-controlled production treasury never signs fixtures.
+    // Only the legacy local-fee fixture can supply a fixture treasury signer.
+    if (!who) continue;
+    const old = await sol(who.address);
+    const claim = local(
+      claimFeeInstruction({
+        ...l,
+        beneficiary: who,
+        feeVault: k,
+        kind,
+        amount: f.claimable,
+      }),
+    );
     await submit(sponsor, [claim]);
     assert.equal((await sol(who.address)) - old, f.claimable);
     assert.equal((await fee(k)).claimable, 0n);

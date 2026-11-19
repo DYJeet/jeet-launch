@@ -96,10 +96,11 @@ test('shared discovery persists New, Trending, Final Stretch, Migrated, search a
  }finally{await server.stop();}
 });
 
-test('the separate Mainnet index persists and rejects Devnet database reuse', async () => {
+test('the separate Mainnet index restores a backup and rejects Devnet database reuse', async () => {
  const dir = await mkdtemp(join(tmpdir(), 'jeet-mainnet-index-'));
  const devnetPath = join(dir, 'devnet.sqlite');
  const mainnetPath = join(dir, 'mainnet.sqlite');
+ const backupPath = join(dir, 'restored.sqlite');
  const program = 'CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C';
  const env = {JEET_SHARED_MAINNET_PROGRAM_ID: program};
  const mainnet = '5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d:' + program;
@@ -112,11 +113,12 @@ test('the separate Mainnet index persists and rejects Devnet database reuse', as
   let store = new RemoteMarketStore(server.client);
   assert(await store.commit(mainnet, stream, {}, head, [event(1)]));
   await assert.rejects(store.checkpoint(network, stream), /unavailable/);
+  execFileSync(process.execPath, ['scripts/backup-shared-index.mjs', mainnetPath, backupPath]);
   await server.stop();
   server = undefined;
-  await assert.rejects(start(mainnetPath), /database is bound to Mainnet/);
-  await assert.rejects(start(mainnetPath, {JEET_SHARED_MAINNET_PROGRAM_ID: 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s'}), /bound to another program/);
-  server = await start(mainnetPath, env);
+  await assert.rejects(start(backupPath), /database is bound to Mainnet/);
+  await assert.rejects(start(backupPath, {JEET_SHARED_MAINNET_PROGRAM_ID: 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s'}), /bound to another program/);
+  server = await start(backupPath, env);
   store = new RemoteMarketStore(server.client);
   assert.deepEqual(await store.checkpoint(mainnet, stream), head);
   assert.equal((await store.marketVolume(mainnet, stream)).trades, 1);
