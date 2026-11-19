@@ -42,6 +42,8 @@ Mainnet CPMM index 0 reported a 2,500-per-million trade fee (0.25%) and enabled 
 
 ## Owner identity ceremony and deployment preflight
 
+Use the [Chromebook owner setup](CHROMEBOOK-MAINNET-IDENTITIES.md) to generate and restore the four encrypted local key files, then send only the public addresses.
+
 Choose four distinct public signing addresses on owner-controlled devices for the new program, containment authority, deployment payer, and initial loader upgrade authority. The existing approved treasury is a fifth, fixed role. The long-term upgrade authority may be transferred to a reviewed multisig after its controls are exercised off Mainnet and the exact transfer is separately approved. A simple recent blockhash, a funded address, or a CLI configuration does not prove control.
 
 Generate private keys only on owner-controlled hardware or an offline owner device. Store backups there. Send only public addresses and the detached signatures. Sign the exact role-specific text in `challenge.json` with the corresponding owner-controlled signer using Solana off-chain message format v1 with that role's address as the sole required signatory, or raw Ed25519 signing of the displayed UTF-8 text. Omit a trailing newline. Use a trusted local signer already compatible with one of these formats. The JSON signature map accepts the detached 64-byte signatures as base58 strings under `program`, `containmentAuthority`, `deploymentPayer`, `initialUpgradeAuthority`, and `treasury`. Keep the same challenge for all five roles. It expires 24 hours after issuance and is bound to the selected source commit and public identities. Treat proof as confirmation of key control at signing time. It authorizes no transaction.
