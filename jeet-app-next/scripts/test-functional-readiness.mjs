@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {MarketStore} from '../src/lib/market-store.ts';
-import {ingestMarketPage} from '../src/lib/market-ingest.ts';
+import {ingestMarketPage,readHistoryPage} from '../src/lib/market-ingest.ts';
 import {recoverFinalizedTransaction,archiveEndpoint,historyCoverageGap} from '../src/lib/history-recovery.ts';
 import {readBoundedMetadata,cacheValidatedMetadata} from '../src/lib/metadata-read.ts';
 import {publicWriteConfigurationReady} from '../src/lib/public-write-policy.ts';
@@ -60,4 +60,17 @@ test('history pruning is checked against token birth, not unrelated earlier ledg
 
 test('private local validation keeps existing throughput without weakening public write admission',async()=>{
  const prior={...process.env};try{delete process.env.VERCEL;delete process.env.NEXT_PUBLIC_JEET_PUBLIC_BETA;delete process.env.JEET_SHARED_BACKEND_URL;delete process.env.JEET_SHARED_BACKEND_TOKEN;for(let i=0;i<100;i++)assert(await admitPublicRequest(new Request('http://127.0.0.1'),'write'));process.env.VERCEL='1';assert(!await admitPublicRequest(new Request('https://site'),'write'));}finally{for(const k of Object.keys(process.env))if(!(k in prior))delete process.env[k];Object.assign(process.env,prior);}
+});
+
+test('a full hosted batch advances its cursor without declaring older history complete', async () => {
+ const page = Array.from({ length: 6 }, (_, i) => ({ signature: 'sig-' + i, slot: BigInt(20 - i), failed: false }));
+ const source = { signatures: async () => page, events: async () => [] };
+ const first = await readHistoryPage({}, source, 6);
+ assert.deepEqual(first.next, { head: 'sig-0', before: 'sig-5' });
+ const last = await readHistoryPage(first.next, { ...source, signatures: async before => {
+   assert.equal(before, 'sig-5');
+   return [];
+ } }, 6);
+ assert.equal(last.next.anchor, 'sig-0');
+ assert.equal(last.next.backfilled, true);
 });

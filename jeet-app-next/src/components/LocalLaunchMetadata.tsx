@@ -6,7 +6,11 @@ import { useEffect, useState } from "react";
 
 /** Bounded browser-only reads: local content hashes or the explicitly supported public IPFS gateway. */
 export default function LocalLaunchMetadata({ uri }: { uri: string }) {
-  const [data, setData] = useState<{description: string; image: string; links: [string,string][]} | null>(null);
+  return <LaunchMetadata key={uri} uri={uri} />;
+}
+
+function LaunchMetadata({ uri }: { uri: string }) {
+  const [data, setData] = useState<{description: string; image?: string; links: [string,string][]} | null>(null);
   const [error, setError] = useState("");
   useEffect(() => {
     const controller = new AbortController();
@@ -24,12 +28,6 @@ export default function LocalLaunchMetadata({ uri }: { uri: string }) {
         const document = await read(uri,"json",32000);
         const json = JSON.parse(new TextDecoder("utf-8",{fatal:true}).decode(document.bytes));
         if(typeof json.description !== "string" || new TextEncoder().encode(json.description).length>1000 || typeof json.image !== "string") throw Error("Malformed off-chain metadata.");
-        const image = await read(json.image,"png|jpg|webp",2097152);
-        const bytes = image.bytes;
-        const mime = bytes[0] === 137 ? "image/png" : bytes[0] === 255 ? "image/jpeg" : "image/webp";
-        const file = new File([bytes], "token-image", {type:mime});
-        await validateImageUpload(file);
-        imageUrl = URL.createObjectURL(file);
         const links: [string,string][] = [];
         for(const key of ["website","twitter","telegram"]) {
           const value = json.extensions?.[key]; if(value === undefined) continue;
@@ -37,11 +35,25 @@ export default function LocalLaunchMetadata({ uri }: { uri: string }) {
           const link = new URL(value); if(link.protocol!=="https:" || link.username || link.password) throw Error("Unsafe metadata link.");
           links.push([key,link.href]);
         }
+        const metadata = { description: json.description, links };
         cacheValidatedMetadata(document.url, document.bytes);
-        cacheValidatedMetadata(image.url, bytes);
-        if(active) { setData({description:json.description,image:imageUrl,links}); setError(""); }
-      } catch(e) { if(active) {setData(null); setError(e instanceof Error?e.message:String(e));} }
-      finally { if(!active && imageUrl) URL.revokeObjectURL(imageUrl); }
+        if (active) setData(metadata);
+        try {
+          const image = await read(json.image,"png|jpg|webp",2097152);
+          const bytes = image.bytes;
+          const mime = bytes[0] === 137 ? "image/png" : bytes[0] === 255 ? "image/jpeg" : "image/webp";
+          const file = new File([bytes], "token-image", {type:mime});
+          await validateImageUpload(file);
+          if (!active) return;
+          imageUrl = URL.createObjectURL(file);
+          cacheValidatedMetadata(image.url, bytes);
+          setData({ ...metadata, image: imageUrl });
+        } catch (error) {
+          if (active) setError(error instanceof Error ? error.message : "Token image unavailable.");
+        }
+      } catch (error) {
+        if (active) setError(error instanceof Error ? error.message : "Token metadata unavailable.");
+      }
     })();
     return () => { active=false; controller.abort(); if(imageUrl) URL.revokeObjectURL(imageUrl); };
   },[uri]);
@@ -51,8 +63,10 @@ export default function LocalLaunchMetadata({ uri }: { uri: string }) {
     {error && <p role="status">{error}</p>}
     {!data && !error && <p>Loading metadata…</p>}
     {data && <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={data.image} alt="Creator-supplied token image" className="h-28 w-28 rounded-xl object-cover" />
+      {data.image && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={data.image} alt="Creator-supplied token image" className="h-28 w-28 rounded-xl object-cover" />
+      )}
       <p className="break-words whitespace-pre-wrap">{data.description}</p>
       <div className="flex flex-wrap gap-4">{data.links.map(([name,url])=><a key={name} href={url} target="_blank" rel="noopener noreferrer nofollow" className="text-[#9cff43] underline">{name}</a>)}</div>
     </>}

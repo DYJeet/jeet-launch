@@ -8,11 +8,16 @@ export type HistorySource<Record extends HistoryRecord = MarketEvent> = {
   events(entry: IndexedSignature): Promise<Record[]>;
 };
 export const historyBatchSize = 16;
+// The public Devnet RPC limits calls per method. Keep hosted commits below that
+// threshold so one cold index pass can advance before the provider rate limits.
+export function configuredHistoryBatchSize() {
+  return process.env.VERCEL === "1" ? 6 : historyBatchSize;
+}
 
 /** Commit events and cursor atomically. Missing transactions leave the entire page retryable. */
-export async function readHistoryPage<Record extends HistoryRecord>(prior: Checkpoint, source: HistorySource<Record>) {
+export async function readHistoryPage<Record extends HistoryRecord>(prior: Checkpoint, source: HistorySource<Record>, batchSize = historyBatchSize) {
   const page = await source.signatures(prior.before);
-  if (page.length > historyBatchSize || new Set(page.map(entry => entry.signature)).size !== page.length ||
+  if (page.length > batchSize || new Set(page.map(entry => entry.signature)).size !== page.length ||
       page.some((entry, i) => i > 0 && entry.slot > page[i - 1].slot) ||
       (prior.before && page.some(entry => entry.signature === prior.before)))
     throw Error("Inconsistent history page.");
@@ -27,7 +32,7 @@ export async function readHistoryPage<Record extends HistoryRecord>(prior: Check
       return records;
     }))).flat());
   const head = prior.head ?? page[0]?.signature ?? prior.anchor;
-  const completed = anchor >= 0 || page.length < historyBatchSize;
+  const completed = anchor >= 0 || page.length < batchSize;
   const next = completed
     ? { anchor: head, backfilled: true, gap: prior.gap || (!!prior.anchor && anchor === -1) }
     : { ...prior, head, before: page.at(-1)?.signature };

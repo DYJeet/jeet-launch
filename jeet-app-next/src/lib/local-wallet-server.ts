@@ -214,7 +214,11 @@ export async function checkedLocalGenesis(url: string, expected: string) {
       method: "getGenesisHash",
       params: [],
     }), AbortSignal.timeout(8000));
-    if (!response.ok || (await response.json()).result !== expected)
+    if (!response.ok) {
+      await response.body?.cancel();
+      throw Error("Devnet RPC rejected the network check.");
+    }
+    if ((await response.json()).result !== expected)
       throw Error("RPC genesis mismatch or unavailable; request not forwarded.");
   })();
   genesisChecks.set(key, check);

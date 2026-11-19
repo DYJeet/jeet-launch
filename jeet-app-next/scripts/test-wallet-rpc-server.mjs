@@ -40,3 +40,20 @@ test('SDK discovery transport retains exact u64 integers',async()=>{
  server.listen(0,'127.0.0.1');await once(server,'listening');
  try{const rpc=createServerWalletRpc('http://127.0.0.1:'+server.address().port);const r=await rpc.getBalance('11111111111111111111111111111111').send();assert.equal(r.value,18446744073709551615n);}finally{server.close();await once(server,'close');}
 });
+test('provider denial applies to queued calls and recovers after its cooldown', async () => {
+ const c = clock();
+ let calls = 0;
+ const request = async () => ++calls === 1
+   ? new Response('private provider details', { status: 403, headers: { 'retry-after': '90' } })
+   : new Response('{}');
+ const forward = createWalletUpstreamFetch(request, c.wait, createWalletRpcScheduler(c.wait, c.now), c.now);
+ const [first, queued] = await Promise.all([forward(url, '{}'), forward(url, '{}')]);
+ assert.equal(first.status, 403);
+ assert.equal(queued.status, 403);
+ assert.equal(queued.headers.get('retry-after'), '90');
+ assert.equal(await queued.text(), '');
+ assert.equal(calls, 1);
+ await c.wait(90000);
+ assert.equal((await forward(url, '{}')).status, 200);
+ assert.equal(calls, 2);
+});

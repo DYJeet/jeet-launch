@@ -47,14 +47,19 @@ export async function POST(request: Request) {
         return Response.json({ error: 'Shared transaction quota unavailable or exhausted. Nothing forwarded.' }, { status: 429, headers: { 'retry-after': '60' } });
       await checkedLocalGenesis(url, environment.genesis);
       const result = await walletUpstreamFetch(url, raw, request.signal);
+      if (!result.ok) {
+        await result.body?.cancel();
+        const retryAfter = result.headers.get("retry-after") ?? "";
+        const rateLimited = result.status === 429;
+        return Response.json({ error: rateLimited ? "Devnet RPC rate limited. Retry after the provider cooldown." : "Devnet RPC rejected the request." }, {
+          status: rateLimited ? 429 : 503,
+          headers: rateLimited ? { "retry-after": /^\d+$/.test(retryAfter) ? retryAfter : "5" } : {},
+        });
+      }
       // Preserve raw JSON integer lexemes. Kit's RPC parser handles u64 as bigint.
       return new Response(result.body, {
         status: result.status,
-        headers: {
-          "content-type": "application/json",
-          "cache-control": "no-store",
-          ...(result.status === 429 ? { "retry-after": /^\d+$/.test(result.headers.get("retry-after") ?? "") ? result.headers.get("retry-after")! : "2" } : {}),
-        },
+        headers: { "content-type": "application/json", "cache-control": "no-store" },
       });
     } finally {
       active--;

@@ -4,7 +4,7 @@ import { address, getBase64Encoder, signature } from "@solana/kit";
 import { createServerWalletRpc } from "@/lib/wallet-rpc-server";
 import { localReadConfiguration, checkedLocalGenesis } from "@/lib/local-wallet-server";
 import { marketStore, type MarketEvent } from "@/lib/market-store";
-import { historyBatchSize, readHistoryPage } from "@/lib/market-ingest";
+import { configuredHistoryBatchSize, readHistoryPage } from "@/lib/market-ingest";
 import { walletLaunchAddresses } from "@/lib/wallet-launch";
 import { decodeGraduation, graduationAddresses } from "@/lib/launch-graduation";
 import { ammHistoryPool, ammTradeEvents } from "@/lib/amm-history";
@@ -65,10 +65,11 @@ export async function GET(request: Request) {
           throw Error("Finalized market is unavailable.");
         const pool = amm ? await ammHistoryPool(mint, terms) : undefined;
         const prior = await store.checkpoint(network, stream);
+        const batchSize = configuredHistoryBatchSize();
         const { events, next } = await readHistoryPage<MarketEvent>(prior, {
           async signatures(cursor) {
             return (await historyRpc.getSignaturesForAddress(pool?.pool ?? curve, {
-              commitment: "finalized", limit: historyBatchSize, before: cursor ? signature(cursor) : undefined,
+              commitment: "finalized", limit: batchSize, before: cursor ? signature(cursor) : undefined,
             }).send(options)).map(entry => ({ signature: entry.signature, slot: entry.slot, failed: !!entry.err }));
           },
           async events(entry) {
@@ -102,7 +103,7 @@ export async function GET(request: Request) {
                 })),
             ];
           },
-        });
+        }, batchSize);
         const firstAvailable = !prior.backfilled && next.backfilled
           ? await historyRpc.getFirstAvailableBlock().send(options) : 0n;
         if (historyCoverageGap(firstAvailable, terms.createdSlot)) next.gap = true;

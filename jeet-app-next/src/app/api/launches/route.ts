@@ -8,7 +8,7 @@ import { readWalletLaunch } from "@/lib/wallet-launch-flow";
 import { WalletTransactionExecutor } from "@/lib/wallet-transactions";
 import { formatUnits } from "@/lib/wallet-environment";
 import { marketStore, type LaunchObservation } from "@/lib/market-store";
-import { historyBatchSize, readHistoryPage } from "@/lib/market-ingest";
+import { configuredHistoryBatchSize, readHistoryPage } from "@/lib/market-ingest";
 import { activationMints } from "@/lib/launch-discovery-source";
 import { ammHistoryPool } from "@/lib/amm-history";
 import { createServerWalletRpc } from "@/lib/wallet-rpc-server";
@@ -52,10 +52,11 @@ async function update(config: ReturnType<typeof localReadConfiguration>, network
   const historyRpc = await verifiedHistoryRpc(config.url, config.environment.genesis);
   const prior = await store.checkpoint(network, stream);
   const options = { abortSignal: AbortSignal.timeout(12000) };
+  const batchSize = configuredHistoryBatchSize();
   const { next, events } = await readHistoryPage(prior, {
     async signatures(before) {
       const rows = await historyRpc.getSignaturesForAddress(address(config.environment.program), {
-        limit: historyBatchSize, before: before ? signature(before) : undefined, commitment: "finalized",
+        limit: batchSize, before: before ? signature(before) : undefined, commitment: "finalized",
       }).send(options);
       return rows.map(row => ({ signature: row.signature, slot: row.slot, failed: !!row.err }));
     },
@@ -73,7 +74,7 @@ async function update(config: ReturnType<typeof localReadConfiguration>, network
       return activationMints({ ...tx, meta: tx.meta }, config.environment.program)
         .map(mint => ({ signature: entry.signature, slot: String(entry.slot), mint }));
     },
-  });
+  }, batchSize);
   const observed = Date.now();
   const launches = [];
   for (const event of events) {
@@ -107,7 +108,7 @@ export async function GET(request: Request) {
       const state = { pending: Promise.resolve(), until: Infinity, failures: job?.failures ?? 0 };
       state.pending = update(config, network).then(() => {
         state.failures = 0;
-        state.until = Date.now() + 1500;
+        state.until = Date.now() + (process.env.VERCEL === "1" ? 10000 : 1500);
       }, () => {
         state.failures++;
         state.until = Date.now() + Math.min(30000, 1000 * 2 ** Math.min(5, state.failures));
