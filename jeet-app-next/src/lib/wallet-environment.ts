@@ -10,7 +10,7 @@ export type WalletEnvironment = {
 export { LOCAL_WALLET_PROGRAM } from "./wallet-program.ts";
 import { LOCAL_WALLET_PROGRAM, DEVNET_WALLET_PROGRAM, WALLET_PROGRAM_ADDRESS } from "./wallet-program.ts";
 export const DEVNET_GENESIS = "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG";
-export const MAINNET_GENESIS = "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp";
+export const MAINNET_GENESIS = "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d";
 export function validateWalletEnvironment(value: WalletEnvironment) {
   if (
     !["local", "devnet"].includes(value.network) ||

@@ -75,8 +75,9 @@ export class PersistentRequestLimiter {
 }
 
 /** Authenticated internal index service. No SQL, RPC URL, wallet key or transaction-submission operation is exposed. */
-export function createSharedBackend(path: string, token: string, quotas = DEFAULT_QUOTAS, options: { database?: IndexDatabase; transaction?: (run: () => Response) => Response } = {}) {
+export function createSharedBackend(path: string, token: string, quotas = DEFAULT_QUOTAS, options: { database?: IndexDatabase; transaction?: (run: () => Response) => Response; namespace?: string } = {}) {
   demand(token.length >= 32 && token.length <= 256);
+  const namespace = options.namespace ?? DEVNET_INDEX_NAMESPACE;
   const store = new MarketStore(path, options.database), limiter = new PersistentRequestLimiter(path, quotas, options.database);
   const json = (result: unknown, status = 200) => new Response(backendJson({ result: result ?? null }), { status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
   return {
@@ -95,7 +96,7 @@ export function createSharedBackend(path: string, token: string, quotas = DEFAUL
         demand(record(body)); const { op, args } = body as { op: string; args: unknown[] }; demand(Array.isArray(args) && args.length <= 6);
         const invoke = () => {
         if (op === 'admit') { demand(args.length === 2); return json(limiter.admit(args[0] as string, args[1] as 'read' | 'write' | 'upload')); }
-        demand(args[0] === DEVNET_INDEX_NAMESPACE); const network = args[0] as string, stream = args[1] as string;
+        demand(args[0] === namespace); const network = args[0] as string, stream = args[1] as string;
         if (['checkpoint', 'commit', 'commitDiscovery', 'marketVolume', 'history', 'historySnapshot'].includes(op))
           demand(stream === 'launch-activations-v1' || /^[1-9A-HJ-NP-Za-km-z]{32,44}:(curve|amm)$/.test(stream));
         switch (op) {

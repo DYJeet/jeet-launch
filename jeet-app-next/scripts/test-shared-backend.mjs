@@ -10,8 +10,8 @@ import {PersistentRequestLimiter,createSharedBackend,DEVNET_INDEX_NAMESPACE as n
 const token='local-test-only-no-production-credential-00000000';
 const mint='1'.repeat(32),stream=mint+':curve',sig=n=>'2'.repeat(63)+'3456789ABCDEFGHJKLMNPQRSTUVWXYZ'[n];
 const event=n=>({id:sig(n)+':trade:'+n,signature:sig(n),slot:String(100+n),time:null,kind:'buy',lamports:'100',tokens:'5',wallet:mint});
-async function start(path){
- const child=spawn(process.execPath,['scripts/shared-index-server.mjs'],{cwd:process.cwd(),env:{...process.env,NODE_ENV:'test',JEET_SHARED_DB:path,JEET_SHARED_BACKEND_TOKEN:token,PORT:'0',JEET_QUOTA_READ_CLIENT:'5',JEET_QUOTA_READ_GLOBAL:'9',JEET_QUOTA_WRITE_CLIENT:'2',JEET_QUOTA_WRITE_GLOBAL:'3'},stdio:['ignore','pipe','pipe']});
+async function start(path, extraEnv = {}){
+ const child=spawn(process.execPath,['scripts/shared-index-server.mjs'],{cwd:process.cwd(),env:{...process.env,NODE_ENV:'test',JEET_SHARED_DB:path,JEET_SHARED_BACKEND_TOKEN:token,PORT:'0',JEET_QUOTA_READ_CLIENT:'5',JEET_QUOTA_READ_GLOBAL:'9',JEET_QUOTA_WRITE_CLIENT:'2',JEET_QUOTA_WRITE_GLOBAL:'3',...extraEnv},stdio:['ignore','pipe','pipe']});
  let stderr='';child.stderr.on('data',b=>stderr+=b);
  const port=await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('Backend startup timeout: '+stderr)),8000);child.once('exit',()=>{clearTimeout(timer);reject(Error('Backend exited: '+stderr));});child.stdout.on('data',b=>{for(const line of b.toString().split('\n'))try{const x=JSON.parse(line);if(x.status==='ready'){clearTimeout(timer);resolve(x.port);}}catch{}});});
  const url='http://127.0.0.1:'+port;
@@ -94,4 +94,33 @@ test('shared discovery persists New, Trending, Final Stretch, Migrated, search a
   await store.writeLaunches(network,[{row:{...row,volume:'1'},slot:110n}],observed);assert.equal((await store.launchPage(network,new URLSearchParams({q:row.name}))).rows[0].volume,'100');
   await store.writeLaunches(network,[{row:{...row,volume:'300'},slot:121n}],observed);assert((await store.launchPage(network,new URLSearchParams({view:'Trending',after:page.next}))).cursorExpired);
  }finally{await server.stop();}
+});
+
+test('the separate Mainnet index persists and rejects Devnet database reuse', async () => {
+ const dir = await mkdtemp(join(tmpdir(), 'jeet-mainnet-index-'));
+ const devnetPath = join(dir, 'devnet.sqlite');
+ const mainnetPath = join(dir, 'mainnet.sqlite');
+ const program = 'CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C';
+ const env = {JEET_SHARED_MAINNET_PROGRAM_ID: program};
+ const mainnet = '5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d:' + program;
+ const devnet = await start(devnetPath);
+ await devnet.stop();
+ await assert.rejects(start(devnetPath, env), /Existing index or quota data cannot be adopted/);
+ let server = await start(mainnetPath, env);
+ const head = {head: sig(1)};
+ try {
+  let store = new RemoteMarketStore(server.client);
+  assert(await store.commit(mainnet, stream, {}, head, [event(1)]));
+  await assert.rejects(store.checkpoint(network, stream), /unavailable/);
+  await server.stop();
+  server = undefined;
+  await assert.rejects(start(mainnetPath), /database is bound to Mainnet/);
+  await assert.rejects(start(mainnetPath, {JEET_SHARED_MAINNET_PROGRAM_ID: 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s'}), /bound to another program/);
+  server = await start(mainnetPath, env);
+  store = new RemoteMarketStore(server.client);
+  assert.deepEqual(await store.checkpoint(mainnet, stream), head);
+  assert.equal((await store.marketVolume(mainnet, stream)).trades, 1);
+ } finally {
+  await server?.stop();
+ }
 });
