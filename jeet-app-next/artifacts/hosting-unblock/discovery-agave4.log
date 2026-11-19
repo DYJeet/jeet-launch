@@ -1,0 +1,7 @@
+(node:12341) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///tmp/jeet-hosting-unblock-local-172/jeet-app-next/src/lib/wallet-launch.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /tmp/jeet-hosting-unblock-local-172/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Activated 68 real local launches
+PASS real discovery, restart and cursor pagination: {"target":68,"partial":7,"resumed":7,"discovered":68,"gap":false,"rateLimitResponses":1}
+Discovery test logs: /tmp/jeet-scale-WvSQS9

@@ -1,0 +1,9 @@
+solana-test-validator 4.3.2 (src:4b44ad97; feat:c9ad34d2, client:Agave)
+609aa3c9ed02f3786a73292d25ca755761431a00f1a0304239b975ccbc41e6d0  /home/codespace/.local/share/solana/install/active_release/bin/solana-test-validator
+06abfaf730e36290430d3048e6c0ca6e5a87911155b22792e695825ecd1203de  programs/launch-custody/target/local-fee-test/jeet_launch_custody.so
+bb0842f6d5740eabe8f9fb3b723b9ecd89cadf9f48ef9ad6a9dc6cfa8a9658e4  programs/launch-custody/target/metadata-research/mpl_token_metadata.so
+v24.21.0
+16.4.3
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/loop4       32G   29G  816M  98% /workspaces
+/dev/sdb1        44G  2.6G   40G   7% /tmp

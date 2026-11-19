@@ -1,0 +1,75 @@
+(node:9884) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///tmp/jeet-hosting-unblock-local-172/jeet-app-next/src/lib/wallet-launch.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /tmp/jeet-hosting-unblock-local-172/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Discovery test logs: /tmp/jeet-scale-QdtYk0
+file:///workspaces/jeet-v6-stage.0Pt8Pe/jeet-app-next/node_modules/@solana/instruction-plans/dist/index.node.mjs:683
+  return new SolanaError(
+         ^
+
+SolanaError: Failed to send transaction (preflight): Unsupported program id (instruction #2)
+
+Logs:
+  > Program ComputeBudget111111111111111111111111111111 invoke [1]
+  > Program ComputeBudget111111111111111111111111111111 success
+  > Program 8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo invoke [1]
+  > Program is not deployed
+  > Program 8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo failed: Unsupported program id
+
+    at Object.createFailedToSendTransactionError [as createTransactionError] (file:///workspaces/jeet-v6-stage.0Pt8Pe/jeet-app-next/node_modules/@solana/instruction-plans/dist/index.node.mjs:683:10)
+    at Object.executeTransaction [as sendTransaction] (file:///workspaces/jeet-v6-stage.0Pt8Pe/jeet-app-next/node_modules/@solana/kit-plugin-instruction-plan/dist/index.node.mjs:114:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async createLaunch (file:///tmp/jeet-hosting-unblock-local-172/jeet-app-next/scripts/test-scalable-discovery.mjs:79:3)
+    at async file:///tmp/jeet-hosting-unblock-local-172/jeet-app-next/scripts/test-scalable-discovery.mjs:124:62
+    at async Promise.all (index 7)
+    at async file:///tmp/jeet-hosting-unblock-local-172/jeet-app-next/scripts/test-scalable-discovery.mjs:118:21 {
+  cause: SolanaError: Unsupported program id (instruction #2)
+      at getSolanaErrorFromTransactionError (file:///workspaces/jeet-v6-stage.0Pt8Pe/jeet-app-next/node_modules/@solana/errors/dist/index.node.mjs:1004:12)
+      at getSolanaErrorFromJsonRpcError (file:///workspaces/jeet-v6-stage.0Pt8Pe/jeet-app-next/node_modules/@solana/errors/dist/index.node.mjs:1042:42)
+      at file:///workspaces/jeet-v6-stage.0Pt8Pe/jeet-app-next/node_modules/@solana/rpc-transformers/dist/index.node.mjs:325:15
+      at file:///workspaces/jeet-v6-stage.0Pt8Pe/jeet-app-next/node_modules/@solana/rpc-transformers/dist/index.node.mjs:340:54
+      at file:///workspaces/jeet-v6-stage.0Pt8Pe/jeet-app-next/node_modules/@solana/functional/dist/index.node.mjs:3:34
+      at Array.reduce (<anonymous>)
+      at pipe (file:///workspaces/jeet-v6-stage.0Pt8Pe/jeet-app-next/node_modules/@solana/functional/dist/index.node.mjs:3:14)
+      at Object.responseTransformer (file:///workspaces/jeet-v6-stage.0Pt8Pe/jeet-app-next/node_modules/@solana/rpc-transformers/dist/index.node.mjs:338:12)
+      at Object.execute (file:///workspaces/jeet-v6-stage.0Pt8Pe/jeet-app-next/node_modules/@solana/rpc-spec/dist/index.node.mjs:70:27)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+    cause: undefined,
+    context: { __code: 4615031, index: 1 }
+  },
+  context: {
+    __code: 11,
+    causeMessage: ' (preflight): Unsupported program id (instruction #2)\n' +
+      '\n' +
+      'Logs:\n' +
+      '  > Program ComputeBudget111111111111111111111111111111 invoke [1]\n' +
+      '  > Program ComputeBudget111111111111111111111111111111 success\n' +
+      '  > Program 8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo invoke [1]\n' +
+      '  > Program is not deployed\n' +
+      '  > Program 8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo failed: Unsupported program id\n',
+    logs: [
+      'Program ComputeBudget111111111111111111111111111111 invoke [1]',
+      'Program ComputeBudget111111111111111111111111111111 success',
+      'Program 8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo invoke [1]',
+      'Program is not deployed',
+      'Program 8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo failed: Unsupported program id'
+    ],
+    preflightData: {
+      accounts: null,
+      innerInstructions: null,
+      loadedAccountsDataSize: 396526,
+      logs: [
+        'Program ComputeBudget111111111111111111111111111111 invoke [1]',
+        'Program ComputeBudget111111111111111111111111111111 success',
+        'Program 8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo invoke [1]',
+        'Program is not deployed',
+        'Program 8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo failed: Unsupported program id'
+      ],
+      replacementBlockhash: null,
+      returnData: null,
+      unitsConsumed: 150n
+    }
+  }
+}
+
+Node.js v24.21.0
