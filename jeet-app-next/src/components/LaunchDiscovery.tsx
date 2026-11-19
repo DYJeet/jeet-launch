@@ -23,7 +23,8 @@ export default function LaunchDiscovery({ compact = false }: { compact?: boolean
     const controller = new AbortController();
     const timer = setTimeout(async () => {
       try {
-        const response = await fetch("/api/launches?" + key + "&refresh=" + poll, {
+        const response = await fetch("/api/launches?" + key, {
+          cache: "no-store",
           signal: AbortSignal.any([controller.signal, AbortSignal.timeout(20000)]),
         });
         if (response.status === 404) throw Error("Verified index is unavailable outside the configured test network.");
