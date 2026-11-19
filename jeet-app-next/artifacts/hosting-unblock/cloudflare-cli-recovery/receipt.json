@@ -1,0 +1,42 @@
+{
+  "sourceCheckpoint": "dac329859b919eebc75efef0f23d94117b27d8fd",
+  "wranglerVersion": "4.119.0",
+  "authentication": "verified via HTTP 200 user and accounts reads",
+  "whoami": "timed out after 45 seconds while getting user settings; direct read-only API checks succeeded",
+  "accountId": "060a9dcc510ac73c02bc9915bd946e36",
+  "oauthCredentialMode": "0600",
+  "workerInventory": {
+    "http": 200,
+    "success": true,
+    "result": []
+  },
+  "durableObjectNamespaceInventory": {
+    "http": 200,
+    "success": true,
+    "result": []
+  },
+  "subscriptionCheck": {
+    "http": 403,
+    "success": false,
+    "errors": [
+      {
+        "code": 10000,
+        "message": "Authentication error"
+      }
+    ]
+  },
+  "freePlan": "UNVERIFIED - subscription API access denied",
+  "dryRun": "PASS - exit 0; no upload or provisioning",
+  "dryRunBundleHashes": {
+    "README.md": "0ae7879280974c6f9a3e6bd8efe1f000ffae6e9c8873491e3b58c97dae3885f9",
+    "worker.js.map": "b20949990e9d153fe09f8fed082267471464170c3002c8dfe34d4ab4552ee93e",
+    "worker.js": "4530c7ebb0a2a0af82f5787b2724871b359777ebfa98890cb221d96c88145aa0"
+  },
+  "workersCreated": 0,
+  "namespacesCreated": 0,
+  "backendServiceTokensCreated": 0,
+  "solanaTransactions": 0,
+  "publicProductionChanged": false,
+  "additionalCost": 0,
+  "nextAction": "Owner supplies Workers Free plan confirmation for the verified account. Hosted tests remain unexecuted until plan verification passes."
+}
