@@ -38,3 +38,25 @@ test("oversized reviewed transaction is rejected before any simulation or signat
     simulateTransaction:()=>assert.fail("Oversized transaction reached simulation")}};
   await assert.rejects(inspectTransaction(executor,[{programAddress:address(blockhash),accounts:[],data:new Uint8Array(1250)}],payer),/1232-byte/);
 });
+
+test("AMM builders recompute reviewed fees, direction, reserves and minimum output before constructing a swap", async () => {
+  const { generateKeyPairSigner } = await import("@solana/kit");
+  const { graduationAddresses } = await import("../src/lib/launch-graduation.ts");
+  const { ammPreview, ammInstructions } = await import("../src/lib/wallet-amm.ts");
+  const buyer = createNoopSigner((await generateKeyPairSigner()).address);
+  const mint = (await generateKeyPairSigner()).address;
+  const m = {
+    a: await graduationAddresses(mint, 0n), wallet: buyer.address, destination: buyer.address,
+    launch: { addresses: { mint } }, needsAta: false, swapOpen: true, tokens: 1000n,
+    setup: 1488440n, reserve0: 50000n, reserve1: 396n,
+    cfg: { trade: 2500n, protocol: 300000n, fund: 40000n },
+  };
+  const q = ammPreview(m, 1000n, false, 50n);
+  assert((await ammInstructions(m, q, buyer)).length > 0);
+  for (const field of ["output", "fee", "setup", "rate", "reserve0", "protocol", "fund", "lp"])
+    await assert.rejects(ammInstructions(m, { ...q, [field]: q[field] + 1n }, buyer), /changed/);
+  await assert.rejects(ammInstructions(m, { ...q, zeroForOne: !q.zeroForOne }, buyer), /changed/);
+  await assert.rejects(ammInstructions(m, { ...q, minimum: 0n }, buyer), /slippage/);
+  m.swapOpen = false;
+  await assert.rejects(ammInstructions(m, q, buyer), /unavailable/);
+});

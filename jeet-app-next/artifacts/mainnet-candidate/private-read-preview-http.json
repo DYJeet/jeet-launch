@@ -14,5 +14,11 @@
     "transaction forwarding, simulation and uploads stay closed while read-only RPC works",
     "foreign origins and local diagnostics are rejected",
     "desktop and mobile browser viewports show truthful disabled creation and empty discovery without hydration errors or horizontal overflow"
-  ]
+  ],
+  "sourceSha256": {
+    "src/lib/local-wallet-server.ts": "16564881cd6314e5fe302f35dd79ec2aa431b0616ebf65eadec88fcd81d62987",
+    "src/lib/wallet-transactions.ts": "966f8736821014ab81d2f7178deb104c72c14245f4a3171056ab2254974b7060",
+    "src/lib/wallet-v5-trade.ts": "8fe452b301fcad3535a5453137e84ca62649022787f5befb3a225efe2c49f6de",
+    "src/lib/wallet-amm.ts": "a6631d240174b50670d08e82f1207b01612d848296f05fc3ef61ad16253c4655"
+  }
 }

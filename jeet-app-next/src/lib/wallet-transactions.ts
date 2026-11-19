@@ -149,8 +149,12 @@ export class WalletTransactionExecutor {
         commitment: "confirmed",
       })
       .send({ abortSignal: AbortSignal.timeout(8000) });
-    if (!program.value?.executable)
-      throw Error("Expected configured JeeT program is unavailable.");
+    const executable = program.value;
+    const loaders = this.environment.network === "local"
+      ? ["BPFLoader2111111111111111111111111111111111", "BPFLoaderUpgradeab1e11111111111111111111111"]
+      : ["BPFLoaderUpgradeab1e11111111111111111111111"];
+    if (!executable?.executable || !loaders.includes(executable.owner))
+      throw Error("Expected configured JeeT program is unavailable or has an unexpected loader.");
   }
   async reconcile(wallet: string) {
     const key = this.key(wallet);

@@ -1,0 +1,44 @@
+{
+  "networkTransactionsSubmitted": 0,
+  "ownerKeysUsed": false,
+  "vercel": {
+    "teamId": "team_1NAg0t1MQktougU7itnqYI03",
+    "plan": "hobby",
+    "projectId": "prj_vGtdBgWX5aCwfKN3FUK9xzBja6x8",
+    "project": "jeet-launch-mainnet-read-preview",
+    "nodeVersion": "24.x",
+    "deploymentProtection": "all_except_custom_domains",
+    "environmentTarget": "preview",
+    "configuredKeys": [
+      "NEXT_PUBLIC_JEET_WALLET_NETWORK",
+      "NEXT_PUBLIC_JEET_MAINNET_PROGRAM_ID",
+      "JEET_MAINNET_PROGRAM_ID",
+      "JEET_MAINNET_READ_PREVIEW",
+      "NEXT_PUBLIC_JEET_PUBLIC_BETA",
+      "JEET_MAINNET_READ_RPC"
+    ],
+    "publicProgramFixture": "5PeRukdBmgnWVXvpz9cP1kxcQfDd4mF7h1h2xDb7To4Y",
+    "sourceCommit": "1df7c0055456975d9a3444a1aff23609166ca2c2",
+    "firstDeployment": {
+      "id": "dpl_8YicbJ1pBuEv9YjFrAmFDX2L31hA",
+      "requestedTarget": "preview",
+      "returnedTarget": "production",
+      "finalState": "CANCELED",
+      "readyDeploymentProduced": false
+    },
+    "furtherDeploymentAttempts": "blocked by automatic approval review due to risk of another unauthorized Production deployment",
+    "existingPublicProduction": {
+      "project": "jeet-launch-community-preview",
+      "deploymentId": "dpl_CShXrKvWLxMBUdziNnU7gjtPuzhT",
+      "sourceCommit": "5f7a07900f7c9a516fbfe0616452f5c6c0617bfe",
+      "state": "READY"
+    }
+  },
+  "mainnetIndex": {
+    "deployed": false,
+    "blocker": "Cloudflare deployment authentication unavailable in this session",
+    "devnetServiceReusedForMainnet": false,
+    "localPersistentIndexAndRecoveryEvidence": "existing Mainnet fixtures and tests retained",
+    "browserState": "Cloudflare dashboard redirected to its sign-in page"
+  }
+}

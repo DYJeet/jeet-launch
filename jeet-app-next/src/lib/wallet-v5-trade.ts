@@ -111,6 +111,24 @@ export type TradePreview = ReturnType<typeof tradePreview>;
 
 export async function tradeInstructions(market: TradeMarket, q: TradePreview, buyer: TransactionSigner) {
   if (buyer.address !== market.wallet) throw Error("Wallet changed. Review a fresh quote.");
+  if (typeof q.sell !== "boolean" || typeof q.bound !== "bigint")
+    throw Error("Invalid trade review.");
+  const state = market.launch.state;
+  const [platform, creator] = market.launch.fees;
+  const status = curveTradeStatus(market.launch);
+  if (!state || !platform || !creator || !["active", "eligible"].includes(status) ||
+      q.sequence !== state.sequence || q.sold !== state.sold ||
+      q.setup !== (q.sell ? 0n : market.setup))
+    throw Error("Market or setup changed. Review a fresh quote.");
+  const expected = v5Quote(state, state.sold, q.amount, platform.accrued, creator.accrued, q.sell);
+  for (const field of ["raw", "platform", "creator", "total", "user"] as const)
+    if (q[field] !== expected[field]) throw Error("Trade amounts differ from the reviewed curve.");
+  const minimum = expected.user * 9000n / 10000n || 1n;
+  const maximum = expected.user + expected.user * 1000n / 10000n;
+  if (q.sell
+    ? q.amount > market.tokens || q.raw > state.reserve || q.bound < minimum || q.bound > expected.user
+    : q.amount > openingBuyLimit(market) || q.bound < expected.user || q.bound > maximum)
+    throw Error("Trade exceeds the reviewed wallet, reserve or slippage limits.");
   const l = market.launch.addresses;
   const instructions = [launchComputeLimit()];
   if (!q.sell && market.needsAta)

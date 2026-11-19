@@ -51,7 +51,7 @@ const server = createServer(async (req, res) => {
           : {
               data: ["", "base64"],
               executable: true,
-              owner: "BPFLoader2111111111111111111111111111111111",
+              owner: options.programOwner ?? "BPFLoader2111111111111111111111111111111111",
               lamports: 10000000,
               rentEpoch: 0,
             },
@@ -226,6 +226,7 @@ test("signed execution confirms once and clears saved signature", async () => {
 for (const [label, opt, pattern] of [
   ["wrong genesis", { genesis: wallet.address }, /network changed/],
   ["missing program", { missing: true }, /unavailable/],
+  ["substituted loader", { programOwner: "11111111111111111111111111111111" }, /unexpected loader/],
   [
     "simulation rejection",
     { simulationError: { InstructionError: [0, { Custom: 1005 }] } },

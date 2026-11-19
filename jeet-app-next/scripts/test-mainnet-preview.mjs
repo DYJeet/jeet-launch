@@ -127,7 +127,7 @@ test('Mainnet creation, metadata, activation and buy messages include canonical 
     import { walletLaunchAddresses, walletLaunchParameters, initializeWalletLaunchInstructions,
       activateWalletLaunchInstructions } from './src/lib/wallet-launch.ts';
     import { initializeLaunchMetadataInstruction } from './src/lib/launch-metadata.ts';
-    import { tradeInstructions } from './src/lib/wallet-v5-trade.ts';
+    import { tradeInstructions, tradePreview } from './src/lib/wallet-v5-trade.ts';
     import { mainnetReleaseControl } from './src/lib/mainnet-release-control.ts';
     import { WALLET_PROGRAM_ADDRESS } from './src/lib/wallet-program.ts';
     const creator = createNoopSigner((await generateKeyPairSigner()).address);
@@ -142,11 +142,18 @@ test('Mainnet creation, metadata, activation and buy messages include canonical 
     const metadata = await initializeLaunchMetadataInstruction({ ...l, creator, name: 'Synthetic launch', symbol: 'SYN',
       uri: 'ipfs://bafkreicsyxczhcmdur2arx44cthughlu5kttxhb72y7fcgpzsc5kap2gn4',
       mutable: false, maxCostLamports: 100000000n });
-    const market = { launch: { addresses: l }, wallet: creator.address, needsAta: false,
+    const market = { launch: { addresses: l, state: { ...params.curve, quantum: params.quantum,
+      sold: 0n, reserve: 0n, sequence: 0n }, mint: { mintAuthority: null, freezeAuthority: null },
+      metadata: {}, terms: {}, curveData: new Uint8Array(262), openingData: new Uint8Array(108),
+      slot: 0n, fees: [{ accrued: 0n }, { accrued: 0n }] },
+      wallet: creator.address, needsAta: false, setup: 0n, tokens: params.quantum, purchased: 0n,
       destination: l.creatorAta, receipt: (await generateKeyPairSigner()).address };
-    const quote = { amount: 1n, sold: 0n, raw: 1n, bound: 2n, sequence: 0n };
-    const buy = await tradeInstructions(market, { ...quote, sell: false }, creator);
-    const sell = await tradeInstructions(market, { ...quote, sell: true }, creator);
+    const buyQuote = tradePreview(market, 1000n, false, 0n);
+    const buy = await tradeInstructions(market, buyQuote, creator);
+    const sellMarket = { ...market, launch: { ...market.launch, state: {
+      ...market.launch.state, sold: params.quantum, reserve: 42n, sequence: 1n,
+    } } };
+    const sell = await tradeInstructions(sellMarket, tradePreview(sellMarket, params.quantum, true, 0n), creator);
     const batches = [initializeWalletLaunchInstructions(creator, l, params),
       activateWalletLaunchInstructions(creator, l, params), [metadata], buy];
     const seen = new Set();

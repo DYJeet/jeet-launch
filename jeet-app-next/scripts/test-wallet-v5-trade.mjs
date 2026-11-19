@@ -64,3 +64,24 @@ test("unactivated, not-yet-open and migrated launches cannot construct a quote",
     assert.throws(() => tradePreview(m, 1000n, false, 0n), /unavailable/);
   }
 });
+
+test("trade builders reject altered review amounts, stale setup and insufficient wallet limits before signing", async () => {
+  const { generateKeyPairSigner, createNoopSigner } = await import("@solana/kit");
+  const { walletLaunchAddresses } = await import("../src/lib/wallet-launch.ts");
+  const { tradeInstructions } = await import("../src/lib/wallet-v5-trade.ts");
+  const buyer = createNoopSigner((await generateKeyPairSigner()).address);
+  const mint = (await generateKeyPairSigner()).address;
+  const m = { ...market(), wallet: buyer.address, needsAta: false };
+  m.launch.addresses = await walletLaunchAddresses(mint, buyer.address);
+  m.destination = m.launch.addresses.creatorAta;
+  m.receipt = m.launch.addresses.opening;
+  const q = tradePreview(m, 1000n, false, 50n);
+  assert.equal((await tradeInstructions(m, q, buyer)).at(-1).data[0], 19);
+  for (const field of ["raw", "platform", "creator", "total", "user"])
+    await assert.rejects(tradeInstructions(m, { ...q, [field]: q[field] + 1n }, buyer), /amounts differ/);
+  await assert.rejects(tradeInstructions(m, { ...q, bound: q.user - 1n }, buyer), /limits/);
+  await assert.rejects(tradeInstructions(m, { ...q, bound: q.user * 2n }, buyer), /limits/);
+  await assert.rejects(tradeInstructions(m, { ...q, setup: 0n }, buyer), /setup changed/);
+  m.launch.state.sequence += 1n;
+  await assert.rejects(tradeInstructions(m, q, buyer), /Market or setup changed/);
+});

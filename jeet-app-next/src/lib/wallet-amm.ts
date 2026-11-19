@@ -118,6 +118,14 @@ export function ammPreview(m: AmmMarket, amount: bigint, sell: boolean, slippage
 export type AmmPreview = ReturnType<typeof ammPreview>;
 export async function ammInstructions(m: AmmMarket, q: AmmPreview, payer: TransactionSigner) {
   if (payer.address !== m.wallet) throw Error("Wallet changed. Review the swap again.");
+  if (typeof q.sell !== "boolean" || typeof q.minimum !== "bigint")
+    throw Error("Invalid swap review.");
+  const expected = ammPreview(m, q.input, q.sell, 0n);
+  for (const field of ["output", "fee", "rate", "setup", "reserve0", "reserve1", "protocol", "fund", "lp", "zeroForOne"] as const)
+    if (q[field] !== expected[field]) throw Error("Pool, fees or setup changed. Review a fresh swap.");
+  const minimum = expected.output - expected.output * 1000n / 10000n;
+  if (q.minimum < minimum || q.minimum > expected.output)
+    throw Error("Swap minimum exceeds the allowed slippage range.");
   const wrapped = await generateKeyPairSigner();
   const ix: Instruction[] = [compute, getCreateAccountInstruction({ payer, newAccount:wrapped,
     lamports:m.setup, space:165n, programAddress:TOKEN_PROGRAM_ADDRESS }),
