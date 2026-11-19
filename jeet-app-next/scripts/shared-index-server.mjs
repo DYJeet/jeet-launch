@@ -1,8 +1,8 @@
 // Deploy behind HTTPS on a host with a persistent local volume. Not a Vercel Function.
 import {existsSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
-import {address} from '@solana/kit';
-import {MAINNET_GENESIS, LOCAL_WALLET_PROGRAM} from '../src/lib/wallet-environment.ts';
+import {dedicatedSigner} from '../src/lib/mainnet-identity.ts';
+import {MAINNET_GENESIS} from '../src/lib/wallet-environment.ts';
 import {createServer} from 'node:http';
 import {Readable} from 'node:stream';
 import {resolve,sep} from 'node:path';
@@ -14,10 +14,7 @@ const quotas=Object.fromEntries(Object.entries(DEFAULT_QUOTAS).map(([key,value])
 const mainnetProgram = process.env.JEET_SHARED_MAINNET_PROGRAM_ID;
 let namespace = DEVNET_INDEX_NAMESPACE;
 if (mainnetProgram !== undefined) {
- const program = address(mainnetProgram);
- if ([LOCAL_WALLET_PROGRAM, DEVNET_INDEX_NAMESPACE.split(':')[1], '11111111111111111111111111111111',
-   '7QhXSnj7igy9HX6n1i3bnuc2SUbMTRWZEouGZKcy9d31', 'HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP'].includes(program))
-   throw Error('Mainnet indexing requires a dedicated program identity.');
+ const program = dedicatedSigner(mainnetProgram);
  if (path === ':memory:') throw Error('Mainnet indexing requires a persistent database.');
  namespace = MAINNET_GENESIS + ':' + program;
  bindMainnetDatabase(path, namespace);

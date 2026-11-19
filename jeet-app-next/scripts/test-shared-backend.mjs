@@ -101,7 +101,8 @@ test('the separate Mainnet index restores a backup and rejects Devnet database r
  const devnetPath = join(dir, 'devnet.sqlite');
  const mainnetPath = join(dir, 'mainnet.sqlite');
  const backupPath = join(dir, 'restored.sqlite');
- const program = 'CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C';
+ const { generateKeyPairSigner } = await import('@solana/kit');
+ const [program, otherProgram] = await Promise.all(Array.from({ length: 2 }, async () => (await generateKeyPairSigner()).address));
  const env = {JEET_SHARED_MAINNET_PROGRAM_ID: program};
  const mainnet = '5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d:' + program;
  const devnet = await start(devnetPath);
@@ -117,7 +118,7 @@ test('the separate Mainnet index restores a backup and rejects Devnet database r
   await server.stop();
   server = undefined;
   await assert.rejects(start(backupPath), /database is bound to Mainnet/);
-  await assert.rejects(start(backupPath, {JEET_SHARED_MAINNET_PROGRAM_ID: 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s'}), /bound to another program/);
+  await assert.rejects(start(backupPath, {JEET_SHARED_MAINNET_PROGRAM_ID: otherProgram}), /bound to another program/);
   server = await start(backupPath, env);
   store = new RemoteMarketStore(server.client);
   assert.deepEqual(await store.checkpoint(mainnet, stream), head);

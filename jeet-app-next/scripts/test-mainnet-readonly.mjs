@@ -62,3 +62,60 @@ test('finalized verification requires exact loader identity, bytes and authority
     await rm(fixture, { recursive: true, force: true });
   }
 });
+
+test('owner proof verifies exact off-chain bytes and requires the pinned treasury', async () => {
+  const { generateKeyPairSync, sign } = await import('node:crypto');
+  const { getBase58Decoder, getOffchainMessageV1Encoder } = await import('@solana/kit');
+  const { makeCeremony, verifyCeremony, verifyRoleSignature } = await import('./readiness/mainnet-identities.mjs');
+  const fromBytes = getBase58Decoder();
+  const keys = Array.from({ length: 4 }, () => generateKeyPairSync('ed25519'));
+  const addresses = keys.map(key => address(fromBytes.decode(key.publicKey.export({ type: 'spki', format: 'der' }).subarray(-32))));
+  const sourceCommit = 'a'.repeat(40);
+  const now = Date.parse('2026-11-19T00:00:00.000Z');
+  const ceremony = makeCeremony(sourceCommit, addresses, now);
+  const roles = ['program', 'containmentAuthority', 'deploymentPayer', 'initialUpgradeAuthority'];
+  const signatures = Object.fromEntries(roles.map((role, i) => [
+    role, fromBytes.decode(sign(null, Buffer.from(ceremony.messages[role]), keys[i].privateKey)),
+  ]));
+  signatures.treasury = fromBytes.decode(sign(null, Buffer.from(ceremony.messages.treasury), keys[0].privateKey));
+  const signedBytes = sign(null, Buffer.from(ceremony.messages.program), keys[0].privateKey);
+  assert(verifyRoleSignature(addresses[0], ceremony.messages.program, signedBytes));
+  assert(!verifyRoleSignature(addresses[0], ceremony.messages.containmentAuthority, signedBytes));
+  const wrapped = getOffchainMessageV1Encoder().encode({ version: 1, content: ceremony.messages.program, requiredSignatories: [{ address: addresses[0] }] });
+  assert(verifyRoleSignature(addresses[0], ceremony.messages.program, sign(null, wrapped, keys[0].privateKey)));
+  const wrongSigner = getOffchainMessageV1Encoder().encode({ version: 1, content: ceremony.messages.program, requiredSignatories: [{ address: addresses[1] }] });
+  assert(!verifyRoleSignature(addresses[0], ceremony.messages.program, sign(null, wrongSigner, keys[0].privateKey)));
+  assert.throws(() => verifyCeremony(ceremony, signatures, sourceCommit, now), /Invalid key-control signature for treasury/);
+  assert.throws(() => verifyCeremony(ceremony, signatures, 'b'.repeat(40), now), /another source commit/);
+  assert.throws(() => verifyCeremony(ceremony, signatures, sourceCommit, Date.parse(ceremony.expiresAt)), /validity window/);
+  assert.throws(() => makeCeremony(sourceCommit, [addresses[0], ...addresses.slice(0, 3)], now), /distinct addresses/);
+  const changed = { ...ceremony, messages: { ...ceremony.messages, program: ceremony.messages.program + ' ' } };
+  assert.throws(() => verifyCeremony(changed, signatures, sourceCommit, now), /Displayed message differs/);
+});
+
+test('new-deployment preflight rejects occupied loader state or an invalid system wallet', async () => {
+  const { generateKeyPairSigner } = await import('@solana/kit');
+  const { TREASURY, SYSTEM } = await import('../src/lib/mainnet-identity.ts');
+  const { checkNewDeploymentAccounts } = await import('./readiness/mainnet-readonly.mjs');
+  const [program, containmentAuthority, deploymentPayer, initialUpgradeAuthority] =
+    await Promise.all(Array.from({ length: 4 }, async () => (await generateKeyPairSigner()).address));
+  const identities = { program, containmentAuthority, deploymentPayer, initialUpgradeAuthority, treasury: TREASURY };
+  const payer = { data: ['', 'base64'], owner: SYSTEM, executable: false, lamports: 42n };
+  const values = [null, null, null, null, payer, null, null];
+  const rpc = { getMultipleAccounts(keys, options) {
+    assert.equal(keys[0], program);
+    assert.deepEqual(keys.slice(3), [containmentAuthority, deploymentPayer, initialUpgradeAuthority, TREASURY]);
+    assert.equal(options.commitment, 'finalized');
+    return { send: async () => ({ context: { slot: 101n }, value: values }) };
+  } };
+  assert.equal((await checkNewDeploymentAccounts(rpc, identities)).deploymentPayerLamports, 42n);
+  values[1] = payer;
+  await assert.rejects(checkNewDeploymentAccounts(rpc, identities), /already occupied/);
+  values[1] = null;
+  values[2] = { ...payer, owner: TREASURY };
+  await assert.rejects(checkNewDeploymentAccounts(rpc, identities), /unexpected existing state/);
+  values[2] = payer;
+  assert.equal((await checkNewDeploymentAccounts(rpc, identities)).prefundedControlLamports, 42n);
+  values[4] = { ...payer, data: ['AQ==', 'base64'] };
+  await assert.rejects(checkNewDeploymentAccounts(rpc, identities), /wallet has unexpected/);
+});
