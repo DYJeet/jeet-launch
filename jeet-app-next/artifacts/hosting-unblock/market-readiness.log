@@ -1,0 +1,27 @@
+(node:14) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-hosting-unblock/jeet-app-next/src/lib/market-store.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-hosting-unblock/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ write configuration fails closed for every missing safeguard, unaccepted Phantom, wrong network or unsafe backend (1.075182ms)
+✔ public write admission fails closed without backend and on backend timeout/error; raw IP never forwarded (2.772642ms)
+✔ temporary RPC omission retains the entire page and recovers exactly once using a configured archive (2.754003ms)
+✔ primary recovery is bounded and archive endpoints cannot select Mainnet or unsafe transports (0.383849ms)
+✔ conflicting event replay rolls back page data, volume and cursor together (0.999036ms)
+✔ validated metadata caches bounded immutable bytes; denies cache size bypass and aborted readers (2.244324ms)
+✔ 403 gateway errors are explicit, not retried or cached, and oversized streams are bounded (0.759014ms)
+✔ history pruning is checked against token birth, not unrelated earlier ledger pruning (0.15928ms)
+✔ private local validation keeps existing throughput without weakening public write admission (2.470134ms)
+(node:15) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-hosting-unblock/jeet-app-next/src/lib/market-store.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-hosting-unblock/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ finalized backfill resumes after restart, pages without duplicates and ingests new head (13.782583ms)
+✔ rejects duplicate RPC pages and commits only one concurrent checkpoint (1.481154ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 374.168688

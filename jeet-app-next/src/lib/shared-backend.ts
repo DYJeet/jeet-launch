@@ -1,6 +1,7 @@
+import { Buffer } from 'node:buffer';
 import { DatabaseSync } from 'node:sqlite';
 import { timingSafeEqual } from 'node:crypto';
-import { MarketStore, type Checkpoint, type LaunchObservation, type MarketEvent } from './market-store.ts';
+import { MarketStore, type Checkpoint, type LaunchObservation, type MarketEvent, type IndexDatabase } from './market-store.ts';
 import { backendJson, backendParse } from './shared-backend-client.ts';
 
 export const DEVNET_INDEX_NAMESPACE = 'EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG:Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D';
@@ -42,12 +43,12 @@ function launches(v: unknown): asserts v is LaunchObservation[] {
 export type Quotas = { readClient: number; readGlobal: number; writeClient: number; writeGlobal: number; uploadClient: number; uploadGlobal: number; uploadDaily: number };
 export const DEFAULT_QUOTAS: Quotas = { readClient: 60, readGlobal: 240, writeClient: 12, writeGlobal: 60, uploadClient: 2, uploadGlobal: 10, uploadDaily: 20 };
 export class PersistentRequestLimiter {
-  private db: DatabaseSync;
+  private db: IndexDatabase;
   readonly quotas: Quotas;
-  constructor(path: string, quotas: Partial<Quotas> = DEFAULT_QUOTAS) {
+  constructor(path: string, quotas: Partial<Quotas> = DEFAULT_QUOTAS, database?: IndexDatabase) {
     this.quotas = { ...DEFAULT_QUOTAS, ...quotas };
     for (const n of Object.values(this.quotas)) demand(Number.isInteger(n) && n > 0 && n <= 100000);
-    this.db = new DatabaseSync(path);
+    this.db = database ?? new DatabaseSync(path);
     this.db.exec('PRAGMA busy_timeout=3000; PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; CREATE TABLE IF NOT EXISTS request_quotas(scope TEXT NOT NULL,client TEXT NOT NULL,window INTEGER NOT NULL,count INTEGER NOT NULL,PRIMARY KEY(scope,client)); CREATE INDEX IF NOT EXISTS quota_expiry ON request_quotas(window); CREATE TABLE IF NOT EXISTS quota_clock(id INTEGER PRIMARY KEY CHECK(id=1),highwater INTEGER NOT NULL);');
   }
   admit(client: string, scope: 'read' | 'write' | 'upload', now = Date.now()) {
@@ -74,9 +75,9 @@ export class PersistentRequestLimiter {
 }
 
 /** Authenticated internal index service. No SQL, RPC URL, wallet key or transaction-submission operation is exposed. */
-export function createSharedBackend(path: string, token: string, quotas = DEFAULT_QUOTAS) {
+export function createSharedBackend(path: string, token: string, quotas = DEFAULT_QUOTAS, options: { database?: IndexDatabase; transaction?: (run: () => Response) => Response } = {}) {
   demand(token.length >= 32 && token.length <= 256);
-  const store = new MarketStore(path), limiter = new PersistentRequestLimiter(path, quotas);
+  const store = new MarketStore(path, options.database), limiter = new PersistentRequestLimiter(path, quotas, options.database);
   const json = (result: unknown, status = 200) => new Response(backendJson({ result: result ?? null }), { status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
   return {
     close() { store.close(); limiter.close(); },
@@ -92,6 +93,7 @@ export function createSharedBackend(path: string, token: string, quotas = DEFAUL
           size += part.value.length; if (size > 131072) { await reader!.cancel(); return json(null, 413); } chunks.push(part.value); }
         const bytes = Buffer.concat(chunks); const body = backendParse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
         demand(record(body)); const { op, args } = body as { op: string; args: unknown[] }; demand(Array.isArray(args) && args.length <= 6);
+        const invoke = () => {
         if (op === 'admit') { demand(args.length === 2); return json(limiter.admit(args[0] as string, args[1] as 'read' | 'write' | 'upload')); }
         demand(args[0] === DEVNET_INDEX_NAMESPACE); const network = args[0] as string, stream = args[1] as string;
         if (['checkpoint', 'commit', 'commitDiscovery', 'marketVolume', 'history', 'historySnapshot'].includes(op))
@@ -118,6 +120,9 @@ export function createSharedBackend(path: string, token: string, quotas = DEFAUL
           }
           default: return json(null, 400);
         }
+        };
+        return options.transaction ? options.transaction(invoke) : invoke();
+
       } catch { return json(null, 400); }
     },
   };

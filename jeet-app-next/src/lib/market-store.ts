@@ -19,11 +19,14 @@ export type MarketEvent = {
 export type Checkpoint = { anchor?: string; head?: string; before?: string; backfilled?: boolean; gap?: boolean };
 export type LaunchObservation = { row: IndexedLaunch; slot: bigint };
 
+export type IndexDatabase = Pick<DatabaseSync, 'exec' | 'close'> & {
+  prepare(sql: string): Pick<ReturnType<DatabaseSync['prepare']>, 'run' | 'get' | 'all' | 'iterate'>;
+};
 export class MarketStore {
-  private db: DatabaseSync;
-  constructor(path: string) {
+  private db: IndexDatabase;
+  constructor(path: string, database?: IndexDatabase) {
     if (path !== ":memory:") mkdirSync(dirname(path), { recursive: true, mode: 0o700 });
-    this.db = new DatabaseSync(path);
+    this.db = database ?? new DatabaseSync(path);
     this.db.exec(`
       PRAGMA busy_timeout=3000;
       PRAGMA journal_mode=WAL;

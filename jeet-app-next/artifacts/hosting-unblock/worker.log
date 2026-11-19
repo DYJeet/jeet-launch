@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "localOnly": true,
+  "cloudflareResourcesCreated": 0,
+  "solanaRequests": 0,
+  "checks": [
+    "rejects unauthorized requests before object allocation",
+    "concurrent checkpoint CAS and idempotent replay conserve volume",
+    "conflicting replay rolls back data and cursor together",
+    "one atomic client quota across concurrent Worker requests",
+    "runtime restart preserves history, pagination, volume and quotas",
+    "rejects Mainnet namespace and arbitrary database operations",
+    "existing discovery SQL and ranked views work on Durable Object SQLite"
+  ],
+  "toolVersions": {
+    "miniflare": "4.20260730.0",
+    "esbuild": "0.25.12"
+  },
+  "runtimeCompatibilityDate": "2026-07-01"
+}
+Worker state and bundle preserved at /tmp/jeet-durable-object-xrZigC

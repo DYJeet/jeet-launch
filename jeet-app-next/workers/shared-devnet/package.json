@@ -1,0 +1,17 @@
+{
+  "name": "jeet-shared-devnet-worker",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/worker.mjs --bundle --format=esm --platform=node --target=es2022 --external:cloudflare:workers --alias:node:sqlite=./src/sqlite-unavailable.ts --outfile=dist/worker.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "miniflare": "4.20260730.0"
+  },
+  "overrides": {
+    "miniflare": {
+      "sharp": "0.35.5",
+      "undici": "7.30.1"
+    }
+  }
+}

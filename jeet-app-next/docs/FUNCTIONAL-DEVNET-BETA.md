@@ -112,3 +112,9 @@ Reviewable configuration after explicit owner approval:
 - Keep one backend instance. Render disk-backed deploys briefly stop the old instance; public writes must fail closed during that interval. Do not claim zero-downtime or cross-host shared SQLite. Test backup/restore and startup volume persistence before enabling writes.
 
 Primary references: https://render.com/pricing , https://render.com/docs/disks , https://render.com/docs/free , https://render.com/docs/node-version . No Render account connection, subscription or service creation has been performed.
+
+## Hosting unblock continuation
+
+The optional Cloudflare Workers Free SQLite Durable Object adapter is prepared in `workers/shared-devnet/`; its README contains the exact approval, configuration, free quotas, security, recovery and fallback plan. It reuses the validated protocol and SQL engine. This replaces the earlier assumption that a new paid Node host is the only practical option; the original Node/Render procedure remains valid. No provider resource or Vercel environment has been changed. Hosted acceptance remains pending. See `artifacts/hosting-unblock/` for current validation evidence.
+
+The previously blocked 68-launch discovery regression is now **PASS** using the preserved Agave 4.3.2 validator in isolated Codespace `/tmp` storage: partial=7, resumed=7, discovered=68, gap=false, one injected HTTP 429 recovered, pagination/search/ranked-view assertions passed. Agave 2.3.13 failed to load the preserved local program; its failed log is retained separately. No program rebuild or public-network operation was used. This local discovery run used existing Next 16.4.3 dependencies; the final changed backend/frontend candidate separately builds and typechecks on the locked Next 16.4.6 dependencies. This closes the missing-validator gate, not genuine Phantom or hosted-provider acceptance.
