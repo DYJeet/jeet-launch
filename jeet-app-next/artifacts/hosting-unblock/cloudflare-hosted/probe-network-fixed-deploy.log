@@ -1,0 +1,13 @@
+
+ ⛅️ wrangler 4.119.0 (update available 4.165.0)
+───────────────────────────────────────────────
+Total Upload: 29.15 KiB / gzip: 8.24 KiB
+Worker Startup Time: 6 ms
+Your Worker has access to the following bindings:
+Binding                                Resource
+env.JEET_SHARED (JeetSharedIndex)      Durable Object
+
+Uploaded jeet-launch-shared-devnet (1.81 sec)
+Deployed jeet-launch-shared-devnet triggers (0.70 sec)
+  https://jeet-launch-shared-devnet.victorriccardi24.workers.dev
+Current Version ID: c91da4a9-6e02-46ac-8284-6b0c4ac23689

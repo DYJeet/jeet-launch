@@ -1,0 +1,19 @@
+(node:37834) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///tmp/jeet-cf-release-dac3298/jeet-app-next/src/lib/shared-backend-client.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /tmp/jeet-cf-release-dac3298/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ durable HTTP index survives backend and application restarts; CAS, replay, snapshot and pagination (1377.535274ms)
+✔ shared quotas enforce one atomic ceiling across two actual application processes and restart (831.04696ms)
+✔ quota expiry cannot be bypassed by clock rollback; scope and thresholds validated (8.903154ms)
+✔ backend rejects unauthenticated, oversized, unknown, cross-network and malformed operations (5.154987ms)
+✔ server credentials never permit HTTP outside explicit local tests, redirects, or secret-bearing errors (1.009333ms)
+✔ upload budgets are shared, bounded independently by hour and day, and survive restart (9.073856ms)
+✔ shared discovery persists New, Trending, Final Stretch, Migrated, search and cursor invalidation (288.713929ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2940.27898

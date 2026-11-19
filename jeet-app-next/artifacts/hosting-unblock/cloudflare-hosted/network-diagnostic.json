@@ -1,0 +1,20 @@
+{
+  "result": {
+    "genesis": {
+      "status": "BLOCKED",
+      "reason": "TypeError: Invalid redirect value, must be one of \"follow\" or \"manual\" (\"error\" won't be implemented since it does not make sense at the edge; use \"manual\" and check the r",
+      "matches": false
+    },
+    "program": {
+      "status": "BLOCKED",
+      "reason": "TypeError: Invalid redirect value, must be one of \"follow\" or \"manual\" (\"error\" won't be implemented since it does not make sense at the edge; use \"manual\" and check the r",
+      "executable": false
+    },
+    "metadata": {
+      "status": "BLOCKED",
+      "reason": "TypeError: Invalid redirect value, must be one of \"follow\" or \"manual\" (\"error\" won't be implemented since it does not make sense at the edge; use \"manual\" and check the r",
+      "sha256": null,
+      "matches": false
+    }
+  }
+}

@@ -32,7 +32,7 @@ export class SharedBackendClient {
   async call<T>(op: string, args: unknown[]): Promise<T> {
     try {
       const response = await this.request(this.configuration.url + '/v1/index', {
-        method: 'POST', headers: { authorization: 'Bearer ' + this.configuration.token, 'content-type': 'application/json' },
+        method: 'POST', headers: { authorization: 'Bearer ' + this.configuration.token, 'content-type': 'application/json', 'user-agent': 'JeeT-Launch-Backend/1.0' },
         body: backendJson({ op, args }), redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(5000),
       });
       if (!response.ok) throw Error('Backend unavailable.');

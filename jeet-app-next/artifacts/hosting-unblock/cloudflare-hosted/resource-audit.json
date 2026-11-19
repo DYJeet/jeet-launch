@@ -1,0 +1,26 @@
+{
+  "accountId": "060a9dcc510ac73c02bc9915bd946e36",
+  "workerCount": 1,
+  "namespaceCount": 1,
+  "namespace": {
+    "id": "c62e688aa16242de8265ae4742c3e9a1",
+    "name": "jeet-launch-shared-devnet_JeetSharedIndex",
+    "script": "jeet-launch-shared-devnet",
+    "class": "JeetSharedIndex",
+    "use_sqlite": true
+  },
+  "sameNamespaceAfterTests": true,
+  "objectCount": 1,
+  "storedObjects": 1,
+  "bindings": [
+    "JEET_SHARED",
+    "JEET_SHARED_BACKEND_TOKEN"
+  ],
+  "deployedCodeHashes": {
+    "worker.js": "4530c7ebb0a2a0af82f5787b2724871b359777ebfa98890cb221d96c88145aa0"
+  },
+  "matchesPreparedCode": true,
+  "versionId": "224a4f97-851b-44f4-9e89-e59859177b8d",
+  "freePlanEvidence": "Owner dashboard 0/100000 daily requests + Upgrade; SQLite Free eligibility confirmed by provider documentation; billing API remains inaccessible",
+  "paidPlanChanges": 0
+}

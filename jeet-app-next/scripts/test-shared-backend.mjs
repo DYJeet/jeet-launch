@@ -69,7 +69,7 @@ test('server credentials never permit HTTP outside explicit local tests, redirec
   process.env.JEET_SHARED_BACKEND_TOKEN=token;process.env.JEET_SHARED_BACKEND_URL='http://evil.example';assert.throws(sharedBackendConfiguration);
   process.env.JEET_SHARED_BACKEND_URL='https://user:secret@backend.example';assert.throws(sharedBackendConfiguration);
   process.env.JEET_SHARED_BACKEND_URL='https://backend.example?token=secret';assert.throws(sharedBackendConfiguration);
-  const c=new SharedBackendClient({url:'https://backend.example',token},async(_url,options)=>{assert.equal(options.redirect,'error');assert(options.signal);throw Error('secret '+token);});
+  const c=new SharedBackendClient({url:'https://backend.example',token},async(_url,options)=>{assert.equal(options.redirect,'error');assert.equal(new Headers(options.headers).get('user-agent'),'JeeT-Launch-Backend/1.0');assert(options.signal);throw Error('secret '+token);});
   await assert.rejects(c.call('admit',[]),e=>!e.message.includes(token)&&e.message.includes('unavailable'));
  }finally{for(const k of Object.keys(process.env))if(!(k in prior))delete process.env[k];Object.assign(process.env,prior);}
 });

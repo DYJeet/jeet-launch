@@ -1,0 +1,47 @@
+{
+  "endpoint": "https://jeet-launch-shared-devnet.victorriccardi24.workers.dev",
+  "sourceWorkerCheckpoint": "dac329859b919eebc75efef0f23d94117b27d8fd",
+  "versionId": "224a4f97-851b-44f4-9e89-e59859177b8d",
+  "workerCodeSha256": {
+    "worker.js": "4530c7ebb0a2a0af82f5787b2724871b359777ebfa98890cb221d96c88145aa0"
+  },
+  "coreHostedScenariosPassed": 9,
+  "coreHostedScenarioFailures": 0,
+  "countedAcceptanceHttpRequests": 50,
+  "additionalDiagnosticAndInitialSmokeRequests": "Present in deployment journal; not included in the two counted phases",
+  "databaseBytesObserved": 106496,
+  "workerCount": 1,
+  "sqliteNamespaceCount": 1,
+  "storedObjectCount": 1,
+  "networkChecks": {
+    "genesis": {
+      "status": "BLOCKED",
+      "http": 403,
+      "matches": false
+    },
+    "program": {
+      "status": "BLOCKED",
+      "http": 403,
+      "executable": false
+    },
+    "metadata": {
+      "status": "BLOCKED",
+      "http": 429,
+      "sha256": null,
+      "matches": false
+    }
+  },
+  "monthlyPlanCostUsd": 0,
+  "costBasis": "Workers Free supported by owner dashboard and provider SQLite Free documentation; no paid plan/overage/billing enrollment action was performed",
+  "productionVercelChanged": false,
+  "solanaTransactions": 0,
+  "temporaryProbeOperationsRemoved": true,
+  "publicationReady": false,
+  "remainingGates": [
+    "Approved Devnet RPC reachable from candidate runtime; hosted public RPC reads returned HTTP 403",
+    "Public metadata retrieval/pinning readiness; hosted gateway request returned HTTP 429",
+    "Genuine installed Phantom signing and rejection acceptance",
+    "Separate owner approval for the functional Vercel release; keep live read-only beta unchanged"
+  ],
+  "pitrRestore": "Not exercised; forced process restart and transactional rollback passed; no data rewind or deletion was performed"
+}
