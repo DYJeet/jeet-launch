@@ -1,4 +1,4 @@
-//! Prospective opt-in graduation. Enabled only in disposable local-test builds.
+//! Prospective opt-in graduation with an explicit CPMM identity for each network.
 use super::*;
 use solana_program::{
     clock::Clock,
@@ -8,9 +8,16 @@ use solana_program::{
 };
 const MAGIC: &[u8] = b"JEETGRD1";
 const LEN: usize = 253;
+#[cfg(not(feature = "mainnet"))]
 const AMM: Pubkey = solana_program::pubkey!("DRaycpLY18LhpbydsBWbVJtxpNv9oXPgjRSfpF2bWpYb");
 const WSOL: Pubkey = solana_program::pubkey!("So11111111111111111111111111111111111111112");
+#[cfg(not(feature = "mainnet"))]
 const FEE: Pubkey = solana_program::pubkey!("3oE58BKVt8KuYkGxx8zBojugnymWmBiyafWgMrnb6eYy");
+#[cfg(feature = "mainnet")]
+const AMM: Pubkey = solana_program::pubkey!("CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C");
+#[cfg(feature = "mainnet")]
+const FEE: Pubkey = solana_program::pubkey!("DNXgeM9EiiaAbaWvwjHj9fQQLAX5ZsfHyvmYUNRAdNC8");
+
 fn e(n: u32) -> ProgramError {
     ProgramError::Custom(n)
 }

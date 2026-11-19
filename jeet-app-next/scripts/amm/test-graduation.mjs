@@ -26,7 +26,7 @@ import {
   decodeFeeState,
 } from "../../src/lib/launch-fees.ts";
 import {
-  V5_PREVIEW_PROGRAM as program,
+  V5_PREVIEW_PROGRAM as defaultProgram,
   initializeV5PreviewInstruction,
   v5PreviewQuoteInstruction,
   v5PreviewTradeInstruction,
@@ -34,21 +34,43 @@ import {
 } from "../../src/lib/launch-v5-preview.ts";
 import { potential, v5Quote } from "../../src/lib/v5-pricing.ts";
 import {
-  activateGraduationInstructions,
-  graduationAddresses,
-  initializeGraduationInstruction,
-  graduateInstruction,
-  decodeGraduation,
+  activateGraduationInstructions as activate,
+  graduationAddresses as deriveGraduation,
+  initializeGraduationInstruction as initializeTerms,
+  graduateInstruction as migrate,
+  decodeGraduation as decodeTerms,
 } from "../../src/lib/launch-graduation.ts";
 import {
   computeBudget,
-  FEE,
+  FEE as defaultFee,
   WSOL,
   TOKEN,
-  swapPool,
+  swapPool as cpmmSwap,
   systemTransfer,
 } from "./cpmm.mjs";
-export async function testGraduation() {
+import { withMainnetReleaseControl } from '../../src/lib/mainnet-release-control.ts';
+
+export async function testGraduation(profile) {
+  const program = profile?.program ?? defaultProgram;
+  const FEE = profile?.feeRecipient ?? defaultFee;
+  const graduationAddresses = (mint, nonce) => deriveGraduation(mint, nonce, profile);
+  const initializeGraduationInstruction = args => initializeTerms(args, profile);
+  const activateGraduationInstructions = args => activate(args, profile);
+  const graduateInstruction = args => migrate(args, profile);
+  const decodeGraduation = bytes => decodeTerms(bytes, profile);
+  const swapPool = (...args) => {
+    const ix = cpmmSwap(...args);
+    return profile ? { ...ix, programAddress: profile.amm } : ix;
+  };
+  const guardedOpcodes = new Set([0, 2, 16, 19, 21, 22, 23]);
+  async function submit(client, instructions) {
+    if (!profile) return client.sendTransaction(instructions);
+    return client.sendTransaction(await Promise.all(instructions.map(async ix => {
+      if (ix.programAddress !== program && ix.programAddress !== defaultProgram) return ix;
+      const rebased = { ...ix, programAddress: program };
+      return guardedOpcodes.has(ix.data?.[0]) ? withMainnetReleaseControl(program, rebased) : rebased;
+    })));
+  }
   const evidence = {
       positive: [],
       rejections: [],
@@ -137,7 +159,7 @@ export async function testGraduation() {
     )[0]?.signature;
     let caught;
     try {
-      await sponsor.sendTransaction(Array.isArray(ixs) ? ixs : [ixs]);
+      await submit(sponsor, Array.isArray(ixs) ? ixs : [ixs]);
     } catch (e) {
       caught = e;
     }
@@ -329,7 +351,7 @@ export async function testGraduation() {
         "initialization reserve overflow",
       );
     }
-    await owner.sendTransaction(setup);
+    await submit(owner, setup);
     await denied(
       v5PreviewQuoteInstruction({ ...l, amount: scale }),
       1501,
@@ -348,7 +370,7 @@ export async function testGraduation() {
         1605,
         "failed activation rolls back mint/freeze revocation",
       );
-      const activated = await owner.sendTransaction(
+      const activated = await submit(owner,
         activateGraduationInstructions({
           ...l,
           ...ga,
@@ -366,7 +388,7 @@ export async function testGraduation() {
         "one transaction revokes both authorities and records prospective terms before trading",
       );
     } else {
-      await owner.sendTransaction([
+      await submit(owner, [
         owner.token.instructions.setAuthority({
           owned: l.mint,
           owner: owner.payer,
@@ -414,7 +436,7 @@ export async function testGraduation() {
   }
   async function quote(l, n, sell = false) {
     const before = await snap();
-    const sent = await sponsor.sendTransaction([
+    const sent = await submit(sponsor, [
       v5PreviewQuoteInstruction({ ...l, amount: n, sell }),
     ]);
     const tx = await rpc("getTransaction", [
@@ -545,7 +567,7 @@ export async function testGraduation() {
         getAddressEncoder().encode(c.payer.address),
       ),
       receipt = await raw(r);
-    const sent = await sponsor.sendTransaction([
+    const sent = await submit(sponsor, [
       await tradeIx(l, c, d, q, sell),
     ]);
     const s = await state(l),
@@ -583,7 +605,7 @@ export async function testGraduation() {
     ga = await graduationAddresses(l.mint, 0n);
   for (const k of Object.values(ga)) keys.add(k);
   keys.add(FEE);
-  await sponsor.sendTransaction([
+  await submit(sponsor, [
     systemTransfer(sponsor.payer, ga.migrator, 1000000n),
   ]);
   const terms = initializeGraduationInstruction({
@@ -592,6 +614,7 @@ export async function testGraduation() {
     creator: creator.payer,
     maxPriceGapBps: 60,
   });
+  if (!profile) {
   await denied(
     {
       ...terms,
@@ -609,6 +632,7 @@ export async function testGraduation() {
     1514,
     "default artifact rejects live migration",
   );
+  }
   await denied(
     initializeGraduationInstruction({
       ...l,
@@ -622,7 +646,7 @@ export async function testGraduation() {
   const tooTight = { ...terms, data: terms.data.slice() };
   new DataView(tooTight.data.buffer).setUint16(1, 0, true);
   await denied(tooTight, 1605, "price continuity outside disclosed tolerance");
-  await sponsor.sendTransaction([terms]);
+  await submit(sponsor, [terms]);
   pass("prospective graduation terms recorded before first trade");
   const grad = async (overrides = {}) =>
     graduateInstruction({
@@ -676,8 +700,9 @@ export async function testGraduation() {
       "substituted graduation account " + i,
     );
   }
+  const duplicate = await grad(profile ? { caller: sponsor.payer } : {});
   await denied(
-    [computeBudget, await grad(), await grad()],
+    [computeBudget, duplicate, duplicate],
     1609,
     "second migration in same transaction rolls back first migration",
   );
@@ -690,8 +715,8 @@ export async function testGraduation() {
   keys.delete(racer.payer.address);
   const migration = await grad(),
     attempts = await Promise.allSettled([
-      sponsor.sendTransaction([computeBudget, migration]),
-      racer.sendTransaction([computeBudget, migration]),
+      submit(sponsor, [computeBudget, migration]),
+      submit(racer, [computeBudget, migration]),
     ]);
   assert.equal(attempts.filter((x) => x.status === "fulfilled").length, 1);
   const winner = attempts.find((x) => x.status === "fulfilled"),
@@ -822,7 +847,7 @@ export async function testGraduation() {
   const treasury = await createKeyPairSignerFromPrivateKeyBytes(
     new Uint8Array(32).fill(42),
   );
-  await sponsor.sendTransaction([
+  await submit(sponsor, [
     systemTransfer(sponsor.payer, treasury.address, 1000000n),
   ]);
   keys.add(treasury.address);
@@ -854,7 +879,8 @@ export async function testGraduation() {
       1304,
       "unauthorized post migration fee claim " + kind,
     );
-    await sponsor.sendTransaction([claim]);
+    if (profile && kind === 0) continue; // The owner-controlled production treasury never signs fixtures.
+    await submit(sponsor, [claim]);
     assert.equal((await sol(who.address)) - old, f.claimable);
     assert.equal((await fee(k)).claimable, 0n);
     await denied(claim, 1307, "duplicate post migration fee claim " + kind);
@@ -908,19 +934,19 @@ export async function testGraduation() {
     tokenProgram: TOKEN,
   });
   keys.add(wrapped);
-  await sponsor.sendTransaction([
+  await submit(sponsor, [
     systemTransfer(alice.payer, wrapped, 10000n),
     alice.token.instructions.syncNative({ account: wrapped }),
   ]);
   const beforePoolSol = await tokens(solPool),
     oldToken = await tokens(a);
-  await sponsor.sendTransaction([
+  await submit(sponsor, [
     computeBudget,
     swapPool(ga, alice.payer, wrapped, a, ga.mint0 === WSOL, 1000n, 1n),
   ]);
   assert.ok((await tokens(a)) > oldToken);
   assert.equal(await tokens(solPool), beforePoolSol + 1000n);
-  await sponsor.sendTransaction([
+  await submit(sponsor, [
     computeBudget,
     swapPool(ga, alice.payer, a, wrapped, ga.mint0 === l.mint, 10n, 1n),
   ]);
@@ -960,7 +986,7 @@ export async function testGraduation() {
     protectedDest = await dest(protectedLaunch, alice),
     pa = await graduationAddresses(protectedLaunch.mint, 1n);
   for (const k of Object.values(pa)) keys.add(k);
-  await sponsor.sendTransaction([
+  await submit(sponsor, [
     initializeGraduationInstruction({
       ...protectedLaunch,
       ...pa,

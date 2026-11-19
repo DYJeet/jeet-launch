@@ -1,0 +1,32 @@
+{
+  "network": "mainnet",
+  "checkedAt": "2026-11-19T16:55:14.701Z",
+  "kind": "rent-only planning estimate",
+  "binaryLength": 277624,
+  "capacity": 277624,
+  "sizes": {
+    "program": 36,
+    "programData": 277669,
+    "temporaryBuffer": 277661
+  },
+  "deploymentRentLamports": {
+    "program": "833120",
+    "programData": "1411208760",
+    "temporaryBuffer": "1411168120",
+    "persistent": "1412041880",
+    "conservativeFundingBeforeFees": "2823210000"
+  },
+  "appRentLamports": {
+    "mint": "1066800",
+    "tokenAccount": "1488440",
+    "custody": "1102360",
+    "opening": "1198880",
+    "curve": "1981200",
+    "feeVault": "1427480",
+    "graduation": "1935480",
+    "buyerReceipt": "1061720",
+    "releaseControl": "701040",
+    "newLaunchAccountBudgetBeforeMetadataAndFees": "14605000",
+    "firstBuyerBothAccounts": "2550160"
+  }
+}

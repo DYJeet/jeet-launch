@@ -3,8 +3,19 @@ import { spawn } from "node:child_process";
 import { mkdtemp, writeFile, open, readFile } from "node:fs/promises";
 import { once } from "node:events";
 import { createHash } from "node:crypto";
-import { getProgramDerivedAddress } from "@solana/kit";
-import { CPMM, WSOL, TOKEN, FEE, SYSTEM, bytes } from "./cpmm.mjs";
+import { address, getProgramDerivedAddress } from "@solana/kit";
+import assert from 'node:assert/strict';
+import { CPMM as defaultAmm, WSOL, TOKEN, FEE as defaultFee, SYSTEM, bytes } from "./cpmm.mjs";
+import { mainnetGraduationProfile } from '../../src/lib/launch-graduation.ts';
+const candidate = process.env.JEET_LOCAL_MAINNET_FIXTURE_PROGRAM;
+const profile = candidate ? mainnetGraduationProfile(address(candidate)) : undefined;
+const CPMM = profile?.amm ?? defaultAmm;
+const FEE = profile?.feeRecipient ?? defaultFee;
+const fixtureDir = process.env.JEET_LOCAL_MAINNET_FIXTURE_ACCOUNTS;
+const jeetSbf = process.env.JEET_GRADUATION_SBF ??
+  "programs/launch-custody/target/local-fee-test/jeet_launch_custody.so";
+if (profile) assert(fixtureDir && process.env.JEET_GRADUATION_SBF && process.env.JEET_AMM_SBF,
+  'The local Mainnet replay requires exact executable and genesis fixtures.');
 const ammSbf = process.env.JEET_AMM_SBF ??
   "programs/launch-custody/target/amm-research/devnet-v0/raydium_cp_swap.so";
 const dir = await mkdtemp("/tmp/jeet-graduation-");
@@ -41,6 +52,15 @@ for (const [i, [key, owner, data]] of [
   [WSOL, TOKEN, native],
 ].entries()) {
   const f = dir + `/genesis-${i}.json`;
+  if (profile) {
+    const source = JSON.parse(await readFile(fixtureDir + '/cpmm-mainnet-account-' + (i + 1) + '.json'));
+    assert.equal(source.pubkey, key);
+    assert.equal(source.account.owner, owner);
+    assert(!source.account.executable);
+    await writeFile(f, JSON.stringify(source));
+    args.push("--account", key, f);
+    continue;
+  }
   await writeFile(
     f,
     JSON.stringify({
@@ -55,6 +75,21 @@ for (const [i, [key, owner, data]] of [
     }),
   );
   args.push("--account", key, f);
+}
+if (profile) {
+  assert.equal(createHash('sha256').update(await readFile(ammSbf)).digest('hex'),
+    'c383e1c5b1f578f3d1bf42f12360fca67225b9adda0f3b6c293ad0d6b966818d');
+  const [control, bump] = await getProgramDerivedAddress({
+    programAddress: profile.program,
+    seeds: ['release-control'],
+  });
+  const data = Buffer.concat([Buffer.from('JEETCTL1'), Buffer.from([bump, 2])]);
+  const file = dir + '/release-control.json';
+  await writeFile(file, JSON.stringify({ pubkey: control, account: {
+    lamports: 10_000_000, data: [data.toString('base64'), 'base64'],
+    owner: profile.program, executable: false, rentEpoch: 0,
+  } }));
+  args.push('--account', control, file);
 }
 const log = await open(dir + "/validator.log", "w");
 const validator = spawn(
@@ -76,12 +111,9 @@ const validator = spawn(
     CPMM,
     ammSbf,
     "--bpf-program",
-    "8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo",
-    process.env.JEET_GRADUATION_SBF ??
-      "programs/launch-custody/target/local-fee-test/jeet_launch_custody.so",
-    "--bpf-program",
-    "7QhXSnj7igy9HX6n1i3bnuc2SUbMTRWZEouGZKcy9d31",
-    "programs/launch-custody/target/deploy/jeet_launch_custody.so",
+    profile?.program ?? "8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo",
+    jeetSbf,
+    ...(profile ? [] : ["--bpf-program", "7QhXSnj7igy9HX6n1i3bnuc2SUbMTRWZEouGZKcy9d31", "programs/launch-custody/target/deploy/jeet_launch_custody.so"]),
     ...args,
   ],
   { stdio: ["ignore", log.fd, log.fd] },
@@ -110,7 +142,7 @@ try {
   let result;
   try {
     result = await Promise.race([
-      testCpmm(),
+      testCpmm(profile),
       new Promise((_, reject) => {
         deadline = setTimeout(
           () => reject(Error("CPMM lifecycle exceeded 300s; inspect " + dir)),
@@ -122,6 +154,7 @@ try {
     clearTimeout(deadline);
   }
   result.completed = true;
+  if (profile) result.network = "local validator replay using Mainnet CPMM and fixture JeeT identities";
   result.jeetSbfSha256 = createHash("sha256")
     .update(
       await readFile(
@@ -141,7 +174,7 @@ try {
     )
     .digest("hex");
   await writeFile(
-    "programs/launch-custody/target/master-verification/graduation-evidence.json",
+    profile ? dir + "/mainnet-fixture-evidence.json" : "programs/launch-custody/target/master-verification/graduation-evidence.json",
     JSON.stringify(
       result,
       (_k, v) => (typeof v === "bigint" ? v.toString() : v),

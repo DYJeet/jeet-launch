@@ -21,8 +21,8 @@ test('finalized verification requires exact loader identity, bytes and authority
     const loader = address('BPFLoaderUpgradeab1e11111111111111111111111');
     const decode = getAddressDecoder();
     const encode = getAddressEncoder();
-    const program = decode.decode(new Uint8Array(32).fill(31));
-    const authority = decode.decode(new Uint8Array(32).fill(71));
+    const program = decode.decode(new Uint8Array(32).fill(32));
+    const authority = decode.decode(new Uint8Array(32).fill(72));
     const [programData] = await getProgramDerivedAddress({ programAddress: loader, seeds: [encode.encode(program)] });
     const artifact = Buffer.alloc(80, 17);
     Buffer.from('7f454c46', 'hex').copy(artifact);

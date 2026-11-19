@@ -123,3 +123,33 @@ test("migrated curve separates historical consideration from current reserve", (
   v.setBigUint64(128, 593n, true);
   assert.throws(() => decodeV5PreviewState(d));
 });
+
+test('Mainnet graduation derives the pinned Raydium configuration and adds a read-only release control', async () => {
+  const { AccountRole, address, createNoopSigner } = await import('@solana/kit');
+  const { graduationAddresses, graduateInstruction, mainnetGraduationProfile } = await import('../src/lib/launch-graduation.ts');
+  const { mainnetReleaseControl, releaseControlInstruction, withMainnetReleaseControl } = await import('../src/lib/mainnet-release-control.ts');
+  const program = address('7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM');
+  const mint = address('So11111111111111111111111111111111111111112');
+  const authority = createNoopSigner(address('13TckZDu8H8VAXSmkfGqVKMwbeWoJsrsBSk5i1KkA1Uf'));
+  const profile = mainnetGraduationProfile(program);
+  const ga = await graduationAddresses(authority.address, 0n, profile);
+  assert.equal(ga.config, 'D4FPEruKEHrG5TenZ2mpDGEfu1iUvTiqBxvpU8HLBvC2');
+  const ix = graduateInstruction({
+    ...ga, mint: authority.address, custody: mint, opening: mint, curve: mint,
+    vault: mint, migrationVault: mint, caller: authority, sequence: 1n, nonce: 0n, maxSetupLamports: 200000000n,
+  }, profile);
+  assert.equal(ix.accounts[19].address, profile.feeRecipient);
+  assert.equal(ix.accounts[25].address, profile.amm);
+  const control = await mainnetReleaseControl(program);
+  const guarded = await withMainnetReleaseControl(program, ix);
+  assert.deepEqual(guarded.accounts.at(-1), { address: control, role: AccountRole.READONLY });
+  assert.equal(guarded.accounts.length, 27);
+  await assert.rejects(withMainnetReleaseControl(program, guarded), /already present/);
+  await assert.rejects(withMainnetReleaseControl(mint, ix), /already derived/);
+  const init = await releaseControlInstruction(program, authority, 'initialize');
+  assert.deepEqual(Array.from(init.data), [24]);
+  const close = await releaseControlInstruction(program, authority, 0);
+  assert.deepEqual(Array.from(close.data), [25, 0]);
+  assert.equal(close.accounts[0].role, AccountRole.READONLY_SIGNER);
+  assert.equal(close.accounts[1].address, control);
+});

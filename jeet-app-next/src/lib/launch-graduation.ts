@@ -1,4 +1,4 @@
-/** Disposable local V5 graduation SDK; no mainnet or public test deployment. */
+/** V5 graduation SDK. The existing UI defaults to the local/Devnet profile. */
 import {
   AccountRole,
   getAddressEncoder,
@@ -22,6 +22,8 @@ export const CPMM_TEST_PROGRAM = address(
 export const NATIVE_MINT = address(
   "So11111111111111111111111111111111111111112",
 );
+export const CPMM_MAINNET_PROGRAM = address("CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C");
+export const CPMM_MAINNET_FEE_RECIPIENT = address("DNXgeM9EiiaAbaWvwjHj9fQQLAX5ZsfHyvmYUNRAdNC8");
 const SYSTEM = address("11111111111111111111111111111111"),
   ASSOCIATED = address("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"),
   RENT = address("SysvarRent111111111111111111111111111111111"),
@@ -49,28 +51,39 @@ const derive = (program: Address, s: string, ...parts: Uint8Array[]) =>
     programAddress: program,
     seeds: [seed(s), ...parts],
   });
-export async function graduationAddresses(mint: Address, nonce: bigint) {
+export type GraduationProfile = { program: Address; amm: Address; feeRecipient: Address };
+const defaultProfile: GraduationProfile = {
+  program: V5_PREVIEW_PROGRAM,
+  amm: CPMM_TEST_PROGRAM,
+  feeRecipient: CP_FEE,
+};
+
+export function mainnetGraduationProfile(program: Address): GraduationProfile {
+  return { program, amm: CPMM_MAINNET_PROGRAM, feeRecipient: CPMM_MAINNET_FEE_RECIPIENT };
+}
+
+export async function graduationAddresses(mint: Address, nonce: bigint, profile = defaultProfile) {
   const n = new Uint8Array(8);
   new DataView(n.buffer).setBigUint64(0, u(nonce), true);
-  const [pool] = await derive(V5_PREVIEW_PROGRAM, "amm_pool", b(mint), n);
-  return graduationPoolAccounts(mint, pool);
+  const [pool] = await derive(profile.program, "amm_pool", b(mint), n);
+  return graduationPoolAccounts(mint, pool, profile);
 }
 
 // The pool comes from the canonical program-owned graduation terms after migration.
-export async function graduationPoolAccounts(mint: Address, pool: Address) {
-  const [terms] = await derive(V5_PREVIEW_PROGRAM, "graduation", b(mint)),
-    [migrator] = await derive(V5_PREVIEW_PROGRAM, "migrator", b(mint));
+export async function graduationPoolAccounts(mint: Address, pool: Address, profile = defaultProfile) {
+  const [terms] = await derive(profile.program, "graduation", b(mint)),
+    [migrator] = await derive(profile.program, "migrator", b(mint));
   const [config] = await derive(
-      CPMM_TEST_PROGRAM,
+      profile.amm,
       "amm_config",
       new Uint8Array([0, 0]),
     ),
     [authority] = await derive(
-      CPMM_TEST_PROGRAM,
+      profile.amm,
       "vault_and_lp_mint_auth_seed",
     ),
-    [lpMint] = await derive(CPMM_TEST_PROGRAM, "pool_lp_mint", b(pool)),
-    [observation] = await derive(CPMM_TEST_PROGRAM, "observation", b(pool));
+    [lpMint] = await derive(profile.amm, "pool_lp_mint", b(pool)),
+    [observation] = await derive(profile.amm, "observation", b(pool));
   const x = b(mint),
     y = b(NATIVE_MINT);
   let mintFirst = false;
@@ -83,12 +96,12 @@ export async function graduationPoolAccounts(mint: Address, pool: Address) {
   const mint0 = mintFirst ? mint : NATIVE_MINT,
     mint1 = mintFirst ? NATIVE_MINT : mint;
   const [vault0] = await derive(
-      CPMM_TEST_PROGRAM,
+      profile.amm,
       "pool_vault",
       b(pool),
       b(mint0),
     ),
-    [vault1] = await derive(CPMM_TEST_PROGRAM, "pool_vault", b(pool), b(mint1));
+    [vault1] = await derive(profile.amm, "pool_vault", b(pool), b(mint1));
   const ata = async (m: Address) =>
     (
       await findAssociatedTokenPda({
@@ -131,6 +144,7 @@ export function initializeGraduationInstruction(
     terms: Address;
     maxPriceGapBps: number;
   },
+  profile = defaultProfile,
 ) {
   if (
     !Number.isInteger(l.maxPriceGapBps) ||
@@ -142,7 +156,7 @@ export function initializeGraduationInstruction(
   data[0] = 21;
   new DataView(data.buffer).setUint16(1, l.maxPriceGapBps, true);
   return {
-    programAddress: V5_PREVIEW_PROGRAM,
+    programAddress: profile.program,
     data,
     accounts: [
       meta(l.creator.address, true, l.creator),
@@ -162,6 +176,7 @@ export function initializeGraduationInstruction(
  */
 export function activateGraduationInstructions(
   l: Parameters<typeof initializeGraduationInstruction>[0],
+  profile = defaultProfile,
 ) {
   return [
     getSetAuthorityInstruction({
@@ -176,7 +191,7 @@ export function activateGraduationInstructions(
       authorityType: AuthorityType.FreezeAccount,
       newAuthority: null,
     }),
-    initializeGraduationInstruction(l),
+    initializeGraduationInstruction(l, profile),
   ];
 }
 export function graduateInstruction(
@@ -187,6 +202,7 @@ export function graduateInstruction(
       nonce: bigint;
       maxSetupLamports: bigint;
     },
+  profile = defaultProfile,
 ) {
   const data = new Uint8Array(25);
   data[0] = 22;
@@ -195,7 +211,7 @@ export function graduateInstruction(
     v.setBigUint64(1 + 8 * i, u(x), true),
   );
   return {
-    programAddress: V5_PREVIEW_PROGRAM,
+    programAddress: profile.program,
     data,
     accounts: [
       meta(l.caller.address, true, l.caller),
@@ -217,17 +233,17 @@ export function graduateInstruction(
       meta(l.migratorLp, true),
       meta(l.vault0, true),
       meta(l.vault1, true),
-      meta(CP_FEE, true),
+      meta(profile.feeRecipient, true),
       meta(l.observation, true),
       meta(TOKEN_PROGRAM_ADDRESS),
       meta(ASSOCIATED),
       meta(SYSTEM),
       meta(RENT),
-      meta(CPMM_TEST_PROGRAM),
+      meta(profile.amm),
     ],
   };
 }
-export function decodeGraduation(data: Uint8Array) {
+export function decodeGraduation(data: Uint8Array, profile = defaultProfile) {
   if (
     data.length !== GRADUATION_SIZE ||
     new TextDecoder().decode(data.subarray(0, 8)) !== "JEETGRD1"
@@ -254,7 +270,7 @@ export function decodeGraduation(data: Uint8Array) {
   };
   if (
     data[252] > 1 ||
-    result.ammProgram !== CPMM_TEST_PROGRAM ||
+    result.ammProgram !== profile.amm ||
     result.maxPriceGapBps > 100 ||
     (result.migrated &&
       (!result.solDeposited || !result.tokensDeposited || !result.lpBurned))

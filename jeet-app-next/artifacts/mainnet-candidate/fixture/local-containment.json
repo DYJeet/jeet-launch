@@ -1,0 +1,16 @@
+{
+  "network": "local validator",
+  "program": "36VASLSKLFD2KokjXG7V28veZvXEsyHRKefLonPaAKzv",
+  "control": "9Lhq6ZJxfwziNtoYxznK1DhxynGN3HWjdmfrj1rBLb6u",
+  "signedLocalTransactions": 5,
+  "verifiedModes": [
+    0,
+    1,
+    2,
+    0
+  ],
+  "deniedUnauthorizedReopen": true,
+  "deniedBuyWhileClosed": true,
+  "validator": "Agave 2.3.13",
+  "note": "A separate local-only authority key was generated for this build. The two rejected attempts used local preflight. The five successful transactions executed on the disposable validator."
+}

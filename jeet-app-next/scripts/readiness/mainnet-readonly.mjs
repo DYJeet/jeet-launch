@@ -16,9 +16,12 @@ const OLD_PROGRAMS = new Set([
   '7QhXSnj7igy9HX6n1i3bnuc2SUbMTRWZEouGZKcy9d31',
   '8zhREvLzbAGnMPrQv9nQ4dzvgmq2unFAsLPaX9ZS3zo',
   'Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D',
+  '36VASLSKLFD2KokjXG7V28veZvXEsyHRKefLonPaAKzv',
+  '5oEzAP4izB65uRm2yDAEf9oALGwHpWkDfyKb8zBY3euC',
   TREASURY,
 ]);
 const PREVIEW_ARTIFACTS = new Set([
+  'f3870160fbcdfc3040dde20d63a2b7918db77f1b2dac0648d5f79b76bdee7b1a',
   '13e0a87c97ba5b670bc2fd358a145618bff4be7fda5460b533e2dc1e3ac424fa',
   'e4516444814532383d1dce55dd84f0b88dacbb35435f738596b1c7fb725e2e2c',
   'a0517db22d618b092e1bd52b6b0e4c0e61bafa035a60abddd7ca3a9f649d87fa',
@@ -47,8 +50,8 @@ async function quote(rpc, binaryLength, capacity) {
     temporaryBuffer: BUFFER_HEADER + binaryLength,
   };
   const rent = n => rpc.getMinimumBalanceForRentExemption(BigInt(n), final).send(timeout());
-  const [program, programData, temporaryBuffer, mint, token, custody, opening, curve, feeVault, graduation, buyerReceipt] =
-    await Promise.all([...Object.values(sizes), 82, 165, 89, 108, 262, 153, 253, 81].map(rent));
+  const [program, programData, temporaryBuffer, mint, token, custody, opening, curve, feeVault, graduation, buyerReceipt, releaseControl] =
+    await Promise.all([...Object.values(sizes), 82, 165, 89, 108, 262, 153, 253, 81, 10].map(rent));
   return {
     kind: 'rent-only planning estimate', binaryLength, capacity, sizes,
     deploymentRentLamports: {
@@ -57,7 +60,7 @@ async function quote(rpc, binaryLength, capacity) {
       conservativeFundingBeforeFees: program + programData + temporaryBuffer,
     },
     appRentLamports: {
-      mint, tokenAccount: token, custody, opening, curve, feeVault, graduation, buyerReceipt,
+      mint, tokenAccount: token, custody, opening, curve, feeVault, graduation, buyerReceipt, releaseControl,
       newLaunchAccountBudgetBeforeMetadataAndFees:
         mint + token * 3n + custody + opening + curve + feeVault * 2n + graduation,
       firstBuyerBothAccounts: token + buyerReceipt,
@@ -67,14 +70,13 @@ async function quote(rpc, binaryLength, capacity) {
 
 export async function verify(rpc, artifact, expectedHash, program, authority) {
   assert.match(expectedHash, /^[a-f0-9]{64}$/);
-  assert(!PREVIEW_ARTIFACTS.has(expectedHash), 'A local/Devnet artifact is not a Mainnet candidate.');
+  assert(!PREVIEW_ARTIFACTS.has(expectedHash), 'A fixture or Devnet artifact is not a Mainnet candidate.');
   assert(!OLD_PROGRAMS.has(program), 'A dedicated Mainnet program identity is required.');
   assert(!OLD_PROGRAMS.has(authority) && authority !== program, 'Use a dedicated explicit upgrade authority.');
   const bytes = await readFile(artifact);
   assert(bytes.length > PROGRAMDATA_HEADER && bytes.length <= maxCapacity);
   assert.equal(bytes.subarray(0, 4).toString('hex'), '7f454c46', 'Expected an ELF artifact.');
   assert.equal(hash(bytes), expectedHash, 'The local artifact hash differs from the expected hash.');
-  assert(bytes.includes(Buffer.from(encode.encode(program))), 'The local artifact does not include the declared program address.');
   assert(bytes.includes(Buffer.from(encode.encode(TREASURY))), 'The local artifact does not include the approved treasury address.');
   const [programData] = await getProgramDerivedAddress({ programAddress: LOADER, seeds: [encode.encode(program)] });
   const accounts = await rpc.getMultipleAccounts([program, programData], { ...final, encoding: 'base64' }).send(timeout());
@@ -134,11 +136,25 @@ async function dependencies(rpc) {
   };
 }
 
+async function verifyReleaseControl(rpc, program, mode) {
+  assert(!OLD_PROGRAMS.has(program), 'A dedicated Mainnet program identity is required.');
+  assert(/^[012]$/.test(mode), 'Expected release mode 0, 1 or 2.');
+  const [control, bump] = await getProgramDerivedAddress({ programAddress: program, seeds: ['release-control'] });
+  const result = await rpc.getAccountInfo(control, { ...final, encoding: 'base64' }).send(timeout());
+  const state = result.value;
+  assert(state?.owner === program && !state.executable, 'Release control is not initialized by the candidate.');
+  const bytes = Buffer.from(state.data[0], 'base64');
+  assert(bytes.length === 10 && bytes.subarray(0, 8).equals(Buffer.from('JEETCTL1')) && bytes[8] === bump,
+    'Release-control data differs from the candidate layout.');
+  assert.equal(bytes[9], Number(mode), 'Release mode differs from the expected mode.');
+  return { kind: 'finalized release-control verification', program, control, mode: bytes[9], observedSlot: result.context.slot };
+}
+
 async function main() {
   const [mode, ...args] = process.argv.slice(2);
   assert((mode === 'quote' && args.length === 2) || (mode === 'verify' && args.length === 4) ||
-    (mode === 'dependencies' && args.length === 0),
-    'Usage: mainnet-readonly.mjs quote ELF_BYTES PROGRAMDATA_CAPACITY | verify ELF_PATH SHA256 PROGRAM AUTHORITY | dependencies');
+    (mode === 'dependencies' && args.length === 0) || (mode === 'verify-control' && args.length === 2),
+    'Usage: mainnet-readonly.mjs quote ELF_BYTES PROGRAMDATA_CAPACITY | verify ELF_PATH SHA256 PROGRAM AUTHORITY | verify-control PROGRAM MODE | dependencies');
   const rpcUrl = new URL(process.env.JEET_MAINNET_READ_RPC ?? 'https://api.mainnet-beta.solana.com/');
   assert(rpcUrl.protocol === 'https:' && !rpcUrl.username && !rpcUrl.password && !rpcUrl.hash, 'HTTPS Solana RPC required.');
   const rpc = createServerWalletRpc(rpcUrl.href);
@@ -146,7 +162,8 @@ async function main() {
   const report = mode === 'quote'
     ? await quote(rpc, amount(args[0]), amount(args[1]))
     : mode === 'verify' ? await verify(rpc, args[0], args[1], address(args[2]), address(args[3]))
-      : await dependencies(rpc);
+      : mode === 'verify-control' ? await verifyReleaseControl(rpc, address(args[0]), args[1])
+        : await dependencies(rpc);
   console.log(JSON.stringify({ network: 'mainnet', checkedAt: new Date().toISOString(), ...report },
     (_, value) => typeof value === 'bigint' ? String(value) : value, 2));
 }

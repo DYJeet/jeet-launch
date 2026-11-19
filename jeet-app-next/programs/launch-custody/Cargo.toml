@@ -12,6 +12,8 @@ crate-type = ["cdylib"]
 local-fee-test = []
 # Requires a distinct Devnet program and the approved treasury at build time.
 devnet = []
+# Dedicated release candidate. Requires public program and containment authority identities.
+mainnet = []
 
 [dependencies]
 solana-program = "=2.3.0"

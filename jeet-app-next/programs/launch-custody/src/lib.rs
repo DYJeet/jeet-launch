@@ -1,16 +1,18 @@
 //! Local launch custody and cumulative opening wallet caps.
 mod caps;
+#[cfg(feature = "mainnet")]
+mod containment;
 mod curve;
 mod fees;
-#[cfg(any(feature = "local-fee-test", feature = "devnet"))]
+#[cfg(any(feature = "local-fee-test", feature = "devnet", feature = "mainnet"))]
 mod graduation;
 mod market;
-#[cfg(any(feature = "local-fee-test", feature = "devnet"))]
+#[cfg(any(feature = "local-fee-test", feature = "devnet", feature = "mainnet"))]
 mod metadata;
 mod protected;
-#[cfg(any(feature = "local-fee-test", feature = "devnet"))]
+#[cfg(any(feature = "local-fee-test", feature = "devnet", feature = "mainnet"))]
 mod v5;
-#[cfg(any(test, feature = "local-fee-test", feature = "devnet"))]
+#[cfg(any(test, feature = "local-fee-test", feature = "devnet", feature = "mainnet"))]
 mod v5_math;
 
 use solana_program::{
@@ -22,12 +24,14 @@ use solana_sdk_ids::system_program;
 use solana_system_interface::instruction as system_instruction;
 use spl_token::state::{Account as TokenAccount, AccountState, Mint};
 
-#[cfg(not(any(feature = "local-fee-test", feature = "devnet")))]
+#[cfg(not(any(feature = "local-fee-test", feature = "devnet", feature = "mainnet")))]
 solana_program::declare_id!("7QhXSnj7igy9HX6n1i3bnuc2SUbMTRWZEouGZKcy9d31");
 #[cfg(feature = "local-fee-test")]
 solana_program::declare_id!("8zhREvLzbAGnMPrmQv9nQ4dzvgmq2unFAsLPaX9ZS3zo");
 #[cfg(feature = "devnet")]
 include!(concat!(env!("OUT_DIR"), "/devnet_identities.rs"));
+#[cfg(feature = "mainnet")]
+include!(concat!(env!("OUT_DIR"), "/mainnet_identities.rs"));
 entrypoint!(process_instruction);
 
 const SEED: &[u8] = b"launch";
@@ -78,8 +82,15 @@ pub fn process_instruction(
     if program_id != &id() {
         return Err(ProgramError::IncorrectProgramId);
     }
+    #[cfg(feature = "mainnet")]
+    let accounts = match input.first() {
+        Some(24 | 25) => return containment::configure(program_id, accounts, input),
+        Some(0 | 2 | 16 | 19 | 21 | 22 | 23) => containment::admit(program_id, accounts)?,
+        Some(10 | 17 | 18 | 20) => accounts, // Quotes, sells and earned fee claims remain available.
+        _ => return Err(ProgramError::InvalidInstructionData),
+    };
     if matches!(input.first(), Some(16..=23)) {
-        #[cfg(any(feature = "local-fee-test", feature = "devnet"))]
+        #[cfg(any(feature = "local-fee-test", feature = "devnet", feature = "mainnet"))]
         {
             return if matches!(input.first(), Some(21 | 22)) {
                 graduation::process(program_id, accounts, input)
@@ -89,7 +100,7 @@ pub fn process_instruction(
                 v5::process(program_id, accounts, input)
             };
         }
-        #[cfg(not(any(feature = "local-fee-test", feature = "devnet")))]
+        #[cfg(not(any(feature = "local-fee-test", feature = "devnet", feature = "mainnet")))]
         {
             return Err(ProgramError::Custom(1514));
         }

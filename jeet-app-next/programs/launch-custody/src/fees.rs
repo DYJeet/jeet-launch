@@ -231,7 +231,7 @@ pub fn process(program: &Pubkey, accounts: &[AccountInfo], input: &[u8]) -> Prog
             let supported = (data.len() == super::protected::LEN
                 && &data[..8] == super::curve::FEE_MAGIC)
                 || (data.len() == super::market::LEN && &data[..8] == super::market::MAGIC);
-            #[cfg(any(feature = "local-fee-test", feature = "devnet"))]
+            #[cfg(any(feature = "local-fee-test", feature = "devnet", feature = "mainnet"))]
             let supported =
                 supported || (data.len() == super::v5::LEN && &data[..8] == super::v5::MAGIC);
             if curve.key != &curve_key || curve.owner != program || !supported {
