@@ -31,7 +31,7 @@ SQLite under `/tmp` is a regenerable per-instance read cache, not durable cross-
 6. On iPhone, use Phantom's in-app browser when available. Owner currently cannot install it, so iPhone installed-wallet acceptance remains blocked.
 7. Confirm Create and all transaction actions explain why they are disabled. Do not send funds or use Mainnet.
 
-Owner reported desktop Phantom connection PASS. Real signing/rejection/trading and iPhone acceptance remain unverified; simulated/local-wallet evidence is labelled separately.
+Owner reported desktop Phantom connection and rejection handling PASS on the private Codespace preview. Owner signing, trade settlement and iPhone acceptance remain unverified. See the [dated acceptance record](DEVNET-PHANTOM-UAT.md#desktop-phantom-rejection-acceptance).
 
 ## Separate post-upgrade transaction approvals
 

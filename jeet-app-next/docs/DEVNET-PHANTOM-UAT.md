@@ -16,7 +16,7 @@ The launch and market-history indexes use server-side RPC pacing. For a persiste
 
 ## Owner acceptance checklist
 
-Use `https://symmetrical-adventure-544vrwjwxppcv7wx-3019.app.github.dev/` while the Codespace is running. Cloud-browser HTTPS/token rendering passed; actual installed Phantom acceptance must still be checked by the owner. A private forwarded port may require GitHub sign-in. Do not make the port public merely to bypass authentication.
+Use `https://symmetrical-adventure-544vrwjwxppcv7wx-3019.app.github.dev/` while the Codespace is running. The owner completed installed desktop Phantom connection and rejection on this private preview. See the dated acceptance record below. A private forwarded port may require GitHub sign-in. Do not make the port public merely to bypass authentication.
 
 1. Desktop: open the URL in a browser with the actual installed and unlocked Phantom extension. Select Devnet in Phantom. Connect your existing wallet, verify the displayed public address and balance, disconnect, reload and reconnect.
 2. iPhone: open the same HTTPS URL inside Phantom's in-app browser, using its existing wallet. Repeat connection, address, balance, disconnect and reconnect checks. Responsive desktop emulation is not native iPhone acceptance.
@@ -26,7 +26,24 @@ Use `https://symmetrical-adventure-544vrwjwxppcv7wx-3019.app.github.dev/` while 
 
 Do not export or import Codespace test-wallet private keys into a browser. No seed phrase, private key or treasury secret is needed to connect an existing Phantom wallet. The application uses Wallet Standard signing, verifies the returned signer/signature and broadcasts the saved transaction wire through the configured network. Pending signatures and launch recovery records contain public state, not wallet secrets. A rejected signature or account change must not broadcast.
 
-Automated disposable Wallet Standard signing tests are genuine local-validator tests, but are not installed Phantom acceptance. The previous browser inspection detected no Wallet Standard wallet; desktop Phantom and native iPhone acceptance remain untested until the owner performs them.
+## Desktop Phantom rejection acceptance
+
+On November 19, 2026, the owner reported opening JEETTEST in Chrome on their Chromebook through private Codespace port 3019. The installed Phantom extension displayed a Devnet transaction confirmation. The owner selected **Reject** and JeeT Launch displayed **User rejected request**. No transaction was approved. The private rejection build based on `b04a47032d39b407e0a64493746b144123268102` separately returned HTTP 403 for a broadcast request. Desktop installed-Phantom rejection handling is **PASS**. Owner signing and settlement, account-switch/reconnect coverage, and native iPhone acceptance remain pending.
+
+## Proposed owner-signed acceptance
+
+Propose one version-0, one-signer Devnet buy of exactly **2,400 JEETTEST** for mint `7NwQ6njcXzujG8CTpzqoeyBDAXYjuAMNQUi9bibE4tfM`. The owner's connected Phantom account is the sole signer and fee payer. Use a 600,000 compute-unit limit, zero priority fee, and zero slippage. Create the buyer's canonical associated token account only if needed, then execute the JeeT buy instruction, which initializes the canonical buyer-receipt account if needed.
+
+Read-only quote at Devnet slot `524051387`, curve sequence `4`, on November 19, 2026. The curve consideration was 103,199 lamports, the platform fee 670, and the creator fee 362. The fee-inclusive curve-spend cap was 104,231 lamports. Devnet quoted a 5,000-lamport network fee on unsigned one-signer messages with and without associated token account creation. The payer retains a 650,240-lamport reserve.
+
+| Accounts the buy must fund | Account rent (lamports) | Maximum gross debit (lamports) | Minimum starting balance (lamports) |
+| --- | ---: | ---: | ---: |
+| None | 0 | 109,231 | 759,471 |
+| Buyer receipt | 1,061,720 | 1,170,951 | 1,821,191 |
+| Associated token account | 1,488,440 | 1,597,671 | 2,247,911 |
+| Both accounts | 2,550,160 | 2,659,391 | 3,309,631 |
+
+Recheck the exact owner's public address, balance, account existence, curve sequence, fee, rent and unsigned simulation before requesting separate approval for the exact buy and its gross SOL cap. This quote uses the existing disposable payer only to size the unsigned message variants. No signing, broadcast, or wallet funding occurred. A later sell, claim, new token or migration requires separate authorization. The private rejection server continues to deny broadcasts and Vercel Production stays read-only.
 
 ## Fees and claims
 

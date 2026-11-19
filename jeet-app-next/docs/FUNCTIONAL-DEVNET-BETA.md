@@ -67,7 +67,7 @@ The report hash is an operator attestation gate, **not automated proof that Phan
 
 ## Chromebook Phantom acceptance — owner action required
 
-Owner-confirmed installed Chrome-extension connection and correct address display remain **PASS**. Genuine signing, rejection, confirmation and owner-wallet trading remain **UNVERIFIED**. No iPhone Phantom installation is required to complete desktop acceptance. Existing desktop/mobile layout and local simulated-wallet evidence are retained; they are not substituted for an installed-wallet test.
+Owner-confirmed installed Chrome-extension connection and desktop rejection handling are **PASS**. Owner signing, confirmation and owner-wallet trading remain **UNVERIFIED**. The dated owner evidence and proposed buy are in [Devnet Phantom acceptance](DEVNET-PHANTOM-UAT.md). No iPhone Phantom installation is required to complete desktop acceptance. Existing desktop/mobile layout and local simulated-wallet evidence are retained; they are not substituted for an installed-wallet test.
 
 Use a private owner-only Codespace candidate preview for acceptance, with the same candidate code and explicit Devnet origin/network configuration. Keep its forwarded port private. This controlled non-Vercel environment can exercise the existing wallet flow before a public Vercel write build; it is not a public-write deployment. Its exact HTTPS URL must be verified after the preview is started; none is invented here.
 
@@ -75,8 +75,8 @@ Minimum owner steps:
 
 1. Open that verified private HTTPS preview on the Chromebook, unlock the installed Phantom extension, select Devnet and connect. Verify the complete public address, disconnect/reconnect, and switch accounts to ensure balances/controls follow the selected account.
 2. Provide **only the public Devnet address** for a fresh read-only balance/account-rent/fee quote. Never provide seed phrases or private keys, and never import the disposable Codespace keys into Phantom.
-3. Open existing JEETTEST and preview a 2,400-token buy. Verify mint, Devnet, 0.65%/0.35% fees, network costs and any ATA/buyer-account rent. Click through only to **Reject/Cancel** in Phantom. Check the explicit rejected state and unchanged on-chain balance/history. Insufficient-funds or wrong-network rejection before Phantom is useful safety evidence, but is not an installed-Phantom signature-rejection pass.
-4. Obtain separate explicit approval for this owner wallet's buy/sell and its actual gross-debit cap, then approve those operations yourself in Phantom and confirm receipts/balances. The old three disposable-wallet transactions are completed and cannot be reused as spending authorization. A fresh owner wallet may need ATA and buyer-receipt rent, so do not reuse the 0.000200-SOL quote without inspecting its accounts. No new funding or treasury signing is included.
+3. Desktop rejection completed on November 19, 2026. The installed Phantom prompt was rejected and JeeT Launch displayed **User rejected request**.
+4. Obtain separate explicit approval for one buy from this owner wallet and its actual gross-debit cap. The owner then approves on-device and confirms the receipt and balances. A sell needs its own approval. The old three disposable-wallet transactions are completed and cannot be reused as spending authorization. A fresh owner wallet may need ATA and buyer-receipt rent, so do not reuse the 0.000200-SOL quote without inspecting its accounts. No new funding or treasury signing is included.
 5. Save the owner acceptance report/receipts and hash it only after real approval/rejection are observed. Do not claim real-wallet acceptance from mock RPC tests.
 
 ## Functional evidence and remaining gates
