@@ -55,6 +55,13 @@ test('Mainnet preview pins program and genesis, exact HTTPS origin, and rejects 
     assert(localWalletConfiguration(request()));
     process.env.VERCEL_URL = 'other.example';
     assert.throws(() => localWalletConfiguration(request()));
+    delete process.env.JEET_MAINNET_PREVIEW_ORIGIN;
+    assert(localWalletConfiguration(new Request('https://other.example/api/wallet/environment', {
+      headers: { host: 'other.example', origin: 'https://other.example' },
+    })));
+    assert.throws(() => localWalletConfiguration(request()));
+    process.env.VERCEL_URL = 'other.example/path';
+    assert.throws(() => localWalletConfiguration(request()));
   `));
 });
 

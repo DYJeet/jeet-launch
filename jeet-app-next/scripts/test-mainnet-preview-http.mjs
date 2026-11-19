@@ -133,7 +133,7 @@ try {
 
   const httpOnly = process.env.JEET_MAINNET_HTTP_ONLY === '1';
   if (!httpOnly) {
-    browser = await chromium.launch({ executablePath: process.env.JEET_CHROMIUM_BIN ?? '/usr/bin/chromium', headless: true, args: ['--no-sandbox'] });
+    browser = await chromium.launch({ executablePath: process.env.JEET_CHROMIUM_BIN ?? '/usr/bin/chromium', headless: true, args: process.env.JEET_CHROMIUM_ARGS_JSON ? JSON.parse(process.env.JEET_CHROMIUM_ARGS_JSON) : ['--no-sandbox'] });
     const context = await browser.newContext({ ignoreHTTPSErrors: true });
     await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort());
   for (const viewport of [{ width: 1365, height: 900 }, { width: 390, height: 844 }]) {
@@ -164,7 +164,7 @@ try {
     results.push('built Create, Explore and Revenue pages serve the Mainnet read-only release notice');
   }
   assert(!rpcCalls.some(method => method === 'sendTransaction' || method === 'simulateTransaction'));
-  const report = { status: httpOnly ? 'PASS_HTTP_BROWSER_PENDING' : 'PASS', browserAcceptance: httpOnly ? 'deferred: this run covers HTTP only' : 'desktop and mobile emulation passed', evidence: 'local HTTPS application with synthetic Mainnet RPC and real local SQLite backend',
+  const report = { browserVersion: browser?.version(), status: httpOnly ? 'PASS_HTTP_BROWSER_PENDING' : 'PASS', browserAcceptance: httpOnly ? 'deferred: this run covers HTTP only' : 'desktop and mobile emulation passed', evidence: 'local HTTPS application with synthetic Mainnet RPC and real local SQLite backend',
     realSolanaRequests: 0, transactionsSubmitted: 0, viewportSizes: httpOnly ? [] : ['1365x900', '390x844'], checks: results };
   console.log(JSON.stringify(report, null, 2));
   if (process.env.JEET_MAINNET_HTTP_REPORT)

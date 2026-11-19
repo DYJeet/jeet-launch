@@ -71,7 +71,12 @@ function mainnetReadConfiguration(request: Request, pageNavigation: boolean) {
       process.env.JEET_DEVNET_WALLET === "1" || process.env.JEET_LOCAL_WALLET === "1" ||
       (process.env.VERCEL === "1" && process.env.VERCEL_ENV !== "preview"))
     throw Error("Isolated Mainnet read preview configuration is required.");
-  const origin = new URL(process.env.JEET_MAINNET_PREVIEW_ORIGIN ?? "");
+  const configuredOrigin = process.env.JEET_MAINNET_PREVIEW_ORIGIN;
+  const deployment = process.env.VERCEL === "1" ? process.env.VERCEL_URL : undefined;
+  // Vercel's system hostname belongs to this deployment. It never comes from request headers.
+  const origin = new URL(deployment ? "https://" + deployment : configuredOrigin ?? "");
+  if (configuredOrigin && new URL(configuredOrigin).href !== origin.href)
+    throw Error("Explicit Mainnet origin differs from the current deployment.");
   const previewNavigation = pageNavigation && request.method === "GET" && !request.headers.has("origin") &&
     request.headers.get("sec-fetch-mode") === "navigate" && request.headers.get("sec-fetch-dest") === "document";
   if (origin.protocol !== "https:" || origin.username || origin.password || origin.pathname !== "/" ||
