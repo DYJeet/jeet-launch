@@ -9,7 +9,8 @@ export default async function RevenuePage({
   searchParams: Promise<{ mint?: string }>;
 }) {
   const { mint } = await searchParams;
-  const local = walletModeEnabled();
+  // Hosted releases never fall back to the legacy direct-signing console.
+  const local = walletModeEnabled() || process.env.VERCEL === "1";
   return (
     <>
       <SiteHeader />

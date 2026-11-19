@@ -5,6 +5,7 @@ export async function GET(
   request: Request,
   context: { params: Promise<{ name: string }> },
 ) {
+  if (process.env.VERCEL === "1") return new Response("Local workspace assets are unavailable on the public deployment.", { status: 404 });
   try {
     localWalletConfiguration(request);
     const name = assetName((await context.params).name),

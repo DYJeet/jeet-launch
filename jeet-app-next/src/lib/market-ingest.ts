@@ -1,4 +1,5 @@
 import type { Checkpoint, MarketEvent, MarketStore } from "./market-store.ts";
+import type { RemoteMarketStore } from './shared-backend-client.ts';
 
 export type IndexedSignature = { signature: string; slot: bigint; failed: boolean };
 type HistoryRecord = { signature: string; slot: string };
@@ -33,8 +34,8 @@ export async function readHistoryPage<Record extends HistoryRecord>(prior: Check
   return { next, events };
 }
 
-export async function ingestMarketPage(store: MarketStore, network: string, stream: string, source: HistorySource) {
-  const prior = store.checkpoint(network, stream);
+export async function ingestMarketPage(store: MarketStore | RemoteMarketStore, network: string, stream: string, source: HistorySource) {
+  const prior = await store.checkpoint(network, stream);
   const { next, events } = await readHistoryPage(prior, source);
   return store.commit(network, stream, prior, next, events);
 }

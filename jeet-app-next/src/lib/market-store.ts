@@ -3,6 +3,7 @@ import { DatabaseSync } from "node:sqlite";
 import { mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import type { IndexedLaunch } from "./launch-index.ts";
+import { RemoteMarketStore, SharedBackendClient, sharedBackendConfiguration } from './shared-backend-client.ts';
 
 export type MarketEvent = {
   id: string;
@@ -26,6 +27,7 @@ export class MarketStore {
     this.db.exec(`
       PRAGMA busy_timeout=3000;
       PRAGMA journal_mode=WAL;
+      PRAGMA synchronous=FULL;
       CREATE TABLE IF NOT EXISTS launches (
         network TEXT NOT NULL, mint TEXT NOT NULL, creator TEXT NOT NULL, name TEXT NOT NULL,
         symbol TEXT NOT NULL, activation TEXT NOT NULL, volume TEXT NOT NULL,
@@ -139,6 +141,12 @@ export class MarketStore {
       const volume = this.marketVolume(network, stream);
       const insert = this.db.prepare("INSERT OR IGNORE INTO market_events VALUES (?,?,?,?,?,?)");
       for (const event of events) {
+        const existing = this.db.prepare('SELECT event FROM market_events WHERE network=? AND stream=? AND id=?').get(network, stream, event.id);
+        if (existing) {
+          const prior: MarketEvent = JSON.parse(String(existing.event));
+          if (Object.keys({ ...prior, ...event }).some(key => prior[key as keyof MarketEvent] !== event[key as keyof MarketEvent]))
+            throw Error('Conflicting canonical event replay; checkpoint retained.');
+        }
         const result = insert.run(network, stream, event.id, event.signature, event.slot.padStart(20, "0"), JSON.stringify(event));
         if (result.changes && (event.kind === "buy" || event.kind === "sell")) {
           volume.lamports += BigInt(event.lamports);
@@ -195,9 +203,21 @@ export class MarketStore {
     const events: MarketEvent[] = rows.slice(0, 16).map(row => JSON.parse(String(row.event)));
     return { events, next: rows.length > 16 ? events.at(-1)?.id : undefined, cursorExpired: !!before && !anchor };
   }
+  historySnapshot(network: string, stream: string, before?: string, signature?: string) {
+    this.db.exec('BEGIN');
+    try {
+      const result = { ...this.history(network, stream, before, signature), checkpoint: this.checkpoint(network, stream), volume: this.marketVolume(network, stream) };
+      this.db.exec('COMMIT'); return result;
+    } catch (error) { this.db.exec('ROLLBACK'); throw error; }
+  }
+
 }
 
-let instance: MarketStore | undefined;
+let instance: MarketStore | RemoteMarketStore | undefined;
 export function marketStore() {
+  const remote = sharedBackendConfiguration();
+  if (remote) return instance ??= new RemoteMarketStore(new SharedBackendClient(remote));
+  if (process.env.VERCEL === '1' && process.env.NEXT_PUBLIC_JEET_PUBLIC_BETA === '0')
+    throw Error('Public writes require a durable shared index; temporary storage is not permitted.');
   return instance ??= new MarketStore(process.env.JEET_MARKET_DB || (process.env.VERCEL === "1" ? "/tmp/jeet-beta-market.sqlite" : resolve(".jeet-index", "market.sqlite")));
 }

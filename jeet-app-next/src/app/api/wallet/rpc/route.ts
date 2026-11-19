@@ -1,4 +1,4 @@
-import { admitPublicRead } from "@/lib/public-read-limit";
+import { admitPublicRequest } from "@/lib/public-read-limit";
 import {
   checkedLocalGenesis,
   localWalletConfiguration,
@@ -9,8 +9,8 @@ import { walletUpstreamFetch } from "@/lib/wallet-rpc-server";
 export const dynamic = "force-dynamic";
 let active = 0;
 export async function POST(request: Request) {
-  if (publicBetaServerReadOnly() && !admitPublicRead(request.headers.get("x-real-ip") ?? "unknown"))
-    return Response.json({ error: "Beta request limit reached. Retry shortly." }, { status: 429, headers: { "retry-after": "60" } });
+  if (!(await admitPublicRequest(request)))
+    return Response.json({ error: "Shared request quota unavailable or exhausted. Retry shortly." }, { status: 429, headers: { "retry-after": "60" } });
   try {
     const { url, environment } = localWalletConfiguration(request);
     if (!request.headers.get("content-type")?.startsWith("application/json"))
@@ -43,6 +43,8 @@ export async function POST(request: Request) {
       const body = validateWalletRpc(JSON.parse(raw));
       if (publicBetaServerReadOnly() && ["sendTransaction", "simulateTransaction"].includes(String(body.method)))
         return Response.json({ error: "Public beta transaction operations are disabled." }, { status: 403 });
+      if (["sendTransaction", "simulateTransaction"].includes(String(body.method)) && !(await admitPublicRequest(request, 'write')))
+        return Response.json({ error: 'Shared transaction quota unavailable or exhausted. Nothing forwarded.' }, { status: 429, headers: { 'retry-after': '60' } });
       await checkedLocalGenesis(url, environment.genesis);
       const result = await walletUpstreamFetch(url, raw, request.signal);
       // Preserve raw JSON integer lexemes. Kit's RPC parser handles u64 as bigint.

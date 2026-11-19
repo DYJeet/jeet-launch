@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "networkCallsToSolana": 0,
+  "cases": [
+    {
+      "case": "two Next server processes share one global client quota",
+      "statuses": [
+        503,
+        503,
+        429,
+        503,
+        503,
+        429,
+        429,
+        503,
+        429,
+        429,
+        429,
+        429
+      ],
+      "passed": true
+    },
+    {
+      "path": "/create",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "path": "/explore",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "path": "/revenue",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "path": "/api/local-test/health",
+      "status": 404,
+      "passed": true
+    },
+    {
+      "path": "/api/local-assets/0000000000000000000000000000000000000000000000000000000000000000.json",
+      "status": 404,
+      "passed": true
+    },
+    {
+      "path": "/api/local-assets",
+      "status": 403,
+      "passed": true
+    },
+    {
+      "path": "/api/local-test/create",
+      "status": 403,
+      "passed": true
+    },
+    {
+      "case": "backend unavailable: transaction forwarding fails closed",
+      "status": 429,
+      "passed": true
+    },
+    {
+      "case": "environment reads share unavailable backend denial",
+      "status": 429,
+      "passed": true
+    }
+  ]
+}

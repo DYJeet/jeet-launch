@@ -1,5 +1,5 @@
-import { publicBetaServerReadOnly } from "@/lib/public-beta";
-import { admitPublicRead } from "@/lib/public-read-limit";
+import { recoverFinalizedTransaction, archivalTransactionReader, verifiedHistoryRpc, historyCoverageGap } from "@/lib/history-recovery";
+import { admitPublicRequest } from "@/lib/public-read-limit";
 import { address, getBase64Encoder, signature } from "@solana/kit";
 import { createServerWalletRpc } from "@/lib/wallet-rpc-server";
 import { localReadConfiguration, checkedLocalGenesis } from "@/lib/local-wallet-server";
@@ -17,8 +17,8 @@ const cooldown = new Map<string, number>();
 const noCache = { "Cache-Control": "no-store" };
 
 export async function GET(request: Request) {
-  if (publicBetaServerReadOnly() && !admitPublicRead(request.headers.get("x-real-ip") ?? "unknown"))
-    return Response.json({ error: "Beta request limit reached. Retry shortly." }, { status: 429, headers: { "retry-after": "60" } });
+  if (!(await admitPublicRequest(request)))
+    return Response.json({ error: "Shared request quota unavailable or exhausted. Retry shortly." }, { status: 429, headers: { "retry-after": "60" } });
   let config;
   try { config = localReadConfiguration(request); }
   catch { return Response.json({ error: "Local history is disabled." }, { status: 404 }); }
@@ -40,7 +40,9 @@ export async function GET(request: Request) {
   const network = config.environment.genesis + ":" + config.environment.program;
   const stream = mint + (amm ? ":amm" : ":curve");
   const key = network + ":" + stream;
-  const store = marketStore();
+  let store;
+  try { store = marketStore(); }
+  catch { return Response.json({ error: 'Shared history service unavailable. Retry later.' }, { status: 503 }); }
   let stale = false;
   try {
     const existing = inflight.get(key);
@@ -50,6 +52,7 @@ export async function GET(request: Request) {
       const update = (async () => {
         await checkedLocalGenesis(config.url, config.environment.genesis);
         const rpc = createServerWalletRpc(config.url);
+        const historyRpc = await verifiedHistoryRpc(config.url, config.environment.genesis);
         const options = { abortSignal: AbortSignal.timeout(12000) };
         const canonical = await graduationAddresses(mint, 0n);
         const termsAccount = (await rpc.getAccountInfo(canonical.terms,
@@ -61,11 +64,10 @@ export async function GET(request: Request) {
         if (terms.mint !== mint || terms.curve !== curve || (amm && !terms.migrated))
           throw Error("Finalized market is unavailable.");
         const pool = amm ? await ammHistoryPool(mint, terms) : undefined;
-        const prior = store.checkpoint(network, stream);
-        let missing = false;
+        const prior = await store.checkpoint(network, stream);
         const { events, next } = await readHistoryPage<MarketEvent>(prior, {
           async signatures(cursor) {
-            return (await rpc.getSignaturesForAddress(pool?.pool ?? curve, {
+            return (await historyRpc.getSignaturesForAddress(pool?.pool ?? curve, {
               commitment: "finalized", limit: historyBatchSize, before: cursor ? signature(cursor) : undefined,
             }).send(options)).map(entry => ({ signature: entry.signature, slot: entry.slot, failed: !!entry.err }));
           },
@@ -73,8 +75,8 @@ export async function GET(request: Request) {
             const read = () => rpc.getTransaction(signature(entry.signature), {
               encoding: "json", commitment: "finalized", maxSupportedTransactionVersion: 0,
             }).send(options);
-            const tx = await read() ?? await read();
-            if (!tx?.meta) { missing = true; return []; }
+            const tx = await recoverFinalizedTransaction(read, archivalTransactionReader(entry.signature, config.environment.genesis));
+            if (!tx?.meta) throw Error("Finalized transaction missing; retry page without advancing its cursor.");
             if (tx.slot !== entry.slot || tx.transaction.signatures[0] !== entry.signature)
               throw Error("Finalized transaction identity mismatch.");
             if (tx.meta.err) throw Error("Finalized status changed.");
@@ -85,10 +87,10 @@ export async function GET(request: Request) {
               wallet: event.wallet, tokens: event.tokens.toString(), lamports: event.raw.toString(),
             });
             if (pool) {
-              if (!tx.meta.innerInstructions) { missing = true; return []; }
+              if (!tx.meta.innerInstructions) throw Error("Finalized AMM data incomplete; retain cursor.");
               return ammTradeEvents(tx, pool).map(event => trade(event, "swap:" + event.index));
             }
-            if (!tx.meta.logMessages || tx.meta.logMessages.includes("Log truncated")) { missing = true; return []; }
+            if (!tx.meta.logMessages || tx.meta.logMessages.includes("Log truncated")) throw Error("Finalized event logs incomplete; retain cursor.");
             return [
               ...curveTradeEvents(tx.meta.logMessages, config.environment.program, mint)
                 .map(event => trade(event, "trade:" + event.sequence)),
@@ -102,8 +104,8 @@ export async function GET(request: Request) {
           },
         });
         const firstAvailable = !prior.backfilled && next.backfilled
-          ? await rpc.getFirstAvailableBlock().send(options) : 0n;
-        if (missing || firstAvailable > 0n) next.gap = true;
+          ? await historyRpc.getFirstAvailableBlock().send(options) : 0n;
+        if (historyCoverageGap(firstAvailable, terms.createdSlot)) next.gap = true;
         return store.commit(network, stream, prior, next, events);
       })();
       inflight.set(key, update);
@@ -115,7 +117,10 @@ export async function GET(request: Request) {
       } finally { inflight.delete(key); }
     }
   } catch { stale = true; }
-  const volume = store.marketVolume(network, stream);
-  return Response.json({ ...store.history(network, stream, before, search),
-    checkpoint: store.checkpoint(network, stream), volume: { ...volume, lamports: String(volume.lamports), tokens: String(volume.tokens) }, stale }, { headers: noCache });
+  let snapshot;
+  try { snapshot = await store.historySnapshot(network, stream, before, search); }
+  catch { return Response.json({ error: 'Shared history service unavailable. Retry later.' }, { status: 503 }); }
+  const volume = snapshot.volume;
+  return Response.json({ ...snapshot,
+    volume: { ...volume, lamports: String(volume.lamports), tokens: String(volume.tokens) }, stale }, { headers: noCache });
 }

@@ -1,4 +1,5 @@
 "use client";
+import { readBoundedMetadata, cacheValidatedMetadata } from "@/lib/metadata-read";
 import { resolveMetadataUri } from "@/lib/metadata-storage-uri";
 import { validateImageUpload } from "@/lib/launch-image";
 import { useEffect, useState } from "react";
@@ -13,24 +14,18 @@ export default function LocalLaunchMetadata({ uri }: { uri: string }) {
     let imageUrl: string | undefined;
     const read = async (uri: string, extension: string, max: number) => {
       const resolved = resolveMetadataUri(uri, window.location.origin, extension);
-      const response = await fetch(resolved.url, {cache:"no-store", redirect:"error", signal:AbortSignal.any([controller.signal,AbortSignal.timeout(15000)])});
-      if (!response.ok) throw Error("Metadata asset is unavailable. Gateway availability and continued pinning are external dependencies.");
-      const reader = response.body?.getReader();
-      if (!reader) throw Error("Empty asset response.");
-      const parts: Uint8Array[] = []; let size = 0;
-      for (;;) { const {value,done} = await reader.read(); if(done) break;
-        size += value.length; if(size>max) { await reader.cancel(); throw Error("Metadata asset exceeds size limit."); } parts.push(value); }
-      const bytes = new Uint8Array(size); let offset = 0;
-      for(const part of parts) { bytes.set(part,offset); offset += part.length; }
+      const bytes = await readBoundedMetadata(resolved.url, max, controller.signal);
       const digest = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",bytes))).map(n=>n.toString(16).padStart(2,"0")).join("");
       if (resolved.sha256 && resolved.sha256 !== digest) throw Error("Asset content hash mismatch.");
-      return bytes;
+      return { bytes, url: resolved.url };
     };
     void (async () => {
       try {
-        const json = JSON.parse(new TextDecoder("utf-8",{fatal:true}).decode(await read(uri,"json",32000)));
+        const document = await read(uri,"json",32000);
+        const json = JSON.parse(new TextDecoder("utf-8",{fatal:true}).decode(document.bytes));
         if(typeof json.description !== "string" || new TextEncoder().encode(json.description).length>1000 || typeof json.image !== "string") throw Error("Malformed off-chain metadata.");
-        const bytes = await read(json.image,"png|jpg|webp",2097152);
+        const image = await read(json.image,"png|jpg|webp",2097152);
+        const bytes = image.bytes;
         const mime = bytes[0] === 137 ? "image/png" : bytes[0] === 255 ? "image/jpeg" : "image/webp";
         const file = new File([bytes], "token-image", {type:mime});
         await validateImageUpload(file);
@@ -42,6 +37,8 @@ export default function LocalLaunchMetadata({ uri }: { uri: string }) {
           const link = new URL(value); if(link.protocol!=="https:" || link.username || link.password) throw Error("Unsafe metadata link.");
           links.push([key,link.href]);
         }
+        cacheValidatedMetadata(document.url, document.bytes);
+        cacheValidatedMetadata(image.url, bytes);
         if(active) { setData({description:json.description,image:imageUrl,links}); setError(""); }
       } catch(e) { if(active) {setData(null); setError(e instanceof Error?e.message:String(e));} }
       finally { if(!active && imageUrl) URL.revokeObjectURL(imageUrl); }

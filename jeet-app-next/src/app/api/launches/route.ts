@@ -1,5 +1,6 @@
-import { publicBetaServerReadOnly } from "@/lib/public-beta";
-import { admitPublicRead } from "@/lib/public-read-limit";
+import { recoverFinalizedTransaction, archivalTransactionReader, verifiedHistoryRpc, historyCoverageGap } from "@/lib/history-recovery";
+import { after } from 'next/server';
+import { admitPublicRequest } from "@/lib/public-read-limit";
 import { address, getAddressDecoder, getBase64Encoder, signature } from "@solana/kit";
 import { localReadConfiguration } from "@/lib/local-wallet-server";
 import { walletLaunchAddresses } from "@/lib/wallet-launch";
@@ -48,12 +49,12 @@ async function update(config: ReturnType<typeof localReadConfiguration>, network
     () => ({ status: "disconnected", connected: null }),
     { get: () => null, put: () => { throw Error("Read-only index"); }, remove: () => {} }, undefined, undefined, createServerWalletRpc(config.url));
   await executor.network();
-  const prior = store.checkpoint(network, stream);
+  const historyRpc = await verifiedHistoryRpc(config.url, config.environment.genesis);
+  const prior = await store.checkpoint(network, stream);
   const options = { abortSignal: AbortSignal.timeout(12000) };
-  let missing = false;
   const { next, events } = await readHistoryPage(prior, {
     async signatures(before) {
-      const rows = await executor.rpc.getSignaturesForAddress(address(config.environment.program), {
+      const rows = await historyRpc.getSignaturesForAddress(address(config.environment.program), {
         limit: historyBatchSize, before: before ? signature(before) : undefined, commitment: "finalized",
       }).send(options);
       return rows.map(row => ({ signature: row.signature, slot: row.slot, failed: !!row.err }));
@@ -62,14 +63,13 @@ async function update(config: ReturnType<typeof localReadConfiguration>, network
       const read = () => executor.rpc.getTransaction(signature(entry.signature), {
         encoding: "json", commitment: "finalized", maxSupportedTransactionVersion: 0,
       }).send(options);
-      const tx = await read() ?? await read();
+      const tx = await recoverFinalizedTransaction(read, archivalTransactionReader(entry.signature, config.environment.genesis));
       if (!tx?.meta) {
-        missing = true;
-        return [];
+        throw Error("Finalized transaction missing; retry page without advancing its cursor.");
       }
       if (tx.meta.err || tx.slot !== entry.slot || tx.transaction.signatures[0] !== entry.signature)
         throw Error("Finalized launch transaction identity mismatch.");
-      if (!tx.meta.innerInstructions && !tx.meta.logMessages) missing = true;
+      if (!tx.meta.innerInstructions && !tx.meta.logMessages) throw Error("Finalized transaction data incomplete; retain cursor.");
       return activationMints({ ...tx, meta: tx.meta }, config.environment.program)
         .map(mint => ({ signature: entry.signature, slot: String(entry.slot), mint }));
     },
@@ -81,21 +81,21 @@ async function update(config: ReturnType<typeof localReadConfiguration>, network
     if (observation?.row.activationSlot === event.slot) launches.push(observation);
   }
   const firstAvailable = !prior.backfilled && next.backfilled
-    ? await executor.rpc.getFirstAvailableBlock().send(options)
+    ? await historyRpc.getFirstAvailableBlock().send(options)
     : 0n;
-  if (missing || firstAvailable > 0n) next.gap = true;
-  store.commitDiscovery(network, stream, prior, next, launches, observed);
+  if (historyCoverageGap(firstAvailable)) next.gap = true;
+  await store.commitDiscovery(network, stream, prior, next, launches, observed);
 
   // Refresh old rows in bounded batches so even confirmed state changes and migrations
   // whose activation pages were already consumed are reflected without a full scan.
-  const refresh = await Promise.all(store.oldestLaunches(network, observed - 3000)
+  const refresh = await Promise.all((await store.oldestLaunches(network, observed - 3000))
     .map(row => observe(executor, address(row.mint), address(row.creator))));
-  store.writeLaunches(network, refresh.filter(row => row !== undefined), observed);
+  await store.writeLaunches(network, refresh.filter(row => row !== undefined), observed);
 }
 
 export async function GET(request: Request) {
-  if (publicBetaServerReadOnly() && !admitPublicRead(request.headers.get("x-real-ip") ?? "unknown"))
-    return Response.json({ error: "Beta request limit reached. Retry shortly." }, { status: 429, headers: { "retry-after": "60" } });
+  if (!(await admitPublicRequest(request)))
+    return Response.json({ error: "Shared request quota unavailable or exhausted. Retry shortly." }, { status: 429, headers: { "retry-after": "60" } });
   let config;
   try { config = localReadConfiguration(request); }
   catch { return Response.json({ error: "Verified index is unavailable outside the configured test network." }, { status: 404 }); }
@@ -114,14 +114,16 @@ export async function GET(request: Request) {
       });
       sync.set(network, state);
       job = state;
+      // Keep the bounded ingest batch alive after serving an existing snapshot on serverless hosts.
+      after(() => state.pending);
     }
     // Existing pages remain responsive while an RPC batch is being fetched.
     const params = new URL(request.url).searchParams;
-    if (store.discoveryUpdatedAt(network) === undefined || Number(params.get("retry")) > 0) await job.pending;
-    const indexedAt = store.discoveryUpdatedAt(network);
+    if ((await store.discoveryUpdatedAt(network)) === undefined || Number(params.get("retry")) > 0) await job.pending;
+    const indexedAt = await store.discoveryUpdatedAt(network);
     if (indexedAt === undefined) return Response.json({ error: "Launch index is temporarily unavailable. Retry shortly." }, { status: 503 });
-    const checkpoint = store.checkpoint(network, stream);
-    return Response.json({ ...store.launchPage(network, params), indexedAt,
+    const checkpoint = await store.checkpoint(network, stream);
+    return Response.json({ ...(await store.launchPage(network, params)), indexedAt,
       stale: job.failures > 0, backfilling: !!checkpoint.before || !checkpoint.backfilled, gap: !!checkpoint.gap,
     }, { headers: noCache });
   } catch {

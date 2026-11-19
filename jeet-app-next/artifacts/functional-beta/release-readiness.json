@@ -1,0 +1,72 @@
+{
+  "baseline": "38993787d39edb2e8fed54a271f4d59a112e1a0d",
+  "status": "ENGINEERING CHECKS PASS; PUBLIC WRITES NO-GO pending external readiness gates",
+  "network": "Solana Devnet and local fixtures only",
+  "program": "Fs39Nso7hzYw84u75RzSLTUE9YrD8zgkk1bLfgAiX72D",
+  "unchangedProgramSha256": "e4516444814532383d1dce55dd84f0b88dacbb35435f738596b1c7fb725e2e2c",
+  "feesBps": {
+    "platform": 65,
+    "creator": 35,
+    "total": 100
+  },
+  "treasury": "HVx69FZYW1bBkyK3RaVLNhhAPETZK9tA7E3CrHjrJ1wP",
+  "tests": {
+    "finalTargetedPass": 78,
+    "finalTargetedFail": 0,
+    "httpChecksPass": 10,
+    "httpSolanaNetworkCalls": 0,
+    "typescript": "passed",
+    "lint": "passed without lint findings",
+    "devnetProductionBuild": "passed",
+    "productionAuditVulnerabilities": 0,
+    "fullAuditVulnerabilities": 0,
+    "localValidatorDiscovery": "BLOCKED: preserved native validator executable/artifacts unavailable; initial startup failure retained, no local discovery pass asserted"
+  },
+  "durableIndex": "Implemented authenticated shared service, persistent host SQLite WAL/full sync, atomic cursor/event/volume commits, CAS, idempotent replay, contradictory replay rejection, consistent history snapshots and ranking pagination. Crash/restart and backup/restore tests passed.",
+  "sharedLimits": "Real local HTTP/backend and two independent production-built Next instances verified; read/write/upload scopes, persistent atomic counters, hour/day upload budgets, clock rollback protection, fail closed on backend outage. Not deployed or verified on external host.",
+  "rpcRecovery": "Bounded existing pacing/backoff retained; configured genesis-checked archive supports signature pagination and missing body recovery; missing/truncated records retain cursor; new backend not connected to public service.",
+  "metadata": "Bounded validated-content cache and explicit gateway denial handling verified with fixtures. Prior browser metadata/image rendering evidence retained; prior automated Cloudflare403/1010 remains external. No gateway bypass or credential provisioning.",
+  "phantom": {
+    "installedChromebookConnection": "OWNER-REPORTED PASS",
+    "installedSigning": "UNVERIFIED",
+    "installedRejection": "UNVERIFIED",
+    "ownerTransactionsThisSession": 0,
+    "iPhoneWallet": "Unavailable; does not block desktop procedure"
+  },
+  "production": {
+    "url": "https://jeet-launch-community-preview.vercel.app/",
+    "unchangedSource": "5f7a07900f7c9a516fbfe0616452f5c6c0617bfe",
+    "rollbackDeployment": "dpl_CShXrKvWLxMBUdziNnU7gjtPuzhT",
+    "olderPreservedRollback": "dpl_Cm8WDG7Be9f3C6VqsrnAB5SXYc5C",
+    "writesEnabled": false
+  },
+  "infrastructureInventory": "No installed Vercel integration and no configured shared backend credentials found. No external service/account/plan/connection was provisioned.",
+  "sourceScope": "jeet-app-next only; no Rust program source or executable change",
+  "newDependencies": 0,
+  "newDevnetTransactions": 0,
+  "newSolSpendingLamports": 0,
+  "mainnetOperations": 0,
+  "productionChanges": 0,
+  "remainingApprovals": [
+    "Approve a specific HTTPS Node24 host with persistent volume and service connection; no hosting cost has been assumed or approved.",
+    "Approve secure candidate assignment of dedicated backend token, existing Pinata JWT and approved primary/archive RPC configuration.",
+    "Owner Chromebook Phantom rejection/signing acceptance; public address and exact fresh owner-wallet rent/fee quote before any separately authorized owner transactions.",
+    "Restore preserved local validator tooling for the blocked discovery check without deleting unique evidence.",
+    "After actual external and owner acceptance, explicitly approve exact functional Vercel release commit/environment; migration and treasury signing remain separate."
+  ],
+  "optionalHostProposal": {
+    "provider": "Render",
+    "service": "jeet-launch-shared-devnet",
+    "compute": "Starter / 0.5c-512mb",
+    "persistentDiskGB": 1,
+    "monthlyBaseUSD": 7.25,
+    "includesTaxOrOverages": false,
+    "created": false,
+    "approved": false,
+    "preferredIfAvailable": "existing owner-approved persistent HTTPS Node24 host",
+    "sources": [
+      "https://render.com/pricing",
+      "https://render.com/docs/disks"
+    ]
+  }
+}

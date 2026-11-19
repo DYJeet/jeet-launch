@@ -1,0 +1,158 @@
+(node:12) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/src/lib/launch-fees.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ approved treasury and rates remain pinned (1.076203ms)
+✔ one rounded total conserves every lamport across boundary and large amounts (0.64339ms)
+✔ mixed buys and sells share one deterministic lifetime carry (35.028354ms)
+✔ incompatible legacy carry fails closed instead of reallocating claims (0.524671ms)
+(node:13) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/src/lib/market-store.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ write configuration fails closed for every missing safeguard, unaccepted Phantom, wrong network or unsafe backend (1.664329ms)
+✔ public write admission fails closed without backend and on backend timeout/error; raw IP never forwarded (4.346063ms)
+✔ temporary RPC omission retains the entire page and recovers exactly once using a configured archive (3.84006ms)
+✔ primary recovery is bounded and archive endpoints cannot select Mainnet or unsafe transports (0.706415ms)
+✔ conflicting event replay rolls back page data, volume and cursor together (1.405299ms)
+✔ validated metadata caches bounded immutable bytes; denies cache size bypass and aborted readers (3.851397ms)
+✔ 403 gateway errors are explicit, not retried or cached, and oversized streams are bounded (1.231577ms)
+(node:14) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/src/lib/launch-graduation.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ graduation seeds bind mint, nonce, source ATAs and destination (120.747547ms)
+✔ wire format binds maximum price gap, setup budget, sequence and signer (27.868999ms)
+✔ proof decoder rejects malformed, empty migrated and unknown states (0.991264ms)
+✔ migrated curve separates historical consideration from current reserve (0.425171ms)
+(node:15) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/src/lib/market-store.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ finalized backfill resumes after restart, pages without duplicates and ingests new head (26.842202ms)
+✔ rejects duplicate RPC pages and commits only one concurrent checkpoint (5.075803ms)
+(node:21) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/src/lib/launch-metadata.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ UTF-8 metadata boundaries and URI scheme/credential checks (2.396593ms)
+✔ metadata instruction encodes explicit budget, immutable data and canonical mint-specific PDA (17.979519ms)
+✔ malformed metadata accounts cannot supply identity or authority facts (1.105167ms)
+✔ actual PNG signature, dimensions, forged MIME, empty and oversized files (14.606633ms)
+(node:27) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/src/lib/pinata-metadata-storage.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ JWT presence check rejects API key/secret pair and whitespace without revealing them (1.322504ms)
+✔ public upload, authenticated account record and exact gateway bytes; credentials never sent to gateway (5.759825ms)
+✔ UnixFS record size includes overhead while gateway must return the original bytes (6.326123ms)
+✔ missing credential and invalid input reject before upload (0.433894ms)
+✔ provider HTTP failures and transport exceptions cannot leak credentials or provider bodies (0.998185ms)
+✔ substituted CID, size, missing file ID, or account record rejects (1.864511ms)
+✔ corrupt, oversized, unavailable or malformed responses reject instead of claiming persistence (1.970471ms)
+✔ concurrent identical requests coalesce; confirmed receipt retries reverify without another POST (1.033107ms)
+✔ gateway failure after returned upload receipt can resume verification without another upload (2.303322ms)
+✔ canonical ipfs URI is accepted by existing on-chain metadata SDK and resolved only to approved gateway (5.214302ms)
+✔ local URI retains exact content-hash check and upload budget has deterministic expiry (0.500544ms)
+(node:28) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/src/lib/local-launch-assets.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ validated image → public IPFS image → matching JSON → IPFS metadata; retries reuse receipts (40.66019ms)
+✔ failure of either image or JSON pin rejects the entire storage result without a temporary URI fallback (12.685326ms)
+(node:29) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/src/lib/wallet-transactions.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ public beta stops before accessing wallet, building instructions, RPC or signing (6.581312ms)
+✔ public server remains read-only on Vercel (0.49121ms)
+✔ canonical and exact deployment origins work; foreign and spoofed forwarded hosts fail (3.968284ms)
+✔ per-client admission is bounded and resets only after its window (0.52379ms)
+✔ per-instance global ceiling limits rotating client identifiers (0.610951ms)
+(node:76) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/src/lib/wallet-launch.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+spawn programs/launch-custody/target/toolchain/validator ENOENT
+Discovery test logs: /tmp/jeet-scale-6jYBGz
+file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/scripts/test-scalable-discovery.mjs:57
+  throw Error("Timed out waiting for readiness. Logs: " + dir, { cause: lastError });
+        ^
+
+Error: Timed out waiting for readiness. Logs: /tmp/jeet-scale-6jYBGz
+    at until (file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/scripts/test-scalable-discovery.mjs:57:9)
+    at async file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/scripts/test-scalable-discovery.mjs:112:3 {
+  [cause]: [TypeError: fetch failed] {
+    [cause]: Error: connect ECONNREFUSED 127.0.0.1:9927
+        at TCPConnectWrap.afterConnect [as oncomplete] (node:net:2083:16) {
+      errno: -111,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 9927
+    }
+  }
+}
+
+Node.js v24.22.3
+✖ scripts/test-scalable-discovery.mjs (40562.261336ms)
+(node:82) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/src/lib/shared-backend-client.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ durable HTTP index survives backend and application restarts; CAS, replay, snapshot and pagination (592.088102ms)
+✔ shared quotas enforce one atomic ceiling across two actual application processes and restart (542.962584ms)
+✔ quota expiry cannot be bypassed by clock rollback; scope and thresholds validated (2.363704ms)
+✔ backend rejects unauthenticated, oversized, unknown, cross-network and malformed operations (4.661072ms)
+✔ server credentials never permit HTTP outside explicit local tests, redirects, or secret-bearing errors (1.609267ms)
+(node:98) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/src/lib/wallet-transactions.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ exact decimal amounts reject precision loss, exponents, signs and overflow (1.809929ms)
+✔ local config rejects public genesis, disabled mode, remote RPC and cross-origin (2.87841ms)
+✔ RPC rejects arbitrary methods, batches, unsafe preflight and unbounded scans (0.574386ms)
+✔ signed execution confirms once and clears saved signature (81.358172ms)
+✔ wrong genesis never broadcasts (2.005785ms)
+✔ missing program never broadcasts (3.005712ms)
+✔ simulation rejection never broadcasts (5.450087ms)
+✔ insufficient SOL never broadcasts (7.118793ms)
+✔ no network fee never broadcasts (6.064184ms)
+✔ expired signing never broadcasts (12.38283ms)
+✔ rejection is explicit; duplicate calls are blocked while wallet signing is pending (11.598648ms)
+✔ disconnect or changed chain after signature cannot broadcast (8.250019ms)
+✔ wallet message substitution cannot broadcast (8.64179ms)
+✔ save failure blocks broadcasting (13.128199ms)
+✔ lost send response reconciles known signature without resending (21.297401ms)
+✔ unknown result remains saved and blocks new submissions, even with a new executor (475.843236ms)
+✔ confirmed failure clears liability to retry without reporting success (21.814095ms)
+✔ finalized expiration clears only after history is checked again (473.506226ms)
+✔ abort after wallet signature prevents submission (7.06054ms)
+✔ read-only and send-only wallets cannot silently broadcast (1.037504ms)
+✔ network change after wallet signature prevents broadcast (14.064907ms)
+✔ reconciliation never clears a newer saved signature (465.350861ms)
+✔ a wallet signature for the wrong key cannot broadcast or create a pending receipt (6.990069ms)
+(node:104) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/src/lib/wallet-rpc-server.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ concurrent public RPC calls serialize, pace and do not reorder (1.64512ms)
+✔ bounded queue rejects overload and aborted queued work cannot reach the provider (1.799774ms)
+✔ 429 retries have exponential backoff and preserve the identical signed-wire body (2.316793ms)
+✔ long Retry-After stops retries rather than violating provider cooldown (0.599193ms)
+✔ persistent 429 is bounded and ambiguous send transport failures are never resent (0.632213ms)
+✔ SDK discovery transport retains exact u64 integers (35.804228ms)
+ℹ tests 74
+ℹ suites 0
+ℹ pass 73
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 40988.276088
+
+✖ failing tests:
+
+test at scripts/test-scalable-discovery.mjs:1:1
+✖ scripts/test-scalable-discovery.mjs (40562.261336ms)
+  'test failed'

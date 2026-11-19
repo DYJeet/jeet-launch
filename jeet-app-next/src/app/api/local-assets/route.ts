@@ -1,4 +1,5 @@
 import { publicBetaServerReadOnly } from "@/lib/public-beta";
+import { admitPublicRequest } from '@/lib/public-read-limit';
 import {
   localWalletConfiguration,
   checkedLocalGenesis,
@@ -10,6 +11,7 @@ export const dynamic = "force-dynamic";
 let active = 0;
 export async function POST(request: Request) {
   if (publicBetaServerReadOnly()) return Response.json({ error: "Public beta writes are disabled." }, { status: 403 });
+  if (!(await admitPublicRequest(request, 'upload'))) return Response.json({ error: 'Upload quota unavailable or exhausted.' }, { status: 429, headers: { 'retry-after': '3600' } });
   try {
     const config = localWalletConfiguration(request);
     if (active >= 2) return Response.json({error:"Upload busy; retry after the current operation finishes."}, { status: 429 });

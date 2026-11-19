@@ -117,7 +117,7 @@ function describeError(error: unknown) {
 }
 
 export async function POST(request: Request) {
-  if (publicBetaServerReadOnly()) return Response.json({ error: "Public beta writes are disabled." }, { status: 403 });
+  if (process.env.VERCEL === '1' || publicBetaServerReadOnly()) return Response.json({ error: "Public beta writes are disabled." }, { status: 403 });
   let phase = "validation";
   let createdMint: string | null = null;
   try {

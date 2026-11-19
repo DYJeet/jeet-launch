@@ -1,0 +1,20 @@
+Local HTTP test logs retained at /tmp/jeet-next-shared-c0k5Ev
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+404 !== 200
+
+    at file:///workspace/scratch/c539518fcd47/jeet-functional-beta/jeet-app-next/scripts/test-shared-next-routes.mjs:24:153
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 404,
+  expected: 200,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.22.3

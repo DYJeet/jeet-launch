@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { createServer } from "node:http";
 import { once } from "node:events";
-import { mkdtemp, open, writeFile } from "node:fs/promises";
+import { access, mkdtemp, open, writeFile } from "node:fs/promises";
 import { setTimeout as delay } from "node:timers/promises";
 import { createClient, generateKeyPairSigner, lamports } from "@solana/kit";
 import { solanaRpc, rpcAirdrop } from "@solana/kit-plugin-rpc";
@@ -16,6 +16,9 @@ import { LOCAL_WALLET_PROGRAM } from "../src/lib/wallet-environment.ts";
 const rpcUrl = "http://127.0.0.1:9927";
 const proxyUrl = "http://127.0.0.1:9930";
 const appUrl = "http://127.0.0.1:3027";
+// Fail before starting services or waiting on health when preserved local tooling is unavailable.
+for (const required of [process.env.JEET_VALIDATOR_BIN ?? "programs/launch-custody/target/toolchain/validator", "programs/launch-custody/target/local-fee-test/jeet_launch_custody.so", "programs/launch-custody/target/metadata-research/mpl_token_metadata.so"])
+  try { await access(required); } catch { throw Error("Local discovery validation BLOCKED: missing preserved validator/artifact: " + required); }
 const dir = await mkdtemp("/tmp/jeet-scale-");
 const target = 68;
 const workers = 8;
