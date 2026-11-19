@@ -19,7 +19,7 @@ export function proxy(request: NextRequest) {
   }
   const enabled = walletModeEnabled();
   if (enabled && (["/create", "/local-create"].includes(request.nextUrl.pathname) || request.nextUrl.pathname.startsWith("/token/"))) {
-    try { localWalletConfiguration(request); }
+    try { localWalletConfiguration(request, { pageNavigation: true }); }
     catch { return new NextResponse("Configured test-wallet origin required", { status: 404 }); }
   }
   if (request.nextUrl.pathname === "/create") {

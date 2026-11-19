@@ -12,7 +12,7 @@ export function walletModeEnabled() {
   return WALLET_NETWORK === "devnet" ? process.env.JEET_DEVNET_WALLET === "1" : process.env.JEET_LOCAL_WALLET === "1";
 }
 
-function devnetWalletConfiguration(request: Request) {
+function devnetWalletConfiguration(request: Request, pageNavigation: boolean) {
   if (process.env.JEET_DEVNET_WALLET !== "1" || WALLET_NETWORK !== "devnet")
     throw Error("Explicit Devnet wallet configuration is required.");
   const configured = process.env.JEET_DEVNET_WALLET_ORIGIN ?? "";
@@ -28,9 +28,15 @@ function devnetWalletConfiguration(request: Request) {
   const tunnelOrigin = codespacesForwardedHost(request, origin) &&
     request.headers.get("sec-fetch-site") === "same-origin" &&
     suppliedOrigin === `https://${request.headers.get("host")}`;
+  // An external link may open a read-only Preview document on its exact
+  // deployment hostname. Wallet API calls never use this navigation exception.
+  const previewNavigation = pageNavigation && process.env.VERCEL_ENV === "preview" &&
+    !!deployment && host === deployment && request.method === "GET" && !request.headers.has("origin") &&
+    request.headers.get("sec-fetch-mode") === "navigate" &&
+    request.headers.get("sec-fetch-dest") === "document";
   if (!devnetApplicationHost(request, origin) ||
       (suppliedOrigin && suppliedOrigin !== origin.origin && !tunnelOrigin) ||
-      request.headers.get("sec-fetch-site") === "cross-site")
+      (request.headers.get("sec-fetch-site") === "cross-site" && !previewNavigation))
     throw Error("Cross-origin Devnet wallet request rejected.");
   const rpc = new URL(process.env.JEET_DEVNET_WALLET_RPC ?? "https://api.devnet.solana.com");
   if (rpc.protocol !== "https:" || rpc.username || rpc.password || rpc.hash || /mainnet/i.test(rpc.href))
@@ -58,9 +64,9 @@ function codespacesForwardedHost(request: Request, origin: URL) {
     request.headers.get("x-forwarded-host") === origin.host;
 }
 
-export function localWalletConfiguration(request: Request) {
+export function localWalletConfiguration(request: Request, { pageNavigation = false } = {}) {
   if (process.env.JEET_DEVNET_WALLET === "1" || WALLET_NETWORK === "devnet")
-    return devnetWalletConfiguration(request);
+    return devnetWalletConfiguration(request, pageNavigation);
   if (process.env.JEET_LOCAL_WALLET !== "1")
     throw Error("Local wallet mode is disabled.");
   const incoming = new URL(request.url);

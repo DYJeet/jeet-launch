@@ -49,3 +49,21 @@ test('rewritten Codespaces POST origins require exact forwarding and same-origin
  for(const change of [{origin:'http://localhost:3019'},{origin:'https://localhost:3020'},{origin:'https://attacker.invalid'},{host:'localhost:3020'},{'x-forwarded-host':'other-space-3019.app.github.dev'},{'sec-fetch-site':'cross-site'},{'sec-fetch-site':'same-site'},{'sec-fetch-site':''}])assert.throws(()=>localWalletConfiguration(request({...headers,...change})));
  delete process.env.CODESPACES;assert.throws(()=>localWalletConfiguration(request(headers)));
  `));
+
+test('only an exact Vercel Preview document permits external-link navigation', () => run(`
+ import assert from 'node:assert/strict';
+ import {localWalletConfiguration} from './src/lib/local-wallet-server.ts';
+ const deployment = 'jeet-candidate.vercel.app';
+ const url = 'https://' + deployment + '/token/11111111111111111111111111111111';
+ const headers = {host: deployment, 'sec-fetch-site': 'cross-site', 'sec-fetch-mode': 'navigate', 'sec-fetch-dest': 'document'};
+ const page = (change = {}, method = 'GET') => localWalletConfiguration(
+   new Request(url, {method, headers: {...headers, ...change}}), {pageNavigation: true});
+ assert.equal(page().environment.network, 'devnet');
+ assert.throws(() => localWalletConfiguration(new Request(url, {headers})), /Cross-origin/);
+ for (const change of [{host: 'branch-alias.vercel.app'}, {host:'attacker.invalid','x-forwarded-host':deployment},
+   {'sec-fetch-dest':'iframe'}, {'sec-fetch-mode':'cors'}, {origin:'https://other.invalid'}, {origin:'null'}])
+   assert.throws(() => page(change), /Cross-origin/);
+ assert.throws(() => page({}, 'POST'), /Cross-origin/);
+ process.env.VERCEL_ENV = 'production';
+ assert.throws(() => page(), /Cross-origin/);
+ `, {VERCEL: '1', VERCEL_ENV: 'preview', VERCEL_URL: 'jeet-candidate.vercel.app'}));
