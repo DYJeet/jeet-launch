@@ -103,6 +103,34 @@
       "New server-only shared-backend token installed securely in Worker and Vercel Preview",
       "Server-only JEET_SHARED_BACKEND_URL and JEET_SHARED_BACKEND_TOKEN in the isolated Preview",
       "Hosted authentication, persistence/recovery, namespace, quota and RPC read acceptance after integration"
-    ]
+    ],
+    "readPreviewPreparation": {
+      "baseCommit": "cc445fc91e43242fb381fe073e49bc373d1c1a81",
+      "profile": "workers/shared-devnet/wrangler.mainnet-read-preview.jsonc",
+      "profileSha256": "d1bb68422787409821c3ab360d95d4c9c6d270173c4f0c87542e9e0952fd39a5",
+      "workerName": "jeet-launch-shared-mainnet-read-preview",
+      "accountIdFromHistoricalAudit": "060a9dcc510ac73c02bc9915bd946e36",
+      "currentAccountVerified": false,
+      "currentFreePlanVerified": false,
+      "provisioned": false,
+      "newSecretsCreated": false,
+      "vercelSettingsChanged": false,
+      "wranglerSessionRecovered": false,
+      "cloudflareAuthentication": "GitHub flow returned generic Unable to sign in; automated retries stopped",
+      "localWorkerdTest": {
+        "command": "JEET_MAINNET_WORKER_CONFIG=workers/shared-devnet/wrangler.mainnet-read-preview.jsonc node --test scripts/test-mainnet-worker.mjs",
+        "passed": 1,
+        "failed": 0,
+        "coverage": [
+          "authentication rejection",
+          "missing identity fails closed",
+          "Devnet namespace rejection",
+          "persistent checkpoint after local runtime restart",
+          "persisted program cannot be rebound"
+        ],
+        "solanaRequests": 0
+      },
+      "ownerActionRequired": "Authorize a new secure Cloudflare sign-in attempt or restore the existing authorized Wrangler session; verify account and Free plan before provisioning"
+    }
   }
 }

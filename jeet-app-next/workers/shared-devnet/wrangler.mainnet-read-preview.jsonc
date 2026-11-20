@@ -1,0 +1,19 @@
+{
+  "name": "jeet-launch-shared-mainnet-read-preview",
+  "account_id": "060a9dcc510ac73c02bc9915bd946e36",
+  "main": "src/worker.mjs",
+  "compatibility_date": "2026-07-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "vars": {
+    "JEET_SHARED_PROFILE": "mainnet",
+    "JEET_SHARED_MAINNET_PROGRAM_ID": "5PeRukdBmgnWVXvpz9cP1kxcQfDd4mF7h1h2xDb7To4Y"
+  },
+  "alias": { "node:sqlite": "./src/sqlite-unavailable.ts" },
+  "durable_objects": {
+    "bindings": [{ "name": "JEET_SHARED", "class_name": "JeetSharedIndex" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["JeetSharedIndex"] }],
+  "observability": { "enabled": false }
+}

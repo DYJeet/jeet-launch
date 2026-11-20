@@ -13,6 +13,16 @@ import { DEVNET_INDEX_NAMESPACE } from '../src/lib/shared-backend.ts';
 const require = createRequire(join(process.env.JEET_WORKER_TOOLS_ROOT ?? resolve('workers/shared-devnet'), 'package.json'));
 const { build } = require('esbuild');
 const { Miniflare } = require('miniflare');
+// Optionally exercise the exact prepared hosting profile, without deploying it.
+const profilePath = process.env.JEET_MAINNET_WORKER_CONFIG;
+const profile = profilePath ? JSON.parse(await readFile(profilePath, 'utf8')) : undefined;
+if (profile) {
+  assert.equal(profile.vars.JEET_SHARED_PROFILE, 'mainnet');
+  assert.notEqual(profile.name, 'jeet-launch-shared-devnet');
+  assert.deepEqual(profile.migrations, [{ tag: 'v1', new_sqlite_classes: ['JeetSharedIndex'] }]);
+  assert.deepEqual(profile.durable_objects.bindings, [{ name: 'JEET_SHARED', class_name: 'JeetSharedIndex' }]);
+  assert(!profile.routes && !profile.route, 'Preview must not modify domain routes.');
+}
 
 test('Mainnet Worker cannot accept Devnet index traffic or rebind persisted state to another program', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'jeet-mainnet-worker-'));
@@ -25,14 +35,14 @@ test('Mainnet Worker cannot accept Devnet index traffic or rebind persisted stat
       alias: { 'node:sqlite': resolve('workers/shared-devnet/src/sqlite-unavailable.ts') },
     });
     const script = await readFile(bundle, 'utf8');
-    const program = (await generateKeyPairSigner()).address;
+    const program = profile?.vars.JEET_SHARED_MAINNET_PROGRAM_ID ?? (await generateKeyPairSigner()).address;
     const namespace = MAINNET_GENESIS + ':' + program;
     const token = 'mainnet-worker-local-fixture-authorization';
     const stream = 'launch-activations-v1';
     const head = { anchor: '2'.repeat(64), backfilled: true };
     const open = id => new Miniflare({
-      modules: true, script, compatibilityDate: '2026-07-01',
-      compatibilityFlags: ['nodejs_compat'], durableObjects: { JEET_SHARED: { className: 'JeetSharedIndex', useSQLite: true } },
+      modules: true, script, compatibilityDate: profile?.compatibility_date ?? '2026-07-01',
+      compatibilityFlags: profile?.compatibility_flags ?? ['nodejs_compat'], durableObjects: { JEET_SHARED: { className: 'JeetSharedIndex', useSQLite: true } },
       durableObjectsPersist: join(dir, 'persist'),
       bindings: {
         JEET_SHARED_PROFILE: 'mainnet', JEET_SHARED_BACKEND_TOKEN: token,
