@@ -93,7 +93,7 @@
   },
   "mainnetIndex": {
     "deployed": false,
-    "blocker": "Cloudflare deployment authentication unavailable in this session",
+    "blocker": "Codespace Wrangler access recovered and expected account/resources verified; current Workers Free-plan verification blocked by subscriptions API HTTP 403/code 10000.",
     "devnetServiceReusedForMainnet": false,
     "localPersistentIndexAndRecoveryEvidence": "existing Mainnet fixtures and tests retained",
     "browserState": "Cloudflare dashboard redirected to its sign-in page",
@@ -131,6 +131,58 @@
         "solanaRequests": 0
       },
       "ownerActionRequired": "Authorize a new secure Cloudflare sign-in attempt or restore the existing authorized Wrangler session; verify account and Free plan before provisioning"
+    },
+    "codespaceRecovery": {
+      "codespace": "symmetrical-adventure-544vrwjwxppcv7wx",
+      "sourceCommit": "5e60f88d04c8a40f641e6e81cb6763c7f1500ee6",
+      "sourceDirectory": "/tmp/jeet-mainnet-read-recovery-5e60f88",
+      "originalCheckoutBranch": "main",
+      "originalCheckoutPreserved": true,
+      "originalGitStatusEntryCount": 30,
+      "wranglerVersion": "4.165.0",
+      "existingSessionRefreshed": true,
+      "newDeviceAuthorizationStarted": false,
+      "credentialValuesExposed": false,
+      "credentialFileMode": "0600",
+      "accountVerified": "060a9dcc510ac73c02bc9915bd946e36",
+      "resourceInventory": {
+        "workers": [
+          "jeet-launch-shared-devnet"
+        ],
+        "sqliteNamespaceId": "c62e688aa16242de8265ae4742c3e9a1",
+        "sqliteNamespaceScript": "jeet-launch-shared-devnet",
+        "newWorkerNameCollision": false
+      },
+      "network": {
+        "apiReachable": true,
+        "authenticatedAccountAndResourceReads": 200,
+        "unauthenticatedDeviceVerificationPage": 403,
+        "tokenRefreshSucceeded": true
+      },
+      "planVerification": {
+        "currentFreePlanVerified": false,
+        "subscriptionsHttpStatus": 403,
+        "errorCode": 10000,
+        "errorMessage": "Authentication error",
+        "workerAccountDefaultUsageModel": "standard",
+        "usageModelIsNotPlanEvidence": true
+      },
+      "packagingDryRun": {
+        "status": "PASS",
+        "exitCode": 0,
+        "workerBytes": 119672,
+        "workerSha256": "2c063f28157a023aa5fb71eafbd0671ee26c899537acbd41b6fbb4e5508210b7",
+        "workerBundlePath": "/tmp/jeet-mainnet-read-bundle-5e60f88/worker.js",
+        "deploymentPerformed": false,
+        "bindings": [
+          "JEET_SHARED",
+          "JEET_SHARED_PROFILE",
+          "JEET_SHARED_MAINNET_PROGRAM_ID"
+        ]
+      },
+      "cloudflareProvisioningChanges": 0,
+      "vercelChanges": 0,
+      "remainingOwnerAction": "Provide current account-scoped Workers Free-plan evidence before provisioning. Do not broaden credentials or purchase services."
     }
   }
 }
