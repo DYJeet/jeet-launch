@@ -26,12 +26,69 @@
       "finalState": "CANCELED",
       "readyDeploymentProduced": false
     },
-    "furtherDeploymentAttempts": "blocked by automatic approval review due to risk of another unauthorized Production deployment",
+    "furtherDeploymentAttempts": "Owner authorized exactly one additional isolated Preview attempt; it was accepted as Preview. No further attempt authorized.",
     "existingPublicProduction": {
       "project": "jeet-launch-community-preview",
       "deploymentId": "dpl_CShXrKvWLxMBUdziNnU7gjtPuzhT",
       "sourceCommit": "5f7a07900f7c9a516fbfe0616452f5c6c0617bfe",
       "state": "READY"
+    },
+    "additionalAuthorizedAttempt": {
+      "sourceCommit": "b45d6e84f2737d34a1a7815b59e3c5ba5854ecdb",
+      "deploymentId": "dpl_HVkj6fZYUQiG452bZR8ZoJxQ6YV1",
+      "url": "https://jeet-launch-mainnet-read-preview-qd4v3eyub-dyj-eet.vercel.app",
+      "attemptCount": 1,
+      "requestType": "non-Git uploaded source files",
+      "targetSelector": "omitted; documented Preview default",
+      "gitSourceProvided": false,
+      "priorDeploymentInherited": false,
+      "returnedTarget": null,
+      "returnedTargetMeaning": "Preview",
+      "rootDirectory": "jeet-app-next",
+      "nodeVersion": "24.x",
+      "sourceFileCount": 92,
+      "sourceBytes": 3461500,
+      "readyState": "READY",
+      "noProductionPromotionRequested": true,
+      "documentation": "https://vercel.com/docs/rest-api/deployments/create-a-new-deployment",
+      "deploymentProtection": "all_except_custom_domains",
+      "unauthenticatedHttpStatus": 302,
+      "unauthenticatedRedirect": "Vercel SSO",
+      "authenticatedHttpChecks": [
+        {
+          "path": "/",
+          "status": 200,
+          "mainnetReadOnlyNotice": true
+        },
+        {
+          "path": "/create",
+          "status": 200,
+          "mainnetReadOnlyNotice": true
+        },
+        {
+          "path": "/explore",
+          "status": 200,
+          "mainnetReadOnlyNotice": true
+        },
+        {
+          "path": "/revenue",
+          "status": 200,
+          "mainnetReadOnlyNotice": true
+        },
+        {
+          "path": "/api/wallet/environment",
+          "status": 429,
+          "reason": "Shared request quota unavailable or exhausted."
+        },
+        {
+          "path": "/api/local-test/health",
+          "status": 404,
+          "reason": "Local validator diagnostics are unavailable on public networks."
+        }
+      ],
+      "browserHydrationAcceptance": "Existing local synthetic-RPC desktop/mobile evidence retained; this hosted run used authenticated HTTP probes only.",
+      "productionDeploymentAfterAttempt": "dpl_CShXrKvWLxMBUdziNnU7gjtPuzhT",
+      "productionRollbackCandidateAfterAttempt": true
     }
   },
   "mainnetIndex": {
@@ -39,6 +96,13 @@
     "blocker": "Cloudflare deployment authentication unavailable in this session",
     "devnetServiceReusedForMainnet": false,
     "localPersistentIndexAndRecoveryEvidence": "existing Mainnet fixtures and tests retained",
-    "browserState": "Cloudflare dashboard redirected to its sign-in page"
+    "browserState": "Cloudflare dashboard redirected to its sign-in page",
+    "remainingRequirements": [
+      "Secure Cloudflare deployment authentication for the existing account",
+      "Separate Mainnet Worker service with fixed SQLite Durable Object and approved HTTPS service route",
+      "New server-only shared-backend token installed securely in Worker and Vercel Preview",
+      "Server-only JEET_SHARED_BACKEND_URL and JEET_SHARED_BACKEND_TOKEN in the isolated Preview",
+      "Hosted authentication, persistence/recovery, namespace, quota and RPC read acceptance after integration"
+    ]
   }
 }
