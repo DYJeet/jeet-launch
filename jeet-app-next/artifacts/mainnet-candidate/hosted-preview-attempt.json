@@ -92,8 +92,8 @@
     }
   },
   "mainnetIndex": {
-    "deployed": false,
-    "blocker": "Codespace Wrangler access recovered and expected account/resources verified; current Workers Free-plan verification blocked by subscriptions API HTTP 403/code 10000.",
+    "deployed": true,
+    "blocker": "Hosted backend validation pending; protected frontend acceptance blocked by share-link/access review. Free-plan evidence resolved.",
     "devnetServiceReusedForMainnet": false,
     "localPersistentIndexAndRecoveryEvidence": "existing Mainnet fixtures and tests retained",
     "browserState": "Cloudflare dashboard redirected to its sign-in page",
@@ -183,6 +183,48 @@
       "cloudflareProvisioningChanges": 0,
       "vercelChanges": 0,
       "remainingOwnerAction": "Provide current account-scoped Workers Free-plan evidence before provisioning. Do not broaden credentials or purchase services."
+    },
+    "hostedIntegration": {
+      "status": "DEPLOYED_VALIDATION_PENDING",
+      "freePlanEvidence": {
+        "source": "Owner current Workers dashboard screenshot, matched existing Devnet Worker and prior authenticated account",
+        "requestsToday": 16,
+        "dailyRequestAllowance": 100000,
+        "upgradeOptionVisible": true,
+        "screenshotSha256": "c8d1eb2b932339e59cfefce8d771e49d8e18a071531fc1cd69ac7bb59f4dac1c"
+      },
+      "accountId": "060a9dcc510ac73c02bc9915bd946e36",
+      "worker": "jeet-launch-shared-mainnet-read-preview",
+      "endpoint": "https://jeet-launch-shared-mainnet-read-preview.victorriccardi24.workers.dev",
+      "initialVersionId": "05fb49aa-090f-45b7-a172-426c01ea8b04",
+      "dedicatedSecretInstalled": true,
+      "secretTransfer": "RSA-3072 OAEP SHA-256 authenticated ciphertext transfer, protected files outside Git; plaintext never displayed",
+      "vercelProjectId": "prj_vGtdBgWX5aCwfKN3FUK9xzBja6x8",
+      "environmentKeys": [
+        {
+          "key": "JEET_SHARED_BACKEND_URL",
+          "target": [
+            "preview"
+          ],
+          "type": "plain"
+        },
+        {
+          "key": "JEET_SHARED_BACKEND_TOKEN",
+          "target": [
+            "preview"
+          ],
+          "type": "sensitive"
+        }
+      ],
+      "previewDeployment": {
+        "id": "dpl_CfW1Z5UkRVZ84wHd99UzJDDqsFzu",
+        "url": "https://jeet-launch-mainnet-read-preview-jsb1ddwhj-dyj-eet.vercel.app",
+        "state": "READY",
+        "target": null,
+        "sourceCommit": "8c3232728a7084a3fb0a9bc4d4bd7d85c2e2612e"
+      },
+      "protectedFrontendHttpAcceptance": "BLOCKED: automatic review rejected temporary share-link creation/access; no retry or protection bypass permitted",
+      "newVercelDeploymentsAllowedForValidation": false
     }
   }
 }
